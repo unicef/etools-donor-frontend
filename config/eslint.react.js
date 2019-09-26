@@ -1,8 +1,5 @@
-
 module.exports = {
-    plugins: [
-        'react'
-    ],
+    plugins: ['react'],
     env: {
         browser: true,
         commonjs: true,
@@ -24,7 +21,8 @@ module.exports = {
         }
     },
     rules: {
-        'react/prop-types': "off", // No need since we use Typescript
-        'react/display-name': 'off' // Memo triggers false positive
+        'react/prop-types': 'off', // No need since we use Typescript
+        'react/display-name': 'off', // Memo triggers false positive
+        'react/self-closing-comp': 'error'
     }
 };
