@@ -1,93 +1,125 @@
-import React, { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { useHistory, Redirect, Switch } from 'react-router';
+import { Route } from 'react-router-dom';
 import {
-    AppBar,
-    Typography,
-    makeStyles,
-    createStyles,
-    Grid,
-    IconButton,
-    Popover,
-    Box,
-    CssBaseline,
-    Drawer
+  Typography,
+  makeStyles,
+  createStyles,
+  Box,
+  CssBaseline,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider
 } from '@material-ui/core';
-import { AccountCircle as AccountIcon } from '@material-ui/icons';
-import Logout from './Logout';
+import DescriptionIcon from '@material-ui/icons/Description';
+import SettingsIcon from '@material-ui/icons/Settings';
 import AppToolbar from './App-Bar';
-
-import { DRAWER_WIDTH } from '../constants';
+import { DRAWER_WIDTH, REPORTS_PATH, USERS_PORTAL_PATH } from '../constants';
+import DonorsList from 'pages/donors';
+import ContentHeader from './Content-Header';
+import UsersList from 'pages/users-portal';
+import ReportsPage from 'pages/reports';
 
 export const useMainStyles = makeStyles(theme =>
-    createStyles({
-        root: {
-            display: 'flex'
-        },
-
-        drawer: {
-            width: DRAWER_WIDTH,
-            flexShrink: 0
-        },
-        drawerPaper: {
-            width: DRAWER_WIDTH
-        },
-        toolbar: theme.mixins.toolbar,
-        content: {
-            flexGrow: 1,
-            backgroundColor: theme.palette.background.default,
-            padding: theme.spacing(3)
-        }
-    })
+  createStyles({
+    root: {
+      display: 'flex'
+    },
+    drawer: {
+      width: DRAWER_WIDTH,
+      flexShrink: 0
+    },
+    drawerPaper: {
+      width: DRAWER_WIDTH
+    },
+    toolbar: theme.mixins.toolbar,
+    content: {
+      flexGrow: 1,
+      backgroundColor: theme.palette.background.default
+    },
+    contentWrapper: {
+      padding: theme.spacing(3)
+    },
+    title: {
+      color: theme.palette.common.white,
+      fontSize: 18,
+      fontWeight: 500,
+      padding: `0 ${theme.spacing(1)}px`,
+      lineHeight: 'normal',
+      textTransform: 'uppercase'
+    },
+    divider: {
+      borderRight: `1px solid ${theme.palette.common.white}`
+    }
+  })
 );
 
 export default function MainAppBar() {
-    const classes = useMainStyles();
-    function handleProfileClick() {}
-    return (
-        <div className={classes.root}>
-            <CssBaseline />
-            <AppToolbar />
-            <Drawer
-                className={classes.drawer}
-                variant="permanent"
-                classes={{
-                    paper: classes.drawerPaper
-                }}
-                anchor="left"
-            >
-                <div className={classes.toolbar} />
-            </Drawer>
-            <main className={classes.content}>
-                <div className={classes.toolbar} />
-                <Typography paragraph>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non enim
-                    praesent elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet.
-                    Semper risus in hendrerit gravida rutrum quisque non tellus. Convallis convallis
-                    tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio
-                    aenean sed adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-                    integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate eu
-                    scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis imperdiet
-                    massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-                    arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi
-                    tincidunt. Lorem donec massa sapien faucibus et molestie ac.
-                </Typography>
-                <Typography paragraph>
-                    Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget
-                    nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim neque
-                    volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus.
-                    Purus sit amet volutpat consequat mauris. Elementum eu facilisis sed odio morbi.
-                    Euismod lacinia at quis risus sed vulputate odio. Morbi tincidunt ornare massa
-                    eget egestas purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-                    tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant morbi
-                    tristique senectus et. Adipiscing elit duis tristique sollicitudin nibh sit.
-                    Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas
-                    accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices
-                    sagittis orci a.
-                </Typography>
+  const classes = useMainStyles();
+  const history = useHistory();
+  const handleNav = path => () => history.push(path);
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppToolbar />
+      <Drawer
+        className={classes.drawer}
+        variant="permanent"
+        classes={{
+          paper: classes.drawerPaper
+        }}
+        anchor="left"
+      >
+        <Box bgcolor="secondary.500" className={classes.toolbar} display="flex">
+          <Box flex="1 0 50%" className={classes.divider} />
 
-                {/* <Route exact path="/" component={DonorList} />
-                <Route path="/users" component={UserPortal}/> */}
-            </main>
+          <Box flexGrow={1}>
+            <Typography className={classes.title}>Donor Reporting Portal</Typography>
+          </Box>
+        </Box>
+        <Divider />
+
+        <List>
+          <ListItem onClick={handleNav(REPORTS_PATH)} button>
+            <ListItemIcon>
+              <DescriptionIcon />
+            </ListItemIcon>
+            <ListItemText primary="Reports" />
+          </ListItem>
+
+          <ListItem onClick={handleNav(USERS_PORTAL_PATH)} button>
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="User Management" />
+          </ListItem>
+        </List>
+      </Drawer>
+
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        <ContentHeader />
+
+        <div className={classes.contentWrapper}>
+          <Box flexDirection="column">
+            <Switch>
+              <Route exact path="/:page" component={DonorsList} />
+              <Route exact path={`${REPORTS_PATH}/:donorId`} component={ReportsPage} />
+              <Route exact path={`${USERS_PORTAL_PATH}/:donorId`} component={UsersList} />
+              <Redirect exact from="/" to={REPORTS_PATH} />
+            </Switch>
+          </Box>
         </div>
-    );
+      </main>
+    </div>
+  );
 }
+
+MainAppBar.propTypes = {
+  match: PropTypes.object.isRequired
+  // history: PropTypes.object
+};

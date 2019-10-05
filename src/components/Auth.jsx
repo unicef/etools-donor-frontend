@@ -1,33 +1,33 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { isEmpty } from 'ramda';
 import Loader from './Loader';
-import { fetchUserRoles } from 'actions/user';
 import { selectUserRoles } from 'selectors/user';
+import { onFetchUserRoles } from 'actions';
 
 export default function Auth({ children }) {
-    const [loading, setLoading] = useState(true);
-    const dispatch = useDispatch();
-    const userRoles = useSelector(selectUserRoles);
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const userRoles = useSelector(selectUserRoles); //TODO: profile instead of orles
 
-    useEffect(() => {
-        async function getUserRoles() {
-            try {
-                await dispatch(fetchUserRoles());
-                console.log('xxxx');
-            } catch (err) {
-                console.log(err.message);
-            } finally {
-                setLoading(false);
-            }
-        }
-        getUserRoles();
-    }, []);
+  useEffect(() => {
+    try {
+      dispatch(onFetchUserRoles());
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-    return (
-        <>
-            <Loader loading={loading} fullscreen />
-            {!isEmpty(userRoles) ? children : null}
-        </>
-    );
+  return (
+    <>
+      <Loader loading={loading} fullscreen />
+      {userRoles ? children : null}
+    </>
+  );
 }
+
+Auth.propTypes = {
+  children: PropTypes.node.isRequired
+};
