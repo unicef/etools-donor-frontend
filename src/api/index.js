@@ -25,7 +25,7 @@ async function get(uri, params = {}, options = getBaseOptions()) {
 
 async function post(uri, body = {}) {
   try {
-    const response = axios.post(`${host}${uri}`, body, getBaseOptions());
+    const response = await axios.post(`${host}${uri}`, body, getBaseOptions());
     return response.data;
   } catch (err) {
     throw err;
@@ -50,6 +50,17 @@ export function getAdminDonors() {
 // export function getAdminDonors() {
 //   return get(process.env.REACT_APP_ADMIN_DONORS_ENDPOINT);
 // }
+
+export async function createUser(user) {
+  const url = process.env.REACT_APP_USERS_ENDPOINT;
+  const res = await post(url, user);
+  return res;
+}
+export async function createRole(role) {
+  const url = process.env.REACT_APP_USER_ROLES_ENDPOINT;
+  const res = await post(url, role);
+  return res;
+}
 
 export function getGrants(id) {
   const url = process.env.REACT_APP_GRANTS_ENDPOINT.replace('<donor_id>', id);

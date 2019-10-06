@@ -12,6 +12,9 @@ export const FORM_CONFIG = {
   roles: {
     label: 'Roles'
   },
+  role: {
+    label: 'Role'
+  },
   clear: {
     label: 'Clear'
   },

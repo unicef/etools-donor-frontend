@@ -59,8 +59,7 @@ function fullName(user) {
 const headCells = [
   { id: 'name', numeric: false, disablePadding: false, label: 'Name' },
   { id: 'email', numeric: false, disablePadding: false, label: 'Email' },
-  { id: 'role', numeric: false, disablePadding: false, label: 'Role' },
-  { id: 'status', numeric: false, disablePadding: false, label: 'Status' }
+  { id: 'role', numeric: false, disablePadding: false, label: 'Role' }
 ];
 
 export default function UsersTable() {
@@ -75,6 +74,7 @@ export default function UsersTable() {
 
   const onCloseAddUserModal = e => setAddUserModalOpen(false);
   const openAddUserModal = e => setAddUserModalOpen(true);
+
   const handleRequestSort = (event, property) => {
     const isDesc = orderBy === property && order === 'desc';
     setOrder(isDesc ? 'asc' : 'desc');
@@ -130,7 +130,6 @@ export default function UsersTable() {
                       </TableCell>
                       <TableCell align="left">{user.user_email}</TableCell>
                       <TableCell align="left">{user.group_name}</TableCell>
-                      <TableCell align="left">{user.status}</TableCell>
                     </TableRow>
                   );
                 })}

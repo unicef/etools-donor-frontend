@@ -6,18 +6,18 @@ import { selectUserRoles } from 'selectors/user';
 import { onFetchUserRoles } from 'actions';
 
 export default function Auth({ children }) {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const userRoles = useSelector(selectUserRoles); //TODO: profile instead of orles
 
   useEffect(() => {
-    try {
-      dispatch(onFetchUserRoles());
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
+    // try {
+    //   dispatch(onFetchUserRoles());
+    // } catch (err) {
+    //   console.log(err);
+    // } finally {
+    //   setLoading(false);
+    // }
   }, []);
 
   return (

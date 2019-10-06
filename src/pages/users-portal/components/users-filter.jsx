@@ -17,6 +17,7 @@ import { selectUserGroups } from 'selectors/user';
 import { FORM_CONFIG } from '../../../constants';
 import { onFetchUserRoles, onFetchUserGroups } from 'actions';
 import { setValueFromEvent } from 'lib/helpers';
+import { setUserRoles } from 'reducers/user-roles';
 
 export default function UsersFilter() {
   const classes = useFilterStyles();
@@ -46,8 +47,8 @@ export default function UsersFilter() {
       donor: donorId,
       search: searchQuery || undefined
     };
-    console.log('TCL: UsersFilter -> queryObj', queryObj);
     dispatch(onFetchUserRoles(queryObj));
+    return () => dispatch(setUserRoles([]));
   }, [searchQuery, selectedRoles]);
 
   return (
