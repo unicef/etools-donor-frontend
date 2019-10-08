@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router';
-import { prop } from 'ramda';
+import { prop, propOr } from 'ramda';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -75,8 +75,6 @@ export default function AddUserModal({ open, onClose }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [role, setRole] = useState('');
-  // const [userNameError, setUserNameError] = useState(null);
-  const [emailError, setEmailError] = useState(null);
 
   const createdRole = useSelector(selectCreatedRole);
   const groups = useSelector(selectUserGroups);
@@ -92,7 +90,7 @@ export default function AddUserModal({ open, onClose }) {
 
   function handleErrorState(modelName, stateProp) {
     return () => {
-      if (stateProp.length) {
+      if (stateProp.length && propOr(null, [modelName], formError)) {
         dispatch(
           onFormError({
             ...formError,
@@ -110,19 +108,25 @@ export default function AddUserModal({ open, onClose }) {
       last_name: lastName,
       email
     };
-    const role = {
+    console.log(role);
+    const rolePayload = {
       group: prop('id', groups.find(g => g.name === role)),
       donor: donorId
     };
     setLoading(true);
-    dispatch(onCreateUserRole({ user, role }));
+    dispatch(onCreateUserRole({ user, rolePayload }));
   }
 
   useEffect(() => {
-    if (createdRole || formError) {
+    if (formError) {
       setLoading(false);
     }
-  }, [createdRole, formError]);
+  }, [formError]);
+
+  useEffect(() => {
+    setLoading(false);
+    onClose();
+  }, [createdRole]);
 
   useEffect(() => {
     if (!open) {
@@ -131,10 +135,21 @@ export default function AddUserModal({ open, onClose }) {
     }
   }, [open]);
 
+  const stopPropagationForTab = event => {
+    if (event.key === 'Tab') {
+      event.stopPropagation();
+    }
+  };
+
   const btnContent = (loading && <CircularProgress size={24} />) || 'Submit';
 
   return (
-    <Dialog open={open} onClose={onClose} aria-labelledby="add-user-dialog">
+    <Dialog
+      open={open}
+      onClose={onClose}
+      onKeyDown={stopPropagationForTab}
+      aria-labelledby="add-user-dialog"
+    >
       <DialogTitle className={classes.dialogTitle} disableTypography>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Typography variant="h6" color="inherit">
@@ -155,42 +170,43 @@ export default function AddUserModal({ open, onClose }) {
       </Grid>
 
       <DialogContent>
-        <Grid container direction="column">
-          <Grid className={classes.formRow} container spacing={3}>
-            <Grid item xs={5}>
-              <TextField
-                required
-                className={classes.textField}
-                margin="none"
-                id="name"
-                label="User Name"
-                value={userName}
-                onBlur={handleErrorState('username', userName)}
-                error={getErrorState(formError, 'username')}
-                onChange={setValueFromEvent(setUserName)}
-              />
-              {getErrorState(formError, 'username') && (
-                <FormHelperText className={classes.error} id="component-error-text">
-                  {formError['username']}
-                </FormHelperText>
-              )}
-            </Grid>
-            <Grid item xs={5}>
-              <FormControl className={classes.formControl}>
+        <FormControl className={classes.formControl}>
+          <Grid container direction="column">
+            <Grid className={classes.formRow} container spacing={3}>
+              <Grid item xs={5}>
+                <TextField
+                  required
+                  className={classes.textField}
+                  margin="none"
+                  id="name"
+                  label="User Name"
+                  value={userName}
+                  onBlur={handleErrorState('username', userName)}
+                  error={getErrorState(formError, 'username')}
+                  onChange={setValueFromEvent(setUserName)}
+                />
+                {getErrorState(formError, 'username') && (
+                  <FormHelperText className={classes.error}>{formError['username']}</FormHelperText>
+                )}
+              </Grid>
+              <Grid item xs={5}>
                 <TextField
                   className={classes.textField}
                   margin="none"
                   id="email"
                   label="Email"
                   value={email}
+                  error={getErrorState(formError, 'email')}
+                  onBlur={handleErrorState('email', email)}
                   onChange={setValueFromEvent(setEmail)}
                 />
-              </FormControl>
+                {getErrorState(formError, 'email') && (
+                  <FormHelperText className={classes.error}>{formError['email']}</FormHelperText>
+                )}
+              </Grid>
             </Grid>
-          </Grid>
-          <Grid container className={classes.formRow} spacing={3}>
-            <Grid item xs={5}>
-              <FormControl className={classes.formControl}>
+            <Grid container className={classes.formRow} spacing={3}>
+              <Grid item xs={5}>
                 <TextField
                   className={classes.textField}
                   margin="none"
@@ -201,10 +217,8 @@ export default function AddUserModal({ open, onClose }) {
                   error={getErrorState(formError, 'first_name')}
                   onChange={setValueFromEvent(setFirstName)}
                 />
-              </FormControl>
-            </Grid>
-            <Grid item xs={5}>
-              <FormControl className={classes.formControl}>
+              </Grid>
+              <Grid item xs={5}>
                 <TextField
                   className={classes.textField}
                   margin="none"
@@ -213,45 +227,52 @@ export default function AddUserModal({ open, onClose }) {
                   value={lastName}
                   onChange={setValueFromEvent(setLastName)}
                 />
-              </FormControl>
+              </Grid>
             </Grid>
-          </Grid>
 
-          <Grid container spacing={3}>
-            <Grid item xs={5}>
-              <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="roles">{FORM_CONFIG.role.label}</InputLabel>
-                <Select
-                  value={role}
-                  onBlur={handleErrorState('group', role)}
-                  error={getErrorState(formError, 'group')}
-                  onChange={setValueFromEvent(setRole)}
-                  inputProps={{
-                    name: 'select-role',
-                    id: 'role'
-                  }}
-                >
-                  {groups.map(group => (
-                    <MenuItem key={group.id} value={group.name}>
-                      {group.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {getErrorState(formError, 'group') && (
-                  <FormHelperText className={classes.error} id="component-error-text">
-                    {formError['group']}
-                  </FormHelperText>
-                )}
-              </FormControl>
+            <Grid container spacing={3}>
+              <Grid item xs={5}>
+                <form
+                  action="
+              "
+                />
+                <FormControl className={classes.formControl} required>
+                  <InputLabel htmlFor="roles">{FORM_CONFIG.role.label}</InputLabel>
+                  <Select
+                    value={role}
+                    onBlur={handleErrorState('group', role)}
+                    error={getErrorState(formError, 'group')}
+                    onChange={setValueFromEvent(setRole)}
+                    inputProps={{
+                      name: 'select-role',
+                      id: 'role'
+                    }}
+                  >
+                    {groups.map(group => (
+                      <MenuItem key={group.id} value={group.name}>
+                        {group.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {getErrorState(formError, 'group') && (
+                    <FormHelperText className={classes.error}>{formError['group']}</FormHelperText>
+                  )}
+                </FormControl>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        </FormControl>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="primary" disabled={loading}>
           Cancel
         </Button>
-        <Button onClick={onSubmit} color="secondary" autoFocus>
+        <Button
+          onClick={onSubmit}
+          color="secondary"
+          disabled={!role.length || !userName.length}
+          autoFocus
+        >
           {btnContent}
         </Button>
       </DialogActions>

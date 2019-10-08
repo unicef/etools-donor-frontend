@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { isEmpty } from 'ramda';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -53,7 +54,9 @@ function getSorting(order, orderBy) {
 }
 
 function fullName(user) {
-  return `${user.user_first_name} ${user.user_last_name}`;
+  const fullName = `${user.user_first_name} ${user.user_last_name}`;
+
+  return fullName.length == 1 ? '-' : fullName;
 }
 
 const headCells = [
@@ -72,8 +75,10 @@ export default function UsersTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const users = useSelector(selectUserRoles);
 
-  const onCloseAddUserModal = e => setAddUserModalOpen(false);
-  const openAddUserModal = e => setAddUserModalOpen(true);
+  const onCloseAddUserModal = () => {
+    setAddUserModalOpen(false);
+  };
+  const openAddUserModal = () => setAddUserModalOpen(true);
 
   const handleRequestSort = (event, property) => {
     const isDesc = orderBy === property && order === 'desc';
@@ -128,8 +133,8 @@ export default function UsersTable() {
                       <TableCell component="th" id={labelId} scope="row">
                         <Typography>{fullName(user)}</Typography>
                       </TableCell>
-                      <TableCell align="left">{user.user_email}</TableCell>
-                      <TableCell align="left">{user.group_name}</TableCell>
+                      <TableCell align="left">{user.user_email || '-'}</TableCell>
+                      <TableCell align="left">{user.group_name || '-'}</TableCell>
                     </TableRow>
                   );
                 })}

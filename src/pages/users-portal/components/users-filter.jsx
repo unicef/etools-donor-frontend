@@ -34,8 +34,6 @@ export default function UsersFilter() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRoles, setSelectedRoles] = useState([]);
 
-  // const handleDeleteRole = value => () => setSelectedRoles(without([value], selectedRoles));
-
   function reset() {
     setSelectedRoles([]);
     setSearchQuery('');

@@ -32,7 +32,7 @@ function* handleCreateUserRole({ payload }) {
   yield delay(1000);
   try {
     const user = yield call(createUser, payload.user);
-    const role = yield call(createRole, { ...payload.role, user: user.id });
+    const role = yield call(createRole, { ...payload.rolePayload, user: user.id });
     yield put(createRoleSuccess(role));
   } catch (err) {
     const formErrors = parseFormError(err);
@@ -41,8 +41,7 @@ function* handleCreateUserRole({ payload }) {
 }
 
 function* handleCreatedRole() {
-  const donor = last(location.pathname).split('/');
-
+  const donor = last(location.pathname.split('/'));
   yield call(handleFetchUserRoles, {
     payload: { donor }
   });
