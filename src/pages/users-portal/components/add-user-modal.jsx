@@ -23,7 +23,7 @@ import {
   FormHelperText,
   CircularProgress
 } from '@material-ui/core';
-import { setValueFromEvent } from 'lib/helpers';
+import { setValueFromEvent, oneIsEmpty } from 'lib/helpers';
 import { makeStyles } from '@material-ui/styles';
 import { FORM_CONFIG } from '../../../constants';
 import { selectUserGroups } from 'selectors/user';
@@ -103,12 +103,11 @@ export default function AddUserModal({ open, onClose }) {
 
   async function onSubmit() {
     const user = {
-      username: userName,
+      username: email,
       first_name: firstName,
       last_name: lastName,
       email
     };
-    console.log(role);
     const rolePayload = {
       group: prop('id', groups.find(g => g.name === role)),
       donor: donorId
@@ -142,7 +141,7 @@ export default function AddUserModal({ open, onClose }) {
   };
 
   const btnContent = (loading && <CircularProgress size={24} />) || 'Submit';
-
+  const onSubmitDisabled = oneIsEmpty(email, firstName, lastName, role);
   return (
     <Dialog
       open={open}
@@ -173,7 +172,7 @@ export default function AddUserModal({ open, onClose }) {
         <FormControl className={classes.formControl}>
           <Grid container direction="column">
             <Grid className={classes.formRow} container spacing={3}>
-              <Grid item xs={5}>
+              {/* <Grid item xs={5}>
                 <TextField
                   required
                   className={classes.textField}
@@ -188,9 +187,10 @@ export default function AddUserModal({ open, onClose }) {
                 {getErrorState(formError, 'username') && (
                   <FormHelperText className={classes.error}>{formError['username']}</FormHelperText>
                 )}
-              </Grid>
+              </Grid> */}
               <Grid item xs={5}>
                 <TextField
+                  required
                   className={classes.textField}
                   margin="none"
                   id="email"
@@ -208,6 +208,7 @@ export default function AddUserModal({ open, onClose }) {
             <Grid container className={classes.formRow} spacing={3}>
               <Grid item xs={5}>
                 <TextField
+                  required
                   className={classes.textField}
                   margin="none"
                   id="first-name"
@@ -217,16 +218,29 @@ export default function AddUserModal({ open, onClose }) {
                   error={getErrorState(formError, 'first_name')}
                   onChange={setValueFromEvent(setFirstName)}
                 />
+                {getErrorState(formError, 'first_name') && (
+                  <FormHelperText className={classes.error}>
+                    {formError['first_name']}
+                  </FormHelperText>
+                )}
               </Grid>
               <Grid item xs={5}>
                 <TextField
+                  required
                   className={classes.textField}
                   margin="none"
                   id="last-name"
                   label="Last Name"
                   value={lastName}
+                  onBlur={handleErrorState('last_name', lastName)}
+                  error={getErrorState(formError, 'last_name')}
                   onChange={setValueFromEvent(setLastName)}
                 />
+                {getErrorState(formError, 'last_name') && (
+                  <FormHelperText className={classes.error}>
+                    {formError['last_name']}
+                  </FormHelperText>
+                )}
               </Grid>
             </Grid>
 
@@ -267,12 +281,7 @@ export default function AddUserModal({ open, onClose }) {
         <Button onClick={onClose} color="primary" disabled={loading}>
           Cancel
         </Button>
-        <Button
-          onClick={onSubmit}
-          color="secondary"
-          disabled={!role.length || !userName.length}
-          autoFocus
-        >
+        <Button onClick={onSubmit} color="secondary" disabled={onSubmitDisabled} autoFocus>
           {btnContent}
         </Button>
       </DialogActions>
