@@ -94,14 +94,14 @@ module.exports = function(webpackEnv) {
             // There will be one main bundle, and one file per asynchronous chunk.
             // In development, it does not produce real files.
             filename: isEnvProduction
-                ? 'static/js/[name].[contenthash:8].js'
-                : isEnvDevelopment && 'static/js/bundle.js',
+                ? 'static-assets/js/[name].[contenthash:8].js'
+                : isEnvDevelopment && 'static-assets/js/bundle.js',
             // TODO: remove this when upgrading to webpack 5
             futureEmitAssets: true,
             // There are also additional JS chunk files if you use code splitting.
             chunkFilename: isEnvProduction
-                ? 'static/js/[name].[contenthash:8].chunk.js'
-                : isEnvDevelopment && 'static/js/[name].chunk.js',
+                ? 'static-assets/js/[name].[contenthash:8].chunk.js'
+                : isEnvDevelopment && 'static-assets/js/[name].chunk.js',
             // We inferred the "public path" (such as / or /my-project) from homepage.
             // We use "/" in development.
             publicPath: publicPath,
@@ -251,7 +251,7 @@ module.exports = function(webpackEnv) {
                             loader: require.resolve('url-loader'),
                             options: {
                                 limit: imageInlineSizeLimit,
-                                name: 'static/media/[name].[hash:8].[ext]'
+                                name: 'static-assets/media/[name].[hash:8].[ext]'
                             }
                         },
                         // Process application JS with Babel.
@@ -325,7 +325,7 @@ module.exports = function(webpackEnv) {
                             // by webpacks internal loaders.
                             exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
                             options: {
-                                name: 'static/media/[name].[hash:8].[ext]'
+                                name: 'static-assets/media/[name].[hash:8].[ext]'
                             }
                         }
                         // ** STOP ** Are you adding a new loader?
@@ -383,7 +383,7 @@ module.exports = function(webpackEnv) {
             // Otherwise React will be compiled in the very slow development mode.
             new webpack.DefinePlugin(env.stringified),
             // This is necessary to emit hot updates (currently CSS only):
-            isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
+            // isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
             // Watcher doesn't work well if you mistype casing in a path so we use
             // a plugin that prints an error when you attempt to do this.
             // See https://github.com/facebook/create-react-app/issues/240

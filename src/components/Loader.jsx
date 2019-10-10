@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme =>
         },
         Fullscreen: {
             position: 'fixed',
-            backgroundColor: theme.palette.common.lightBlack,
+            backgroundColor: 'rgba(255,255,255,0.7)',
             top: 0,
             left: 0,
             zIndex: 5000

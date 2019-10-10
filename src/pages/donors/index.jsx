@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
 
@@ -17,6 +17,7 @@ import {
 
 import { selectDonors } from 'selectors/collections';
 import { initDonorsList } from 'actions';
+import Loader from 'components/Loader';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,16 +34,25 @@ const useStyles = makeStyles(theme => ({
 export default function DonorsList() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [donorsLoading, setDonorsLoading] = useState(false);
   const { page } = useParams();
-
-  useEffect(() => {
-    dispatch(initDonorsList(page));
-  }, []);
 
   const donors = useSelector(selectDonors);
 
+  useEffect(() => {
+    setDonorsLoading(true);
+    dispatch(initDonorsList(page));
+  }, []);
+
+  useEffect(() => {
+    if (donors.length) {
+      setDonorsLoading(false);
+    }
+  }, [donors]);
+
   return (
     <Grid container direction="row">
+      <Loader loading={donorsLoading} fullscreen />
       <Grid item xs={4}>
         <Typography>Select Donor:</Typography>
         <Paper className={classes.root}>
@@ -55,7 +65,7 @@ export default function DonorsList() {
             </TableHead>
             <TableBody>
               {donors.map(row => (
-                <TableRow hover key={row.name}>
+                <TableRow hover key={row.code}>
                   <TableCell component="th" scope="row">
                     <Link
                       className={classes.link}

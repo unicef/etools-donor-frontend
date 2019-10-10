@@ -103,16 +103,17 @@ checkBrowsers(paths.appPath, isInteractive)
     const serverConfig = createDevServerConfig(
       proxyConfig,
       urls.lanUrlForConfig
-    );
+      );
+      console.log("TCL: urls.lanUrlForConfig", urls.lanUrlForConfig)
     const devServer = new WebpackDevServer(compiler, serverConfig);
     // Launch WebpackDevServer.
     devServer.listen(port, HOST, err => {
       if (err) {
         return console.log(err);
       }
-      if (isInteractive) {
-        clearConsole();
-      }
+      // if (isInteractive) {
+      //   clearConsole();
+      // }
 
       // We used to support resolving modules according to `NODE_PATH`.
       // This now has been deprecated in favor of jsconfig/tsconfig.json

@@ -1,22 +1,18 @@
 import axios from 'axios';
 import { getCookie } from './helpers';
-import qs from 'qs';
-const host = `${process.env.REACT_APP_BACKEND_ENDPOINT}/api`;
+const backendPath = '/api'
 
 const getBaseOptions = () => ({
   headers: {
     'X-CSRFToken': getCookie('csrftoken')
-  }
-  // paramsSerializer: function(params) {
-  //   return qs.stringify(params, { arrayFormat: 'comma' });
-  // }
-  // withCredentials: true
+  },
+  withCredentials: true
 });
 
 async function get(uri, params = {}, options = getBaseOptions()) {
   const opt = { method: 'GET', params };
   try {
-    const response = await axios.get(`${host}${uri}`, { ...opt, ...options });
+    const response = await axios.get(`${backendPath}${uri}`, { ...opt, ...options });
     return response.data;
   } catch (err) {
     throw err;
@@ -25,7 +21,7 @@ async function get(uri, params = {}, options = getBaseOptions()) {
 
 async function post(uri, body = {}) {
   try {
-    const response = await axios.post(`${host}${uri}`, body, getBaseOptions());
+    const response = await axios.post(`${backendPath}${uri}`, body, getBaseOptions());
     return response.data;
   } catch (err) {
     throw err;
