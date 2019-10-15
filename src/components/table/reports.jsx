@@ -81,7 +81,6 @@ const headCells = [
   { id: 'title', numeric: false, disablePadding: false, label: 'Title' },
   { id: 'country', numeric: true, disablePadding: false, label: 'Country' },
   { id: 'grant', numeric: true, disablePadding: false, label: 'Grant' },
-  { id: 'donor', numeric: true, disablePadding: false, label: 'Donor' },
   { id: 'date', numeric: true, disablePadding: false, label: 'Date' },
   { id: 'theme', numeric: true, disablePadding: false, label: 'Theme' }
 ];
@@ -141,7 +140,6 @@ export default function ReportsTable() {
                       </TableCell>
                       <TableCell align="left">{row.country}</TableCell>
                       <TableCell align="left">{row.grant}</TableCell>
-                      <TableCell align="left">{row.donor}</TableCell>
                       <TableCell align="left">{row.date}</TableCell>
                       <TableCell align="left">{row.theme}</TableCell>
                     </TableRow>

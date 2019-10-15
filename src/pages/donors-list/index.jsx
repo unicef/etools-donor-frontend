@@ -95,7 +95,6 @@ export default function DonorsList() {
               <TableHead>
                 <TableRow>
                   <TableCell>Name</TableCell>
-                  <TableCell align="right">Code</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell colSpan={2} className={clsx(searchActive && classes.inputActive)}>
@@ -126,7 +125,6 @@ export default function DonorsList() {
                           {row.name}
                         </Link>
                       </TableCell>
-                      <TableCell align="right">{row.code}</TableCell>
                     </TableRow>
                   ))}
               </TableBody>
