@@ -178,12 +178,12 @@ export default function AddUserModal({ open, onClose }) {
                   id="email"
                   label="Email"
                   value={email}
-                  error={getErrorState(formError, 'email')}
+                  error={getErrorState(formError, 'username')}
                   onBlur={handleErrorState('email', email)}
                   onChange={setValueFromEvent(setEmail)}
                 />
-                {getErrorState(formError, 'email') && (
-                  <FormHelperText className={classes.error}>{formError['email']}</FormHelperText>
+                {getErrorState(formError, 'username') && (
+                  <FormHelperText className={classes.error}>{formError['username']}</FormHelperText>
                 )}
               </Grid>
             </Grid>

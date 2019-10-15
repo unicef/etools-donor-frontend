@@ -5,6 +5,10 @@ export function parseFormError(err) {
   return errorFields(err) || err.message;
 }
 
-export function getErrorState(err, field) {
-  return err ? Boolean(err[field]) : false;
+export function getErrorState(err, ...fields) {
+  return err
+    ? fields.reduce((hasError, field) => {
+        return Boolean(err[field]) || hasError;
+      }, false)
+    : false;
 }
