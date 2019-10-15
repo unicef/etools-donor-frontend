@@ -1,16 +1,6 @@
 import { BACKEND_PROPERTIES_USER_LAST_LOGIN } from '../../../constants';
 import { getUserStatusStr } from '../users';
 
-// export function desc(a, b, orderBy) {
-//   if (b[orderBy] < a[orderBy]) {
-//     return -1;
-//   }
-//   if (b[orderBy] > a[orderBy]) {
-//     return 1;
-//   }
-//   return 0;
-// }
-
 export function desc(a, b, func) {
   if (func(b) < func(a)) {
     return -1;
