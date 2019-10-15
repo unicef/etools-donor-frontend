@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useHistory, Redirect, Switch } from 'react-router';
+import { useHistory, useLocation, Redirect, Switch } from 'react-router';
 import { Route } from 'react-router-dom';
 import {
   Typography,
@@ -36,7 +36,7 @@ export const useMainStyles = makeStyles(theme =>
     drawerPaper: {
       width: DRAWER_WIDTH
     },
-    toolbar: theme.mixins.toolbar,
+    toolbar: { ...theme.mixins.toolbar, maxHeight: 64 },
     content: {
       flexGrow: 1,
       backgroundColor: theme.palette.background.default
@@ -46,14 +46,15 @@ export const useMainStyles = makeStyles(theme =>
     },
     title: {
       color: theme.palette.common.white,
-      fontSize: 18,
-      fontWeight: 500,
+      fontSize: 16,
+      fontWeight: 600,
       padding: `0 ${theme.spacing(1)}px`,
       lineHeight: 'normal',
       textTransform: 'uppercase'
     },
     divider: {
-      borderRight: `1px solid ${theme.palette.common.white}`
+      borderRight: `1px solid ${theme.palette.common.white}`,
+      padding: theme.spacing(2)
     }
   })
 );
@@ -61,7 +62,13 @@ export const useMainStyles = makeStyles(theme =>
 export default function MainAppBar() {
   const classes = useMainStyles();
   const history = useHistory();
+  const location = useLocation();
   const handleNav = path => () => history.push(path);
+
+  function navSelected(path) {
+    return location.pathname.includes(path);
+  }
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -76,22 +83,25 @@ export default function MainAppBar() {
       >
         <Box bgcolor="secondary.500" className={classes.toolbar} display="flex">
           <Box flex="1 0 50%" className={classes.divider} />
-
-          <Box flexGrow={1}>
+          <Box flexGrow={1} display="flex" alignItems="center">
             <Typography className={classes.title}>Donor Reporting Portal</Typography>
           </Box>
         </Box>
         <Divider />
 
         <List>
-          <ListItem onClick={handleNav(REPORTS_PATH)} button>
+          <ListItem selected={navSelected(REPORTS_PATH)} onClick={handleNav(REPORTS_PATH)} button>
             <ListItemIcon>
               <DescriptionIcon />
             </ListItemIcon>
             <ListItemText primary="Reports" />
           </ListItem>
 
-          <ListItem onClick={handleNav(USERS_PORTAL_PATH)} button>
+          <ListItem
+            selected={navSelected(USERS_PORTAL_PATH)}
+            onClick={handleNav(USERS_PORTAL_PATH)}
+            button
+          >
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
