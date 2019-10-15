@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import Loader from './Loader';
+import { useSelector } from 'react-redux';
+// import Loader from './Loader';
 import { selectUserRoles } from 'selectors/user';
-import { onFetchUserRoles } from 'actions';
+// import { onFetchUserRoles } from 'actions';
 
 export default function Auth({ children }) {
-  const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+  // const [loading, setLoading] = useState(false);
+  // const dispatch = useDispatch();
   const userRoles = useSelector(selectUserRoles); //TODO: profile instead of orles
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function Auth({ children }) {
 
   return (
     <>
-      <Loader loading={loading} fullscreen />
+      {/* <Loader loading={loading} fullscree n /> */}
       {userRoles ? children : null}
     </>
   );

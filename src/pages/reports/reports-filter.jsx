@@ -1,12 +1,13 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
+import { propEq } from 'ramda';
 import { Grid, FormControl, Select, InputLabel, MenuItem, Button } from '@material-ui/core';
 import { useParams } from 'react-router';
 import { selectGrants, selectExternalGrants, selectThemeCollection } from 'selectors/collections';
 import useFilterStyles from 'styles/filter-styles';
 import { FORM_CONFIG } from '../../constants';
 import { initDonorsFilter } from 'actions';
+import { setValueFromEvent } from 'lib/helpers';
 
 export default function ReportsFilter() {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ export default function ReportsFilter() {
   const classes = useFilterStyles();
 
   const [grant, setGrant] = useState('');
-  const [theme, settheme] = useState('');
+  const [theme, setTheme] = useState('');
   const [externalRefGrant, setExternalRefGrant] = useState('');
 
   const grantsCollection = useSelector(selectGrants);
@@ -29,9 +30,21 @@ export default function ReportsFilter() {
 
   const reset = useCallback(() => {
     setGrant(null);
-    settheme(null);
+    setTheme(null);
     setExternalRefGrant(null);
   });
+
+  function getGrantDisplay(grant) {
+    return `${grant.category} - ${grant.code}`;
+  }
+
+  function displayGrantById(id, collection) {
+    if (!id) {
+      return '';
+    }
+    const grant = collection.find(propEq('id', id));
+    return getGrantDisplay(grant);
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -43,25 +56,18 @@ export default function ReportsFilter() {
               <Select
                 value={grant}
                 name="Grants"
-                onChange={e => setGrant(e.target.value)}
+                onChange={setValueFromEvent(setGrant)}
                 inputProps={{
                   name: 'select-grant',
                   id: 'grant',
                   placeholder: 'Grants'
                 }}
               >
-                {/* {grantsCollection.map(grant => (
-                                    <MenuItem key={grant.label} value={grant.value}>
-                                        {grant.label}
-                                    </MenuItem>
-                                ))} */}
-
-                <MenuItem key={1} value={1}>
-                  First
-                </MenuItem>
-                <MenuItem key={2} value={2}>
-                  Second
-                </MenuItem>
+                {grantsCollection.map(grant => (
+                  <MenuItem key={grant.id} value={getGrantDisplay(grant)}>
+                    {getGrantDisplay(grant)}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
@@ -69,16 +75,16 @@ export default function ReportsFilter() {
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="external-grant">{FORM_CONFIG.externalGrants.label}</InputLabel>
               <Select
-                value={externalRefGrant}
-                onChange={e => setExternalRefGrant(e.target.value)}
+                value={displayGrantById(externalRefGrant, externalGrantsCollection)}
+                onChange={setValueFromEvent(setExternalRefGrant)}
                 inputProps={{
                   name: 'select-external-grant',
                   id: 'external-grant'
                 }}
               >
-                {externalGrantsCollection.map((grant, idx) => (
-                  <MenuItem key={idx} value={grant.value}>
-                    {grant.label}
+                {externalGrantsCollection.map(grant => (
+                  <MenuItem key={grant.id} value={grant.id}>
+                    {getGrantDisplay(grant)}
                   </MenuItem>
                 ))}
               </Select>
@@ -89,7 +95,7 @@ export default function ReportsFilter() {
               <InputLabel htmlFor="select-theme">{FORM_CONFIG.themes.label}</InputLabel>
               <Select
                 value={theme}
-                onChange={e => settheme(e.target.value)}
+                onChange={setValueFromEvent(setTheme)}
                 inputProps={{
                   name: 'select-theme',
                   id: 'theme'
