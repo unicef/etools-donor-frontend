@@ -57,6 +57,7 @@ export const useTableStyles = makeStyles(theme => ({
     minWidth: 125
   },
   emptyLine: {
-    borderBottom: 'none'
+    borderBottom: 'none',
+    textAlign: 'center'
   }
 }));

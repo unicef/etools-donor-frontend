@@ -19,6 +19,8 @@ import {
   BACKEND_PROPERTIES_USER_FIRST_NAME
 } from '../../constants';
 import { stableSort, getSorting } from './lib';
+import { selectLoading } from 'selectors/ui-flags';
+import Loader, { LoaderLocal } from 'components/Loader';
 
 function fullName(user) {
   const fullName = `${user[BACKEND_PROPERTIES_USER_FIRST_NAME]} ${user[BACKEND_PROPERTIES_USER_LAST_NAME]}`;
@@ -67,7 +69,9 @@ export default function UsersTable() {
     setPage(0);
   };
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, users.length - page * rowsPerPage);
+  const emptyRows =
+    users.length === 0 ? 1 : rowsPerPage - Math.min(rowsPerPage, users.length - page * rowsPerPage);
+  const loading = useSelector(selectLoading);
 
   return (
     <div className={classes.root}>
@@ -111,14 +115,14 @@ export default function UsersTable() {
                     </TableRow>
                   );
                 })}
-              {users.length == 0 && (
-                <TableRow>
-                  <TableCell className={classes.emptyLine}>
-                    <Typography>0 results returned</Typography>
-                  </TableCell>
-                </TableRow>
-              )}
-              {users.length > 0 && emptyRows > 0 && (
+
+              <TableRow>
+                <TableCell colSpan={4} className={classes.emptyLine}>
+                  {!loading && users.length == 0 && <Typography>0 results returned</Typography>}
+                  {loading && <LoaderLocal />}
+                </TableCell>
+              </TableRow>
+              {users.length > 1 && emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>

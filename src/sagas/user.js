@@ -8,23 +8,30 @@ import { setGroups } from 'reducers/user-groups';
 import { createRoleSuccess } from 'reducers/created-role';
 import { onFormError } from 'reducers/form-error';
 import { parseFormError } from 'lib/error-parsers';
+import { setLoading } from 'reducers/ui';
 
 function* handleFetchUserRoles(action) {
+  yield put(setLoading(true));
   yield delay(500);
   try {
     const userRoles = yield call(getUserRoles, action.payload);
     yield put(setUserRoles(userRoles));
   } catch (err) {
     yield put(setError(err.message));
+  } finally {
+    yield put(setLoading(false));
   }
 }
 
 function* handleFetchUserGroups() {
+  yield put(setLoading(true));
   try {
     const groups = yield call(getUserGroups);
     yield put(setGroups(groups));
   } catch (err) {
     yield put(setError(err.message));
+  } finally {
+    yield put(setLoading(false));
   }
 }
 

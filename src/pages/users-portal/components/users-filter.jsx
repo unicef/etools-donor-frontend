@@ -9,8 +9,7 @@ import {
   InputLabel,
   MenuItem,
   Button,
-  TextField,
-  Chip
+  TextField
 } from '@material-ui/core';
 import useFilterStyles from 'styles/filter-styles';
 import { selectUserGroups } from 'selectors/user';

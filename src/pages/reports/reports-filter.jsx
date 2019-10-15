@@ -96,8 +96,8 @@ export default function ReportsFilter() {
                 }}
               >
                 {themesCollection.map(theme => (
-                  <MenuItem key={theme.label} value={theme.value}>
-                    {theme.label}
+                  <MenuItem key={theme.id} value={theme.name}>
+                    {theme.name}
                   </MenuItem>
                 ))}
               </Select>
