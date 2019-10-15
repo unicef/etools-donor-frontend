@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { getCookie } from './helpers';
-const backendPath = '/api'
+const backendPath = '/api';
 
 const getBaseOptions = () => ({
   headers: {
@@ -33,7 +33,7 @@ export function getUserRoles(params) {
 }
 
 export function getUserGroups() {
-  return get(process.env.REACT_APP_USER_GROUPS_ENDPOINT);
+  return get(process.env.REACT_APP_USER_GROUPS_ENDPOINT, { search: 'Donor' });
 }
 
 export function getDonors() {
@@ -43,9 +43,6 @@ export function getDonors() {
 export function getAdminDonors() {
   return get(process.env.REACT_APP_REPORTS_DONORS_ENDPOINT);
 }
-// export function getAdminDonors() {
-//   return get(process.env.REACT_APP_ADMIN_DONORS_ENDPOINT);
-// }
 
 export async function createUser(user) {
   const url = process.env.REACT_APP_USERS_ENDPOINT;

@@ -19,7 +19,7 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AppToolbar from './App-Bar';
 import { DRAWER_WIDTH, REPORTS_PATH, USERS_PORTAL_PATH } from '../constants';
-import DonorsList from 'pages/donors';
+import DonorsList from 'pages/donors-list';
 import ContentHeader from './Content-Header';
 import UsersList from 'pages/users-portal';
 import ReportsPage from 'pages/reports';

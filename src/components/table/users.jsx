@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { isEmpty } from 'ramda';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -14,55 +13,28 @@ import EnhancedTableToolbar from './table-toolbar';
 import AddUserModal from 'pages/users-portal/components/add-user-modal';
 import { Button, Box } from '@material-ui/core';
 import { selectUserRoles } from 'selectors/user';
-
-// function createData(name, email, role, status) {
-//   return { name, email, role, status };
-// }
-
-// const users= [
-//   createData('John Smith', 'john@gmail.com', 'Role 1', 'invited'),
-//   createData('Mary Joeane', 'mary@gmail.com', 'Role 2', 'accepted'),
-//   createData('Jane Doe', 'jane@janey.com', 'Role 3', 'invited'),
-//   createData('Patrick Pacey', 'pat@unicef.org', 'Role 4', 'accepted'),
-//   createData('Connor Daley', 'connord@yahoo.com', 'Role 4', 'accepted'),
-//   createData('Jimmy Smits', 'jsmits@yahoo.com', 'Role 2', 'invited'),
-//   createData('Sandy Shore', 'sandy@unicef.org', 'Role 1', 'invited')
-// ];
-
-function desc(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function stableSort(array, cmp) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = cmp(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map(el => el[0]);
-}
-
-function getSorting(order, orderBy) {
-  return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
-}
+import {
+  BACKEND_PROPERTIES_USER_LAST_LOGIN,
+  BACKEND_PROPERTIES_USER_LAST_NAME,
+  BACKEND_PROPERTIES_USER_FIRST_NAME
+} from '../../constants';
+import { stableSort, getSorting } from './lib';
 
 function fullName(user) {
-  const fullName = `${user.user_first_name} ${user.user_last_name}`;
+  const fullName = `${user[BACKEND_PROPERTIES_USER_FIRST_NAME]} ${user[BACKEND_PROPERTIES_USER_LAST_NAME]}`;
 
   return fullName.length == 1 ? '-' : fullName;
 }
 
+export function getUserStatusStr(user) {
+  return user[BACKEND_PROPERTIES_USER_LAST_LOGIN] ? 'Accepted' : 'Invited';
+}
+
 const headCells = [
-  { id: 'name', numeric: false, disablePadding: false, label: 'Name' },
-  { id: 'email', numeric: false, disablePadding: false, label: 'Email' },
-  { id: 'role', numeric: false, disablePadding: false, label: 'Role' }
+  { id: 'user_first_name', numeric: false, disablePadding: false, label: 'Name' },
+  { id: 'user_email', numeric: false, disablePadding: false, label: 'Email' },
+  { id: 'group_name', numeric: false, disablePadding: false, label: 'Role' },
+  { id: BACKEND_PROPERTIES_USER_LAST_LOGIN, numeric: false, disablePadding: false, label: 'Status' }
 ];
 
 export default function UsersTable() {
@@ -135,6 +107,7 @@ export default function UsersTable() {
                       </TableCell>
                       <TableCell align="left">{user.user_email || '-'}</TableCell>
                       <TableCell align="left">{user.group_name || '-'}</TableCell>
+                      <TableCell align="left">{getUserStatusStr(user)}</TableCell>
                     </TableRow>
                   );
                 })}
