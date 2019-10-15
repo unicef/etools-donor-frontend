@@ -29,7 +29,7 @@ import { FORM_CONFIG } from '../../../constants';
 import { selectUserGroups } from 'selectors/user';
 import { selectCreatedRole, selectFormError } from 'selectors/ui-flags';
 import { onCreateUserRole } from 'actions';
-import { getErrorState, getFieldProps } from 'lib/error-parsers';
+import { getErrorState } from 'lib/error-parsers';
 import { onResetFormError, onFormError } from 'reducers/form-error';
 
 const useStyles = makeStyles(theme => ({
@@ -69,7 +69,6 @@ export default function AddUserModal({ open, onClose }) {
   const dispatch = useDispatch();
   const { donorId } = useParams();
 
-  const [userName, setUserName] = useState('');
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -81,7 +80,6 @@ export default function AddUserModal({ open, onClose }) {
   const formError = useSelector(selectFormError);
 
   function resetForm() {
-    setUserName('');
     setEmail('');
     setFirstName('');
     setLastName('');
@@ -172,22 +170,6 @@ export default function AddUserModal({ open, onClose }) {
         <FormControl className={classes.formControl}>
           <Grid container direction="column">
             <Grid className={classes.formRow} container spacing={3}>
-              {/* <Grid item xs={5}>
-                <TextField
-                  required
-                  className={classes.textField}
-                  margin="none"
-                  id="name"
-                  label="User Name"
-                  value={userName}
-                  onBlur={handleErrorState('username', userName)}
-                  error={getErrorState(formError, 'username')}
-                  onChange={setValueFromEvent(setUserName)}
-                />
-                {getErrorState(formError, 'username') && (
-                  <FormHelperText className={classes.error}>{formError['username']}</FormHelperText>
-                )}
-              </Grid> */}
               <Grid item xs={5}>
                 <TextField
                   required

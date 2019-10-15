@@ -6,7 +6,7 @@ const formErrorSlice = createSlice({
     onFormError(state, action) {
       return action.payload;
     },
-    onResetFormError(state, action) {
+    onResetFormError() {
       return null;
     }
   }

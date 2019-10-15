@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
-import { makeStyles, createStyles, Grid, Typography, Box } from '@material-ui/core';
+import { makeStyles, createStyles, Grid, Typography } from '@material-ui/core';
 import { getSubheadingFromParams } from 'lib/params';
+
 const useStyles = makeStyles(theme =>
   createStyles({
     root: {

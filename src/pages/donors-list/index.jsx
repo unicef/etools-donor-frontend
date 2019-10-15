@@ -22,6 +22,7 @@ import { initDonorsList } from 'actions';
 import Loader from 'components/Loader';
 import clsx from 'clsx';
 import { usePagination } from 'components/table/lib/pagination';
+import { selectLoading } from 'selectors/ui-flags';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -57,11 +58,10 @@ const useStyles = makeStyles(theme => ({
 export default function DonorsList() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [donorsLoading, setDonorsLoading] = useState(false);
   const [query, setQuery] = useState('');
   const [filteredList, setFilteredList] = useState([]);
   const [searchActive, setSearchActive] = useState(false);
-
+  const loading = useSelector(selectLoading);
   const { page: pageName } = useParams();
 
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = usePagination();
@@ -69,14 +69,12 @@ export default function DonorsList() {
   const donors = useSelector(selectDonors);
 
   useEffect(() => {
-    setDonorsLoading(true);
     dispatch(initDonorsList(pageName));
   }, []);
 
   useEffect(() => {
     if (donors.length) {
       setFilteredList(donors);
-      setDonorsLoading(false);
     }
   }, [donors]);
 
@@ -88,7 +86,7 @@ export default function DonorsList() {
 
   return (
     <Grid container direction="row" justify="center">
-      <Loader loading={donorsLoading} fullscreen />
+      <Loader loading={loading} fullscreen />
       <Grid item xs={4}>
         <Typography>Select Donor:</Typography>
         <Paper className={clsx(classes.root)}>
@@ -100,7 +98,7 @@ export default function DonorsList() {
                   <TableCell align="right">Code</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell colSpan={2} className={searchActive && classes.inputActive}>
+                  <TableCell colSpan={2} className={clsx(searchActive && classes.inputActive)}>
                     <InputBase
                       placeholder="Search"
                       className={classes.input}

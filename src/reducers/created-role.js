@@ -6,7 +6,7 @@ const createdRoleSlice = createSlice({
     createRoleSuccess(state, action) {
       return action.payload;
     },
-    resetCreatedRole(state, action) {
+    resetCreatedRole() {
       return null;
     }
   }

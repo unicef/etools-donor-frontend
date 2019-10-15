@@ -6,7 +6,6 @@ export const PAGE_TITLES_MAP = {
 };
 
 export function getSubheadingFromParams(pathname) {
-  console.log('TCL: getSubheadingFromParams -> pathname', pathname);
   const pathMatch = keys(PAGE_TITLES_MAP).find(path => pathname.includes(path));
   return PAGE_TITLES_MAP[pathMatch] || 'Reports';
 }

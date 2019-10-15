@@ -5,6 +5,7 @@ import { setDonors } from 'reducers/donors';
 import { initDonorsList, initDonorsFilter } from 'actions';
 import { onReceiveGrants, onReceiveExternalGrants, onReceivethemes } from 'reducers/collections';
 import { REPORTS, USERS_PORTAL } from '../constants';
+import { setLoading } from 'reducers/ui';
 
 const PAGE_DONORS_API_MAP = {
   [USERS_PORTAL]: getAdminDonors,
@@ -14,10 +15,13 @@ const PAGE_DONORS_API_MAP = {
 function* handleFetchDonors({ payload }) {
   try {
     const donorApi = PAGE_DONORS_API_MAP[payload];
+    yield put(setLoading(true));
     const donors = yield call(donorApi);
     yield put(setDonors(donors));
   } catch (err) {
     yield put(setError(err.message));
+  } finally {
+    yield put(setLoading(false));
   }
 }
 
