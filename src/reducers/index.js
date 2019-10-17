@@ -8,6 +8,7 @@ import { groupsReducer } from './user-groups';
 import { createdUserReducer } from './created-user';
 import { createdRoleReducer } from './created-role';
 import { uiReducer } from './ui';
+import { userProfileReducer } from './user-profile';
 
 export default combineReducers({
   userRoles: userRolesReducer,
@@ -17,6 +18,7 @@ export default combineReducers({
   formError: formErrorReducer,
   createdUser: createdUserReducer,
   createdRole: createdRoleReducer,
+  userProfile: userProfileReducer,
   ui: uiReducer,
   ...collectionsReducers
 });

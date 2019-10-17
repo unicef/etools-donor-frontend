@@ -1,29 +1,24 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-// import Loader from './Loader';
-import { selectUserRoles } from 'selectors/user';
-// import { onFetchUserRoles } from 'actions';
+import { useSelector, useDispatch } from 'react-redux';
+import Loader from './Loader';
+import { selectUserProfile } from 'selectors/user';
+import { onFetchUserProfile } from 'actions';
+import { selectLoading } from 'selectors/ui-flags';
 
 export default function Auth({ children }) {
-  // const [loading, setLoading] = useState(false);
-  // const dispatch = useDispatch();
-  const userRoles = useSelector(selectUserRoles); //TODO: profile instead of orles
+  const dispatch = useDispatch();
+  const userProfile = useSelector(selectUserProfile);
+  const loading = useSelector(selectLoading);
 
   useEffect(() => {
-    // try {
-    //   dispatch(onFetchUserRoles());
-    // } catch (err) {
-    //   console.log(err);
-    // } finally {
-    //   setLoading(false);
-    // }
+    dispatch(onFetchUserProfile());
   }, []);
 
   return (
     <>
-      {/* <Loader loading={loading} fullscree n /> */}
-      {userRoles ? children : null}
+      <Loader loading={loading} fullscree n />
+      {userProfile ? children : null}
     </>
   );
 }

@@ -1,14 +1,21 @@
 import { takeLatest, call, put, delay } from 'redux-saga/effects';
-import { getUserRoles, getUserGroups, createUser, createRole } from 'api';
+import { getUserRoles, getUserGroups, createUser, createRole, getUserProfile } from 'api';
 import { last } from 'ramda';
 import { setUserRoles } from 'reducers/user-roles';
 import { setError } from 'reducers/error';
-import { onFetchUserRoles, onFetchUserGroups, onCreateUserRole } from 'actions';
+import {
+  onFetchUserRoles,
+  onFetchUserGroups,
+  onCreateUserRole,
+  redirectToLogin,
+  onFetchUserProfile
+} from 'actions';
 import { setGroups } from 'reducers/user-groups';
 import { createRoleSuccess } from 'reducers/created-role';
 import { onFormError } from 'reducers/form-error';
 import { parseFormError } from 'lib/error-parsers';
 import { setLoading } from 'reducers/ui';
+import { onReceiveUserProfile } from 'reducers/user-profile';
 
 function* handleFetchUserRoles(action) {
   yield put(setLoading(true));
@@ -36,7 +43,6 @@ function* handleFetchUserGroups() {
 }
 
 function* handleCreateUserRole({ payload }) {
-  yield delay(1000);
   try {
     const user = yield call(createUser, payload.user);
     const role = yield call(createRole, { ...payload.rolePayload, user: user.id });
@@ -54,9 +60,22 @@ function* handleCreatedRole() {
   });
 }
 
+function* handleFetchUserProfile() {
+  try {
+    yield put(setLoading(true));
+    const userProfile = yield call(getUserProfile);
+    yield put(onReceiveUserProfile(userProfile));
+  } catch (err) {
+    yield put(redirectToLogin());
+  } finally {
+    yield put(setLoading(false));
+  }
+}
+
 export default function*() {
   yield takeLatest(onFetchUserRoles.type, handleFetchUserRoles);
   yield takeLatest(onFetchUserGroups.type, handleFetchUserGroups);
   yield takeLatest(onCreateUserRole.type, handleCreateUserRole);
   yield takeLatest(createRoleSuccess.type, handleCreatedRole);
+  yield takeLatest(onFetchUserProfile.type, handleFetchUserProfile);
 }

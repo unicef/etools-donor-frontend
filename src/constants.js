@@ -25,6 +25,7 @@ export const FORM_CONFIG = {
     label: 'Search'
   }
 };
+
 export const USERS_PORTAL = 'users-portal';
 export const REPORTS = 'reports';
 export const USERS_PORTAL_PATH = `/${USERS_PORTAL}`;

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { keys } from 'ramda';
 import { USERS_PORTAL_PATH, REPORTS_PATH } from '../constants';
 

@@ -118,7 +118,9 @@ export default function UsersTable() {
 
               <TableRow>
                 <TableCell colSpan={4} className={classes.emptyLine}>
-                  {!loading && users.length == 0 && <Typography>0 results returned</Typography>}
+                  {!loading && users.length == 0 && (
+                    <Typography color="primary">0 results returned</Typography>
+                  )}
                   {loading && <LoaderLocal />}
                 </TableCell>
               </TableRow>

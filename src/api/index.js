@@ -68,3 +68,11 @@ export function getExternalGrants(id) {
 export function getThemes() {
   return get(process.env.REACT_APP_THEMES_ENDPOINT);
 }
+
+export function getStaticAssets() {
+  return get(process.env.REACT_APP_USER_STATIC_ENDPOINT);
+}
+
+export function getUserProfile() {
+  return get(process.env.REACT_APP_PROFILE_ENDPOINT);
+}
