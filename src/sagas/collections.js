@@ -1,4 +1,4 @@
-import { takeLatest, take, call, put, all } from 'redux-saga/effects';
+import { takeLatest, call, put, all } from 'redux-saga/effects';
 import {
   getDonors,
   getGrants,
@@ -7,26 +7,28 @@ import {
   getAdminDonors,
   getStaticAssets
 } from 'api';
+
 import { setError } from 'reducers/error';
 import { setDonors } from 'reducers/donors';
 import { initDonorsList, initDonorsFilter } from 'actions';
-import { REPORTS, USERS_PORTAL } from '../constants';
+// import { REPORTS, USERS_PORTAL } from '../lib/constants';
 import { setLoading } from 'reducers/ui';
 import { onReceiveGrants } from 'reducers/grants';
 import { onReceiveExternalGrants } from 'reducers/external-grants';
 import { onReceivethemes } from 'reducers/themes';
 import { onReceiveStaticAssets } from 'reducers/static';
 
-const PAGE_DONORS_API_MAP = {
-  [USERS_PORTAL]: getAdminDonors,
-  [REPORTS]: getDonors
-};
+// might be neded
+// const PAGE_DONORS_API_MAP = {
+//   [USERS_PORTAL]: getAdminDonors,
+//   [REPORTS]: getDonors
+// };
 
-function* handleFetchDonors({ payload }) {
+function* handleFetchDonors() {
   try {
-    const donorApi = PAGE_DONORS_API_MAP[payload];
+    // const donorApi = PAGE_DONORS_API_MAP[payload];
     yield put(setLoading(true));
-    const donors = yield call(donorApi);
+    const donors = yield call(getDonors);
     yield put(setDonors(donors));
   } catch (err) {
     yield put(setError(err.message));
@@ -83,5 +85,7 @@ export function* filtersSaga() {
 }
 
 export default function*() {
-  yield all([donorsSaga(), filtersSaga()]);
+  yield all([filtersSaga(), donorsSaga()]);
 }
+
+//TODO: normalize state

@@ -25,7 +25,7 @@ import {
 } from '@material-ui/core';
 import { setValueFromEvent, oneIsEmpty } from 'lib/helpers';
 import { makeStyles } from '@material-ui/styles';
-import { FORM_CONFIG } from '../../../constants';
+import { FORM_CONFIG } from '../../../lib/constants';
 import { selectUserGroups } from 'selectors/user';
 import { selectCreatedRole, selectFormError } from 'selectors/ui-flags';
 import { onCreateUserRole } from 'actions';

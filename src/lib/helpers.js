@@ -1,4 +1,4 @@
-import { any, compose, equals, prop } from 'ramda';
+import { any, compose, equals, prop, last } from 'ramda';
 export const setValueFromEvent = setter => ({ target: { value } }) => setter(value);
 export const oneIsEmpty = (...items) =>
   any(
@@ -7,3 +7,5 @@ export const oneIsEmpty = (...items) =>
       prop('length')
     )
   )(items);
+
+export const donorIdFromLocation = location => last(location.pathname.split('/'));

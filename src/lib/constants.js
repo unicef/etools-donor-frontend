@@ -33,3 +33,8 @@ export const REPORTS_PATH = `/${REPORTS}`;
 export const BACKEND_PROPERTIES_USER_LAST_LOGIN = 'user_last_login';
 export const BACKEND_PROPERTIES_USER_FIRST_NAME = 'user_first_name';
 export const BACKEND_PROPERTIES_USER_LAST_NAME = 'user_last_name';
+
+// User Roles
+export const DONOR_ADMIN_ROLE = 'Donor Admin';
+export const DONOR_USER_ROLE = 'Donor User';
+export const UNICEF_USER_ROLE = 'UNICEF User';

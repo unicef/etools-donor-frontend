@@ -3,7 +3,7 @@ import { createStyles } from '@material-ui/styles';
 import { makeStyles, AppBar, Popover, Toolbar, Box, IconButton } from '@material-ui/core';
 import { AccountCircle as AccountIcon } from '@material-ui/icons';
 
-import { DRAWER_WIDTH } from '../constants';
+import { DRAWER_WIDTH } from '../lib/constants';
 
 const useStyles = makeStyles(theme =>
   createStyles({

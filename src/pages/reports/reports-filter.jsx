@@ -1,11 +1,20 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { propEq } from 'ramda';
-import { Grid, FormControl, Select, InputLabel, MenuItem, Button } from '@material-ui/core';
+import FilterListIcon from '@material-ui/icons/FilterList';
+import {
+  Grid,
+  FormControl,
+  Select,
+  InputLabel,
+  MenuItem,
+  Button,
+  IconButton
+} from '@material-ui/core';
 import { useParams } from 'react-router';
 import { selectGrants, selectExternalGrants, selectThemeCollection } from 'selectors/collections';
 import useFilterStyles from 'styles/filter-styles';
-import { FORM_CONFIG } from '../../constants';
+import { FORM_CONFIG } from '../../lib/constants';
 import { initDonorsFilter } from 'actions';
 import { setValueFromEvent } from 'lib/helpers';
 
@@ -49,7 +58,11 @@ export default function ReportsFilter() {
   return (
     <form onSubmit={handleSubmit}>
       <Grid item xs={12} className={classes.filterContainer}>
-        <Grid container direction="row" spacing={1}>
+        <Button className={classes.filterBtn} size="small">
+          <FilterListIcon className={classes.filterIcon} />
+          Filter
+        </Button>
+        {/* <Grid container direction="row" spacing={1}>
           <Grid item sm={4} xs={12}>
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="grant">{FORM_CONFIG.grants.label}</InputLabel>
@@ -109,7 +122,7 @@ export default function ReportsFilter() {
               </Select>
             </FormControl>
           </Grid>
-        </Grid>
+        </Grid> */}
 
         <Grid item className={classes.button}>
           <Button

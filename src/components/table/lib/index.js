@@ -1,4 +1,4 @@
-import { BACKEND_PROPERTIES_USER_LAST_LOGIN } from '../../../constants';
+import { BACKEND_PROPERTIES_USER_LAST_LOGIN } from '../../../lib/constants';
 import { getUserStatusStr } from '../users';
 
 export function desc(a, b, func) {

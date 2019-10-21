@@ -16,6 +16,7 @@ import { onFormError } from 'reducers/form-error';
 import { parseFormError } from 'lib/error-parsers';
 import { setLoading } from 'reducers/ui';
 import { onReceiveUserProfile } from 'reducers/user-profile';
+import { donorIdFromLocation } from 'lib/helpers';
 
 function* handleFetchUserRoles(action) {
   yield put(setLoading(true));
@@ -54,7 +55,7 @@ function* handleCreateUserRole({ payload }) {
 }
 
 function* handleCreatedRole() {
-  const donor = last(location.pathname.split('/'));
+  const donor = donorIdFromLocation(location);
   yield call(handleFetchUserRoles, {
     payload: { donor }
   });

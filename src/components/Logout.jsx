@@ -22,7 +22,6 @@ const messages = {
 };
 
 export default function Logout({ onClose, logout }) {
-  console.log('TCL: Logout -> onClose', onClose, logout);
   const classes = useStyles();
   const [viewProfile, setViewProfile] = useState(false);
 
