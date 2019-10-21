@@ -1,4 +1,5 @@
 import { createSlice } from 'redux-starter-kit';
+import { onReceiveUserProfile } from './user-profile';
 
 const initialState = [];
 
@@ -7,6 +8,11 @@ const donorsSlice = createSlice({
   reducers: {
     setDonors(state, action) {
       return action.payload;
+    }
+  },
+  extraReducers: {
+    [onReceiveUserProfile]: (state, action) => {
+      return action.payload.donors;
     }
   }
 });

@@ -21,8 +21,8 @@ import { selectDonors } from 'selectors/collections';
 import { initDonorsList } from 'actions';
 import Loader from 'components/Loader';
 import clsx from 'clsx';
-import { usePagination } from 'components/table/lib/pagination';
 import { selectLoading } from 'selectors/ui-flags';
+import { usePagination } from 'components/table/lib/pagination';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -62,14 +62,13 @@ export default function DonorsList() {
   const [filteredList, setFilteredList] = useState([]);
   const [searchActive, setSearchActive] = useState(false);
   const loading = useSelector(selectLoading);
-  const { page: pageName } = useParams();
 
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = usePagination();
 
   const donors = useSelector(selectDonors);
 
   useEffect(() => {
-    dispatch(initDonorsList(pageName));
+    dispatch(initDonorsList());
   }, []);
 
   useEffect(() => {
@@ -81,7 +80,7 @@ export default function DonorsList() {
   function handleSearch(e) {
     const { value } = e.target;
     setQuery(value);
-    setFilteredList(donors.filter(({ name }) => name.includes(value)));
+    setFilteredList(donors.filter(({ name }) => name.toLowerCase().includes(value.toLowerCase())));
   }
 
   return (
@@ -118,10 +117,7 @@ export default function DonorsList() {
                   .map(row => (
                     <TableRow hover key={row.code}>
                       <TableCell component="th" scope="row">
-                        <Link
-                          className={classes.link}
-                          to={location => `${location.pathname}/${row.id}`}
-                        >
+                        <Link className={classes.link} to={`/reports/${row.id}`}>
                           {row.name}
                         </Link>
                       </TableCell>

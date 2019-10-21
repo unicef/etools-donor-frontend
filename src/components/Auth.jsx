@@ -2,9 +2,8 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Loader from './Loader';
-import { selectUserProfile } from 'selectors/user';
 import { onFetchUserProfile } from 'actions';
-import { selectLoading } from 'selectors/ui-flags';
+import { selectLoading, selectUserProfile } from 'selectors/ui-flags';
 
 export default function Auth({ children }) {
   const dispatch = useDispatch();
@@ -17,7 +16,7 @@ export default function Auth({ children }) {
 
   return (
     <>
-      <Loader loading={loading} fullscree n />
+      <Loader loading={loading} fullscreen />
       {userProfile ? children : null}
     </>
   );

@@ -17,7 +17,7 @@ import {
   BACKEND_PROPERTIES_USER_LAST_LOGIN,
   BACKEND_PROPERTIES_USER_LAST_NAME,
   BACKEND_PROPERTIES_USER_FIRST_NAME
-} from '../../constants';
+} from '../../lib/constants';
 import { stableSort, getSorting } from './lib';
 import { selectLoading } from 'selectors/ui-flags';
 import { LoaderLocal } from 'components/Loader';
