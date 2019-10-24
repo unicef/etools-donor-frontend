@@ -1,5 +1,5 @@
 import React from 'react';
-import Authorized from './Authorized';
+import Authorized from '../Authorized';
 import ReportsFilter from 'pages/reports/reports-filter';
 import ReportsTable from 'components/table/reports';
 

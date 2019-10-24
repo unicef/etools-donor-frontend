@@ -3,8 +3,8 @@ import { makeStyles, createStyles } from '@material-ui/styles';
 const useFilterStyles = makeStyles(theme =>
   createStyles({
     filterContainer: {
-      padding: `${theme.spacing(2)}px ${theme.spacing(3)}px`,
-      background: theme.palette.primary['A100']
+      padding: `${theme.spacing(2)}px ${theme.spacing(3)}px`
+      // background: theme.palette.primary['A100']
     },
     button: {
       marginTop: theme.spacing(2),

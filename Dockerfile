@@ -17,3 +17,5 @@ WORKDIR /code
 COPY --from=builder /code/build /code/build
 EXPOSE 3000
 CMD ["serve", "-p", "80", "-s", "."]
+
+
