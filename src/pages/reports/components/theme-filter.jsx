@@ -1,23 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import { FormControl, MenuItem } from '@material-ui/core';
 import { StyledInputLabel, StyledSelect } from './styled-dropdown';
 import { FORM_CONFIG } from 'lib/constants';
-import { setValueFromEvent } from 'lib/helpers';
 import { selectThemeCollection } from 'selectors/collections';
 import { useGetFilterClasses } from 'styles/filter-styles';
 
-export default function ThemeFilter() {
+export default function ThemeFilter({ value, onChange }) {
   const { classes } = useGetFilterClasses();
 
-  const [theme, setTheme] = useState('');
   const themesCollection = useSelector(selectThemeCollection);
   return (
     <FormControl className={classes.formControl}>
       <StyledInputLabel htmlFor="select-theme">{FORM_CONFIG.themes.label}</StyledInputLabel>
       <StyledSelect
-        value={theme}
-        onChange={setValueFromEvent(setTheme)}
+        value={value}
+        onChange={onChange}
         inputProps={{
           name: 'select-theme',
           id: 'select-theme'
@@ -27,7 +26,7 @@ export default function ThemeFilter() {
           <em>None</em>
         </MenuItem>
         {themesCollection.map(theme => (
-          <MenuItem key={theme.id} value={theme.name}>
+          <MenuItem key={theme.id} value={theme.id}>
             {theme.name}
           </MenuItem>
         ))}
@@ -35,3 +34,8 @@ export default function ThemeFilter() {
     </FormControl>
   );
 }
+
+ThemeFilter.propTypes = {
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onChange: PropTypes.func.isRequired
+};
