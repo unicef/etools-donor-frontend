@@ -63,7 +63,7 @@ export default function ReportsFilter() {
             {selectedFilters.map((filter, idx) => {
               const { Component } = FILTERS_MAP[filter];
               return (
-                <Grid item sm={3} xs={12} key={idx}>
+                <Grid item sm={4} xs={12} key={idx}>
                   <Component onChange={handleFilter(filter)} value={filterValues[filter]} />
                 </Grid>
               );
