@@ -1,11 +1,16 @@
-import React from 'react';
-import { Menu, MenuItem, Button, withStyles } from '@material-ui/core';
+import React, { useState } from 'react';
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
+import { keys } from 'ramda';
+import { Menu, MenuItem, Button, withStyles, Checkbox } from '@material-ui/core';
 import ListItemText from '@material-ui/core/ListItemText';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import useFilterStyles from 'styles/filter-styles';
+import { FILTERS_MAP } from './reports-filter';
 
-export default function FilterMenuButton() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+export default function FilterMenuButton({ onSelectFilter, selected }) {
+  const classes = useFilterStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -25,57 +30,68 @@ export default function FilterMenuButton() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <StyledMenuItem>
-          <ListItemText primary="Sent mail" />
-        </StyledMenuItem>
-        <StyledMenuItem>
-          <ListItemText primary="Drafts" />
-        </StyledMenuItem>
-        <StyledMenuItem>
-          <ListItemText primary="Inbox" />
-        </StyledMenuItem>
+        {keys(FILTERS_MAP).map(filter => (
+          <StyledMenuItem
+            key={FILTERS_MAP[filter].label}
+            onClick={onSelectFilter(filter)}
+            selected={selected[filter]}
+          >
+            <Checkbox
+              className={classes.checkBox}
+              edge="start"
+              checked={selected[filter]}
+              tabIndex={-1}
+              disableRipple
+            />
+            <ListItemText primary={FILTERS_MAP[filter].label} />
+          </StyledMenuItem>
+        ))}
       </StyledMenu>
     </div>
   );
 }
 
+FilterMenuButton.propTypes = {
+  onSelectFilter: PropTypes.func.isRequired,
+  selected: PropTypes.object
+};
+
 export function FilterButton(props) {
   const classes = useFilterStyles();
 
   return (
-    <Button className={classes.filterBtn} size="small" {...props}>
+    <Button className={clsx(classes.filterBtn, classes.btn)} size="small" {...props}>
       <FilterListIcon className={classes.filterIcon} />
       Filter
     </Button>
   );
 }
 
-const StyledMenuItem = withStyles(theme => ({
+const StyledMenuItem = withStyles({
   root: {
-    '&:focus': {
-      backgroundColor: theme.palette.primary.main,
-      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-        color: theme.palette.common.white
-      }
+    '& .MuiListItemText-root': {
+      margin: 0
     }
   }
-}))(MenuItem);
+})(MenuItem);
 
-export const StyledMenu = withStyles({
+export const StyledMenu = withStyles(theme => ({
   paper: {
-    border: '1px solid #d3d4d5'
+    padding: `${theme.spacing(1)}px 0`,
+    borderRadius: 8,
+    minWidth: 180
   }
-})(props => (
+}))(props => (
   <Menu
-    elevation={0}
+    elevation={1}
     getContentAnchorEl={null}
     anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'center'
+      horizontal: 'right',
+      vertical: 'top'
     }}
     transformOrigin={{
       vertical: 'top',
-      horizontal: 'center'
+      horizontal: 102
     }}
     {...props}
   />

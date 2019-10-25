@@ -77,6 +77,7 @@ export function* donorsSaga() {
   yield takeLatest(initDonorsList.type, handleFetchDonors);
 }
 
+//TODO: fork here instead of 4 takes
 export function* filtersSaga() {
   yield takeLatest(initDonorsFilter.type, handleFetchGrants);
   yield takeLatest(initDonorsFilter.type, handleFetchExternalGrants);

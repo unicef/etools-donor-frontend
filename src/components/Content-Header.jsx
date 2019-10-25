@@ -28,7 +28,6 @@ const useStyles = makeStyles(theme =>
 function ContentHeader({ children, location }) {
   const classes = useStyles();
   const donorName = useSelector(selectDonorName);
-  console.log("TCL: ContentHeader -> donorName", donorName)
   const title = getSubheadingFromParams(location.pathname, donorName);
   return (
     <Grid

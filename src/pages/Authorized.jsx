@@ -17,7 +17,10 @@ export default function AuthorizedPage({ children }) {
     }
   }, [userGroup]);
 
-  if (paramDonor && usersDonor !== Number(paramDonor) && userGroup !== UNICEF_USER_ROLE) {
+  const unassignedDonorAttempt =
+    paramDonor && usersDonor !== Number(paramDonor) && userGroup !== UNICEF_USER_ROLE;
+
+  if (unassignedDonorAttempt) {
     return <Redirect to="/not-found" />;
   }
 

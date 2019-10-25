@@ -1,13 +1,13 @@
 export const DRAWER_WIDTH = 224;
 export const FORM_CONFIG = {
   grants: {
-    label: 'Grants'
+    label: 'Grant'
   },
   externalGrants: {
     label: 'External Reference Grants'
   },
   themes: {
-    label: 'Themes'
+    label: 'Theme'
   },
   roles: {
     label: 'Roles'

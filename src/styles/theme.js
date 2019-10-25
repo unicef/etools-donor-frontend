@@ -102,12 +102,12 @@ export default createMuiTheme({
       }
     },
     MuiInput: {
-      input: {
-        'label + $formControl > &': {
-          lineHeight: '1.25rem',
-          padding: '8px'
-        }
-      }
+      // input: {
+      //   'label + $formControl > &': {
+      //     lineHeight: '1.25rem',
+      //     padding: '8px'
+      //   }
+      // }
     },
     MuiTableCell: {
       root: {
