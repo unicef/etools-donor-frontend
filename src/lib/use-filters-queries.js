@@ -49,7 +49,7 @@ const useFiltersQueries = ({ initialFilterValues, initialFiltersActiveState }) =
     setFilterValues(nextFilterValues);
   }
 
-  function parseValue(valueObj) {
+  function parseEventValue(valueObj) {
     if (valueObj.target) {
       return valueObj.target.value;
     }
@@ -60,7 +60,7 @@ const useFiltersQueries = ({ initialFilterValues, initialFiltersActiveState }) =
   const handleFilter = filterName => value => {
     setFilterValues({
       ...filterValues,
-      [filterName]: parseValue(value)
+      [filterName]: parseEventValue(value)
     });
   };
 

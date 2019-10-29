@@ -4,7 +4,7 @@ import { format, parse } from 'date-fns';
 import { FormControl } from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-import { FilterProps } from '../lib/filters';
+import { FilterProps } from './filters-factory';
 
 export const DATE_FORMAT = 'yyyy-mm-dd';
 export const DISPLAY_FORMAT = 'yyyy-MMM-dd';

@@ -6,7 +6,7 @@ import { FormControl, MenuItem } from '@material-ui/core';
 import { FORM_CONFIG } from 'lib/constants';
 import { selectYears } from 'selectors/collections';
 import { StyledInputLabel, StyledSelect } from './styled-dropdown';
-import { FilterProps } from '../lib/filters';
+import { FilterProps } from '../lib/filters-factory';
 
 export default function ReportPeriodFilter({ value, onChange }) {
   const { classes } = useGetFilterClasses();

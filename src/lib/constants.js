@@ -35,6 +35,12 @@ export const FORM_CONFIG = {
   },
   reportPeriod: {
     label: 'Report Period'
+  },
+  reportingGroup: {
+    label: 'Reporting Group'
+  },
+  recertified: {
+    label: 'Recertified'
   }
 };
 

@@ -4,7 +4,7 @@ const staticSlice = createSlice({
   initialState: {
     years: [],
     report_type: [],
-    reportong_group: [],
+    reporting_group: [],
     regenerated: [],
     rp_status: [],
     donor_reporting_category: []

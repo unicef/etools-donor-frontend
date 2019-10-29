@@ -1,35 +1,31 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { useGetFilterClasses } from 'styles/filter-styles';
 import { FormControl, MenuItem } from '@material-ui/core';
 import { FORM_CONFIG } from 'lib/constants';
-import { selectDonorCategory } from 'selectors/collections';
 import { StyledInputLabel, StyledSelect } from './styled-dropdown';
-import { FilterProps } from '../lib/filters';
+import { FilterProps } from '../lib/filters-factory';
 
-export default function ReportCategoryFilter({ value, onChange }) {
+export default function RecertifiedFilter({ value, onChange }) {
   const { classes } = useGetFilterClasses();
-  const categories = useSelector(selectDonorCategory);
+  const options = [{ code: 'yes', label: 'Yes' }, { code: 'no', label: 'No' }];
 
   return (
     <FormControl className={classes.formControl}>
-      <StyledInputLabel htmlFor="category-select">
-        {FORM_CONFIG.reportCategory.label}
-      </StyledInputLabel>
+      <StyledInputLabel htmlFor="option-select">{FORM_CONFIG.recertified.label}</StyledInputLabel>
       <StyledSelect
         value={value}
         onChange={onChange}
         inputProps={{
-          name: 'category',
-          id: 'category-select'
+          name: 'option',
+          id: 'option-select'
         }}
       >
         <MenuItem value="">
           <em>None</em>
         </MenuItem>
-        {categories.map(category => (
-          <MenuItem key={category.code} value={category.code}>
-            {category.label}
+        {options.map(option => (
+          <MenuItem key={option.code} value={option.code}>
+            {option.label}
           </MenuItem>
         ))}
       </StyledSelect>
@@ -37,4 +33,4 @@ export default function ReportCategoryFilter({ value, onChange }) {
   );
 }
 
-ReportCategoryFilter.propTypes = FilterProps;
+RecertifiedFilter.propTypes = FilterProps;

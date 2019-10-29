@@ -13,8 +13,14 @@ import useFiltersQueries from 'lib/use-filters-queries';
 import { GrantExpiryBeforeFilter, GrantExpiryAfterFilter } from './grant-expiry-filter';
 import GrantIssueYearFilter from './grant-issue-year-filter';
 import ReportTypeFilter from './report-type-filter';
-import ReportCategoryFilter from './repor-category-filter';
+import ReportCategoryFilter from './report-category-filter';
 import ReportPeriodFilter from './report-period-filter';
+import ReportingGroupFilter from './reporting-group-filter';
+import RecertifiedFilter from './recertified-filter';
+import {
+  GrantClosureDateBeforeFilter,
+  GrantClosureDateAfterFilter
+} from './grant-closure-date-filter';
 
 export const FILTERS_MAP = {
   //TODO: make keys computed values from consts set by backend field strings when api is ready ie. [GRANT_FIELD_NAME]: {label:Grant, Component: GrantFilter}
@@ -62,6 +68,27 @@ export const FILTERS_MAP = {
     label: 'Report Period',
     Component: ReportPeriodFilter,
     gridSize: 2
+  },
+
+  reportingGroup: {
+    label: 'Reporting Group',
+    Component: ReportingGroupFilter
+  },
+
+  recertified: {
+    label: 'Recertified',
+    Component: RecertifiedFilter,
+    gridSize: 2
+  },
+
+  grantClosureBeforeDate: {
+    label: 'Grant Financial Closure Before Date',
+    Component: GrantClosureDateBeforeFilter
+  },
+
+  grantClosureAfterDate: {
+    label: 'Grant Financial Closure After Date',
+    Component: GrantClosureDateAfterFilter
   }
 };
 

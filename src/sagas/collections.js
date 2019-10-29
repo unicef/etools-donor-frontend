@@ -4,7 +4,6 @@ import {
   getGrants,
   getExternalGrants,
   getThemes,
-  getAdminDonors,
   getStaticAssets,
   getOffices
 } from 'api';
