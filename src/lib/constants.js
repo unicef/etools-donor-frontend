@@ -41,6 +41,9 @@ export const FORM_CONFIG = {
   },
   recertified: {
     label: 'Recertified'
+  },
+  donorDocument: {
+    label: 'Donor Document'
   }
 };
 

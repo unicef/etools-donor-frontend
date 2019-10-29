@@ -7,6 +7,7 @@ const staticSlice = createSlice({
     reporting_group: [],
     regenerated: [],
     rp_status: [],
+    donor_document: [],
     donor_reporting_category: []
   },
   reducers: {

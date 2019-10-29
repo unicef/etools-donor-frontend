@@ -13,9 +13,9 @@ export const selectReportType = createSelector(
   selectStaticAssets,
   assets => assets.report_type
 );
-export const selectInsightReport = createSelector(
+export const selectDonorDocuments = createSelector(
   selectStaticAssets,
-  assets => assets.insight_report
+  assets => assets.donor_document
 );
 export const selectDonorCategory = createSelector(
   selectStaticAssets,

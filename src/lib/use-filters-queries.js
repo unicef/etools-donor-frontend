@@ -27,7 +27,7 @@ const useFiltersQueries = ({ initialFilterValues, initialFiltersActiveState }) =
 
   // Render filters in UI if any are activated by effect run on initial render
   useEffect(() => {
-    if (equals(filtersActiveState, initialFiltersActiveState)) {
+    if (equals(filtersActiveState, initialFiltersActiveState) && !selectedFilters.length) {
       return;
     }
     const onlyActiveFilters = keys(filtersActiveState).filter(key => filtersActiveState[key]);
@@ -56,6 +56,10 @@ const useFiltersQueries = ({ initialFilterValues, initialFiltersActiveState }) =
     return valueObj;
   }
 
+  function clearFilters() {
+    setFiltersActiveState(initialFiltersActiveState);
+  }
+
   // used by dropdown to set filter value
   const handleFilter = filterName => value => {
     setFilterValues({
@@ -77,7 +81,8 @@ const useFiltersQueries = ({ initialFilterValues, initialFiltersActiveState }) =
     selectedFilters,
     setFilterValues,
     handleSelectFilter,
-    handleFilter
+    handleFilter,
+    clearFilters
   };
 };
 

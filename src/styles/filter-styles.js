@@ -4,7 +4,7 @@ import clsx from 'clsx';
 const useFilterStyles = makeStyles(theme =>
   createStyles({
     filterContainer: {
-      padding: `${theme.spacing(2)}px ${theme.spacing(3)}px 0 0`
+      padding: `${theme.spacing(2)}px  0 0`
     },
     button: {
       marginTop: theme.spacing(2),

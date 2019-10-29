@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { mapObjIndexed, always } from 'ramda';
-import { Grid, Box } from '@material-ui/core';
+import { Grid, Box, Button } from '@material-ui/core';
 import { useParams } from 'react-router';
+
 import useFilterStyles from 'styles/filter-styles';
 import { initDonorsFilter } from 'actions';
 import FilterMenuButton from './filter-menu-button';
@@ -17,10 +18,13 @@ import ReportCategoryFilter from './report-category-filter';
 import ReportPeriodFilter from './report-period-filter';
 import ReportingGroupFilter from './reporting-group-filter';
 import RecertifiedFilter from './recertified-filter';
+import DonorDocumentFilter from './donor-document-filter';
+
 import {
   GrantClosureDateBeforeFilter,
   GrantClosureDateAfterFilter
 } from './grant-closure-date-filter';
+import { FORM_CONFIG } from 'lib/constants';
 
 export const FILTERS_MAP = {
   //TODO: make keys computed values from consts set by backend field strings when api is ready ie. [GRANT_FIELD_NAME]: {label:Grant, Component: GrantFilter}
@@ -83,12 +87,18 @@ export const FILTERS_MAP = {
 
   grantClosureBeforeDate: {
     label: 'Grant Financial Closure Before Date',
-    Component: GrantClosureDateBeforeFilter
+    Component: GrantClosureDateBeforeFilter,
+    gridSize: 4
   },
 
   grantClosureAfterDate: {
     label: 'Grant Financial Closure After Date',
-    Component: GrantClosureDateAfterFilter
+    Component: GrantClosureDateAfterFilter,
+    gridSize: 4
+  },
+  donorDocument: {
+    label: 'Donor Document',
+    Component: DonorDocumentFilter
   }
 };
 
@@ -112,18 +122,19 @@ export default function ReportsFilter() {
     handleFilter,
     filtersActiveState,
     filterValues,
-    selectedFilters
+    selectedFilters,
+    clearFilters
   } = useFiltersQueries({ initialFilterValues, initialFiltersActiveState });
 
   return (
     <form onSubmit={handleSubmit}>
-      <Grid item xs={12} className={classes.filterContainer} container>
+      <Grid item xs={12} className={classes.filterContainer} container wrap="nowrap">
         <Box className={classes.filterMenu}>
           <FilterMenuButton onSelectFilter={handleSelectFilter} selected={filtersActiveState} />
         </Box>
 
-        <Box display="flex" flex="1 1 auto" alignItems="flex-start">
-          <Grid container direction="row" spacing={1}>
+        <Box display="flex" flex="1 1 auto" alignItems="flex-start" flexWrap="wrap">
+          <Grid container direction="row" flex="1 1 auto" spacing={2}>
             {selectedFilters.map((filter, idx) => {
               const { Component } = FILTERS_MAP[filter];
               return (
@@ -139,21 +150,14 @@ export default function ReportsFilter() {
             })}
           </Grid>
         </Box>
-
-        {/* <Grid item className={classes.button}>
-          <Button
-            className={classes.formBtn}
-            color="secondary"
-            onClick={() => {
-              reset();
-            }}
-          >
-            {FORM_CONFIG.clear.label}
-          </Button>
-          <Button className={classes.formBtn} color="secondary" onClick={handleSubmit}>
-            {FORM_CONFIG.submit.label}
-          </Button>
-        </Grid> */}
+      </Grid>
+      <Grid container justify="flex-end" className={classes.button}>
+        <Button className={classes.formBtn} color="secondary" onClick={clearFilters}>
+          {FORM_CONFIG.clear.label}
+        </Button>
+        <Button className={classes.formBtn} color="secondary" onClick={handleSubmit}>
+          {FORM_CONFIG.submit.label}
+        </Button>
       </Grid>
     </form>
   );
