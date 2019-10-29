@@ -5,7 +5,8 @@ import {
   getExternalGrants,
   getThemes,
   getAdminDonors,
-  getStaticAssets
+  getStaticAssets,
+  getOffices
 } from 'api';
 
 import { setError } from 'reducers/error';
@@ -17,6 +18,7 @@ import { onReceiveGrants } from 'reducers/grants';
 import { onReceiveExternalGrants } from 'reducers/external-grants';
 import { onReceivethemes } from 'reducers/themes';
 import { onReceiveStaticAssets } from 'reducers/static';
+import { onReceiveOffices } from 'reducers/offices';
 
 // might be neded
 // const PAGE_DONORS_API_MAP = {
@@ -41,6 +43,15 @@ function* handleFetchGrants({ payload }) {
   try {
     const grants = yield call(getGrants, payload);
     yield put(onReceiveGrants(grants));
+  } catch (err) {
+    yield put(setError(err.message));
+  }
+}
+
+function* handleFetchOffices() {
+  try {
+    const offices = yield call(getOffices);
+    yield put(onReceiveOffices(offices));
   } catch (err) {
     yield put(setError(err.message));
   }
@@ -81,6 +92,7 @@ export function* donorsSaga() {
 export function* filtersSaga() {
   yield takeLatest(initDonorsFilter.type, handleFetchGrants);
   yield takeLatest(initDonorsFilter.type, handleFetchExternalGrants);
+  yield takeLatest(initDonorsFilter.type, handleFetchOffices);
   yield takeLatest(initDonorsFilter.type, handleFetchThemes);
   yield takeLatest(initDonorsFilter.type, handleFetchStatic);
 }

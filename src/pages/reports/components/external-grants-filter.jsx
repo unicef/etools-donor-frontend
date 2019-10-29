@@ -15,7 +15,7 @@ export default function ExternalGrantsFilter({ value, onChange }) {
   return (
     <FormControl className={classes.formControl}>
       <StyledInputLabel htmlFor="external-grant">
-        {FORM_CONFIG.externalGrants.label}
+        {FORM_CONFIG.externalGrant.label}
       </StyledInputLabel>
       <StyledSelect
         value={value}

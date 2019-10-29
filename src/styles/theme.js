@@ -101,14 +101,7 @@ export default createMuiTheme({
         }
       }
     },
-    MuiInput: {
-      // input: {
-      //   'label + $formControl > &': {
-      //     lineHeight: '1.25rem',
-      //     padding: '8px'
-      //   }
-      // }
-    },
+
     MuiTableCell: {
       root: {
         paddingDefault: {
@@ -139,6 +132,7 @@ export default createMuiTheme({
           color: getColorTheme()[200]
         }
       }
-    }
+    },
+    MuiGrid: {}
   }
 });

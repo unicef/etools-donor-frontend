@@ -13,7 +13,7 @@ export default function GrantsFilter({ value, onChange }) {
 
   return (
     <FormControl className={classes.formControl}>
-      <StyledInputLabel htmlFor="grant-select">{FORM_CONFIG.grants.label}</StyledInputLabel>
+      <StyledInputLabel htmlFor="grant-select">{FORM_CONFIG.grant.label}</StyledInputLabel>
       <StyledSelect
         value={value}
         onChange={onChange}

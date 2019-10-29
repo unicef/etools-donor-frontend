@@ -7,7 +7,11 @@ function parseQuery(search) {
   const entries = params.entries();
   const object = {};
   for (const [key, value] of entries) {
-    object[key] = JSON.parse(value);
+    try {
+      object[key] = JSON.parse(value);
+    } catch (err) {
+      object[key] = value;
+    }
   }
   return object;
 }

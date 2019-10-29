@@ -76,3 +76,7 @@ export function getStaticAssets() {
 export function getUserProfile() {
   return get(process.env.REACT_APP_PROFILE_ENDPOINT);
 }
+
+export function getOffices() {
+  return get(process.env.REACT_APP_BUSINESS_AREA_ENDPOINT);
+}

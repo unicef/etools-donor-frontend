@@ -10,21 +10,58 @@ import GrantsFilter from './grants-filter';
 import ExternalGrantsFilter from './external-grants-filter';
 import ThemeFilter from './theme-filter';
 import useFiltersQueries from 'lib/use-filters-queries';
+import { GrantExpiryBeforeFilter, GrantExpiryAfterFilter } from './grant-expiry-filter';
+import GrantIssueYearFilter from './grant-issue-year-filter';
+import ReportTypeFilter from './report-type-filter';
+import ReportCategoryFilter from './repor-category-filter';
+import ReportPeriodFilter from './report-period-filter';
 
 export const FILTERS_MAP = {
+  //TODO: make keys computed values from consts set by backend field strings when api is ready ie. [GRANT_FIELD_NAME]: {label:Grant, Component: GrantFilter}
   grant: {
     label: 'Grant',
     Component: GrantsFilter
   },
-
   externalGrant: {
     label: 'External Reference Grant',
     Component: ExternalGrantsFilter
   },
-
   theme: {
     label: 'Theme',
-    Component: ThemeFilter
+    Component: ThemeFilter,
+    gridSize: 4
+  },
+
+  grantExpiryBeforeDate: {
+    label: 'Grant Expiry Before Date',
+    Component: GrantExpiryBeforeFilter
+  },
+
+  grantExpiryAfterDate: {
+    label: 'Grant Expiry After Date',
+    Component: GrantExpiryAfterFilter
+  },
+
+  grantIssueYear: {
+    label: 'Grant Issue Year',
+    Component: GrantIssueYearFilter,
+    gridSize: 2
+  },
+
+  reportType: {
+    label: 'Report Type',
+    Component: ReportTypeFilter
+  },
+
+  reportCategory: {
+    label: 'Report Category',
+    Component: ReportCategoryFilter
+  },
+
+  reportPeriod: {
+    label: 'Report Period',
+    Component: ReportPeriodFilter,
+    gridSize: 2
   }
 };
 
@@ -63,7 +100,12 @@ export default function ReportsFilter() {
             {selectedFilters.map((filter, idx) => {
               const { Component } = FILTERS_MAP[filter];
               return (
-                <Grid item sm={4} xs={12} key={idx}>
+                <Grid
+                  item
+                  className={classes.filterBox}
+                  sm={FILTERS_MAP[filter].gridSize || 3}
+                  key={idx}
+                >
                   <Component onChange={handleFilter(filter)} value={filterValues[filter]} />
                 </Grid>
               );

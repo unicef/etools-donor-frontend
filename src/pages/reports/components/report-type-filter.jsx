@@ -3,17 +3,17 @@ import { useSelector } from 'react-redux';
 import { FormControl, MenuItem } from '@material-ui/core';
 import { StyledInputLabel, StyledSelect } from './styled-dropdown';
 import { FORM_CONFIG } from 'lib/constants';
-import { selectThemeCollection } from 'selectors/collections';
+import { selectReportType } from 'selectors/collections';
 import { useGetFilterClasses } from 'styles/filter-styles';
 import { FilterProps } from '../lib/filters';
 
-export default function ThemeFilter({ value, onChange }) {
+export default function ReportTypeFilter({ value, onChange }) {
   const { classes } = useGetFilterClasses();
 
-  const themesCollection = useSelector(selectThemeCollection);
+  const reportTypes = useSelector(selectReportType);
   return (
     <FormControl className={classes.formControl}>
-      <StyledInputLabel htmlFor="select-theme">{FORM_CONFIG.theme.label}</StyledInputLabel>
+      <StyledInputLabel htmlFor="select-theme">{FORM_CONFIG.reportType.label}</StyledInputLabel>
       <StyledSelect
         value={value}
         onChange={onChange}
@@ -25,9 +25,9 @@ export default function ThemeFilter({ value, onChange }) {
         <MenuItem value="">
           <em>None</em>
         </MenuItem>
-        {themesCollection.map(theme => (
-          <MenuItem key={theme.id} value={theme.id}>
-            {theme.name}
+        {reportTypes.map(type => (
+          <MenuItem key={type.code} value={type.code}>
+            {type.label}
           </MenuItem>
         ))}
       </StyledSelect>
@@ -35,4 +35,4 @@ export default function ThemeFilter({ value, onChange }) {
   );
 }
 
-ThemeFilter.propTypes = FilterProps;
+ReportTypeFilter.propTypes = FilterProps;

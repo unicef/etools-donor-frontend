@@ -1,7 +1,14 @@
 import { createSlice } from 'redux-starter-kit';
 
 const staticSlice = createSlice({
-  initialState: [],
+  initialState: {
+    years: [],
+    report_type: [],
+    reportong_group: [],
+    regenerated: [],
+    rp_status: [],
+    donor_reporting_category: []
+  },
   reducers: {
     onReceiveStaticAssets(state, action) {
       return action.payload;

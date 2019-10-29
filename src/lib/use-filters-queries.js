@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { mapObjIndexed, keys, pickBy, always } from 'ramda';
+import { mapObjIndexed, keys, pickBy, always, equals } from 'ramda';
 import useQuery from './use-query';
 import { hasValue } from './helpers';
 
@@ -27,7 +27,7 @@ const useFiltersQueries = ({ initialFilterValues, initialFiltersActiveState }) =
 
   // Render filters in UI if any are activated by effect run on initial render
   useEffect(() => {
-    if (filtersActiveState === initialFiltersActiveState) {
+    if (equals(filtersActiveState, initialFiltersActiveState)) {
       return;
     }
     const onlyActiveFilters = keys(filtersActiveState).filter(key => filtersActiveState[key]);
@@ -49,18 +49,25 @@ const useFiltersQueries = ({ initialFilterValues, initialFiltersActiveState }) =
     setFilterValues(nextFilterValues);
   }
 
+  function parseValue(valueObj) {
+    if (valueObj.target) {
+      return valueObj.target.value;
+    }
+    return valueObj;
+  }
+
   // used by dropdown to set filter value
-  const handleFilter = filter => ({ target }) => {
+  const handleFilter = filterName => value => {
     setFilterValues({
       ...filterValues,
-      [filter]: target.value || ''
+      [filterName]: parseValue(value)
     });
   };
 
-  const handleSelectFilter = filter => () => {
+  const handleSelectFilter = filterName => () => {
     setFiltersActiveState({
       ...filtersActiveState,
-      [filter]: !filtersActiveState[filter]
+      [filterName]: !filtersActiveState[filterName]
     });
   };
 
