@@ -1,13 +1,13 @@
 export const DRAWER_WIDTH = 224;
 export const FORM_CONFIG = {
-  grants: {
-    label: 'Grants'
+  grant: {
+    label: 'Grant'
   },
-  externalGrants: {
+  externalGrant: {
     label: 'External Reference Grants'
   },
-  themes: {
-    label: 'Themes'
+  theme: {
+    label: 'Theme'
   },
   roles: {
     label: 'Roles'
@@ -23,6 +23,27 @@ export const FORM_CONFIG = {
   },
   search: {
     label: 'Search'
+  },
+  grantIssueYear: {
+    label: 'Grant Issue Year'
+  },
+  reportType: {
+    label: 'Report Type'
+  },
+  reportCategory: {
+    label: 'Report Category'
+  },
+  reportPeriod: {
+    label: 'Report Period'
+  },
+  reportingGroup: {
+    label: 'Reporting Group'
+  },
+  recertified: {
+    label: 'Recertified'
+  },
+  donorDocument: {
+    label: 'Donor Document'
   }
 };
 

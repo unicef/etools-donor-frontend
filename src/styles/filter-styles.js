@@ -1,10 +1,10 @@
 import { makeStyles, createStyles } from '@material-ui/styles';
+import clsx from 'clsx';
 
 const useFilterStyles = makeStyles(theme =>
   createStyles({
     filterContainer: {
-      padding: `${theme.spacing(2)}px ${theme.spacing(3)}px`,
-      background: theme.palette.primary['A100']
+      padding: `${theme.spacing(2)}px  0 0`
     },
     button: {
       marginTop: theme.spacing(2),
@@ -18,13 +18,28 @@ const useFilterStyles = makeStyles(theme =>
       width: 20,
       boxSizing: 'initial'
     },
+    filterBox: {
+      margin: `0 ${theme.spacing(2)}px ${theme.spacing(3)}px 0 `
+    },
+    btn: {
+      backgroundColor: '#e5eaf0'
+    },
+    selectMenu: {
+      borderRadius: 8,
+      lineHeight: '24px',
+      padding: 4
+    },
     filterBtn: {
       cursor: 'pointer',
-      padding: '0 16px 0 12px',
-      borderRadius: 14,
-      backgroundColor: '#e5eaf0',
+      padding: '4px 16px 4px 12px',
       fontWeight: 400,
+      fontSize: 14,
+      borderRadius: 14,
+
       lineHeight: `${theme.spacing(3)}px`
+    },
+    filterMenu: {
+      marginRight: 32
     },
     textField: {
       marginRight: theme.spacing(2)
@@ -34,7 +49,14 @@ const useFilterStyles = makeStyles(theme =>
       marginLeft: theme.spacing(1)
     },
     formControl: {
-      width: '100%'
+      width: '100%',
+      marginTop: `-${theme.spacing(2)}px`
+    },
+    formControlLabel: {
+      left: theme.spacing(1)
+    },
+    labelShrink: {
+      left: 0
     },
     placeholder: {
       overflowX: 'hidden',
@@ -52,7 +74,35 @@ const useFilterStyles = makeStyles(theme =>
         margin: `0 ${theme.spacing(0.5)}px`,
         height: 28
       }
+    },
+    checkBox: {
+      padding: 0,
+      margin: `0 ${theme.spacing(2)}px 0 0 `,
+      height: 18,
+      width: 18
     }
   })
 );
 export default useFilterStyles;
+
+export const useGetFilterClasses = () => {
+  const classes = useFilterStyles();
+
+  const labelClasses = {
+    formControl: classes.formControlLabel,
+    shrink: classes.labelShrink
+  };
+
+  const labelProps = {
+    classes: labelClasses
+  };
+
+  const selectProps = {
+    classes: {
+      selectMenu: clsx(classes.btn, classes.selectMenu)
+    },
+    disableUnderline: true
+  };
+
+  return { classes, labelProps, selectProps };
+};

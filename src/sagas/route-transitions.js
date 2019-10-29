@@ -3,7 +3,6 @@ import { redirectToLogin } from 'actions';
 
 function* handleRedirect() {
   let url = window.location.origin;
-
   if (url.includes('localhost')) {
     window.location.href = `${url}/admin/login/`;
     return;

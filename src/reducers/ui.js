@@ -1,5 +1,4 @@
 import { createSlice } from 'redux-starter-kit';
-// import { onReceiveUserProfile } from './user-profile';
 
 export const uiSlice = createSlice({
   initialState: {

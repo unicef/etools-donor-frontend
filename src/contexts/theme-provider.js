@@ -4,7 +4,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import theme from 'styles/theme';
 
 const AppTheme = ({ children }) => {
-  console.log('TCL: theme', theme);
+  console.log('TCL: theme', theme); // eslint-disable-line
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };
 

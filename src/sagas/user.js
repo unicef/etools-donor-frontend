@@ -1,6 +1,5 @@
 import { takeLatest, call, put, delay } from 'redux-saga/effects';
 import { getUserRoles, getUserGroups, createUser, createRole, getUserProfile } from 'api';
-import { last } from 'ramda';
 import { setUserRoles } from 'reducers/user-roles';
 import { setError } from 'reducers/error';
 import {
