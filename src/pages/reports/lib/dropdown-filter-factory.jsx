@@ -6,7 +6,7 @@ import { StyledInputLabel, StyledSelect } from '../components/styled-dropdown';
 import { useGetFilterClasses } from 'styles/filter-styles';
 
 export default function DropdownFilterFactory(selector, label) {
-  const Component = ({ value, onChange }) => {
+  const Component = ({ value = '', onChange }) => {
     const { classes } = useGetFilterClasses();
     const options = useSelector(selector);
 
@@ -25,7 +25,7 @@ export default function DropdownFilterFactory(selector, label) {
             <em>None</em>
           </MenuItem>
           {options.map(option => (
-            <MenuItem key={option.code} value={option.code}>
+            <MenuItem key={option.code} value={option.label}>
               {option.label}
             </MenuItem>
           ))}

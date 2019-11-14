@@ -1,3 +1,4 @@
+import React from 'react';
 import { BACKEND_PROPERTIES_USER_LAST_LOGIN } from '../../../lib/constants';
 import { getUserStatusStr } from '../users';
 
@@ -32,3 +33,42 @@ export function getSorting(order, orderBy) {
   }
   return order === 'desc' ? (a, b) => desc(a, b, func) : (a, b) => -desc(a, b, func);
 }
+
+export const useTable = () => {
+  const [order, setOrder] = React.useState('asc');
+  const [orderBy, setOrderBy] = React.useState('calories');
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const getEmptyRows = rows =>
+    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+
+    const handleRequestSort = (event, property) => {
+      const isDesc = orderBy === property && order === 'desc';
+      setOrder(isDesc ? 'asc' : 'desc');
+      setOrderBy(property);
+    };
+  
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+  
+    const handleChangeRowsPerPage = event => {
+      setRowsPerPage(+event.target.value);
+      setPage(0);
+    };
+
+  return {
+    orderBy,
+    order,
+    setOrder,
+    setOrderBy,
+    setPage,
+    page,
+    rowsPerPage,
+    setRowsPerPage,
+    getEmptyRows,
+    handleRequestSort,
+    handleChangePage,
+    handleChangeRowsPerPage
+  };
+};

@@ -3,7 +3,7 @@ import { useGetFilterClasses } from 'styles/filter-styles';
 import { FormControl, MenuItem } from '@material-ui/core';
 import { FORM_CONFIG } from 'lib/constants';
 import { StyledInputLabel, StyledSelect } from './styled-dropdown';
-import { FilterProps } from '../lib/filters-factory';
+import { FilterProps } from '../lib/dropdown-filter-factory';
 
 export default function RecertifiedFilter({ value, onChange }) {
   const { classes } = useGetFilterClasses();

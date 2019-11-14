@@ -1,16 +1,17 @@
-import { takeLatest, call, put, all } from 'redux-saga/effects';
+import { takeLatest, call, put, all, select } from 'redux-saga/effects';
 import {
   getDonors,
   getGrants,
   getExternalGrants,
   getThemes,
   getStaticAssets,
-  getOffices
+  getOffices,
+  getReports
 } from 'api';
 
 import { setError } from 'reducers/error';
 import { setDonors } from 'reducers/donors';
-import { initDonorsList, initDonorsFilter } from 'actions';
+import { initDonorsList, initDonorsFilter, onFetchReports } from 'actions';
 // import { REPORTS, USERS_PORTAL } from '../lib/constants';
 import { setLoading } from 'reducers/ui';
 import { onReceiveGrants } from 'reducers/grants';
@@ -18,6 +19,9 @@ import { onReceiveExternalGrants } from 'reducers/external-grants';
 import { onReceivethemes } from 'reducers/themes';
 import { onReceiveStaticAssets } from 'reducers/static';
 import { onReceiveOffices } from 'reducers/offices';
+import { onReceiveReports } from 'reducers/reports';
+import { removeEmpties } from 'lib/helpers';
+import { selectDonorName } from 'selectors/ui-flags';
 
 // might be neded
 // const PAGE_DONORS_API_MAP = {
@@ -83,21 +87,49 @@ function* handleFetchStatic() {
   }
 }
 
+function* handleFetchReports({ payload }) {
+  try {
+    // omit until property names align with backend and profile
+    // const donorName = yield select(selectDonorName);
+
+    const params = {
+      ...removeEmpties(payload)
+      // donor__contains: donorName
+    };
+
+    yield put(setLoading(true));
+    const reports = yield call(getReports, params);
+
+    yield put(onReceiveReports(reports));
+  } catch (err) {
+    yield put(setError(err.message));
+  } finally {
+    yield put(setLoading(false));
+  }
+}
+
 export function* donorsSaga() {
   yield takeLatest(initDonorsList.type, handleFetchDonors);
 }
 
-//TODO: fork here instead of 4 takes
+function* fetchFiltersCollections(action) {
+  yield call(handleFetchGrants, action);
+  yield call(handleFetchExternalGrants, action);
+  yield call(handleFetchOffices);
+  yield call(handleFetchThemes);
+  yield call(handleFetchStatic);
+}
+
 export function* filtersSaga() {
-  yield takeLatest(initDonorsFilter.type, handleFetchGrants);
-  yield takeLatest(initDonorsFilter.type, handleFetchExternalGrants);
-  yield takeLatest(initDonorsFilter.type, handleFetchOffices);
-  yield takeLatest(initDonorsFilter.type, handleFetchThemes);
-  yield takeLatest(initDonorsFilter.type, handleFetchStatic);
+  yield takeLatest(initDonorsFilter.type, fetchFiltersCollections);
+}
+
+export function* reportsSaga() {
+  yield takeLatest(onFetchReports.type, handleFetchReports);
 }
 
 export default function*() {
-  yield all([filtersSaga(), donorsSaga()]);
+  yield all([filtersSaga(), donorsSaga(), reportsSaga()]);
 }
 
 //TODO: normalize state

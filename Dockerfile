@@ -16,6 +16,4 @@ RUN yarn global add serve
 WORKDIR /code
 COPY --from=builder /code/build /code/build
 EXPOSE 3000
-CMD ["serve", "-p", "80", "-s", "."]
-
-
+CMD ["serve", "-p", "3000", "-s", "build"]

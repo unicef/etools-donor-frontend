@@ -1,5 +1,9 @@
 import axios from 'axios';
 import { getCookie } from './helpers';
+import DateFns from '@date-io/date-fns';
+
+const dateUtils = new DateFns();
+
 const backendPath = '/api';
 
 const getBaseOptions = () => ({
@@ -79,4 +83,11 @@ export function getUserProfile() {
 
 export function getOffices() {
   return get(process.env.REACT_APP_BUSINESS_AREA_ENDPOINT);
+}
+
+export function getReports(params) {
+  const currentYear = dateUtils.getYear(new Date());
+  const computedUrl = `${process.env.REACT_APP_REPORTS_ENDPOINT}${currentYear} Certified Reports/`;
+  // const computedUrl = `${process.env.REACT_APP_REPORTS_ENDPOINT}Temporary InSight Test 3000 Reports`;
+  return get(computedUrl, params);
 }

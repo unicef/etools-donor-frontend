@@ -6,7 +6,7 @@ import { Menu, MenuItem, Button, withStyles, Checkbox } from '@material-ui/core'
 import ListItemText from '@material-ui/core/ListItemText';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import useFilterStyles from 'styles/filter-styles';
-import { FILTERS_MAP } from './reports-filter';
+import { FILTERS_MAP } from '../lib/filters-map';
 
 export default function FilterMenuButton({ onSelectFilter, selected }) {
   const classes = useFilterStyles();

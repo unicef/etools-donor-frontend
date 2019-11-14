@@ -13,6 +13,7 @@ export default function EnhancedTableHead(props) {
       <TableRow>
         {cells.map(headCell => (
           <TableCell
+            className={classes.cell}
             key={headCell.id}
             align="left"
             padding={headCell.disablePadding ? 'none' : 'default'}

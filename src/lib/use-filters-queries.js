@@ -61,7 +61,7 @@ const useFiltersQueries = ({ initialFilterValues, initialFiltersActiveState }) =
   }
 
   // used by dropdown to set filter value
-  const handleFilter = filterName => value => {
+  const handleChangeFilterValue = filterName => value => {
     setFilterValues({
       ...filterValues,
       [filterName]: parseEventValue(value)
@@ -79,9 +79,8 @@ const useFiltersQueries = ({ initialFilterValues, initialFiltersActiveState }) =
     filtersActiveState,
     filterValues,
     selectedFilters,
-    setFilterValues,
     handleSelectFilter,
-    handleFilter,
+    handleChangeFilterValue,
     clearFilters
   };
 };

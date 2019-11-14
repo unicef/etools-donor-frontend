@@ -4,6 +4,7 @@ export const selectExternalGrants = state => state.externalGrants;
 export const selectThemeCollection = state => state.themes;
 export const selectDonors = state => state.donors;
 export const selectStaticAssets = state => state.staticAssets;
+export const selectReports = state => state.reports;
 
 export const selectYears = createSelector(
   selectStaticAssets,
