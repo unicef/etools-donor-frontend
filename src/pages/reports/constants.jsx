@@ -1,5 +1,8 @@
-import { mapObjIndexed, always, equals } from 'ramda';
+import { mapObjIndexed, always } from 'ramda';
 import { FILTERS_MAP } from './lib/filters-map';
+import { format, subYears } from 'date-fns';
+
+import { DATE_FORMAT } from './lib/date-filter-factory';
 
 export const BACKEND_REPORTS_FIELDS = {
   title: 'title',
@@ -27,7 +30,14 @@ export const GRANT_EXPIRY_AFTER_FIELD = 'grant_expiry_date__gte';
 export const GRANT_ISSUE_YEAR = 'grant_issue_year__in';
 export const REPORT_CATEGORY_FIELD = 'donor_report_category__in';
 export const DONOR_DOCUMENT_FIELD = 'donor_document';
+export const RECERTIFIED_FIELD = 'recertified';
 
 export function getInitialFilterValues() {
-  mapObjIndexed(always(''), FILTERS_MAP);
+  const today = new Date();
+  const aYearAgo = subYears(today, 1);
+  const reportsWithinLastYear = {
+    [REPORT_END_DATE_BEFORE_FIELD]: format(today, DATE_FORMAT),
+    [REPORT_END_DATE_AFTER_FIELD]: format(aYearAgo, DATE_FORMAT)
+  };
+  return { ...mapObjIndexed(always(''), FILTERS_MAP), ...reportsWithinLastYear };
 }

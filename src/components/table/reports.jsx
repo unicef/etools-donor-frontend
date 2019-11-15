@@ -8,15 +8,13 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import { Link } from '@material-ui/core';
-import { format } from 'date-fns';
 
 import { useTableStyles } from 'styles/table-styles';
 import EnhancedTableToolbar from './table-toolbar';
 import EnhancedTableHead from './table-head';
 import { selectReports } from 'selectors/collections';
 import { usePermissions } from 'components/PermissionRedirect';
-import { useTable } from './lib';
-import { DISPLAY_FORMAT } from 'pages/reports/lib/date-filter-factory';
+import { useTable, getDisplayDate } from './lib';
 import clsx from 'clsx';
 import { BACKEND_REPORTS_FIELDS } from '../../pages/reports/constants';
 
@@ -118,7 +116,7 @@ export default function ReportsTable() {
                       >
                         <Typography>
                           <Link color="secondary" href={row.download_url}>
-                            {row.title} Title
+                            {row.title}
                           </Link>
                         </Typography>
                       </TableCell>
@@ -135,10 +133,10 @@ export default function ReportsTable() {
                         {row.report_type}
                       </TableCell>
                       <TableCell className={clsx(classes.cell, classes.dateCell)} align="left">
-                        {format(new Date(row.report_end_date), DISPLAY_FORMAT)}
+                        {getDisplayDate(row.report_end_date)}
                       </TableCell>
                       <TableCell className={clsx(classes.cell, classes.dateCell)} align="left">
-                        {format(new Date(row.grant_expiry_date), DISPLAY_FORMAT)}
+                        {getDisplayDate(row.grant_expiry_date)}
                       </TableCell>
                     </TableRow>
                   );

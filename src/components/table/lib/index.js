@@ -1,6 +1,9 @@
 import React from 'react';
+import { format } from 'date-fns';
+
 import { BACKEND_PROPERTIES_USER_LAST_LOGIN } from '../../../lib/constants';
 import { getUserStatusStr } from '../users';
+import { DISPLAY_FORMAT } from 'pages/reports/lib/date-filter-factory';
 
 export function desc(a, b, func) {
   if (func(b) < func(a)) {
@@ -42,20 +45,20 @@ export const useTable = () => {
   const getEmptyRows = rows =>
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
-    const handleRequestSort = (event, property) => {
-      const isDesc = orderBy === property && order === 'desc';
-      setOrder(isDesc ? 'asc' : 'desc');
-      setOrderBy(property);
-    };
-  
-    const handleChangePage = (event, newPage) => {
-      setPage(newPage);
-    };
-  
-    const handleChangeRowsPerPage = event => {
-      setRowsPerPage(+event.target.value);
-      setPage(0);
-    };
+  const handleRequestSort = (event, property) => {
+    const isDesc = orderBy === property && order === 'desc';
+    setOrder(isDesc ? 'asc' : 'desc');
+    setOrderBy(property);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = event => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
   return {
     orderBy,
@@ -72,3 +75,7 @@ export const useTable = () => {
     handleChangeRowsPerPage
   };
 };
+
+export function getDisplayDate(dateStr) {
+  return dateStr ? format(new Date(dateStr), DISPLAY_FORMAT) : '';
+}

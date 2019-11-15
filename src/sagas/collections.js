@@ -1,4 +1,4 @@
-import { takeLatest, call, put, all, select } from 'redux-saga/effects';
+import { takeLatest, call, put, all } from 'redux-saga/effects';
 import {
   getDonors,
   getGrants,
@@ -21,7 +21,7 @@ import { onReceiveStaticAssets } from 'reducers/static';
 import { onReceiveOffices } from 'reducers/offices';
 import { onReceiveReports } from 'reducers/reports';
 import { removeEmpties } from 'lib/helpers';
-import { selectDonorName } from 'selectors/ui-flags';
+// import { selectDonorName } from 'selectors/ui-flags';
 
 // might be neded
 // const PAGE_DONORS_API_MAP = {
