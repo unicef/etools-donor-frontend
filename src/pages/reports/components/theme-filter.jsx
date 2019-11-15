@@ -5,7 +5,7 @@ import { StyledInputLabel, StyledSelect } from './styled-dropdown';
 import { FORM_CONFIG } from 'lib/constants';
 import { selectThemeCollection } from 'selectors/collections';
 import { useGetFilterClasses } from 'styles/filter-styles';
-import { FilterProps } from '../lib/filters-factory';
+import { FilterProps } from '../lib/dropdown-filter-factory';
 
 export default function ThemeFilter({ value, onChange }) {
   const { classes } = useGetFilterClasses();

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -7,51 +8,15 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import { Link } from '@material-ui/core';
+
 import { useTableStyles } from 'styles/table-styles';
 import EnhancedTableToolbar from './table-toolbar';
 import EnhancedTableHead from './table-head';
-
-function createData(title, country, grant, donor, date, theme) {
-  return { title, country, grant, donor, date, theme };
-}
-
-const rows = [
-  createData(
-    'Report 1',
-    'Syria',
-    'FirstGrantTest',
-    'Donor Company 1',
-    '2019-09-27',
-    'Higher Education'
-  ),
-  createData(
-    'Report 2',
-    'Iraq',
-    'SecondGrant',
-    'Donor Company 5',
-    '2019-09-27',
-    'Higher Education'
-  ),
-  createData('Report 3', 'Iraq', 'Grant4', 'Donor Company', '2019-09-27', 'Higher Education'),
-  createData(
-    'Report 4',
-    'Iraq',
-    'Grant and Test',
-    'Donor Company 6',
-    '2019-09-27',
-    'Higher Education'
-  ),
-  createData('Report 5', 'Iraq', 'Grant Test', 'Donor Company 4', '2019-09-27', 'Higher Education'),
-  createData(
-    'Report 6',
-    'Iraq',
-    'SecondGrant',
-    'Donor Company 5',
-    '2019-09-27',
-    'Higher Education'
-  ),
-  createData('Report 7', 'Iraq', 'SecondGrant', 'Donor Company 5', '2019-09-27', 'Higher Education')
-];
+import { selectReports } from 'selectors/collections';
+import { usePermissions } from 'components/PermissionRedirect';
+import { useTable, getDisplayDate } from './lib';
+import clsx from 'clsx';
+import { BACKEND_REPORTS_FIELDS } from '../../pages/reports/constants';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -78,36 +43,48 @@ function getSorting(order, orderBy) {
 }
 
 const headCells = [
-  { id: 'title', numeric: false, disablePadding: false, label: 'Title' },
-  { id: 'country', numeric: true, disablePadding: false, label: 'Country' },
-  { id: 'grant', numeric: true, disablePadding: false, label: 'Grant' },
-  { id: 'date', numeric: true, disablePadding: false, label: 'Date' },
-  { id: 'theme', numeric: true, disablePadding: false, label: 'Theme' }
+  { id: BACKEND_REPORTS_FIELDS['title'], label: 'Title' },
+  { id: BACKEND_REPORTS_FIELDS['country'], label: 'Country' },
+  { id: BACKEND_REPORTS_FIELDS['grant'], label: 'Grant' },
+  { id: BACKEND_REPORTS_FIELDS['reportType'], label: 'Report Type' },
+  { id: BACKEND_REPORTS_FIELDS['reportEndDate'], label: 'Report End Date' },
+  { id: BACKEND_REPORTS_FIELDS['grantExpiryDate'], label: 'Grant Expiry' }
 ];
+
+const externalRefCell = {
+  id: 'external_ref_grant',
+  numeric: false,
+  disablePadding: false,
+  label: 'External Ref Grant'
+};
+
+// inserts extra column for non-unicef users as per requirements
+const getHeadCells = (isUnicefUser, cells) => {
+  if (!isUnicefUser) {
+    return [...cells.slice(0, 2), externalRefCell, ...cells.slice(2)];
+  }
+  return cells;
+};
 
 export default function ReportsTable() {
   const classes = useTableStyles();
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const handleRequestSort = (event, property) => {
-    const isDesc = orderBy === property && order === 'desc';
-    setOrder(isDesc ? 'asc' : 'desc');
-    setOrderBy(property);
-  };
+  const { isUnicefUser } = usePermissions();
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  const rows = useSelector(selectReports);
 
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  const {
+    orderBy,
+    order,
+    page,
+    rowsPerPage,
+    getEmptyRows,
+    handleRequestSort,
+    handleChangeRowsPerPage,
+    handleChangePage
+  } = useTable();
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const emptyRows = getEmptyRows(rows);
 
   return (
     <div className={classes.root}>
@@ -116,7 +93,7 @@ export default function ReportsTable() {
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle" size="medium">
             <EnhancedTableHead
-              cells={headCells}
+              cells={getHeadCells(isUnicefUser, headCells)}
               classes={classes}
               order={order}
               orderBy={orderBy}
@@ -130,18 +107,37 @@ export default function ReportsTable() {
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.title}>
-                      <TableCell component="th" id={labelId} scope="row">
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                      <TableCell
+                        className={clsx(classes.cell, classes.titleCell)}
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                      >
                         <Typography>
-                          <Link color="secondary" href="#">
+                          <Link color="secondary" href={row.download_url}>
                             {row.title}
                           </Link>
                         </Typography>
                       </TableCell>
-                      <TableCell align="left">{row.country}</TableCell>
-                      <TableCell align="left">{row.grant}</TableCell>
-                      <TableCell align="left">{row.date}</TableCell>
-                      <TableCell align="left">{row.theme}</TableCell>
+                      <TableCell className={classes.cell} align="left">
+                        {row.recipient_office}
+                      </TableCell>
+                      {!isUnicefUser && (
+                        <TableCell align="left">{row.external_ref_grant}</TableCell>
+                      )}
+                      <TableCell className={classes.cell} align="left">
+                        {row.grant_number}
+                      </TableCell>
+                      <TableCell className={classes.cell} align="left">
+                        {row.report_type}
+                      </TableCell>
+                      <TableCell className={clsx(classes.cell, classes.dateCell)} align="left">
+                        {getDisplayDate(row.report_end_date)}
+                      </TableCell>
+                      <TableCell className={clsx(classes.cell, classes.dateCell)} align="left">
+                        {getDisplayDate(row.grant_expiry_date)}
+                      </TableCell>
                     </TableRow>
                   );
                 })}

@@ -2,8 +2,10 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 import grey from '@material-ui/core/colors/grey';
 
-const getColorTheme = () => ({ ...blue, 500: '#0099FF' });
 blue['A400'] = '#0199ff';
+
+export const getColorTheme = () => ({ ...blue, 500: '#0099FF' });
+
 grey['A100'] = '#e5eaf0';
 
 export default createMuiTheme({

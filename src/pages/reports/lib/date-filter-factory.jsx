@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useGetFilterClasses } from 'styles/filter-styles';
+import { createMuiTheme } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/styles';
 import { format, parse } from 'date-fns';
 import { FormControl } from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-import { FilterProps } from './filters-factory';
+import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
+import { FilterProps } from './dropdown-filter-factory';
+import { getColorTheme } from 'styles/theme';
 
-export const DATE_FORMAT = 'yyyy-mm-dd';
+const defaultMaterialTheme = createMuiTheme({
+  palette: {
+    primary: getColorTheme()
+  }
+});
+
+export const DATE_FORMAT = 'yyyy-MM-dd';
 export const DISPLAY_FORMAT = 'yyyy-MMM-dd';
 
 export default function DateFilterFactory(label) {
@@ -15,32 +24,33 @@ export default function DateFilterFactory(label) {
     const [date, setDate] = useState(new Date());
 
     useEffect(() => {
-      if (value) {
-        setDate(parse(value, DATE_FORMAT, new Date()));
-      }
+      const newDate = value ? parse(value, DATE_FORMAT, new Date()) : null;
+      setDate(newDate);
     }, [value]);
 
     const handleDateChange = date => {
-      onChange({ target: { value: format(date, DATE_FORMAT) } });
+      const newValue = date ? format(date, DATE_FORMAT) : null;
+      onChange({ target: { value: newValue } });
     };
 
     return (
       <FormControl className={classes.formControl}>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            disableToolbar
-            className={classes.textField}
-            variant="inline"
-            margin="none"
-            id="grant-from"
-            format={DISPLAY_FORMAT}
-            label={label}
-            value={date}
-            onChange={handleDateChange}
-            KeyboardButtonProps={{
-              'aria-label': 'change date'
-            }}
-          />
+          <ThemeProvider theme={defaultMaterialTheme}>
+            <DatePicker
+              // disableToolbar
+              autoOk
+              className={classes.textField}
+              clearable
+              // variant="inline"
+              margin="none"
+              id="grant-from"
+              format={DISPLAY_FORMAT}
+              label={label}
+              value={date}
+              onChange={handleDateChange}
+            />
+          </ThemeProvider>
         </MuiPickersUtilsProvider>
       </FormControl>
     );

@@ -42,6 +42,15 @@ export const useTableStyles = makeStyles(theme => ({
   tableWrapper: {
     overflowX: 'auto'
   },
+  cell: {
+    paddingRight: 14
+  },
+  titleCell: {
+    width: '20%'
+  },
+  dateCell: {
+    whiteSpace: 'nowrap'
+  },
   visuallyHidden: {
     border: 0,
     clip: 'rect(0 0 0 0)',

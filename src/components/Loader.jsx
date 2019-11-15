@@ -56,7 +56,7 @@ const Loader = ({ children, loading, fullscreen, replaceContent }) => {
 
 Loader.propTypes = {
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
-  loading: PropTypes.bool,
+  loading: PropTypes.oneOfType([PropTypes.bool, PropTypes.array]),
   fullscreen: PropTypes.bool,
   replaceContent: PropTypes.bool
 };
