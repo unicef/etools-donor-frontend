@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { mapObjIndexed, keys, pickBy, always, equals } from 'ramda';
 import useQuery from './use-query';
-import { hasValue } from './helpers';
+import { hasValue, parseEventValue } from './helpers';
 
 /*
   This hook encapsulates the flow of handling data when a filter is selected to be activated,
@@ -47,13 +47,6 @@ const useFiltersQueries = ({ initialFilterValues, initialFiltersActiveState }) =
 
     const nextFilterValues = mapObjIndexed(resetValueForInactive, filterValues);
     setFilterValues(nextFilterValues);
-  }
-
-  function parseEventValue(valueObj) {
-    if (valueObj.target) {
-      return valueObj.target.value;
-    }
-    return valueObj;
   }
 
   function clearFilters() {

@@ -12,7 +12,8 @@ import {
   // REPORT_PERIOD_FIELD,
   REPORT_END_DATE_BEFORE_FIELD,
   REPORT_END_DATE_AFTER_FIELD,
-  RECERTIFIED_FIELD
+  RECERTIFIED_FIELD,
+  RECIPIENT_OFFICE_FIELD
 } from '../constants';
 
 // import {
@@ -27,7 +28,7 @@ import { GrantExpiryBeforeFilter, GrantExpiryAfterFilter } from '../components/g
 import GrantIssueYearFilter from '../components/grant-issue-year-filter';
 import ReportTypeFilter from '../components/report-type-filter';
 import ReportCategoryFilter from '../components/report-category-filter';
-// import ReportPeriodFilter from '../components/report-period-filter';
+import RecipientOfficeFilter from '../components/recipient-office-filter';
 import ReportingGroupFilter from '../components/reporting-group-filter';
 import RecertifiedFilter from '../components/recertified-filter';
 import DonorDocumentFilter from '../components/donor-document-filter';
@@ -77,6 +78,11 @@ export const FILTERS_MAP = {
     Component: ReportCategoryFilter
   },
 
+  [RECIPIENT_OFFICE_FIELD]: {
+    label: 'Recipient Office',
+    Component: RecipientOfficeFilter
+  },
+
   [REPORT_END_DATE_BEFORE_FIELD]: {
     label: 'Report End Before Date',
     Component: ReportEndDateBeforeFilter
@@ -87,16 +93,10 @@ export const FILTERS_MAP = {
     Component: ReportEndDateAfterFilter
   },
 
-  // [REPORT_PERIOD_FIELD]: {
-  //   label: 'Report Period',
-  //   Component: ReportPeriodFilter,
-  //   gridSize: 2
+  // [REPORT_GROUP_FIELD]: {
+  //   label: 'Reporting Group',
+  //   Component: ReportingGroupFilter
   // },
-
-  [REPORT_GROUP_FIELD]: {
-    label: 'Reporting Group',
-    Component: ReportingGroupFilter
-  },
 
   [RECERTIFIED_FIELD]: {
     label: 'Recertified',

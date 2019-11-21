@@ -31,6 +31,7 @@ export const GRANT_ISSUE_YEAR = 'grant_issue_year__in';
 export const REPORT_CATEGORY_FIELD = 'donor_report_category__in';
 export const DONOR_DOCUMENT_FIELD = 'donor_document';
 export const RECERTIFIED_FIELD = 'recertified';
+export const RECIPIENT_OFFICE_FIELD = 'recipient_office';
 
 export function getInitialFilterValues() {
   const today = new Date();

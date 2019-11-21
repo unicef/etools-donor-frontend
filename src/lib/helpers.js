@@ -1,4 +1,4 @@
-import { any, compose, equals, prop, last, isEmpty, filter, not } from 'ramda';
+import { any, compose, equals, prop, last, isEmpty, filter, not, replace, toUpper } from 'ramda';
 import { useRef, useEffect } from 'react';
 export const setValueFromEvent = setter => ({ target: { value } }) => setter(value);
 export const oneIsEmpty = (...items) =>
@@ -31,4 +31,13 @@ export function removeEmpties(obj) {
     ),
     obj
   );
+}
+
+export const capitalize = replace(/^./, toUpper);
+
+export function parseEventValue(valueObj) {
+  if (valueObj.target) {
+    return valueObj.target.value;
+  }
+  return valueObj;
 }

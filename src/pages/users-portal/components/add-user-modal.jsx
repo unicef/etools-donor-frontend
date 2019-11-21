@@ -30,7 +30,7 @@ import { selectUserGroups } from 'selectors/user';
 import { selectCreatedRole, selectFormError } from 'selectors/ui-flags';
 import { onCreateUserRole } from 'actions';
 import { getErrorState } from 'lib/error-parsers';
-import { onResetFormError, onFormError } from 'reducers/form-error';
+import { onResetFormError, onFormError } from 'slices/form-error';
 
 const useStyles = makeStyles(theme => ({
   root: {

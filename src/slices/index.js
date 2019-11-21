@@ -9,6 +9,7 @@ import { createdUserReducer } from './created-user';
 import { createdRoleReducer } from './created-role';
 import { uiReducer } from './ui';
 import { userProfileReducer } from './user-profile';
+import { reportFilter } from './report-filter';
 
 export default combineReducers({
   userRoles: userRolesReducer,
@@ -20,5 +21,6 @@ export default combineReducers({
   createdRole: createdRoleReducer,
   userProfile: userProfileReducer,
   ui: uiReducer,
+  reportFilter: reportFilter,
   ...collectionsReducers
 });

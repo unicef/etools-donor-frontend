@@ -1,4 +1,4 @@
-import { takeLatest, call, put, all } from 'redux-saga/effects';
+import { takeLatest, call, put, all, select } from 'redux-saga/effects';
 import {
   getDonors,
   getGrants,
@@ -6,32 +6,26 @@ import {
   getThemes,
   getStaticAssets,
   getOffices,
-  getReports
+  getReports,
+  getThematicReports
 } from 'api';
 
-import { setError } from 'reducers/error';
-import { setDonors } from 'reducers/donors';
+import { setError } from 'slices/error';
+import { setDonors } from 'slices/donors';
 import { initDonorsList, initDonorsFilter, onFetchReports } from 'actions';
-// import { REPORTS, USERS_PORTAL } from '../lib/constants';
-import { setLoading } from 'reducers/ui';
-import { onReceiveGrants } from 'reducers/grants';
-import { onReceiveExternalGrants } from 'reducers/external-grants';
-import { onReceivethemes } from 'reducers/themes';
-import { onReceiveStaticAssets } from 'reducers/static';
-import { onReceiveOffices } from 'reducers/offices';
-import { onReceiveReports } from 'reducers/reports';
+import { setLoading } from 'slices/ui';
+import { onReceiveGrants } from 'slices/grants';
+import { onReceiveExternalGrants } from 'slices/external-grants';
+import { onReceivethemes } from 'slices/themes';
+import { onReceiveStaticAssets } from 'slices/static';
+import { onReceiveOffices } from 'slices/offices';
+import { onReceiveReports } from 'slices/reports';
 import { removeEmpties } from 'lib/helpers';
-// import { selectDonorName } from 'selectors/ui-flags';
-
-// might be neded
-// const PAGE_DONORS_API_MAP = {
-//   [USERS_PORTAL]: getAdminDonors,
-//   [REPORTS]: getDonors
-// };
+import { selectDonorName } from 'selectors/ui-flags';
+import { selectReportYear, selectTheme } from 'selectors/filter';
 
 function* handleFetchDonors() {
   try {
-    // const donorApi = PAGE_DONORS_API_MAP[payload];
     yield put(setLoading(true));
     const donors = yield call(getDonors);
     yield put(setDonors(donors));
@@ -89,16 +83,24 @@ function* handleFetchStatic() {
 
 function* handleFetchReports({ payload }) {
   try {
-    // omit until property names align with backend and profile
-    // const donorName = yield select(selectDonorName);
+    const donorName = yield select(selectDonorName);
 
     const params = {
-      ...removeEmpties(payload)
-      // donor__contains: donorName
+      ...removeEmpties(payload),
+      donor__contains: donorName
     };
 
     yield put(setLoading(true));
-    const reports = yield call(getReports, params);
+
+    const reportYear = yield select(selectReportYear);
+    const theme = yield select(selectTheme);
+    let reports;
+
+    if (theme) {
+      reports = yield call(getThematicReports, params, theme);
+    } else {
+      reports = yield call(getReports, params, reportYear);
+    }
 
     yield put(onReceiveReports(reports));
   } catch (err) {
@@ -131,5 +133,3 @@ export function* reportsSaga() {
 export default function*() {
   yield all([filtersSaga(), donorsSaga(), reportsSaga()]);
 }
-
-//TODO: normalize state

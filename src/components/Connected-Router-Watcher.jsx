@@ -1,7 +1,7 @@
 // import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router';
-import { onRouteChange } from 'reducers/ui';
+import { onRouteChange } from 'slices/ui';
 
 export default function ConnectedRouterWatcher({ children }) {
   const location = useLocation();

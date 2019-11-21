@@ -1,7 +1,7 @@
 import { takeLatest, call, put, delay } from 'redux-saga/effects';
 import { getUserRoles, getUserGroups, createUser, createRole, getUserProfile } from 'api';
-import { setUserRoles } from 'reducers/user-roles';
-import { setError } from 'reducers/error';
+import { setUserRoles } from 'slices/user-roles';
+import { setError } from 'slices/error';
 import {
   onFetchUserRoles,
   onFetchUserGroups,
@@ -9,12 +9,12 @@ import {
   redirectToLogin,
   onFetchUserProfile
 } from 'actions';
-import { setGroups } from 'reducers/user-groups';
-import { createRoleSuccess } from 'reducers/created-role';
-import { onFormError } from 'reducers/form-error';
+import { setGroups } from 'slices/user-groups';
+import { createRoleSuccess } from 'slices/created-role';
+import { onFormError } from 'slices/form-error';
 import { parseFormError } from 'lib/error-parsers';
-import { setLoading } from 'reducers/ui';
-import { onReceiveUserProfile } from 'reducers/user-profile';
+import { setLoading } from 'slices/ui';
+import { onReceiveUserProfile } from 'slices/user-profile';
 import { donorIdFromLocation } from 'lib/helpers';
 
 function* handleFetchUserRoles(action) {

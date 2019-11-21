@@ -58,6 +58,9 @@ const useFilterStyles = makeStyles(theme =>
     labelShrink: {
       left: 0
     },
+    disabled: {
+      opacity: 0.5
+    },
     placeholder: {
       overflowX: 'hidden',
       textOverflow: 'ellipsis',
@@ -80,6 +83,12 @@ const useFilterStyles = makeStyles(theme =>
       margin: `0 ${theme.spacing(2)}px 0 0 `,
       height: 18,
       width: 18
+    },
+    loneLabel: {
+      marginBottom: theme.spacing(1.5),
+      '&.hidden': {
+        visibility: 'hidden'
+      }
     }
   })
 );

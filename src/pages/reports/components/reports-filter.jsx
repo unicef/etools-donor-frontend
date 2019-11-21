@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { mapObjIndexed, always } from 'ramda';
-import { Grid, Box, Button } from '@material-ui/core';
+import { Grid, Box, Button, InputLabel } from '@material-ui/core';
 import { useParams } from 'react-router';
 
-import useFilterStyles from 'styles/filter-styles';
+import useFilterStyles, { useGetFilterClasses } from 'styles/filter-styles';
 import { initDonorsFilter, onFetchReports } from 'actions';
 import FilterMenuButton from './filter-menu-button';
 
@@ -13,10 +13,15 @@ import useFiltersQueries from 'lib/use-filters-queries';
 import { FORM_CONFIG } from 'lib/constants';
 import { getInitialFilterValues } from '../constants';
 import { FILTERS_MAP } from '../lib/filters-map';
+import MandatoryFilters from './mandatory-filters';
+import { selectMandatoryFilterSelected } from 'selectors/filter';
+import DisableWrapper from 'components/DisableWrapper';
+import clsx from 'clsx';
 
 export default function ReportsFilter() {
   const dispatch = useDispatch();
   const classes = useFilterStyles();
+  const mandatorySelected = useSelector(selectMandatoryFilterSelected);
 
   const { donorId: id } = useParams();
 
@@ -48,37 +53,49 @@ export default function ReportsFilter() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Grid item xs={12} className={classes.filterContainer} container wrap="nowrap">
-        <Box className={classes.filterMenu}>
-          <FilterMenuButton onSelectFilter={handleSelectFilter} selected={filtersActiveState} />
-        </Box>
+      <InputLabel className={clsx(classes.loneLabel, mandatorySelected && 'hidden')}>
+        Select a year or theme to enable filters
+      </InputLabel>
+      <MandatoryFilters />
 
-        <Box display="flex" flex="1 1 auto" alignItems="flex-start" flexWrap="wrap">
-          <Grid container direction="row" flex="1 1 auto" spacing={2}>
-            {selectedFilters.map((filter, idx) => {
-              const { Component } = FILTERS_MAP[filter];
-              return (
-                <Grid
-                  item
-                  className={classes.filterBox}
-                  sm={FILTERS_MAP[filter].gridSize || 3}
-                  key={idx}
-                >
-                  <Component
-                    onChange={handleChangeFilterValue(filter)}
-                    value={filterValues[filter]}
-                  />
-                </Grid>
-              );
-            })}
-          </Grid>
-        </Box>
-      </Grid>
+      <DisableWrapper disabled={!mandatorySelected}>
+        <Grid item xs={12} className={classes.filterContainer} container wrap="nowrap">
+          <Box className={classes.filterMenu}>
+            <FilterMenuButton onSelectFilter={handleSelectFilter} selected={filtersActiveState} />
+          </Box>
+
+          <Box display="flex" flex="1 1 auto" alignItems="flex-start" flexWrap="wrap">
+            <Grid container direction="row" flex="1 1 auto" spacing={2}>
+              {selectedFilters.map((filter, idx) => {
+                const { Component: FilterComponent } = FILTERS_MAP[filter];
+                return (
+                  <Grid
+                    item
+                    className={classes.filterBox}
+                    sm={FILTERS_MAP[filter].gridSize || 3}
+                    key={idx}
+                  >
+                    <FilterComponent
+                      onChange={handleChangeFilterValue(filter)}
+                      value={filterValues[filter]}
+                    />
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Box>
+        </Grid>
+      </DisableWrapper>
       <Grid container justify="flex-end" className={classes.button}>
         <Button className={classes.formBtn} color="secondary" onClick={handleClear}>
           {FORM_CONFIG.clear.label}
         </Button>
-        <Button className={classes.formBtn} color="secondary" onClick={handleSubmit}>
+        <Button
+          className={classes.formBtn}
+          color="secondary"
+          onClick={handleSubmit}
+          disabled={!mandatorySelected}
+        >
           {FORM_CONFIG.submit.label}
         </Button>
       </Grid>

@@ -11,6 +11,10 @@ export const selectLoading = createSelector(
   selectUi,
   ui => ui.loading
 );
+export const selectPageName = createSelector(
+  selectUi,
+  ui => ui.page
+);
 
 export const selectParamDonorId = createSelector(
   selectUi,
