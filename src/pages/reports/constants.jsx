@@ -35,6 +35,7 @@ export const RECERTIFIED_FIELD = 'recertified';
 export function getInitialFilterValues() {
   const today = new Date();
   const aYearAgo = subYears(today, 1);
+  // business requirement
   const reportsWithinLastYear = {
     [REPORT_END_DATE_BEFORE_FIELD]: format(today, DATE_FORMAT),
     [REPORT_END_DATE_AFTER_FIELD]: format(aYearAgo, DATE_FORMAT)
