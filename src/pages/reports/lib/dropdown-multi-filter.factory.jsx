@@ -7,16 +7,23 @@ import { FormControl, MenuItem } from '@material-ui/core';
 import { StyledInputLabel, StyledSelect } from '../components/styled-dropdown';
 import { useGetFilterClasses } from 'styles/filter-styles';
 
-export default function DropdownMultiFilterFactory(selector, label) {
+export default function DropdownMultiFilterFactory(selector, label, filterProp = 'label') {
   const Component = ({ value, onChange }) => {
     const { classes } = useGetFilterClasses();
     const [multiVal, setMultiVal] = useState([]);
 
+    function wrappedOnChangeHandler({ target }) {
+      const selectedValue = target.value;
+      if (selectedValue.length && selectedValue.includes('')) {
+        setMultiVal([]);
+        return;
+      }
+      return handleChangeMulti(selectedValue);
+    }
+
     const options = useSelector(selector);
 
-    const handleChangeMulti = ({ target }) => {
-      const selectedValue = target.value;
-
+    const handleChangeMulti = selectedValue => {
       if (multiVal.includes(selectedValue)) {
         setMultiVal(without(selectedValue, multiVal));
       } else {
@@ -50,7 +57,7 @@ export default function DropdownMultiFilterFactory(selector, label) {
         <StyledSelect
           multiple
           value={multiVal}
-          onChange={handleChangeMulti}
+          onChange={wrappedOnChangeHandler}
           inputProps={{
             name: 'option',
             id: label
@@ -60,8 +67,12 @@ export default function DropdownMultiFilterFactory(selector, label) {
             <em>None</em>
           </MenuItem>
           {options.map(option => (
-            <MenuItem key={option.code} value={option.label} selected={isSelected(option.code)}>
-              {option.label}
+            <MenuItem
+              key={option.code}
+              value={option[filterProp]}
+              selected={isSelected(option.code)}
+            >
+              {option[filterProp]}
             </MenuItem>
           ))}
         </StyledSelect>
@@ -75,5 +86,6 @@ export default function DropdownMultiFilterFactory(selector, label) {
 export const FilterProps = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
   onChange: PropTypes.func.isRequired,
-  selector: PropTypes.func
+  selector: PropTypes.func,
+  filterProp: PropTypes.string
 };

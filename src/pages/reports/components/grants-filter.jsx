@@ -25,7 +25,7 @@ export default function GrantsFilter({ value, onChange }) {
         <MenuItem value="">
           <em>None</em>
         </MenuItem>
-        {grantsCollection.map(grant => (
+        {grantsCollection.slice(0, 5).map(grant => (
           <MenuItem key={grant.id} value={grant.id}>
             {getGrantDisplay(grant)}
           </MenuItem>

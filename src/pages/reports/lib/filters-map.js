@@ -7,19 +7,12 @@ import {
   GRANT_ISSUE_YEAR,
   REPORT_TYPE_FIELD,
   REPORT_CATEGORY_FIELD,
-  REPORT_GROUP_FIELD,
-  DONOR_DOCUMENT_FIELD,
-  // REPORT_PERIOD_FIELD,
   REPORT_END_DATE_BEFORE_FIELD,
   REPORT_END_DATE_AFTER_FIELD,
-  RECERTIFIED_FIELD,
-  RECIPIENT_OFFICE_FIELD
+  RECIPIENT_OFFICE_FIELD,
+  TITLE_FIELD
 } from '../constants';
 
-// import {
-//   GrantClosureDateBeforeFilter,
-//   GrantClosureDateAfterFilter
-// } from '../components/grant-closure-date-filter';
 import {
   ReportEndDateBeforeFilter,
   ReportEndDateAfterFilter
@@ -29,12 +22,10 @@ import GrantIssueYearFilter from '../components/grant-issue-year-filter';
 import ReportTypeFilter from '../components/report-type-filter';
 import ReportCategoryFilter from '../components/report-category-filter';
 import RecipientOfficeFilter from '../components/recipient-office-filter';
-import ReportingGroupFilter from '../components/reporting-group-filter';
-import RecertifiedFilter from '../components/recertified-filter';
-import DonorDocumentFilter from '../components/donor-document-filter';
 import GrantsFilter from '../components/grants-filter';
 // import ExternalGrantsFilter from '../components/external-grants-filter';
 import ThemeFilter from '../components/theme-filter';
+import TitleSearchFilter from '../components/title-search-filter';
 
 export const FILTERS_MAP = {
   [GRANT_FIELD]: {
@@ -45,6 +36,12 @@ export const FILTERS_MAP = {
   //   label: 'External Reference Grant',
   //   Component: ExternalGrantsFilter
   // },
+
+  [TITLE_FIELD]: {
+    label: 'Title',
+    Component: TitleSearchFilter,
+    gridSize: 2
+  },
 
   [THEME_FIELD]: {
     label: 'Theme',
@@ -91,33 +88,5 @@ export const FILTERS_MAP = {
   [REPORT_END_DATE_AFTER_FIELD]: {
     label: 'Report End After Date',
     Component: ReportEndDateAfterFilter
-  },
-
-  // [REPORT_GROUP_FIELD]: {
-  //   label: 'Reporting Group',
-  //   Component: ReportingGroupFilter
-  // },
-
-  [RECERTIFIED_FIELD]: {
-    label: 'Recertified',
-    Component: RecertifiedFilter,
-    gridSize: 2
-  },
-
-  // grantClosureBeforeDate: {
-  //   label: 'Grant Financial Closure Before Date',
-  //   Component: GrantClosureDateBeforeFilter,
-  //   gridSize: 4
-  // },
-
-  // grantClosureAfterDate: {
-  //   label: 'Grant Financial Closure After Date',
-  //   Component: GrantClosureDateAfterFilter,
-  //   gridSize: 4
-  // },
-
-  [DONOR_DOCUMENT_FIELD]: {
-    label: 'Donor Document',
-    Component: DonorDocumentFilter
   }
 };

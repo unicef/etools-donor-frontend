@@ -4,6 +4,7 @@ import { makeStyles, AppBar, Popover, Toolbar, Box, IconButton } from '@material
 import { AccountCircle as AccountIcon } from '@material-ui/icons';
 
 import { DRAWER_WIDTH } from '../lib/constants';
+import ErrorsSnackbar from './Errors-Snackbar';
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -70,6 +71,7 @@ export default function AppToolbar() {
           {/* <Logout onClose={handleProfileRequestClose} logout={() => {}} /> */}
         </Popover>
       </Toolbar>
+      <ErrorsSnackbar />
     </AppBar>
   );
 }

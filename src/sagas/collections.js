@@ -30,7 +30,7 @@ function* handleFetchDonors() {
     const donors = yield call(getDonors);
     yield put(setDonors(donors));
   } catch (err) {
-    yield put(setError(err.message));
+    yield put(setError(err));
   } finally {
     yield put(setLoading(false));
   }
@@ -41,7 +41,7 @@ function* handleFetchGrants({ payload }) {
     const grants = yield call(getGrants, payload);
     yield put(onReceiveGrants(grants));
   } catch (err) {
-    yield put(setError(err.message));
+    yield put(setError(err));
   }
 }
 
@@ -50,7 +50,7 @@ function* handleFetchOffices() {
     const offices = yield call(getOffices);
     yield put(onReceiveOffices(offices));
   } catch (err) {
-    yield put(setError(err.message));
+    yield put(setError(err));
   }
 }
 
@@ -59,7 +59,7 @@ function* handleFetchExternalGrants({ payload }) {
     const grants = yield call(getExternalGrants, payload);
     yield put(onReceiveExternalGrants(grants));
   } catch (err) {
-    yield put(setError(err.message));
+    yield put(setError(err));
   }
 }
 
@@ -68,7 +68,7 @@ function* handleFetchThemes() {
     const themes = yield call(getThemes);
     yield put(onReceivethemes(themes));
   } catch (err) {
-    yield put(setError(err.message));
+    yield put(setError(err));
   }
 }
 
@@ -77,7 +77,7 @@ function* handleFetchStatic() {
     const staticDropdowns = yield call(getStaticAssets);
     yield put(onReceiveStaticAssets(staticDropdowns));
   } catch (err) {
-    yield put(setError(err.message));
+    yield put(setError(err));
   }
 }
 
@@ -94,6 +94,7 @@ function* handleFetchReports({ payload }) {
 
     const reportYear = yield select(selectReportYear);
     const theme = yield select(selectTheme);
+
     let reports;
 
     if (theme) {
@@ -104,7 +105,7 @@ function* handleFetchReports({ payload }) {
 
     yield put(onReceiveReports(reports));
   } catch (err) {
-    yield put(setError(err.message));
+    yield put(setError(err));
   } finally {
     yield put(setLoading(false));
   }

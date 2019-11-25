@@ -16,7 +16,7 @@ export default function MandatoryFilters() {
   const theme = useSelector(selectTheme);
 
   return (
-    <Grid item xs={12} className={classes.filterContainer} container>
+    <Grid item xs={12} container>
       <Grid item className={classes.filterBox} sm={2}>
         <YearFilter
           onChange={val => dispatch(reportYearChanged(parseEventValue(val)))}

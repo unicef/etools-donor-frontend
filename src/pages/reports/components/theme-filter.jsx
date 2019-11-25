@@ -30,7 +30,7 @@ export default function ThemeFilter({ value = '', onChange, ...props }) {
           <em>None</em>
         </MenuItem>
         {themesCollection.map(theme => (
-          <MenuItem key={theme.id} value={theme.id}>
+          <MenuItem key={theme.id} value={theme.name}>
             {theme.name}
           </MenuItem>
         ))}

@@ -24,7 +24,7 @@ function* handleFetchUserRoles(action) {
     const userRoles = yield call(getUserRoles, action.payload);
     yield put(setUserRoles(userRoles));
   } catch (err) {
-    yield put(setError(err.message));
+    yield put(setError(err));
   } finally {
     yield put(setLoading(false));
   }
@@ -36,7 +36,7 @@ function* handleFetchUserGroups() {
     const groups = yield call(getUserGroups);
     yield put(setGroups(groups));
   } catch (err) {
-    yield put(setError(err.message));
+    yield put(setError(err));
   } finally {
     yield put(setLoading(false));
   }

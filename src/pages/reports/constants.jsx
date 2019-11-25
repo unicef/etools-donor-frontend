@@ -13,7 +13,7 @@ export const BACKEND_REPORTS_FIELDS = {
   grantExpiryDate: 'grant_expiry_date'
 };
 
-export const TITLE_FIELD = 'title';
+export const TITLE_FIELD = 'title__contains';
 export const COUNTRY_FIELD = 'recipient_office';
 export const GRANT_FIELD = 'grant_number__in';
 export const EXTERNAL_REF_GRANT_FIELD = 'external_ref_grant_number__in';

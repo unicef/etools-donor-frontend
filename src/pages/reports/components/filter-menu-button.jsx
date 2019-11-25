@@ -60,7 +60,7 @@ export function FilterButton(props) {
   const classes = useFilterStyles();
 
   return (
-    <Button className={clsx(classes.filterBtn, classes.btn)} size="small" {...props}>
+    <Button className={classes.filterBtn} size="small" {...props}>
       <FilterListIcon className={classes.filterIcon} />
       Filter
     </Button>

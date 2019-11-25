@@ -6,9 +6,10 @@ export const selectDonors = state => state.donors;
 export const selectStaticAssets = state => state.staticAssets;
 export const selectReports = state => state.reports;
 export const selectOffices = state => state.offices;
+
 export const selectYears = createSelector(
   selectStaticAssets,
-  assets => assets.years
+  assets => assets.report_years
 );
 export const selectReportType = createSelector(
   selectStaticAssets,
