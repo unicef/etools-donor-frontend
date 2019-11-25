@@ -1,5 +1,5 @@
-import { FORM_CONFIG } from 'lib/constants';
 import { selectOffices } from 'selectors/collections';
-import DropdownMultiFilterFactory from '../lib/dropdown-multi-filter.factory';
+import { FORM_CONFIG } from 'lib/constants';
+import SearchableDropdownFilterFactory from '../lib/searchable-dropdown-filter-factory';
 
-export default DropdownMultiFilterFactory(selectOffices, FORM_CONFIG.offices.label, 'name');
+export default SearchableDropdownFilterFactory(selectOffices, FORM_CONFIG.offices.label, 'name');

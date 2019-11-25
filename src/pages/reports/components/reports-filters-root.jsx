@@ -17,6 +17,7 @@ import MandatoryFilters from './mandatory-filters';
 import { selectMandatoryFilterSelected } from 'selectors/filter';
 import DisableWrapper from 'components/DisableWrapper';
 import clsx from 'clsx';
+import Playground from './recipient-office-filter';
 
 export default function ReportsFilter() {
   const dispatch = useDispatch();

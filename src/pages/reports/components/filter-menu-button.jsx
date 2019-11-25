@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { keys } from 'ramda';
 import { Menu, MenuItem, Button, withStyles, Checkbox } from '@material-ui/core';
@@ -21,7 +20,7 @@ export default function FilterMenuButton({ onSelectFilter, selected }) {
   };
 
   return (
-    <div>
+    <>
       <FilterButton onClick={handleClick} />
       <StyledMenu
         id="customized-menu"
@@ -47,7 +46,7 @@ export default function FilterMenuButton({ onSelectFilter, selected }) {
           </StyledMenuItem>
         ))}
       </StyledMenu>
-    </div>
+    </>
   );
 }
 
