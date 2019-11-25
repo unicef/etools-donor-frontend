@@ -1,6 +1,5 @@
 import {
   GRANT_FIELD,
-  // EXTERNAL_REF_GRANT_FIELD,
   THEME_FIELD,
   GRANT_EXPIRY_BEFORE_FIELD,
   GRANT_EXPIRY_AFTER_FIELD,
@@ -10,7 +9,8 @@ import {
   REPORT_END_DATE_BEFORE_FIELD,
   REPORT_END_DATE_AFTER_FIELD,
   RECIPIENT_OFFICE_FIELD,
-  TITLE_FIELD
+  TITLE_FIELD,
+  EXTERNAL_REF_GRANT_FIELD
 } from '../constants';
 
 import {
@@ -23,7 +23,7 @@ import ReportTypeFilter from '../components/report-type-filter';
 import ReportCategoryFilter from '../components/report-category-filter';
 import RecipientOfficeFilter from '../components/recipient-office-filter';
 import GrantsFilter from '../components/grants-filter';
-// import ExternalGrantsFilter from '../components/external-grants-filter';
+import ExternalGrantsFilter from '../components/external-grants-filter';
 import ThemeFilter from '../components/theme-filter';
 import TitleSearchFilter from '../components/title-search-filter';
 
@@ -32,10 +32,10 @@ export const FILTERS_MAP = {
     label: 'Grant',
     Component: GrantsFilter
   },
-  // [EXTERNAL_REF_GRANT_FIELD]: {
-  //   label: 'External Reference Grant',
-  //   Component: ExternalGrantsFilter
-  // },
+  [EXTERNAL_REF_GRANT_FIELD]: {
+    label: 'External Reference Grant',
+    Component: ExternalGrantsFilter
+  },
 
   [TITLE_FIELD]: {
     label: 'Title',

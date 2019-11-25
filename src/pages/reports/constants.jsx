@@ -16,7 +16,7 @@ export const BACKEND_REPORTS_FIELDS = {
 export const TITLE_FIELD = 'title__contains';
 export const COUNTRY_FIELD = 'recipient_office';
 export const GRANT_FIELD = 'grant_number__in';
-export const EXTERNAL_REF_GRANT_FIELD = 'external_ref_grant_number__in';
+export const EXTERNAL_REF_GRANT_FIELD = 'external_reference';
 export const REPORT_TYPE_FIELD = 'report_type__in';
 export const REPORT_GROUP_FIELD = 'report_group__in';
 export const REPORT_END_DATE_FIELD = 'report_end_date';
@@ -31,7 +31,7 @@ export const GRANT_ISSUE_YEAR = 'grant_issue_year__in';
 export const REPORT_CATEGORY_FIELD = 'donor_report_category__in';
 export const DONOR_DOCUMENT_FIELD = 'donor_document';
 export const RECERTIFIED_FIELD = 'recertified';
-export const RECIPIENT_OFFICE_FIELD = 'recipient_office';
+export const RECIPIENT_OFFICE_FIELD = 'recipient_office__contains';
 
 export function getInitialFilterValues() {
   const today = new Date();

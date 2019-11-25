@@ -38,6 +38,7 @@ const useFilterStyles = makeStyles(theme =>
       cursor: 'pointer',
       padding: '4px 16px 4px 12px',
       fontWeight: 400,
+      marginTop: theme.spacing(1),
       fontSize: 14,
       borderRadius: 14,
       lineHeight: `${theme.spacing(3)}px`,

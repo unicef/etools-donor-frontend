@@ -82,6 +82,7 @@ export default function DonorsList() {
       <Loader loading={loading} fullscreen />
       <Grid item xs={4}>
         <Typography>Select Donor:</Typography>
+
         <Paper className={clsx(classes.root)}>
           <div className={classes.tableWrapper}>
             <Table stickyHeader className={clsx(classes.table)}>
@@ -105,6 +106,7 @@ export default function DonorsList() {
                   </TableCell>
                 </TableRow>
               </TableHead>
+
               <TableBody>
                 {filteredList
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -120,6 +122,7 @@ export default function DonorsList() {
               </TableBody>
             </Table>
           </div>
+
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"

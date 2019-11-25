@@ -10,7 +10,7 @@ export default function DropdownFilterFactory(selector, label, filterProp = 'lab
   const Component = ({ value = '', onChange, ...props }) => {
     const { classes } = useGetFilterClasses();
     const options = useSelector(selector) || [];
-    //TODO: explore solution to decreased performance on long options list
+
     return (
       <FormControl
         className={clsx(classes.formControl, props.disabled && classes.disabled)}
@@ -40,6 +40,8 @@ export default function DropdownFilterFactory(selector, label, filterProp = 'lab
   Component.propTypes = FilterProps;
   return Component;
 }
+
+export function Factory({ children, ...props }) {}
 
 export const FilterProps = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),

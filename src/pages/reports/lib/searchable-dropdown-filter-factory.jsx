@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { prop, propEq, propOr } from 'ramda';
+import { prop, propEq, propOr, compose, equals } from 'ramda';
 
 import { useSelector } from 'react-redux';
 import { FormControl, TextField } from '@material-ui/core';
@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function SearchableDropdownFilterFactory(selector, label, filterProp = 'label') {
+export default function SearchableDropdownFilterFactory(selector, label, getValueFromObj) {
   const Component = ({ value = '', onChange, ...props }) => {
     const { classes } = useGetFilterClasses();
     const options = useSelector(selector) || [];
@@ -24,21 +24,26 @@ export default function SearchableDropdownFilterFactory(selector, label, filterP
     const classes2 = useStyles();
 
     useEffect(() => {
-      const val = options.find(propEq(filterProp, value));
+      const val = options.find(
+        compose(
+          equals(value),
+          getValueFromObj
+        )
+      );
       setDropdownValue(val);
     }, [value, options]);
 
     return (
-      <FormControl className={classes.formControl} {...props}>
+      <FormControl className={classes.formControl}>
         <Autocomplete
           options={options}
-          getOptionLabel={prop(filterProp)}
           value={dropdownValue}
           onChange={(event, newValue) => {
-            onChange(propOr('', filterProp, newValue));
+            onChange(getValueFromObj(newValue));
           }}
           classes={classes2}
           renderInput={params => <TextField {...params} label={label} margin="normal" fullWidth />}
+          {...props}
         />
       </FormControl>
     );

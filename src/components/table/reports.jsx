@@ -44,7 +44,7 @@ function getSorting(order, orderBy) {
 
 const headCells = [
   { id: BACKEND_REPORTS_FIELDS['title'], label: 'Title' },
-  { id: BACKEND_REPORTS_FIELDS['country'], label: 'Country' },
+  { id: BACKEND_REPORTS_FIELDS['country'], label: 'Recipient Office' },
   { id: BACKEND_REPORTS_FIELDS['grant'], label: 'Grant' },
   { id: BACKEND_REPORTS_FIELDS['reportType'], label: 'Report Type' },
   { id: BACKEND_REPORTS_FIELDS['reportEndDate'], label: 'Report End Date' },

@@ -1,38 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import { useGetFilterClasses } from 'styles/filter-styles';
-import { FormControl, MenuItem } from '@material-ui/core';
 import { FORM_CONFIG } from 'lib/constants';
 import { selectGrants } from 'selectors/collections';
-import { StyledInputLabel, StyledSelect } from './styled-dropdown';
+import SearchableDropdownFilterFactory from '../lib/searchable-dropdown-filter-factory';
+import { prop } from 'ramda';
 
-export default function GrantsFilter({ value, onChange }) {
-  const { classes } = useGetFilterClasses();
-  const grantsCollection = useSelector(selectGrants);
+export default function GrantsFilter({ ...props }) {
+  const getOptionLabel = prop('code');
 
-  return (
-    <FormControl className={classes.formControl}>
-      <StyledInputLabel htmlFor="grant-select">{FORM_CONFIG.grant.label}</StyledInputLabel>
-      <StyledSelect
-        value={value}
-        onChange={onChange}
-        inputProps={{
-          name: 'grant',
-          id: 'grant-select'
-        }}
-      >
-        <MenuItem value="">
-          <em>None</em>
-        </MenuItem>
-        {grantsCollection.slice(0, 5).map(grant => (
-          <MenuItem key={grant.id} value={grant.id}>
-            {getGrantDisplay(grant)}
-          </MenuItem>
-        ))}
-      </StyledSelect>
-    </FormControl>
+  const Component = SearchableDropdownFilterFactory(
+    selectGrants,
+    FORM_CONFIG.grant.label,
+    getOptionLabel
   );
+
+  return <Component getOptionLabel={getOptionLabel} {...props} />;
 }
 
 GrantsFilter.propTypes = {

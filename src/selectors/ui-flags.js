@@ -1,6 +1,7 @@
 import { propEq } from 'ramda';
 import { createSelector } from 'reselect';
 import { selectDonors } from './collections';
+import { UNICEF_USER_ROLE } from 'lib/constants';
 
 export const selectCreatedRole = state => state.createdRole;
 export const selectFormError = state => state.formError;
@@ -26,24 +27,29 @@ export const selectUserDonor = createSelector(
   profile => profile.donor
 );
 
+export const selectUserName = createSelector(
+  selectUserProfile,
+  profile => profile.username
+);
+
 export const selectUserDonorId = createSelector(
   selectUserDonor,
   donor => donor.id
 );
 
+export const selectUserGroup = createSelector(
+  selectUserProfile,
+  profile => profile.group.name
+);
+
 export const selectDonorName = createSelector(
-  [selectUserDonor, selectParamDonorId, selectDonors],
-  (userDonor, paramDonorId, donors) => {
-    if (userDonor.name.length) {
+  [selectUserDonor, selectParamDonorId, selectDonors, selectUserGroup],
+  (userDonor, paramDonorId, donors, userGroup) => {
+    if (userDonor.name.length && userGroup !== UNICEF_USER_ROLE) {
       // unicef user profile api returns empty sttring for this property
       return userDonor.name;
     }
     const donor = donors.find(propEq('id', Number(paramDonorId)));
     return (donor && donor.name) || '';
   }
-);
-
-export const selectUserGroup = createSelector(
-  selectUserProfile,
-  profile => profile.group.name
 );
