@@ -10,7 +10,7 @@ export default function TitleSearchFilter({ value = '', onChange, ...props }) {
     <FormControl className={classes.formControl} {...props}>
       <TextField
         placeholder="Search title"
-        className={classes.input}\
+        className={classes.input}
         inputProps={{
           'aria-label': 'description'
         }}
