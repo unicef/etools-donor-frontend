@@ -1,9 +1,6 @@
 import axios from 'axios';
 import { getCookie } from './helpers';
-import DateFns from '@date-io/date-fns';
 import Qs from 'qs';
-
-const dateUtils = new DateFns();
 
 const backendPath = '/api';
 
@@ -11,6 +8,7 @@ const getBaseOptions = () => ({
   headers: {
     'X-CSRFToken': getCookie('csrftoken')
   },
+
   withCredentials: true,
   paramsSerializer: function(params) {
     return Qs.stringify(params, {

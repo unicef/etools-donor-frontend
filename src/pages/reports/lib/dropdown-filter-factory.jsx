@@ -41,8 +41,6 @@ export default function DropdownFilterFactory(selector, label, filterProp = 'lab
   return Component;
 }
 
-export function Factory({ children, ...props }) {}
-
 export const FilterProps = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
   onChange: PropTypes.func.isRequired,

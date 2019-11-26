@@ -19,9 +19,16 @@ export default function ErrorsSnackbar() {
   const error = useSelector(selectError);
   const [errorMessage, setErrorMessage] = useState('');
 
+  function buildErrorMessage(error) {
+    let message = `Error: ${error.message}.`;
+    if (error.config) {
+      message += `Failure at url: ${error.config.url}`;
+    }
+    setErrorMessage(message);
+  }
   useEffect(() => {
     if (error) {
-      setErrorMessage(`Error: ${error.message}. Failure at url: ${error.config.url}`);
+      buildErrorMessage(error);
       setOpen(true);
     } else {
       setOpen(false);

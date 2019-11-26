@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { prop, propEq, propOr, compose, equals } from 'ramda';
+import { compose, equals } from 'ramda';
 
 import { useSelector } from 'react-redux';
 import { FormControl, TextField } from '@material-ui/core';

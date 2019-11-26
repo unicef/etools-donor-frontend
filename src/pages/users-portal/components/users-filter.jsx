@@ -93,9 +93,6 @@ export default function UsersFilter() {
           >
             {FORM_CONFIG.clear.label}
           </Button>
-          {/* <Button className={classes.formBtn} color="secondary" onClick={handleSubmit}>
-            {FORM_CONFIG.search.label}
-          </Button> */}
         </Grid>
       </Grid>
     </Grid>

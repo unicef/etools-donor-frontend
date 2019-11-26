@@ -32,6 +32,7 @@ export const FILTERS_MAP = {
     label: 'Grant',
     Component: GrantsFilter
   },
+
   [EXTERNAL_REF_GRANT_FIELD]: {
     label: 'External Reference Grant',
     Component: ExternalGrantsFilter
@@ -90,3 +91,4 @@ export const FILTERS_MAP = {
     Component: ReportEndDateAfterFilter
   }
 };
+console.log('TCL: FILTERS_MAP', FILTERS_MAP);

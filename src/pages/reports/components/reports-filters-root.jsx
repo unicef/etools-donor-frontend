@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import clsx from 'clsx';
 import { mapObjIndexed, always } from 'ramda';
 import { Grid, Box, Button, InputLabel, Paper } from '@material-ui/core';
 import { useParams } from 'react-router';
@@ -16,14 +17,11 @@ import { FILTERS_MAP } from '../lib/filters-map';
 import MandatoryFilters from './mandatory-filters';
 import { selectMandatoryFilterSelected } from 'selectors/filter';
 import DisableWrapper from 'components/DisableWrapper';
-import clsx from 'clsx';
-import Playground from './recipient-office-filter';
 
 export default function ReportsFilter() {
   const dispatch = useDispatch();
   const classes = useFilterStyles();
   const mandatorySelected = useSelector(selectMandatoryFilterSelected);
-
   const { donorId: id } = useParams();
 
   function handleSubmit() {
@@ -49,6 +47,7 @@ export default function ReportsFilter() {
 
   useEffect(() => {
     dispatch(initDonorsFilter(id));
+
     dispatch(onFetchReports(filterValues));
   }, []);
 
@@ -76,6 +75,7 @@ export default function ReportsFilter() {
               >
                 {selectedFilters.map((filter, idx) => {
                   const { Component: FilterComponent } = FILTERS_MAP[filter];
+
                   return (
                     <Grid
                       item

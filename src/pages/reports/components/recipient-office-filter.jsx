@@ -5,9 +5,10 @@ import { FORM_CONFIG } from 'lib/constants';
 import SearchableDropdownFilterFactory, {
   FilterProps
 } from '../lib/searchable-dropdown-filter-factory';
+import { QUERY_PROPERTY_RECIPIENT_OFFICE } from '../constants';
 
 export default function RecipientOfficeFilter({ ...props }) {
-  const getLabel = prop('name');
+  const getLabel = prop(QUERY_PROPERTY_RECIPIENT_OFFICE);
 
   const Component = SearchableDropdownFilterFactory(
     selectOffices,

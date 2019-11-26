@@ -13,6 +13,7 @@ export const BACKEND_REPORTS_FIELDS = {
   grantExpiryDate: 'grant_expiry_date'
 };
 
+// QUERY PARAM FIELD NAMES FOR BACKEND
 export const TITLE_FIELD = 'title__contains';
 export const COUNTRY_FIELD = 'recipient_office';
 export const GRANT_FIELD = 'grant_number__in';
@@ -32,6 +33,10 @@ export const REPORT_CATEGORY_FIELD = 'donor_report_category__in';
 export const DONOR_DOCUMENT_FIELD = 'donor_document';
 export const RECERTIFIED_FIELD = 'recertified';
 export const RECIPIENT_OFFICE_FIELD = 'recipient_office__contains';
+
+// PROPERTIES TO BE USED FOR QUERY
+export const QUERY_PROPERTY_GRANT = 'code';
+export const QUERY_PROPERTY_RECIPIENT_OFFICE = 'name';
 
 export function getInitialFilterValues() {
   const today = new Date();

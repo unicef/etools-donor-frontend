@@ -1,20 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { createStyles } from '@material-ui/styles';
-import {
-  makeStyles,
-  AppBar,
-  Popover,
-  Toolbar,
-  Box,
-  IconButton,
-  Typography
-} from '@material-ui/core';
-import { AccountCircle as AccountIcon } from '@material-ui/icons';
+import { makeStyles, AppBar, Toolbar, Box, Typography } from '@material-ui/core';
 
 import { DRAWER_WIDTH } from '../lib/constants';
 import ErrorsSnackbar from './Errors-Snackbar';
-import { selectCreatedUser } from 'selectors/user';
 import { selectUserName } from 'selectors/ui-flags';
 
 const useStyles = makeStyles(theme =>

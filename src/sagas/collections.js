@@ -23,6 +23,7 @@ import { onReceiveReports } from 'slices/reports';
 import { removeEmpties } from 'lib/helpers';
 import { selectDonorName } from 'selectors/ui-flags';
 import { selectReportYear, selectTheme } from 'selectors/filter';
+import { selectError } from 'selectors/errors';
 
 function* handleFetchDonors() {
   try {
@@ -105,7 +106,10 @@ function* handleFetchReports({ payload }) {
 
     yield put(onReceiveReports(reports));
   } catch (err) {
-    yield put(setError(err));
+    const existingError = yield select(selectError);
+    if (!existingError) {
+      yield put(setError(err));
+    }
   } finally {
     yield put(setLoading(false));
   }
