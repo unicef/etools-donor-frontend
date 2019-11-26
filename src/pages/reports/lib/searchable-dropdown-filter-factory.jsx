@@ -52,10 +52,15 @@ export default function SearchableDropdownFilterFactory(selector, label, getValu
   return Component;
 }
 
+SearchableDropdownFilterFactory.propTypes = {
+  selector: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
+  getValueFromObj: PropTypes.func.isRequired
+};
+
 export const FilterProps = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
   onChange: PropTypes.func.isRequired,
-  selector: PropTypes.func,
   disabled: PropTypes.bool,
   filterProp: PropTypes.string
 };

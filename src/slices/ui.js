@@ -1,12 +1,12 @@
 import { createSlice } from 'redux-starter-kit';
 
-const [page, donorId] = location.pathname.split('/').filter(Boolean);
+// const [page, donorId] = location.pathname.split('/').filter(Boolean);
 
 export const uiSlice = createSlice({
   initialState: {
     loading: false,
-    page,
-    donorId
+    page: '',
+    donorId: ''
   },
   reducers: {
     setLoading(state, action) {

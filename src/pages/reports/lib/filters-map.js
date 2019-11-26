@@ -91,4 +91,3 @@ export const FILTERS_MAP = {
     Component: ReportEndDateAfterFilter
   }
 };
-console.log('TCL: FILTERS_MAP', FILTERS_MAP);

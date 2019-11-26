@@ -45,11 +45,16 @@ export const selectUserGroup = createSelector(
 export const selectDonorName = createSelector(
   [selectUserDonor, selectParamDonorId, selectDonors, selectUserGroup],
   (userDonor, paramDonorId, donors, userGroup) => {
-    if (userDonor.name.length && userGroup !== UNICEF_USER_ROLE) {
-      // unicef user profile api returns empty sttring for this property
-      return userDonor.name;
+    if (userGroup === UNICEF_USER_ROLE) {
+      const donor = donors.find(propEq('id', Number(paramDonorId)));
+      return (donor && donor.name) || '';
     }
-    const donor = donors.find(propEq('id', Number(paramDonorId)));
-    return (donor && donor.name) || '';
+    // unicef user profile api returns empty sttring for this property
+    return userDonor.name;
   }
+);
+
+export const selectIsAuthorized = createSelector(
+  [selectDonorName, selectUserGroup],
+  (donorName, group) => Boolean(donorName.length) || group === UNICEF_USER_ROLE
 );

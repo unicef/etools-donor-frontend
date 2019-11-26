@@ -1,5 +1,5 @@
 import React from 'react';
-import { prop } from 'ramda';
+import { propOr } from 'ramda';
 import { selectOffices } from 'selectors/collections';
 import { FORM_CONFIG } from 'lib/constants';
 import SearchableDropdownFilterFactory, {
@@ -8,7 +8,7 @@ import SearchableDropdownFilterFactory, {
 import { QUERY_PROPERTY_RECIPIENT_OFFICE } from '../constants';
 
 export default function RecipientOfficeFilter({ ...props }) {
-  const getLabel = prop(QUERY_PROPERTY_RECIPIENT_OFFICE);
+  const getLabel = propOr('',QUERY_PROPERTY_RECIPIENT_OFFICE);
 
   const Component = SearchableDropdownFilterFactory(
     selectOffices,

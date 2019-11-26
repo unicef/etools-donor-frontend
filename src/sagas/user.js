@@ -2,13 +2,7 @@ import { takeLatest, call, put, delay } from 'redux-saga/effects';
 import { getUserRoles, getUserGroups, createUser, createRole, getUserProfile } from 'api';
 import { setUserRoles } from 'slices/user-roles';
 import { setError } from 'slices/error';
-import {
-  onFetchUserRoles,
-  onFetchUserGroups,
-  onCreateUserRole,
-  redirectToLogin,
-  onFetchUserProfile
-} from 'actions';
+import { onFetchUserRoles, onFetchUserGroups, onCreateUserRole, onFetchUserProfile } from 'actions';
 import { setGroups } from 'slices/user-groups';
 import { createRoleSuccess } from 'slices/created-role';
 import { onFormError } from 'slices/form-error';
@@ -61,15 +55,10 @@ function* handleCreatedRole() {
 }
 
 function* handleFetchUserProfile() {
-  try {
-    yield put(setLoading(true));
-    const userProfile = yield call(getUserProfile);
-    yield put(onReceiveUserProfile(userProfile));
-  } catch (err) {
-    yield put(redirectToLogin());
-  } finally {
-    yield put(setLoading(false));
-  }
+  yield put(setLoading(true));
+  const userProfile = yield call(getUserProfile);
+  yield put(onReceiveUserProfile(userProfile));
+  yield put(setLoading(false));
 }
 
 export default function*() {

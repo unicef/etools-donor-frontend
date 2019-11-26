@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Redirect, useParams } from 'react-router';
-import { selectUserDonorId, selectUserGroup } from 'selectors/ui-flags';
+import { selectUserDonorId, selectUserGroup, selectIsAuthorized } from 'selectors/ui-flags';
 import { UNICEF_USER_ROLE } from 'lib/constants';
 import { initDonorsList } from 'actions';
 
@@ -10,6 +10,7 @@ export default function AuthorizedPage({ children }) {
   const usersDonor = useSelector(selectUserDonorId);
   const userGroup = useSelector(selectUserGroup);
   const dispatch = useDispatch();
+  const isAuthorized = useSelector(selectIsAuthorized);
 
   useEffect(() => {
     if (userGroup === UNICEF_USER_ROLE) {
@@ -24,5 +25,5 @@ export default function AuthorizedPage({ children }) {
     return <Redirect to="/not-found" />;
   }
 
-  return children;
+  return isAuthorized ? children : null;
 }

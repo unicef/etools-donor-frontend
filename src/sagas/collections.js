@@ -1,4 +1,4 @@
-import { takeLatest, call, put, all, select } from 'redux-saga/effects';
+import { takeLatest, call, put, all, select, delay } from 'redux-saga/effects';
 import {
   getDonors,
   getGrants,
@@ -39,6 +39,7 @@ function* handleFetchDonors() {
 
 function* handleFetchGrants({ payload }) {
   try {
+    yield delay(5000);
     const grants = yield call(getGrants, payload);
     yield put(onReceiveGrants(grants));
   } catch (err) {
@@ -120,11 +121,13 @@ export function* donorsSaga() {
 }
 
 function* fetchFiltersCollections(action) {
-  yield call(handleFetchGrants, action);
-  yield call(handleFetchExternalGrants, action);
-  yield call(handleFetchOffices);
-  yield call(handleFetchThemes);
-  yield call(handleFetchStatic);
+  yield all([
+    call(handleFetchGrants, action),
+    call(handleFetchExternalGrants, action),
+    call(handleFetchOffices),
+    call(handleFetchThemes),
+    call(handleFetchStatic)
+  ]);
 }
 
 export function* filtersSaga() {

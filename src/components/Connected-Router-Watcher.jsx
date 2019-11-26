@@ -14,8 +14,9 @@ export default function ConnectedRouterWatcher({ children }) {
 
   useEffect(() => {
     // only dispatch if actual route changed, children change will trigger re-render of this component
-    const [page, donorId] = location.pathname.split('/').filter(Boolean);
-    if (!equals(currentPageName, page) || !equals(currentDonorId, donorId)) {
+    const route = location.pathname.split('/').filter(Boolean);
+    const [page, donorId] = route;
+    if (route.length && (!equals(currentPageName, page) || !equals(currentDonorId, donorId))) {
       dispatch(onRouteChange({ page, donorId: donorId || null }));
     }
   });
