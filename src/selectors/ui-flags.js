@@ -1,4 +1,4 @@
-import { propEq } from 'ramda';
+import { propEq, propOr } from 'ramda';
 import { createSelector } from 'reselect';
 import { selectDonors } from './collections';
 import { UNICEF_USER_ROLE } from 'lib/constants';
@@ -22,10 +22,17 @@ export const selectParamDonorId = createSelector(
   ui => ui.donorId
 );
 
-export const selectUserDonor = createSelector(
+export const selectUserGroup = createSelector(
   selectUserProfile,
-  profile => profile.donor
+  profile => profile.group.name
 );
+
+export const selectUserProfileDonor = createSelector(
+  selectUserProfile,
+  propOr(null, 'donor')
+);
+
+export const selectUserDonor = state => state.donor;
 
 export const selectUserName = createSelector(
   selectUserProfile,
@@ -37,24 +44,24 @@ export const selectUserDonorId = createSelector(
   donor => donor.id
 );
 
-export const selectUserGroup = createSelector(
-  selectUserProfile,
-  profile => profile.group.name
+export const selectDonorName = createSelector(
+  [selectUserDonor],
+  propOr('', 'name')
 );
 
-export const selectDonorName = createSelector(
-  [selectUserDonor, selectParamDonorId, selectDonors, selectUserGroup],
-  (userDonor, paramDonorId, donors, userGroup) => {
-    if (userGroup === UNICEF_USER_ROLE) {
-      const donor = donors.find(propEq('id', Number(paramDonorId)));
-      return (donor && donor.name) || '';
-    }
-    // unicef user profile api returns empty sttring for this property
-    return userDonor.name;
-  }
+export const selectDonorCode = createSelector(
+  selectUserDonor,
+  propOr('', 'code')
+);
+
+export const selectIsUsGov = createSelector(
+  selectUserDonor,
+  propOr(false, 'us_gov')
 );
 
 export const selectIsAuthorized = createSelector(
   [selectDonorName, selectUserGroup],
   (donorName, group) => Boolean(donorName.length) || group === UNICEF_USER_ROLE
 );
+
+//donor_code=N26715

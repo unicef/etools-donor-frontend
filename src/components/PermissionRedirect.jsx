@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router';
 import { REPORTS_PATH, UNICEF_USER_ROLE } from '../lib/constants';
-import { selectUserDonorId, selectUserGroup } from 'selectors/ui-flags';
+import { selectUserDonorId, selectUserGroup, selectUserProfileDonor } from 'selectors/ui-flags';
 
 export const usePermissions = () => {
   const userGroup = useSelector(selectUserGroup);
@@ -12,7 +12,7 @@ export const usePermissions = () => {
   };
 };
 export default function PermissionRedirect() {
-  const usersDonorId = useSelector(selectUserDonorId);
+  const usersDonorId = useSelector(selectUserProfileDonor).id;
   const userGroup = useSelector(selectUserGroup);
 
   if (userGroup === UNICEF_USER_ROLE) {

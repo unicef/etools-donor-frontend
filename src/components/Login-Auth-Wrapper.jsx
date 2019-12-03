@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Loader from './Loader';
-import { onFetchUserProfile, redirectToLogin } from 'actions';
+import { onFetchUserProfile } from 'actions';
 import { selectLoading, selectUserProfile } from 'selectors/ui-flags';
 
 export default function LoginAuthWrapper({ children }) {
@@ -11,11 +11,7 @@ export default function LoginAuthWrapper({ children }) {
   const loading = useSelector(selectLoading);
 
   useEffect(() => {
-    try {
-      dispatch(onFetchUserProfile());
-    } catch (err) {
-      dispatch(redirectToLogin());
-    }
+    dispatch(onFetchUserProfile());
   }, []);
 
   return (

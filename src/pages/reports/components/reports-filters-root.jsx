@@ -47,7 +47,6 @@ export default function ReportsFilter() {
 
   useEffect(() => {
     dispatch(initDonorsFilter(id));
-
     dispatch(onFetchReports(filterValues));
   }, []);
 

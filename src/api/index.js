@@ -94,6 +94,11 @@ export function getReports(params, year) {
   return get(computedUrl, params);
 }
 
+export function getUsGovReports(params) {
+  const computedUrl = `${process.env.REACT_APP_REPORTS_ENDPOINT}US Government Reports/`;
+  return get(computedUrl, params);
+}
+
 export function getThematicReports(params, theme) {
   const computedUrl = `${process.env.REACT_APP_REPORTS_ENDPOINT}Thematic%20Reports/?theme=${theme}`;
   return get(computedUrl, params);

@@ -1,4 +1,4 @@
-import { takeLatest, call, put, all, select, delay } from 'redux-saga/effects';
+import { takeLatest, call, put, all, select } from 'redux-saga/effects';
 import {
   getDonors,
   getGrants,
@@ -7,8 +7,11 @@ import {
   getStaticAssets,
   getOffices,
   getReports,
-  getThematicReports
+  getThematicReports,
+  getUsGovReports
 } from 'api';
+
+import { propEq } from 'ramda';
 
 import { setError } from 'slices/error';
 import { setDonors } from 'slices/donors';
@@ -21,9 +24,19 @@ import { onReceiveStaticAssets } from 'slices/static';
 import { onReceiveOffices } from 'slices/offices';
 import { onReceiveReports } from 'slices/reports';
 import { removeEmpties } from 'lib/helpers';
-import { selectDonorName } from 'selectors/ui-flags';
+import {
+  selectDonorCode,
+  selectIsUsGov,
+  selectParamDonorId,
+  selectUserProfile,
+  selectUserGroup
+} from 'selectors/ui-flags';
 import { selectReportYear, selectTheme } from 'selectors/filter';
 import { selectError } from 'selectors/errors';
+import { waitFor, waitForLength } from './helpers';
+import { selectDonors } from 'selectors/collections';
+import { reportPageLoaded } from 'slices/donor';
+import { UNICEF_USER_ROLE } from 'lib/constants';
 
 function* handleFetchDonors() {
   try {
@@ -39,7 +52,6 @@ function* handleFetchDonors() {
 
 function* handleFetchGrants({ payload }) {
   try {
-    yield delay(5000);
     const grants = yield call(getGrants, payload);
     yield put(onReceiveGrants(grants));
   } catch (err) {
@@ -83,27 +95,66 @@ function* handleFetchStatic() {
   }
 }
 
-function* handleFetchReports({ payload }) {
-  try {
-    const donorName = yield select(selectDonorName);
+// Encapsulate logic for grabbing the current donor and persisting to state
+// for easier access.Only UNICEF user can operate on any donor.
+function* handleCurrentDonor(action) {
+  const profile = yield select(selectUserProfile);
+  const group = yield select(selectUserGroup);
+  let donor;
 
-    const params = {
+  if (group === UNICEF_USER_ROLE) {
+    yield call(waitForLength, selectDonors);
+    const donors = yield select(selectDonors);
+    donor = donors.find(propEq('id', Number(action.payload)));
+  } else {
+    donor = profile.donor;
+  }
+
+  yield put(reportPageLoaded(donor));
+}
+
+function* handleFetchReports(action) {
+  // wait for donor api to return in case of race condition, donorName needed for reports filter call
+  yield call(waitFor, selectDonorCode);
+  yield call(fetchReports, action);
+}
+
+// Tricky business requirement to call differente endpoint based on donor property us_gov first,
+// then whether theme or year were selected at report page
+function* getCallerFunc(payload) {
+  const donorCode = yield select(selectDonorCode);
+  const isUsGov = yield select(selectIsUsGov);
+
+  const reportYear = yield select(selectReportYear);
+  const theme = yield select(selectTheme);
+
+  let result = {
+    params: {
       ...removeEmpties(payload),
-      donor__contains: donorName
-    };
+      donor_code: donorCode
+    },
+    caller: null
+  };
 
+  if (isUsGov) {
+    result.caller = getUsGovReports;
+  } else if (theme) {
+    result.caller = getThematicReports;
+    result.arg = theme;
+  } else {
+    result.caller = getReports;
+    result.arg = reportYear;
+  }
+  return result;
+}
+
+function* fetchReports({ payload }) {
+  try {
     yield put(setLoading(true));
 
-    const reportYear = yield select(selectReportYear);
-    const theme = yield select(selectTheme);
+    const { caller, params, arg } = yield call(getCallerFunc, payload);
 
-    let reports;
-
-    if (theme) {
-      reports = yield call(getThematicReports, params, theme);
-    } else {
-      reports = yield call(getReports, params, reportYear);
-    }
+    const reports = yield call(caller, params, arg);
 
     yield put(onReceiveReports(reports));
   } catch (err) {
@@ -126,7 +177,8 @@ function* fetchFiltersCollections(action) {
     call(handleFetchExternalGrants, action),
     call(handleFetchOffices),
     call(handleFetchThemes),
-    call(handleFetchStatic)
+    call(handleFetchStatic),
+    call(handleCurrentDonor, action)
   ]);
 }
 

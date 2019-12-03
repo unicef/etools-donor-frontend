@@ -10,11 +10,13 @@ import { createdRoleReducer } from './created-role';
 import { uiReducer } from './ui';
 import { userProfileReducer } from './user-profile';
 import { reportFilter } from './report-filter';
+import { donorReducer } from './donor';
 
 export default combineReducers({
   userRoles: userRolesReducer,
   userGroups: groupsReducer,
   donors: donorsReducer,
+  donor: donorReducer,
   error: errorReducer,
   formError: formErrorReducer,
   createdUser: createdUserReducer,
