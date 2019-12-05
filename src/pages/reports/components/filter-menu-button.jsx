@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { keys } from 'ramda';
 import { Menu, MenuItem, Button, withStyles, Checkbox } from '@material-ui/core';
 import ListItemText from '@material-ui/core/ListItemText';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import useFilterStyles from 'styles/filter-styles';
-import { FILTERS_MAP } from '../lib/filters-map';
+import { FILTERS_MAP, getFiltersByPermissions } from '../lib/filters-map';
+import { selectUserGroup } from 'selectors/ui-flags';
 
 export default function FilterMenuButton({ onSelectFilter, selected }) {
   const classes = useFilterStyles();
   const [anchorEl, setAnchorEl] = useState(null);
+  const group = useSelector(selectUserGroup);
+  const usersFilters = getFiltersByPermissions(group);
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -29,7 +32,7 @@ export default function FilterMenuButton({ onSelectFilter, selected }) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {keys(FILTERS_MAP).map(filter => (
+        {usersFilters.map(filter => (
           <StyledMenuItem
             key={FILTERS_MAP[filter].label}
             onClick={onSelectFilter(filter)}

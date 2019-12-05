@@ -10,6 +10,7 @@ export const selectOffices = state => state.offices;
 export const selectYears = createSelector(
   selectStaticAssets,
   assets => assets.report_years
+  // assets => assets.years
 );
 export const selectReportType = createSelector(
   selectStaticAssets,

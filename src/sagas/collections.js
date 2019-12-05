@@ -1,39 +1,27 @@
 import { takeLatest, call, put, all, select } from 'redux-saga/effects';
+
 import {
   getDonors,
   getGrants,
   getExternalGrants,
   getThemes,
   getStaticAssets,
-  getOffices,
-  getReports,
-  getThematicReports,
-  getUsGovReports
+  getOffices
 } from 'api';
 
 import { propEq } from 'ramda';
 
 import { setError } from 'slices/error';
 import { setDonors } from 'slices/donors';
-import { initDonorsList, initDonorsFilter, onFetchReports } from 'actions';
+import { initDonorsList, initDonorsFilter } from 'actions';
 import { setLoading } from 'slices/ui';
 import { onReceiveGrants } from 'slices/grants';
 import { onReceiveExternalGrants } from 'slices/external-grants';
 import { onReceivethemes } from 'slices/themes';
 import { onReceiveStaticAssets } from 'slices/static';
 import { onReceiveOffices } from 'slices/offices';
-import { onReceiveReports } from 'slices/reports';
-import { removeEmpties } from 'lib/helpers';
-import {
-  selectDonorCode,
-  selectIsUsGov,
-  selectParamDonorId,
-  selectUserProfile,
-  selectUserGroup
-} from 'selectors/ui-flags';
-import { selectReportYear, selectTheme } from 'selectors/filter';
-import { selectError } from 'selectors/errors';
-import { waitFor, waitForLength } from './helpers';
+import { selectUserProfile, selectUserGroup } from 'selectors/ui-flags';
+import { waitForLength } from './helpers';
 import { selectDonors } from 'selectors/collections';
 import { reportPageLoaded } from 'slices/donor';
 import { UNICEF_USER_ROLE } from 'lib/constants';
@@ -113,60 +101,6 @@ function* handleCurrentDonor(action) {
   yield put(reportPageLoaded(donor));
 }
 
-function* handleFetchReports(action) {
-  // wait for donor api to return in case of race condition, donorName needed for reports filter call
-  yield call(waitFor, selectDonorCode);
-  yield call(fetchReports, action);
-}
-
-// Tricky business requirement to call differente endpoint based on donor property us_gov first,
-// then whether theme or year were selected at report page
-function* getCallerFunc(payload) {
-  const donorCode = yield select(selectDonorCode);
-  const isUsGov = yield select(selectIsUsGov);
-
-  const reportYear = yield select(selectReportYear);
-  const theme = yield select(selectTheme);
-
-  let result = {
-    params: {
-      ...removeEmpties(payload),
-      donor_code: donorCode
-    },
-    caller: null
-  };
-
-  if (isUsGov) {
-    result.caller = getUsGovReports;
-  } else if (theme) {
-    result.caller = getThematicReports;
-    result.arg = theme;
-  } else {
-    result.caller = getReports;
-    result.arg = reportYear;
-  }
-  return result;
-}
-
-function* fetchReports({ payload }) {
-  try {
-    yield put(setLoading(true));
-
-    const { caller, params, arg } = yield call(getCallerFunc, payload);
-
-    const reports = yield call(caller, params, arg);
-
-    yield put(onReceiveReports(reports));
-  } catch (err) {
-    const existingError = yield select(selectError);
-    if (!existingError) {
-      yield put(setError(err));
-    }
-  } finally {
-    yield put(setLoading(false));
-  }
-}
-
 export function* donorsSaga() {
   yield takeLatest(initDonorsList.type, handleFetchDonors);
 }
@@ -186,10 +120,6 @@ export function* filtersSaga() {
   yield takeLatest(initDonorsFilter.type, fetchFiltersCollections);
 }
 
-export function* reportsSaga() {
-  yield takeLatest(onFetchReports.type, handleFetchReports);
-}
-
 export default function*() {
-  yield all([filtersSaga(), donorsSaga(), reportsSaga()]);
+  yield all([filtersSaga(), donorsSaga()]);
 }

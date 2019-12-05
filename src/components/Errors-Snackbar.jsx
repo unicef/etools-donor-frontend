@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { pathOr } from 'ramda';
 import { useSelector, useDispatch } from 'react-redux';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
@@ -20,9 +21,9 @@ export default function ErrorsSnackbar() {
   const [errorMessage, setErrorMessage] = useState('');
 
   function buildErrorMessage(error) {
-    let message = `Error: ${error.message}.`;
+    let message = pathOr(`Error: ${error.message}`, ['response', 'data', 'detail'])(error);
     if (error.config) {
-      message += `Failure at url: ${error.config.url}`;
+      message += `. Failure at url: ${error.config.url}`;
     }
     setErrorMessage(message);
   }

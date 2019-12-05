@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useGetFilterClasses } from 'styles/filter-styles';
 import { createMuiTheme } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
-import { format, parse } from 'date-fns';
+import { format, parse, startOfYear, endOfYear } from 'date-fns';
 import { FormControl } from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
 import { FilterProps } from './dropdown-filter-factory';
 import { getColorTheme } from 'styles/theme';
+import { DATE_FORMAT, DISPLAY_FORMAT } from '../constants';
 
 const defaultMaterialTheme = createMuiTheme({
   palette: {
@@ -15,14 +16,12 @@ const defaultMaterialTheme = createMuiTheme({
   }
 });
 
-export const DATE_FORMAT = 'yyyy-MM-dd';
-export const DISPLAY_FORMAT = 'yyyy-MMM-dd';
-
 export default function DateFilterFactory(label) {
   function DateFilter({ value, onChange }) {
     const { classes } = useGetFilterClasses();
     const [date, setDate] = useState(new Date());
-
+    const minDate = startOfYear(new Date());
+    const maxDate = endOfYear(new Date());
     useEffect(() => {
       const newDate = value ? parse(value, DATE_FORMAT, new Date()) : null;
       setDate(newDate);
@@ -44,6 +43,8 @@ export default function DateFilterFactory(label) {
               clearable
               // variant="inline"
               margin="none"
+              minDate={minDate}
+              maxDate={maxDate}
               id="grant-from"
               format={DISPLAY_FORMAT}
               label={label}

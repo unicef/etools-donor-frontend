@@ -28,7 +28,7 @@ export default function DropdownFilterFactory(selector, label, filterProp = 'lab
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          {options.slice(0, 5).map(option => (
+          {options.map(option => (
             <MenuItem key={option.code} value={option[filterProp]}>
               {option[filterProp]}
             </MenuItem>

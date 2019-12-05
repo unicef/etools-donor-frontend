@@ -1,6 +1,5 @@
-import { propEq, propOr } from 'ramda';
+import { propOr } from 'ramda';
 import { createSelector } from 'reselect';
-import { selectDonors } from './collections';
 import { UNICEF_USER_ROLE } from 'lib/constants';
 
 export const selectCreatedRole = state => state.createdRole;
@@ -29,7 +28,7 @@ export const selectUserGroup = createSelector(
 
 export const selectUserProfileDonor = createSelector(
   selectUserProfile,
-  propOr(null, 'donor')
+  propOr({}, 'donor')
 );
 
 export const selectUserDonor = state => state.donor;
@@ -39,8 +38,8 @@ export const selectUserName = createSelector(
   profile => profile.username
 );
 
-export const selectUserDonorId = createSelector(
-  selectUserDonor,
+export const selectUserProfileDonorId = createSelector(
+  selectUserProfileDonor,
   donor => donor.id
 );
 
@@ -63,5 +62,3 @@ export const selectIsAuthorized = createSelector(
   [selectDonorName, selectUserGroup],
   (donorName, group) => Boolean(donorName.length) || group === UNICEF_USER_ROLE
 );
-
-//donor_code=N26715

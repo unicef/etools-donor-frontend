@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { useSelector } from 'react-redux';
 import {
   Grid,
   Paper,
@@ -21,6 +21,7 @@ import Loader from 'components/Loader';
 import clsx from 'clsx';
 import { selectLoading } from 'selectors/ui-flags';
 import { usePagination } from 'components/table/lib/pagination';
+import { initDonorsList } from 'actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -55,6 +56,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function DonorsList() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const [query, setQuery] = useState('');
   const [filteredList, setFilteredList] = useState([]);
   const [searchActive, setSearchActive] = useState(false);
@@ -63,6 +66,10 @@ export default function DonorsList() {
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = usePagination();
 
   const donors = useSelector(selectDonors);
+
+  useEffect(() => {
+    dispatch(initDonorsList());
+  }, []);
 
   useEffect(() => {
     if (donors.length) {

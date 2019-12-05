@@ -7,9 +7,13 @@ import AppToolbar from './App-Bar';
 import { DRAWER_WIDTH, REPORTS_PATH, USERS_PORTAL_PATH } from '../lib/constants';
 import DonorsList from 'pages/donors-list';
 import ContentHeader from './Content-Header';
-import UsersList from 'pages/users-portal';
+import UsersManagement from 'pages/users-portal';
 import ReportsPage from 'pages/reports';
-import Authorized from '../pages/Authorized';
+import {
+  ProtectedRouteDonorsList,
+  ProtectedRouteReportPage,
+  ProtectedRouteUserManagement
+} from '../pages/Authorized';
 
 import PermissionRedirect from './PermissionRedirect';
 import NotFound from './404';
@@ -69,15 +73,22 @@ export default function MainAppBar() {
 
         <div className={classes.contentWrapper}>
           <Box flexDirection="column">
-            <Authorized>
-              <Switch>
-                <Route exact path="/" component={PermissionRedirect} />
-                <Route exact path="/donors" component={DonorsList} />
-                <Route exact path={`${REPORTS_PATH}/:donorId`} component={ReportsPage} />
-                <Route exact path={`${USERS_PORTAL_PATH}/:donorId`} component={UsersList} />
-                <Route path="*" component={NotFound} />
-              </Switch>
-            </Authorized>
+            <Switch>
+              <Route exact path="/" component={PermissionRedirect} />
+
+              <ProtectedRouteDonorsList exact path="/donors">
+                <DonorsList />
+              </ProtectedRouteDonorsList>
+
+              <ProtectedRouteReportPage exact path={`${REPORTS_PATH}/:donorId`}>
+                <ReportsPage />
+              </ProtectedRouteReportPage>
+
+              <ProtectedRouteUserManagement exact path={`${USERS_PORTAL_PATH}/:donorId`}>
+                <UsersManagement />
+              </ProtectedRouteUserManagement>
+              <Route path="*" component={NotFound} />
+            </Switch>
           </Box>
         </div>
       </main>

@@ -12,7 +12,6 @@ import FilterMenuButton from './filter-menu-button';
 import useFiltersQueries from 'lib/use-filters-queries';
 
 import { FORM_CONFIG } from 'lib/constants';
-import { getInitialFilterValues } from '../constants';
 import { FILTERS_MAP } from '../lib/filters-map';
 import MandatoryFilters from './mandatory-filters';
 import { selectMandatoryFilterSelected } from 'selectors/filter';
@@ -34,7 +33,7 @@ export default function ReportsFilter() {
   }
 
   const initialFiltersActiveState = mapObjIndexed(always(false), FILTERS_MAP); // set which filters are active on load
-  const initialFilterValues = getInitialFilterValues(); // set default filter values
+  const initialFilterValues = mapObjIndexed(always(''), FILTERS_MAP); // set default filter values
 
   const {
     handleSelectFilter,
@@ -66,11 +65,11 @@ export default function ReportsFilter() {
 
             <Box display="flex" flex="1 1 auto" alignItems="flex-start" flexWrap="wrap">
               <Grid
+                className={classes.filterComponents}
                 container
                 direction="row"
                 flex="1 1 auto"
                 spacing={2}
-                className={classes.filterComponents}
               >
                 {selectedFilters.map((filter, idx) => {
                   const { Component: FilterComponent } = FILTERS_MAP[filter];
