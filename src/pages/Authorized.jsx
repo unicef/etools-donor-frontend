@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-import { Redirect, useParams } from 'react-router';
+import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router';
 import { Route } from 'react-router-dom';
 
 import { selectUserProfileDonorId } from 'selectors/ui-flags';
@@ -34,10 +34,7 @@ export function ProtectedRouteUserManagement({ children, ...rest }) {
   const { isDonorAdmin } = usePermissions();
 
   return (
-    <Route
-      {...rest}
-      render={() => (isDonorAdmin ? children : <Redirect to="/not-found" />)}
-     />
+    <Route {...rest} render={() => (isDonorAdmin ? children : <Redirect to="/not-found" />)} />
   );
 }
 

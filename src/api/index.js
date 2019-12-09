@@ -17,7 +17,7 @@ const getBaseOptions = () => ({
   }
 });
 
-async function get(uri, params = {}, options = getBaseOptions()) {
+export async function get(uri, params = {}, options = getBaseOptions()) {
   const opt = { method: 'GET', params };
   try {
     const response = await axios.get(`${backendPath}${uri}`, { ...opt, ...options });

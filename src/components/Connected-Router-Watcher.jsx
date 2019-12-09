@@ -5,12 +5,21 @@ import { useLocation } from 'react-router';
 import { onRouteChange } from 'slices/ui';
 import { useEffect } from 'react';
 import { selectPageName, selectParamDonorId } from 'selectors/ui-flags';
+import { usePermissions } from './PermissionRedirect';
+import { initDonorsList } from 'actions';
 
 export default function ConnectedRouterWatcher({ children }) {
   const location = useLocation();
-  const dispatch = useDispatch();
   const currentPageName = useSelector(selectPageName);
   const currentDonorId = useSelector(selectParamDonorId);
+  const { isUnicefUser } = usePermissions();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isUnicefUser) {
+      dispatch(initDonorsList());
+    }
+  }, [isUnicefUser]);
 
   useEffect(() => {
     // only dispatch if actual route changed, children change will trigger re-render of this component
