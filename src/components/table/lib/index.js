@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 
 import { BACKEND_PROPERTIES_USER_LAST_LOGIN } from '../../../lib/constants';
 import { getUserStatusStr } from '../users';
-import { DISPLAY_FORMAT } from 'pages/reports/lib/date-filter-factory';
+import { DISPLAY_FORMAT } from 'pages/reports/constants';
 
 export function desc(a, b, func) {
   if (func(b) < func(a)) {

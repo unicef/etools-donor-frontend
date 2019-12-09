@@ -29,7 +29,7 @@ export default function ExternalGrantsFilter({ value, onChange }) {
           <em>None</em>
         </MenuItem>
         {externalGrantsCollection.map(grant => (
-          <MenuItem key={grant.id} value={grant.id}>
+          <MenuItem key={grant.id} value={grant.code}>
             {getGrantDisplay(grant)}
           </MenuItem>
         ))}

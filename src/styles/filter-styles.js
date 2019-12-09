@@ -4,12 +4,17 @@ import clsx from 'clsx';
 const useFilterStyles = makeStyles(theme =>
   createStyles({
     filterContainer: {
-      padding: `${theme.spacing(2)}px  0 0`
+      borderRadius: 8,
+      padding: theme.spacing(2),
+      background: theme.palette.common.white
     },
     button: {
       marginTop: theme.spacing(2),
       display: 'flex',
       justifyContent: 'flex-end'
+    },
+    filterComponents: {
+      margin: 0
     },
     filterIcon: {
       fontSize: 20,
@@ -33,10 +38,11 @@ const useFilterStyles = makeStyles(theme =>
       cursor: 'pointer',
       padding: '4px 16px 4px 12px',
       fontWeight: 400,
+      marginTop: theme.spacing(1),
       fontSize: 14,
       borderRadius: 14,
-
-      lineHeight: `${theme.spacing(3)}px`
+      lineHeight: `${theme.spacing(3)}px`,
+      border: `1px solid #e5eaf0;`
     },
     filterMenu: {
       marginRight: 32
@@ -57,6 +63,9 @@ const useFilterStyles = makeStyles(theme =>
     },
     labelShrink: {
       left: 0
+    },
+    disabled: {
+      opacity: 0.5
     },
     placeholder: {
       overflowX: 'hidden',
@@ -80,6 +89,12 @@ const useFilterStyles = makeStyles(theme =>
       margin: `0 ${theme.spacing(2)}px 0 0 `,
       height: 18,
       width: 18
+    },
+    loneLabel: {
+      marginBottom: theme.spacing(1.5),
+      '&.hidden': {
+        visibility: 'hidden'
+      }
     }
   })
 );

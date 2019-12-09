@@ -1,6 +1,6 @@
 import { createSlice } from 'redux-starter-kit';
 
-const staticSlice = createSlice({
+const statciAssetsSlice = createSlice({
   initialState: {
     years: [],
     report_type: [],
@@ -17,5 +17,5 @@ const staticSlice = createSlice({
   }
 });
 
-export const { reducer: staticAssets } = staticSlice;
-export const { onReceiveStaticAssets } = staticSlice.actions;
+export const { reducer: staticAssets } = statciAssetsSlice;
+export const { onReceiveStaticAssets } = statciAssetsSlice.actions;

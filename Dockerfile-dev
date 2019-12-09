@@ -12,3 +12,5 @@ RUN cp -a /tmp/node_modules /code/node_modules
 
 WORKDIR /code
 CMD ["npm", "start"]
+
+# docker rmi -f $(docker images | grep "frontend" | awk '{print $3}') # remove all <none> images

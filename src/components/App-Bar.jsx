@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { createStyles } from '@material-ui/styles';
-import { makeStyles, AppBar, Popover, Toolbar, Box, IconButton } from '@material-ui/core';
-import { AccountCircle as AccountIcon } from '@material-ui/icons';
+import { makeStyles, AppBar, Toolbar, Box, Typography } from '@material-ui/core';
 
 import { DRAWER_WIDTH } from '../lib/constants';
+import ErrorsSnackbar from './Errors-Snackbar';
+import { selectUserName } from 'selectors/ui-flags';
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -39,37 +41,16 @@ const useStyles = makeStyles(theme =>
 );
 
 export default function AppToolbar() {
-  function handleProfileClick() {}
-  const [profileAnchor, setProfileAnchor] = useState(null);
-
-  const profileAnchorOpen = Boolean(profileAnchor);
   const classes = useStyles();
-
+  const userName = useSelector(selectUserName);
   return (
     <AppBar className={classes.appBar} position="fixed">
       <Toolbar>
         <Box width="100%" display="flex" justifyContent="flex-end">
-          <IconButton className={classes.iconBtn} onClick={handleProfileClick}>
-            <AccountIcon className={`${classes.iconBox} ${classes.headerIcon}`} />
-          </IconButton>
+          <Typography className={classes.banner}>{userName}</Typography>
         </Box>
-        <Popover
-          id="partnerProfile"
-          anchorEl={profileAnchor}
-          open={profileAnchorOpen}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right'
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right'
-          }}
-          onClose={() => setProfileAnchor(null)}
-        >
-          {/* <Logout onClose={handleProfileRequestClose} logout={() => {}} /> */}
-        </Popover>
       </Toolbar>
+      <ErrorsSnackbar />
     </AppBar>
   );
 }

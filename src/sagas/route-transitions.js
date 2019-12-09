@@ -8,7 +8,7 @@ function* handleRedirect() {
     return;
   }
 
-  window.location.href = `${url}/login/`;
+  window.location.href = `${url}/sociallogin/unicef-azuread-b2c-oauth2/`;
   yield null;
 }
 

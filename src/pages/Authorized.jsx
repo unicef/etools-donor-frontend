@@ -1,28 +1,47 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Redirect, useParams } from 'react-router';
-import { selectUserDonorId, selectUserGroup } from 'selectors/ui-flags';
-import { UNICEF_USER_ROLE } from 'lib/constants';
-import { initDonorsList } from 'actions';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router';
+import { Route } from 'react-router-dom';
 
-export default function AuthorizedPage({ children }) {
-  const { donorId: paramDonor } = useParams();
-  const usersDonor = useSelector(selectUserDonorId);
-  const userGroup = useSelector(selectUserGroup);
-  const dispatch = useDispatch();
+import { selectUserProfileDonorId } from 'selectors/ui-flags';
+import { usePermissions } from 'components/PermissionRedirect';
 
-  useEffect(() => {
-    if (userGroup === UNICEF_USER_ROLE) {
-      dispatch(initDonorsList());
-    }
-  }, [userGroup]);
-
-  const unassignedDonorAttempt =
-    paramDonor && usersDonor !== Number(paramDonor) && userGroup !== UNICEF_USER_ROLE;
-
-  if (unassignedDonorAttempt) {
-    return <Redirect to="/not-found" />;
-  }
-
-  return children;
+export function ProtectedRouteDonorsList({ children, ...rest }) {
+  const { isUnicefUser } = usePermissions();
+  return (
+    <Route {...rest} render={() => (isUnicefUser ? children : <Redirect to="/not-found" />)} />
+  );
 }
+
+export function ProtectedRouteReportPage({ children, ...rest }) {
+  const { isUnicefUser } = usePermissions();
+  const usersDonor = useSelector(selectUserProfileDonorId);
+
+  return (
+    <Route
+      {...rest}
+      render={({ match }) => {
+        const { donorId } = match.params;
+        const unassignedDonorAttempt = Boolean(usersDonor !== Number(donorId) && !isUnicefUser);
+        return unassignedDonorAttempt ? <Redirect to="/not-found" /> : children;
+      }}
+    />
+  );
+}
+
+export function ProtectedRouteUserManagement({ children, ...rest }) {
+  const { isDonorAdmin } = usePermissions();
+
+  return (
+    <Route {...rest} render={() => (isDonorAdmin ? children : <Redirect to="/not-found" />)} />
+  );
+}
+
+const ProtectedRouteProps = {
+  children: PropTypes.node.isRequired
+};
+
+ProtectedRouteDonorsList.propTypes = ProtectedRouteProps;
+ProtectedRouteReportPage.propTypes = ProtectedRouteProps;
+ProtectedRouteUserManagement.propTypes = ProtectedRouteProps;

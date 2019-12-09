@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { getCookie } from './helpers';
-import DateFns from '@date-io/date-fns';
-
-const dateUtils = new DateFns();
+import Qs from 'qs';
 
 const backendPath = '/api';
 
@@ -10,10 +8,16 @@ const getBaseOptions = () => ({
   headers: {
     'X-CSRFToken': getCookie('csrftoken')
   },
-  withCredentials: true
+
+  withCredentials: true,
+  paramsSerializer: function(params) {
+    return Qs.stringify(params, {
+      arrayFormat: 'comma'
+    });
+  }
 });
 
-async function get(uri, params = {}, options = getBaseOptions()) {
+export async function get(uri, params = {}, options = getBaseOptions()) {
   const opt = { method: 'GET', params };
   try {
     const response = await axios.get(`${backendPath}${uri}`, { ...opt, ...options });
@@ -85,9 +89,17 @@ export function getOffices() {
   return get(process.env.REACT_APP_BUSINESS_AREA_ENDPOINT);
 }
 
-export function getReports(params) {
-  const currentYear = dateUtils.getYear(new Date());
-  const computedUrl = `${process.env.REACT_APP_REPORTS_ENDPOINT}${currentYear} Certified Reports/`;
-  // const computedUrl = `${process.env.REACT_APP_REPORTS_ENDPOINT}Temporary InSight Test 3000 Reports`;
+export function getReports(params, year) {
+  const computedUrl = `${process.env.REACT_APP_REPORTS_ENDPOINT}${year} Certified Reports/`;
+  return get(computedUrl, params);
+}
+
+export function getUsGovReports(params) {
+  const computedUrl = `${process.env.REACT_APP_REPORTS_ENDPOINT}US Government Reports/`;
+  return get(computedUrl, params);
+}
+
+export function getThematicReports(params, theme) {
+  const computedUrl = `${process.env.REACT_APP_REPORTS_ENDPOINT}Thematic%20Reports/?theme=${theme}`;
   return get(computedUrl, params);
 }

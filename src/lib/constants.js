@@ -33,8 +33,8 @@ export const FORM_CONFIG = {
   reportCategory: {
     label: 'Report Category'
   },
-  reportPeriod: {
-    label: 'Report Period'
+  reportYear: {
+    label: 'Report Year'
   },
   reportingGroup: {
     label: 'Reporting Group'
@@ -44,6 +44,9 @@ export const FORM_CONFIG = {
   },
   donorDocument: {
     label: 'Donor Document'
+  },
+  offices: {
+    label: 'Recipient Office'
   }
 };
 

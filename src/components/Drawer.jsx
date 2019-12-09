@@ -10,7 +10,8 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Drawer
+  Drawer,
+  Link
 } from '@material-ui/core';
 
 import DescriptionIcon from '@material-ui/icons/Description';
@@ -18,7 +19,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import logo from 'assets/images/UNICEF_logo.png';
 import { REPORTS_PATH, USERS_PORTAL_PATH, DONOR_ADMIN_ROLE } from '../lib/constants';
 import clsx from 'clsx';
-import { selectUserDonorId, selectUserGroup } from 'selectors/ui-flags';
+import { selectUserProfileDonorId, selectUserGroup } from 'selectors/ui-flags';
 
 export const useNav = () => {
   const history = useHistory();
@@ -38,7 +39,7 @@ export const useNav = () => {
 
 export default function ConnectedDrawer() {
   const classes = useMainStyles();
-  const donorId = useSelector(selectUserDonorId);
+  const donorId = useSelector(selectUserProfileDonorId);
 
   const { handleNav, goHome, navSelected, isAdmin } = useNav();
   return (
@@ -55,9 +56,11 @@ export default function ConnectedDrawer() {
           <img src={logo} className={classes.logo} alt="Unicef Logo" />
         </Box>
         <Box display="flex" alignItems="center" flexGrow={1}>
-          <Typography color="secondary" className={classes.title}>
-            Donor Reporting Portal
-          </Typography>
+          <Link href="/">
+            <Typography color="secondary" className={classes.title}>
+              Donor Reporting Portal
+            </Typography>
+          </Link>
         </Box>
       </Box>
       <Divider />

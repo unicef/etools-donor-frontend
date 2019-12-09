@@ -1,13 +1,34 @@
 // import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { equals } from 'ramda';
 import { useLocation } from 'react-router';
-import { onRouteChange } from 'reducers/ui';
+import { onRouteChange } from 'slices/ui';
+import { useEffect } from 'react';
+import { selectPageName, selectParamDonorId } from 'selectors/ui-flags';
+import { usePermissions } from './PermissionRedirect';
+import { initDonorsList } from 'actions';
 
 export default function ConnectedRouterWatcher({ children }) {
   const location = useLocation();
+  const currentPageName = useSelector(selectPageName);
+  const currentDonorId = useSelector(selectParamDonorId);
+  const { isUnicefUser } = usePermissions();
   const dispatch = useDispatch();
-  const [page, donorId] = location.pathname.split('/').filter(Boolean);
 
-  dispatch(onRouteChange({ page, donorId: donorId || null }));
+  useEffect(() => {
+    if (isUnicefUser) {
+      dispatch(initDonorsList());
+    }
+  }, [isUnicefUser]);
+
+  useEffect(() => {
+    // only dispatch if actual route changed, children change will trigger re-render of this component
+    const route = location.pathname.split('/').filter(Boolean);
+    const [page, donorId] = route;
+    if (route.length && (!equals(currentPageName, page) || !equals(currentDonorId, donorId))) {
+      dispatch(onRouteChange({ page, donorId: donorId || null }));
+    }
+  });
+
   return children;
 }

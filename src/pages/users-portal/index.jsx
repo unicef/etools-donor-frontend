@@ -1,13 +1,12 @@
 import React from 'react';
 import UsersFilter from './components/users-filter';
 import UsersTable from 'components/table/users';
-import Authorized from 'pages/Authorized';
 
-export default function UsersList() {
+export default function UsersManagement() {
   return (
-    <Authorized>
+    <>
       <UsersFilter />
       <UsersTable />
-    </Authorized>
+    </>
   );
 }

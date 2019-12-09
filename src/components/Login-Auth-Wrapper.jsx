@@ -5,7 +5,7 @@ import Loader from './Loader';
 import { onFetchUserProfile } from 'actions';
 import { selectLoading, selectUserProfile } from 'selectors/ui-flags';
 
-export default function Auth({ children }) {
+export default function LoginAuthWrapper({ children }) {
   const dispatch = useDispatch();
   const userProfile = useSelector(selectUserProfile);
   const loading = useSelector(selectLoading);
@@ -22,6 +22,6 @@ export default function Auth({ children }) {
   );
 }
 
-Auth.propTypes = {
+LoginAuthWrapper.propTypes = {
   children: PropTypes.node.isRequired
 };

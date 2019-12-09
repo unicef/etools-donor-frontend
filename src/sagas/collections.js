@@ -1,42 +1,38 @@
-import { takeLatest, call, put, all } from 'redux-saga/effects';
+import { takeLatest, call, put, all, select } from 'redux-saga/effects';
+
 import {
   getDonors,
   getGrants,
   getExternalGrants,
   getThemes,
   getStaticAssets,
-  getOffices,
-  getReports
+  getOffices
 } from 'api';
 
-import { setError } from 'reducers/error';
-import { setDonors } from 'reducers/donors';
-import { initDonorsList, initDonorsFilter, onFetchReports } from 'actions';
-// import { REPORTS, USERS_PORTAL } from '../lib/constants';
-import { setLoading } from 'reducers/ui';
-import { onReceiveGrants } from 'reducers/grants';
-import { onReceiveExternalGrants } from 'reducers/external-grants';
-import { onReceivethemes } from 'reducers/themes';
-import { onReceiveStaticAssets } from 'reducers/static';
-import { onReceiveOffices } from 'reducers/offices';
-import { onReceiveReports } from 'reducers/reports';
-import { removeEmpties } from 'lib/helpers';
-// import { selectDonorName } from 'selectors/ui-flags';
+import { propEq } from 'ramda';
 
-// might be neded
-// const PAGE_DONORS_API_MAP = {
-//   [USERS_PORTAL]: getAdminDonors,
-//   [REPORTS]: getDonors
-// };
+import { setError } from 'slices/error';
+import { setDonors } from 'slices/donors';
+import { initDonorsList, initDonorsFilter } from 'actions';
+import { setLoading } from 'slices/ui';
+import { onReceiveGrants } from 'slices/grants';
+import { onReceiveExternalGrants } from 'slices/external-grants';
+import { onReceivethemes } from 'slices/themes';
+import { onReceiveStaticAssets } from 'slices/static';
+import { onReceiveOffices } from 'slices/offices';
+import { selectUserProfile, selectUserGroup } from 'selectors/ui-flags';
+import { waitForLength } from './helpers';
+import { selectDonors } from 'selectors/collections';
+import { reportPageLoaded } from 'slices/donor';
+import { UNICEF_USER_ROLE } from 'lib/constants';
 
 function* handleFetchDonors() {
   try {
-    // const donorApi = PAGE_DONORS_API_MAP[payload];
     yield put(setLoading(true));
     const donors = yield call(getDonors);
     yield put(setDonors(donors));
   } catch (err) {
-    yield put(setError(err.message));
+    yield put(setError(err));
   } finally {
     yield put(setLoading(false));
   }
@@ -47,7 +43,7 @@ function* handleFetchGrants({ payload }) {
     const grants = yield call(getGrants, payload);
     yield put(onReceiveGrants(grants));
   } catch (err) {
-    yield put(setError(err.message));
+    yield put(setError(err));
   }
 }
 
@@ -56,7 +52,7 @@ function* handleFetchOffices() {
     const offices = yield call(getOffices);
     yield put(onReceiveOffices(offices));
   } catch (err) {
-    yield put(setError(err.message));
+    yield put(setError(err));
   }
 }
 
@@ -65,7 +61,7 @@ function* handleFetchExternalGrants({ payload }) {
     const grants = yield call(getExternalGrants, payload);
     yield put(onReceiveExternalGrants(grants));
   } catch (err) {
-    yield put(setError(err.message));
+    yield put(setError(err));
   }
 }
 
@@ -74,7 +70,7 @@ function* handleFetchThemes() {
     const themes = yield call(getThemes);
     yield put(onReceivethemes(themes));
   } catch (err) {
-    yield put(setError(err.message));
+    yield put(setError(err));
   }
 }
 
@@ -83,29 +79,26 @@ function* handleFetchStatic() {
     const staticDropdowns = yield call(getStaticAssets);
     yield put(onReceiveStaticAssets(staticDropdowns));
   } catch (err) {
-    yield put(setError(err.message));
+    yield put(setError(err));
   }
 }
 
-function* handleFetchReports({ payload }) {
-  try {
-    // omit until property names align with backend and profile
-    // const donorName = yield select(selectDonorName);
+// Encapsulate logic for grabbing the current donor and persisting to state
+// for easier access.Only UNICEF user can operate on any donor.
+function* handleCurrentDonor(action) {
+  const profile = yield select(selectUserProfile);
+  const group = yield select(selectUserGroup);
+  let donor;
 
-    const params = {
-      ...removeEmpties(payload)
-      // donor__contains: donorName
-    };
-
-    yield put(setLoading(true));
-    const reports = yield call(getReports, params);
-
-    yield put(onReceiveReports(reports));
-  } catch (err) {
-    yield put(setError(err.message));
-  } finally {
-    yield put(setLoading(false));
+  if (group === UNICEF_USER_ROLE) {
+    yield call(waitForLength, selectDonors);
+    const donors = yield select(selectDonors);
+    donor = donors.find(propEq('id', Number(action.payload)));
+  } else {
+    donor = profile.donor;
   }
+
+  yield put(reportPageLoaded(donor));
 }
 
 export function* donorsSaga() {
@@ -113,23 +106,20 @@ export function* donorsSaga() {
 }
 
 function* fetchFiltersCollections(action) {
-  yield call(handleFetchGrants, action);
-  yield call(handleFetchExternalGrants, action);
-  yield call(handleFetchOffices);
-  yield call(handleFetchThemes);
-  yield call(handleFetchStatic);
+  yield all([
+    call(handleFetchGrants, action),
+    call(handleFetchExternalGrants, action),
+    call(handleFetchOffices),
+    call(handleFetchThemes),
+    call(handleFetchStatic),
+    call(handleCurrentDonor, action)
+  ]);
 }
 
 export function* filtersSaga() {
   yield takeLatest(initDonorsFilter.type, fetchFiltersCollections);
 }
 
-export function* reportsSaga() {
-  yield takeLatest(onFetchReports.type, handleFetchReports);
-}
-
 export default function*() {
-  yield all([filtersSaga(), donorsSaga(), reportsSaga()]);
+  yield all([filtersSaga(), donorsSaga()]);
 }
-
-//TODO: normalize state

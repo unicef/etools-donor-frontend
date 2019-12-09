@@ -1,6 +1,6 @@
-import { propEq } from 'ramda';
+import { propOr } from 'ramda';
 import { createSelector } from 'reselect';
-import { selectDonors } from './collections';
+import { UNICEF_USER_ROLE } from 'lib/constants';
 
 export const selectCreatedRole = state => state.createdRole;
 export const selectFormError = state => state.formError;
@@ -11,35 +11,54 @@ export const selectLoading = createSelector(
   selectUi,
   ui => ui.loading
 );
+export const selectPageName = createSelector(
+  selectUi,
+  ui => ui.page
+);
 
 export const selectParamDonorId = createSelector(
   selectUi,
   ui => ui.donorId
 );
 
-export const selectUserDonor = createSelector(
+export const selectUserGroup = createSelector(
   selectUserProfile,
-  profile => profile.donor
+  profile => profile.group.name
 );
 
-export const selectUserDonorId = createSelector(
-  selectUserDonor,
+export const selectUserProfileDonor = createSelector(
+  selectUserProfile,
+  propOr({}, 'donor')
+);
+
+export const selectUserDonor = state => state.donor;
+
+export const selectUserName = createSelector(
+  selectUserProfile,
+  profile => profile.username
+);
+
+export const selectUserProfileDonorId = createSelector(
+  selectUserProfileDonor,
   donor => donor.id
 );
 
 export const selectDonorName = createSelector(
-  [selectUserDonor, selectParamDonorId, selectDonors],
-  (userDonor, paramDonorId, donors) => {
-    if (userDonor.name.length) {
-      // unicef user profile api returns empty sttring for this property
-      return userDonor.name;
-    }
-    const donor = donors.find(propEq('id', Number(paramDonorId)));
-    return (donor && donor.name) || '';
-  }
+  [selectUserDonor],
+  propOr('', 'name')
 );
 
-export const selectUserGroup = createSelector(
-  selectUserProfile,
-  profile => profile.group.name
+export const selectDonorCode = createSelector(
+  selectUserDonor,
+  propOr('', 'code')
+);
+
+export const selectIsUsGov = createSelector(
+  selectUserDonor,
+  propOr(false, 'us_gov')
+);
+
+export const selectIsAuthorized = createSelector(
+  [selectDonorName, selectUserGroup],
+  (donorName, group) => Boolean(donorName.length) || group === UNICEF_USER_ROLE
 );

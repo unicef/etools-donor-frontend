@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Auth from 'components/Auth';
+import Auth from 'components/Login-Auth-Wrapper';
 import Main from 'components/Main';
 import RouteObserver from 'components/Connected-Router-Watcher';
 

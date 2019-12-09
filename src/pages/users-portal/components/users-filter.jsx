@@ -16,7 +16,7 @@ import { selectUserGroups } from 'selectors/user';
 import { FORM_CONFIG } from '../../../lib/constants';
 import { onFetchUserRoles, onFetchUserGroups } from 'actions';
 import { setValueFromEvent } from 'lib/helpers';
-import { setUserRoles } from 'reducers/user-roles';
+import { setUserRoles } from 'slices/user-roles';
 
 export default function UsersFilter() {
   const classes = useFilterStyles();
@@ -93,9 +93,6 @@ export default function UsersFilter() {
           >
             {FORM_CONFIG.clear.label}
           </Button>
-          {/* <Button className={classes.formBtn} color="secondary" onClick={handleSubmit}>
-            {FORM_CONFIG.search.label}
-          </Button> */}
         </Grid>
       </Grid>
     </Grid>

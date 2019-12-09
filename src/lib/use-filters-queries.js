@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
+
 import { mapObjIndexed, keys, pickBy, always, equals } from 'ramda';
 import useQuery from './use-query';
-import { hasValue } from './helpers';
+import { hasValue, parseEventValue } from './helpers';
 
 /*
   This hook encapsulates the flow of handling data when a filter is selected to be activated,
@@ -20,7 +21,7 @@ const useFiltersQueries = ({ initialFilterValues, initialFiltersActiveState }) =
   // On intiial render grab filter values from url params if any and
   // update the active filters object
   useEffect(() => {
-    const filtersFromUrl = pickBy(hasValue, filterValues);
+    const filtersFromUrl = pickBy(isValidQuery, filterValues);
     const activatedFilters = mapObjIndexed(always(true), filtersFromUrl);
     setFiltersActiveState({ ...filtersActiveState, ...activatedFilters });
   }, []);
@@ -49,13 +50,6 @@ const useFiltersQueries = ({ initialFilterValues, initialFiltersActiveState }) =
     setFilterValues(nextFilterValues);
   }
 
-  function parseEventValue(valueObj) {
-    if (valueObj.target) {
-      return valueObj.target.value;
-    }
-    return valueObj;
-  }
-
   function clearFilters() {
     setFiltersActiveState(initialFiltersActiveState);
   }
@@ -68,12 +62,19 @@ const useFiltersQueries = ({ initialFilterValues, initialFiltersActiveState }) =
     });
   };
 
-  const handleSelectFilter = filterName => () => {
-    setFiltersActiveState({
-      ...filtersActiveState,
-      [filterName]: !filtersActiveState[filterName]
-    });
-  };
+  function handleSelectFilter(filterName) {
+    return () => {
+      setFiltersActiveState({
+        ...filtersActiveState,
+        [filterName]: !filtersActiveState[filterName]
+      });
+    };
+  }
+
+  // removes queries from url that aren't in the initialFilterValues provided by consumer
+  function isValidQuery(value, key) {
+    return hasValue(value) && key in initialFiltersActiveState;
+  }
 
   return {
     filtersActiveState,
