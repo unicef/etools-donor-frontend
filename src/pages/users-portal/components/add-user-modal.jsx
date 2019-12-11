@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router';
 import { prop, propOr } from 'ramda';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
@@ -27,7 +26,7 @@ import { setValueFromEvent, oneIsEmpty } from 'lib/helpers';
 import { makeStyles } from '@material-ui/styles';
 import { FORM_CONFIG } from '../../../lib/constants';
 import { selectUserGroups } from 'selectors/user';
-import { selectCreatedRole, selectFormError } from 'selectors/ui-flags';
+import { selectCreatedRole, selectFormError, selectDonorId } from 'selectors/ui-flags';
 import { onCreateUserRole } from 'actions';
 import { getErrorState } from 'lib/error-parsers';
 import { onResetFormError, onFormError } from 'slices/form-error';
@@ -67,7 +66,7 @@ const useStyles = makeStyles(theme => ({
 export default function AddUserModal({ open, onClose }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { donorId } = useParams();
+  const donorId = useSelector(selectDonorId);
 
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');

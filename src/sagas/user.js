@@ -1,4 +1,4 @@
-import { takeLatest, call, put, delay } from 'redux-saga/effects';
+import { takeLatest, call, put, select } from 'redux-saga/effects';
 import { getUserRoles, getUserGroups, createUser, createRole, getUserProfile } from 'api';
 import { setUserRoles } from 'slices/user-roles';
 import { setError } from 'slices/error';
@@ -15,11 +15,10 @@ import { onFormError } from 'slices/form-error';
 import { parseFormError } from 'lib/error-parsers';
 import { setLoading } from 'slices/ui';
 import { onReceiveUserProfile } from 'slices/user-profile';
-import { donorIdFromLocation } from 'lib/helpers';
+import { selectDonorId } from 'selectors/ui-flags';
 
 function* handleFetchUserRoles(action) {
   yield put(setLoading(true));
-  yield delay(500);
   try {
     const userRoles = yield call(getUserRoles, action.payload);
     yield put(setUserRoles(userRoles));
@@ -54,7 +53,7 @@ function* handleCreateUserRole({ payload }) {
 }
 
 function* handleCreatedRole() {
-  const donor = donorIdFromLocation(location);
+  const donor = yield select(selectDonorId);
   yield call(handleFetchUserRoles, {
     payload: { donor }
   });

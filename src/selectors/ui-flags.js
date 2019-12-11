@@ -47,6 +47,10 @@ export const selectDonorName = createSelector(
   [selectUserDonor],
   propOr('', 'name')
 );
+export const selectDonorId = createSelector(
+  [selectUserProfileDonor],
+  propOr('', 'id')
+);
 
 export const selectDonorCode = createSelector(
   selectUserDonor,

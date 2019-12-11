@@ -121,7 +121,6 @@ export default function UsersTable() {
                   {!loading && users.length == 0 && (
                     <Typography color="primary">0 results returned</Typography>
                   )}
-                  {loading && <LoaderLocal />}
                 </TableCell>
               </TableRow>
               {users.length > 1 && emptyRows > 0 && (

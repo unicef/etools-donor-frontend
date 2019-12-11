@@ -39,7 +39,6 @@ export const useNav = () => {
 
 export default function ConnectedDrawer() {
   const classes = useMainStyles();
-  const donorId = useSelector(selectUserProfileDonorId);
 
   const { handleNav, goHome, navSelected, isAdmin } = useNav();
   return (
@@ -76,7 +75,7 @@ export default function ConnectedDrawer() {
         {isAdmin && (
           <ListItem
             selected={navSelected(USERS_PORTAL_PATH)}
-            onClick={handleNav(`${USERS_PORTAL_PATH}/${donorId}`)}
+            onClick={handleNav(USERS_PORTAL_PATH)}
             button
           >
             <ListItemIcon>

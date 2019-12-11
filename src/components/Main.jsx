@@ -84,7 +84,7 @@ export default function MainAppBar() {
                 <ReportsPage />
               </ProtectedRouteReportPage>
 
-              <ProtectedRouteUserManagement exact path={`${USERS_PORTAL_PATH}/:donorId`}>
+              <ProtectedRouteUserManagement exact path={`${USERS_PORTAL_PATH}/`}>
                 <UsersManagement />
               </ProtectedRouteUserManagement>
               <Route path="*" component={NotFound} />
