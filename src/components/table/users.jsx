@@ -20,7 +20,6 @@ import {
 } from '../../lib/constants';
 import { stableSort, getSorting } from './lib';
 import { selectLoading } from 'selectors/ui-flags';
-import { LoaderLocal } from 'components/Loader';
 
 function fullName(user) {
   const fullName = `${user[BACKEND_PROPERTIES_USER_FIRST_NAME]} ${user[BACKEND_PROPERTIES_USER_LAST_NAME]}`;

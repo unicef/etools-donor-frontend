@@ -29,9 +29,6 @@ const useStyles = makeStyles(theme =>
         display: 'none'
       }
     },
-    logo: {
-      maxWidth: '170px'
-    },
     banner: {
       color: '#FFF',
       lineHeight: '1.25em',

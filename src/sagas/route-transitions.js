@@ -3,12 +3,7 @@ import { redirectToLogin } from 'actions';
 
 function* handleRedirect() {
   let url = window.location.origin;
-  if (url.includes('localhost')) {
-    window.location.href = `${url}/admin/login/`;
-    return;
-  }
-
-  window.location.href = `${url}/sociallogin/unicef-azuread-b2c-oauth2/`;
+  window.location.href = `${url}/landing/`;
   yield null;
 }
 

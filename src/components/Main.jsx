@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch } from 'react-router';
 import { Route } from 'react-router-dom';
-import { makeStyles, createStyles, Box, CssBaseline } from '@material-ui/core';
+import { makeStyles, createStyles, Box } from '@material-ui/core';
 import ConnectedDrawer from './Drawer';
 import AppToolbar from './App-Bar';
 import { DRAWER_WIDTH, REPORTS_PATH, USERS_PORTAL_PATH } from '../lib/constants';
@@ -63,7 +63,6 @@ export default function MainAppBar() {
   const classes = useMainStyles();
   return (
     <div className={classes.root}>
-      <CssBaseline />
       <AppToolbar />
       <ConnectedDrawer />
 

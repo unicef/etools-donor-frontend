@@ -57,6 +57,7 @@ export async function createUser(user) {
   const res = await post(url, user);
   return res;
 }
+
 export async function createRole(role) {
   const url = process.env.REACT_APP_USER_ROLES_ENDPOINT;
   const res = await post(url, role);
