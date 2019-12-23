@@ -64,6 +64,7 @@ export default function DonorsList() {
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = usePagination();
 
   const donors = useSelector(selectDonors);
+  const pageName = useSelector(state => state.ui.menuBarPage);
 
   useEffect(() => {
     if (donors.length) {
@@ -113,7 +114,7 @@ export default function DonorsList() {
                   .map(row => (
                     <TableRow hover key={row.code}>
                       <TableCell component="th" scope="row">
-                        <Link className={classes.link} to={`/reports/${row.id}`}>
+                        <Link className={classes.link} to={`/${pageName}/${row.id}`}>
                           {row.name}
                         </Link>
                       </TableCell>

@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
