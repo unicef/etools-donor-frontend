@@ -95,8 +95,8 @@ export function getReports(params, year) {
   return get(computedUrl, params);
 }
 
-export function getUsGovReports(params) {
-  const computedUrl = `${process.env.REACT_APP_REPORTS_ENDPOINT}US Government Reports/`;
+export function getUsGovReports(params, year) {
+  const computedUrl = `${process.env.REACT_APP_REPORTS_ENDPOINT}${year} US Government Reports/`;
   return get(computedUrl, params);
 }
 

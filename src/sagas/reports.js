@@ -118,6 +118,7 @@ function* getCallerFunc(payload) {
 
   if (isUsGov) {
     result.caller = getUsGovReports;
+    result.arg = yield select(selectReportYear);
   } else if (theme) {
     result.caller = getThematicReports;
     result.arg = theme;

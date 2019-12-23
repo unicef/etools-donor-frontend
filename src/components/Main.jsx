@@ -61,6 +61,7 @@ export const useMainStyles = makeStyles(theme =>
 
 export default function MainAppBar() {
   const classes = useMainStyles();
+
   return (
     <div className={classes.root}>
       <AppToolbar />
