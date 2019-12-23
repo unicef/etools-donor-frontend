@@ -4,7 +4,13 @@ import { Route } from 'react-router-dom';
 import { makeStyles, createStyles, Box } from '@material-ui/core';
 import ConnectedDrawer from './Drawer';
 import AppToolbar from './App-Bar';
-import { DRAWER_WIDTH, REPORTS_PATH, USERS_PORTAL_PATH } from '../lib/constants';
+import {
+  DRAWER_WIDTH,
+  REPORTS_PATH,
+  USERS_PORTAL_PATH,
+  REPORTS,
+  THEMATIC_REPORTS
+} from '../lib/constants';
 import DonorsList from 'pages/donors-list';
 import ContentHeader from './Content-Header';
 import UsersManagement from 'pages/users-portal';
@@ -80,7 +86,7 @@ export default function MainAppBar() {
                 <DonorsList />
               </ProtectedRouteDonorsList>
 
-              <ProtectedRouteReportPage exact path={`${REPORTS_PATH}/:donorId`}>
+              <ProtectedRouteReportPage exact path={`/(${REPORTS}|${THEMATIC_REPORTS})/:donorId`}>
                 <ReportsPage />
               </ProtectedRouteReportPage>
 

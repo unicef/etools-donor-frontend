@@ -66,3 +66,8 @@ export const selectIsAuthorized = createSelector(
   [selectDonorName, selectUserGroup],
   (donorName, group) => Boolean(donorName.length) || group === UNICEF_USER_ROLE
 );
+
+export const selectMenuBarPage = createSelector(
+  [selectUi],
+  ui => ui.menuBarPage
+);

@@ -7,6 +7,8 @@ import { Grid } from '@material-ui/core';
 import useFilterStyles from 'styles/filter-styles';
 import ThemeFilter from './theme-filter';
 import { parseEventValue } from 'lib/helpers';
+import { selectMenuBarPage } from 'selectors/ui-flags';
+import { REPORTS } from 'lib/constants';
 
 export default function MandatoryFilters() {
   const dispatch = useDispatch();
@@ -14,22 +16,22 @@ export default function MandatoryFilters() {
 
   const reportYear = useSelector(selectReportYear);
   const theme = useSelector(selectTheme);
+  const reportPageName = useSelector(selectMenuBarPage);
 
   return (
     <Grid item xs={12} container>
       <Grid item className={classes.filterBox} sm={2}>
-        <YearFilter
-          onChange={val => dispatch(reportYearChanged(parseEventValue(val)))}
-          value={reportYear}
-          disabled={!!theme}
-        />
-      </Grid>
-      <Grid item className={classes.filterBox} sm={3}>
-        <ThemeFilter
-          onChange={val => dispatch(themeChanged(parseEventValue(val)))}
-          value={theme}
-          disabled={!!reportYear}
-        />
+        {reportPageName === REPORTS ? (
+          <YearFilter
+            onChange={val => dispatch(reportYearChanged(parseEventValue(val)))}
+            value={reportYear}
+          />
+        ) : (
+          <ThemeFilter
+            onChange={val => dispatch(themeChanged(parseEventValue(val)))}
+            value={theme}
+          />
+        )}
       </Grid>
     </Grid>
   );

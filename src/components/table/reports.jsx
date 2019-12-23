@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -19,8 +18,6 @@ import { usePermissions } from 'components/PermissionRedirect';
 import { useTable, getDisplayDate } from './lib';
 import clsx from 'clsx';
 import { BACKEND_REPORTS_FIELDS } from '../../pages/reports/constants';
-import DocViewer from 'components/DocViewer';
-import doc from '../../assets/doc.docx';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -76,8 +73,6 @@ export default function ReportsTable() {
   const { isUnicefUser } = usePermissions();
 
   const rows = useSelector(selectReports);
-  // const [docFilePath, setDocFilePath] = useState('../../assets/doc.docx');
-  const [docFileType, setDocFileType] = useState('docx');
 
   const {
     orderBy,
@@ -92,14 +87,6 @@ export default function ReportsTable() {
 
   const emptyRows = getEmptyRows(rows);
 
-  function download(url) {
-    return async () => {
-      const response = await axios.get(url);
-      if (response.headers['content-disposition'].includes('pdf')) {
-        window.open();
-      }
-    };
-  }
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
