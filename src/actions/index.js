@@ -13,3 +13,5 @@ export const resetCreatedUser = createAction('resetCreatedUser');
 export const onCreateUserRole = createAction('onCreateUserRole');
 export const redirectToLogin = createAction('redirectToLogin');
 export const onFetchReports = createAction('onFetchReports');
+export const initCertifiedReportsPage = createAction('initCertifiedReportsPage');
+export const initThematicReportsPage = createAction('initThematicReportsPage');

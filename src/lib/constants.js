@@ -71,3 +71,8 @@ export const PAGE_TITLE_MAP = {
   [REPORTS]: 'Reports',
   [THEMATIC_REPORTS]: 'Thematic Reports'
 };
+
+export const PAGE_DROPDOWN_NAME_MAP = {
+  [REPORTS]: 'year',
+  [THEMATIC_REPORTS]: 'theme'
+};

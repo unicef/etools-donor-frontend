@@ -11,17 +11,17 @@ import FilterMenuButton from './filter-menu-button';
 
 import useFiltersQueries from 'lib/use-filters-queries';
 
-import { FORM_CONFIG } from 'lib/constants';
+import { FORM_CONFIG, PAGE_DROPDOWN_NAME_MAP } from 'lib/constants';
 import { FILTERS_MAP } from '../lib/filters-map';
 import MandatoryFilters from './mandatory-filters';
 import { selectMandatoryFilterSelected } from 'selectors/filter';
 import DisableWrapper from 'components/DisableWrapper';
+import { selectMenuBarPage } from 'selectors/ui-flags';
 
 export default function ReportsFilter() {
   const dispatch = useDispatch();
   const classes = useFilterStyles();
   const mandatorySelected = useSelector(selectMandatoryFilterSelected);
-  const { donorId: id } = useParams();
 
   function handleSubmit() {
     dispatch(onFetchReports(filterValues));
@@ -45,14 +45,15 @@ export default function ReportsFilter() {
   } = useFiltersQueries({ initialFilterValues, initialFiltersActiveState });
 
   useEffect(() => {
-    dispatch(initDonorsFilter(id));
     dispatch(onFetchReports(filterValues));
   }, []);
+
+  const pageDropdownName = PAGE_DROPDOWN_NAME_MAP[useSelector(selectMenuBarPage)];
 
   return (
     <form onSubmit={handleSubmit}>
       <InputLabel className={clsx(classes.loneLabel, mandatorySelected && 'hidden')}>
-        Select a year or theme to enable filters
+        Select a {pageDropdownName} to enable filters
       </InputLabel>
       <MandatoryFilters />
 
