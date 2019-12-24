@@ -111,19 +111,20 @@ function* getCallerFunc(payload) {
   const theme = yield select(selectTheme);
   let result = {
     params: {
-      ...removeEmpties(payload),
-      donor_code: donorCode
+      ...removeEmpties(payload)
     }
   };
 
   if (isUsGov) {
     result.caller = getUsGovReports;
     result.arg = yield select(selectReportYear);
+    result.params.donor_code = donorCode;
   } else if (theme) {
     result.caller = getThematicReports;
     result.arg = theme;
   } else {
     result.caller = getCertifiedReports;
+    result.params.donor_code = donorCode;
   }
   return result;
 }

@@ -56,7 +56,7 @@ export const THEMATIC_REPORTS = 'thematic-reports';
 export const USERS_PORTAL_PATH = `/${USERS_PORTAL}`;
 export const REPORTS_PATH = `/${REPORTS}`;
 
-export const REPORTS_PAGES = [REPORTS, THEMATIC_REPORTS];
+export const TABLE_PAGES = [REPORTS, THEMATIC_REPORTS, USERS_PORTAL];
 export const THEMATIC_REPORTS_PATH = `/${THEMATIC_REPORTS}`;
 export const BACKEND_PROPERTIES_USER_LAST_LOGIN = 'user_last_login';
 export const BACKEND_PROPERTIES_USER_FIRST_NAME = 'user_first_name';

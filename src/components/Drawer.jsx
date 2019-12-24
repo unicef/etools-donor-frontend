@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router';
+import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { useMainStyles } from './Main';
 import {
@@ -20,7 +20,7 @@ import logo from 'assets/images/UNICEF_logo.png';
 import {
   DONOR_ADMIN_ROLE,
   REPORTS,
-  REPORTS_PAGES,
+  TABLE_PAGES,
   THEMATIC_REPORTS,
   USERS_PORTAL
 } from '../lib/constants';
@@ -34,7 +34,7 @@ export const useNav = () => {
 
   const handleNav = page => () => {
     dispatch(menuItemSelected(page));
-    if (REPORTS_PAGES.includes(page)) {
+    if (page === REPORTS) {
       history.push('/');
     } else {
       history.push(`/${page}`);

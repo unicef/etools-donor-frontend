@@ -35,6 +35,14 @@ async function post(uri, body = {}) {
     throw err;
   }
 }
+async function patch(uri, body = {}) {
+  try {
+    const response = await axios.patch(`${backendPath}${uri}`, body, getBaseOptions());
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+}
 
 export function getUserRoles(params) {
   return get(process.env.REACT_APP_USER_ROLES_ENDPOINT, params);
@@ -61,6 +69,13 @@ export async function createUser(user) {
 export async function createRole(role) {
   const url = process.env.REACT_APP_USER_ROLES_ENDPOINT;
   const res = await post(url, role);
+  return res;
+}
+
+export async function patchRole(role) {
+  const url = process.env.REACT_APP_USER_ROLES_ENDPOINT;
+  console.log('before');
+  const res = await patch(url, role);
   return res;
 }
 
@@ -96,7 +111,7 @@ export function getReports(params, year) {
 }
 
 export function getUsGovReports(params, year) {
-  const computedUrl = `${process.env.REACT_APP_REPORTS_ENDPOINT}${year} US Government Reports/`;
+  const computedUrl = `${process.env.REACT_APP_REPORTS_ENDPOINT}${year} US Gov Certified Reports/`;
   return get(computedUrl, params);
 }
 

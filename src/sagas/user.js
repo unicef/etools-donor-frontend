@@ -1,5 +1,12 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
-import { getUserRoles, getUserGroups, createUser, createRole, getUserProfile } from 'api';
+import {
+  getUserRoles,
+  getUserGroups,
+  createUser,
+  createRole,
+  getUserProfile,
+  patchRole
+} from 'api';
 import { setUserRoles } from 'slices/user-roles';
 import { setError } from 'slices/error';
 import {
@@ -7,7 +14,8 @@ import {
   onFetchUserGroups,
   onCreateUserRole,
   onFetchUserProfile,
-  redirectToLogin
+  redirectToLogin,
+  userRoleEdited
 } from 'actions';
 import { setGroups } from 'slices/user-groups';
 import { createRoleSuccess } from 'slices/created-role';
@@ -70,6 +78,17 @@ function* handleFetchUserProfile() {
     yield put(setLoading(false));
   }
 }
+function* handleUserRolePatch({ payload }) {
+  yield put(setLoading(true));
+  try {
+    const role = yield call(patchRole, payload);
+    yield put(createRoleSuccess(role));
+  } catch (err) {
+    yield put(setError(err));
+  } finally {
+    yield put(setLoading(false));
+  }
+}
 
 export default function*() {
   yield takeLatest(onFetchUserRoles.type, handleFetchUserRoles);
@@ -77,4 +96,5 @@ export default function*() {
   yield takeLatest(onCreateUserRole.type, handleCreateUserRole);
   yield takeLatest(createRoleSuccess.type, handleCreatedRole);
   yield takeLatest(onFetchUserProfile.type, handleFetchUserProfile);
+  yield takeLatest(userRoleEdited.type, handleUserRolePatch);
 }

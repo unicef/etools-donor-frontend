@@ -1,4 +1,6 @@
 import { createSelector } from 'reselect';
+import { selectMenuBarPage } from './ui-flags';
+import { THEMATIC_REPORTS } from 'lib/constants';
 
 export const selectReportFilter = state => state.reportFilter;
 
@@ -13,6 +15,11 @@ export const selectTheme = createSelector(
 );
 
 export const selectMandatoryFilterSelected = createSelector(
-  selectReportFilter,
-  filter => Boolean(filter.theme || filter.reportYear)
+  [selectReportFilter, selectMenuBarPage],
+  (filter, pageName) => {
+    if (pageName === THEMATIC_REPORTS) {
+      return Boolean(filter.theme);
+    }
+    return Boolean(filter.reportYear);
+  }
 );

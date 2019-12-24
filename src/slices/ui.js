@@ -1,5 +1,5 @@
 import { createSlice } from 'redux-starter-kit';
-import { REPORTS_PAGES } from 'lib/constants';
+import { TABLE_PAGES } from 'lib/constants';
 
 // const [page, donorId] = location.pathname.split('/').filter(Boolean);
 
@@ -36,7 +36,7 @@ export const uiSlice = createSlice({
     onRouteChange(state, { payload }) {
       state.page = payload.page;
       state.donorId = payload.donorId;
-      if (REPORTS_PAGES.includes(payload.page)) {
+      if (TABLE_PAGES.includes(payload.page)) {
         state.menuBarPage = payload.page;
       }
     },

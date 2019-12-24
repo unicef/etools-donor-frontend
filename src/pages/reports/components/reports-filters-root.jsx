@@ -16,7 +16,6 @@ import { FILTERS_MAP } from '../lib/filters-map';
 import MandatoryFilters from './mandatory-filters';
 import { selectMandatoryFilterSelected } from 'selectors/filter';
 import DisableWrapper from 'components/DisableWrapper';
-import { selectMenuBarPage } from 'selectors/ui-flags';
 
 export default function ReportsFilter() {
   const dispatch = useDispatch();

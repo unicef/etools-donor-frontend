@@ -6,6 +6,7 @@ import { Route } from 'react-router-dom';
 
 import { selectUserProfileDonorId } from 'selectors/ui-flags';
 import { usePermissions } from 'components/PermissionRedirect';
+import { THEMATIC_REPORTS_PATH } from 'lib/constants';
 
 export function ProtectedRouteDonorsList({ children, ...rest }) {
   const { isUnicefUser } = usePermissions();
@@ -23,7 +24,11 @@ export function ProtectedRouteReportPage({ children, ...rest }) {
       {...rest}
       render={({ match }) => {
         const { donorId } = match.params;
-        const unassignedDonorAttempt = Boolean(usersDonor !== Number(donorId) && !isUnicefUser);
+        const { path } = match;
+        const thematicPath = path === THEMATIC_REPORTS_PATH;
+        const unassignedDonorAttempt = Boolean(
+          usersDonor !== Number(donorId) && !isUnicefUser && !thematicPath
+        );
         return unassignedDonorAttempt ? <Redirect to="/not-found" /> : children;
       }}
     />

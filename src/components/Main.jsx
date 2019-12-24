@@ -86,7 +86,11 @@ export default function MainAppBar() {
                 <DonorsList />
               </ProtectedRouteDonorsList>
 
-              <ProtectedRouteReportPage exact path={`/(${REPORTS}|${THEMATIC_REPORTS})/:donorId`}>
+              <ProtectedRouteReportPage exact path={`/${REPORTS}/:donorId?`}>
+                <ReportsPage />
+              </ProtectedRouteReportPage>
+
+              <ProtectedRouteReportPage exact path={`/${THEMATIC_REPORTS}`}>
                 <ReportsPage />
               </ProtectedRouteReportPage>
 
