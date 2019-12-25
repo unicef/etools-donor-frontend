@@ -44,6 +44,15 @@ async function patch(uri, body = {}) {
   }
 }
 
+async function del(uri) {
+  try {
+    const response = await axios.delete(`${backendPath}${uri}`, getBaseOptions());
+    return response.status === 204;
+  } catch (err) {
+    throw err;
+  }
+}
+
 export function getUserRoles(params) {
   return get(process.env.REACT_APP_USER_ROLES_ENDPOINT, params);
 }
@@ -74,8 +83,13 @@ export async function createRole(role) {
 
 export async function patchRole(role) {
   const url = process.env.REACT_APP_USER_ROLES_ENDPOINT;
-  console.log('before');
   const res = await patch(url, role);
+  return res;
+}
+
+export async function deleteRole(id) {
+  const url = `${process.env.REACT_APP_USER_ROLES_ENDPOINT}${id}`;
+  const res = await del(url);
   return res;
 }
 

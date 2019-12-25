@@ -15,3 +15,4 @@ export const redirectToLogin = createAction('redirectToLogin');
 export const onFetchReports = createAction('onFetchReports');
 export const initCertifiedReportsPage = createAction('initCertifiedReportsPage');
 export const initThematicReportsPage = createAction('initThematicReportsPage');
+export const deleteUserRole = createAction('deleteUserRole');

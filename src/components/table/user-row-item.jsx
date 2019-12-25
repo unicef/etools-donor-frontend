@@ -8,7 +8,8 @@ import {
   makeStyles,
   FormControl,
   Select,
-  MenuItem
+  MenuItem,
+  Tooltip
 } from '@material-ui/core';
 import {
   BACKEND_PROPERTIES_USER_LAST_NAME,
@@ -16,13 +17,14 @@ import {
   BACKEND_PROPERTIES_USER_LAST_LOGIN
 } from 'lib/constants';
 import EditIcon from '@material-ui/icons/Edit';
+import CancelIcon from '@material-ui/icons/Cancel';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import { useState } from 'react';
 import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUserGroups } from 'selectors/user';
-import { userRoleEdited } from 'actions';
+import { userRoleEdited, deleteUserRole } from 'actions';
 
 function fullName(user) {
   const fullName = `${user[BACKEND_PROPERTIES_USER_FIRST_NAME]} ${user[BACKEND_PROPERTIES_USER_LAST_NAME]}`;
@@ -46,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     width: 24,
     height: 24
   },
-  editIcon: {
+  actionIcon: {
     width: 20,
     height: 20
   },
@@ -72,12 +74,9 @@ export default function UserRowItem({ user }) {
       user: user.user,
       group_name: newVal
     };
-    await dispatch(userRoleEdited(payload));
-    console.log('afterssss');
+    dispatch(userRoleEdited(payload));
     setUserRole(newVal);
   }
-
-  function handleDelete() {}
 
   return (
     <TableRow hover tabIndex={-1}>
@@ -109,20 +108,32 @@ export default function UserRowItem({ user }) {
           size="small"
           onClick={() => setIsEditing(!editing)}
         >
-          <EditIcon className={classes.editIcon} />
+          {editing ? (
+            <Tooltip title="Cancel" placement="top">
+              <CancelIcon className={classes.actionIcon} />
+            </Tooltip>
+          ) : (
+            <Tooltip title="Edit" placement="top">
+              <EditIcon className={classes.actionIcon} />
+            </Tooltip>
+          )}
         </IconButton>
       </TableCell>
       <TableCell align="left">{getUserStatusStr(user)}</TableCell>
       <TableCell align="right">
-        <IconButton
-          onClick={handleDelete}
-          size="small"
-          className={clsx(classes.icon, classes.iconMargin)}
-          edge="end"
-          aria-label="delete"
-        >
-          <DeleteIcon />
-        </IconButton>
+        {editing && (
+          <IconButton
+            onClick={() => dispatch(deleteUserRole(user.id))}
+            size="small"
+            className={clsx(classes.icon, classes.iconMargin)}
+            edge="end"
+            aria-label="delete"
+          >
+            <Tooltip title="Delete user" placement="top">
+              <DeleteIcon />
+            </Tooltip>
+          </IconButton>
+        )}
       </TableCell>
     </TableRow>
   );

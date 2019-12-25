@@ -5,7 +5,8 @@ import {
   createUser,
   createRole,
   getUserProfile,
-  patchRole
+  patchRole,
+  deleteRole
 } from 'api';
 import { setUserRoles } from 'slices/user-roles';
 import { setError } from 'slices/error';
@@ -15,7 +16,8 @@ import {
   onCreateUserRole,
   onFetchUserProfile,
   redirectToLogin,
-  userRoleEdited
+  userRoleEdited,
+  deleteUserRole
 } from 'actions';
 import { setGroups } from 'slices/user-groups';
 import { createRoleSuccess } from 'slices/created-role';
@@ -78,11 +80,31 @@ function* handleFetchUserProfile() {
     yield put(setLoading(false));
   }
 }
+
 function* handleUserRolePatch({ payload }) {
   yield put(setLoading(true));
   try {
     const role = yield call(patchRole, payload);
     yield put(createRoleSuccess(role));
+  } catch (err) {
+    yield put(setError(err));
+  } finally {
+    yield put(setLoading(false));
+  }
+}
+
+function* handleDeleteUserRole({ payload }) {
+  yield put(setLoading(true));
+  try {
+    const success = yield call(deleteRole, payload);
+    if (success) {
+      const donorId = yield select(selectDonorId);
+      yield call(handleFetchUserRoles, {
+        payload: {
+          donor: donorId
+        }
+      });
+    }
   } catch (err) {
     yield put(setError(err));
   } finally {
@@ -97,4 +119,5 @@ export default function*() {
   yield takeLatest(createRoleSuccess.type, handleCreatedRole);
   yield takeLatest(onFetchUserProfile.type, handleFetchUserProfile);
   yield takeLatest(userRoleEdited.type, handleUserRolePatch);
+  yield takeLatest(deleteUserRole.type, handleDeleteUserRole);
 }

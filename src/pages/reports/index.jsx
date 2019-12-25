@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 
 import ReportsFilter from 'pages/reports/components/reports-filters-root';
-import ReportsTable from 'components/table/reports';
+import ReportsTable from 'components/table/reports-table';
 import { selectMenuBarPage } from 'selectors/ui-flags';
 import { initCertifiedReportsPage, initThematicReportsPage } from 'actions';
 import { THEMATIC_REPORTS, REPORTS } from 'lib/constants';
