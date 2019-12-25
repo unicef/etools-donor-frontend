@@ -9,22 +9,35 @@ import {
   getOffices
 } from 'api';
 
-import { propEq } from 'ramda';
+import { propEq, equals, isEmpty } from 'ramda';
 
 import { setError } from 'slices/error';
 import { setDonors } from 'slices/donors';
-import { initDonorsList, initDonorsFilter } from 'actions';
+import {
+  initDonorsList,
+  initDonorsFilter,
+  initCertifiedReportsPage,
+  initThematicReportsPage
+} from 'actions';
 import { setLoading } from 'slices/ui';
 import { onReceiveGrants } from 'slices/grants';
 import { onReceiveExternalGrants } from 'slices/external-grants';
 import { onReceivethemes } from 'slices/themes';
-import { onReceiveStaticAssets } from 'slices/static';
+import { onReceiveStaticAssets, staticAssetsInitialState } from 'slices/static';
 import { onReceiveOffices } from 'slices/offices';
 import { selectUserProfile, selectUserGroup } from 'selectors/ui-flags';
-import { waitForLength } from './helpers';
-import { selectDonors } from 'selectors/collections';
+import { waitForLength, checkExisting, maybeFetch } from './helpers';
+import {
+  selectDonors,
+  selectStaticAssets,
+  selectThemeCollection,
+  selectOffices,
+  selectGrants,
+  selectExternalGrants
+} from 'selectors/collections';
 import { reportPageLoaded } from 'slices/donor';
 import { UNICEF_USER_ROLE } from 'lib/constants';
+import { selectTheme } from 'selectors/filter';
 
 function* handleFetchDonors() {
   try {
@@ -75,6 +88,12 @@ function* handleFetchThemes() {
 }
 
 function* handleFetchStatic() {
+  const staticAssets = yield select(selectStaticAssets);
+
+  if (!equals(staticAssets, staticAssetsInitialState)) {
+    return;
+  }
+
   try {
     const staticDropdowns = yield call(getStaticAssets);
     yield put(onReceiveStaticAssets(staticDropdowns));
@@ -105,19 +124,27 @@ export function* donorsSaga() {
   yield takeLatest(initDonorsList.type, handleFetchDonors);
 }
 
-function* fetchFiltersCollections(action) {
+function* fetchReportFilterCollections(action) {
   yield all([
-    call(handleFetchGrants, action),
-    call(handleFetchExternalGrants, action),
-    call(handleFetchOffices),
-    call(handleFetchThemes),
+    call(maybeFetch, handleFetchGrants, selectGrants, action),
+    call(maybeFetch, handleFetchExternalGrants, selectExternalGrants, action),
     call(handleFetchStatic),
+    call(maybeFetch, handleFetchOffices, selectOffices),
     call(handleCurrentDonor, action)
   ]);
 }
 
+function* fetchThematicFilterCollections() {
+  yield all([
+    call(maybeFetch, handleFetchThemes, selectThemeCollection),
+    call(handleFetchStatic),
+    call(maybeFetch, handleFetchOffices, selectOffices)
+  ]);
+}
+
 export function* filtersSaga() {
-  yield takeLatest(initDonorsFilter.type, fetchFiltersCollections);
+  yield takeLatest(initCertifiedReportsPage.type, fetchReportFilterCollections);
+  yield takeLatest(initThematicReportsPage.type, fetchThematicFilterCollections);
 }
 
 export default function*() {

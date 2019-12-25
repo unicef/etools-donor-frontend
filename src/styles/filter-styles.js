@@ -5,7 +5,7 @@ const useFilterStyles = makeStyles(theme =>
   createStyles({
     filterContainer: {
       borderRadius: 8,
-      padding: theme.spacing(2),
+      padding: `${theme.spacing(3)}px ${theme.spacing(2)}px ${theme.spacing(2)}px `,
       background: theme.palette.common.white
     },
     button: {

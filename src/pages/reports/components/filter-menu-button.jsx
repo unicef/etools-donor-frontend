@@ -5,14 +5,15 @@ import { Menu, MenuItem, Button, withStyles, Checkbox } from '@material-ui/core'
 import ListItemText from '@material-ui/core/ListItemText';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import useFilterStyles from 'styles/filter-styles';
-import { FILTERS_MAP, getFiltersByPermissions } from '../lib/filters-map';
-import { selectUserGroup } from 'selectors/ui-flags';
+import { FILTERS_MAP, getPageFilters } from '../lib/filters-map';
+import { selectUserGroup, selectMenuBarPage } from 'selectors/ui-flags';
 
 export default function FilterMenuButton({ onSelectFilter, selected }) {
   const classes = useFilterStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const group = useSelector(selectUserGroup);
-  const usersFilters = getFiltersByPermissions(group);
+  const pageName = useSelector(selectMenuBarPage);
+  const usersFilters = getPageFilters(group, pageName);
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
