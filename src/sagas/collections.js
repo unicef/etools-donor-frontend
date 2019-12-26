@@ -9,16 +9,11 @@ import {
   getOffices
 } from 'api';
 
-import { propEq, equals, isEmpty } from 'ramda';
+import { propEq, equals } from 'ramda';
 
 import { setError } from 'slices/error';
 import { setDonors } from 'slices/donors';
-import {
-  initDonorsList,
-  initDonorsFilter,
-  initCertifiedReportsPage,
-  initThematicReportsPage
-} from 'actions';
+import { initDonorsList, initCertifiedReportsPage, initThematicReportsPage } from 'actions';
 import { setLoading } from 'slices/ui';
 import { onReceiveGrants } from 'slices/grants';
 import { onReceiveExternalGrants } from 'slices/external-grants';
@@ -26,7 +21,7 @@ import { onReceivethemes } from 'slices/themes';
 import { onReceiveStaticAssets, staticAssetsInitialState } from 'slices/static';
 import { onReceiveOffices } from 'slices/offices';
 import { selectUserProfile, selectUserGroup } from 'selectors/ui-flags';
-import { waitForLength, checkExisting, maybeFetch } from './helpers';
+import { waitForLength, maybeFetch } from './helpers';
 import {
   selectDonors,
   selectStaticAssets,
@@ -37,7 +32,6 @@ import {
 } from 'selectors/collections';
 import { reportPageLoaded } from 'slices/donor';
 import { UNICEF_USER_ROLE } from 'lib/constants';
-import { selectTheme } from 'selectors/filter';
 
 function* handleFetchDonors() {
   try {

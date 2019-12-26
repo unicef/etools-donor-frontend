@@ -1,12 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
-import { mapObjIndexed, always } from 'ramda';
 import { Grid, Box, Button, InputLabel, Paper } from '@material-ui/core';
-import { useParams } from 'react-router';
 
 import useFilterStyles from 'styles/filter-styles';
-import { initDonorsFilter, onFetchReports } from 'actions';
+import { onFetchReports } from 'actions';
 import FilterMenuButton from './filter-menu-button';
 
 import useFiltersQueries from 'lib/use-filters-queries';
@@ -32,9 +30,6 @@ export default function ReportsFilter() {
     dispatch(onFetchReports({}));
   }
 
-  const initialFiltersActiveState = mapObjIndexed(always(false), FILTERS_MAP); // set which filters are active on load
-  const initialFilterValues = mapObjIndexed(always(''), FILTERS_MAP); // set default filter values
-
   const {
     handleSelectFilter,
     handleChangeFilterValue,
@@ -42,7 +37,7 @@ export default function ReportsFilter() {
     filterValues,
     selectedFilters,
     clearFilters
-  } = useFiltersQueries({ initialFilterValues, initialFiltersActiveState });
+  } = useFiltersQueries(FILTERS_MAP);
 
   useEffect(() => {
     dispatch(onFetchReports(filterValues));
