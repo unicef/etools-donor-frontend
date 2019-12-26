@@ -44,12 +44,12 @@ function getSorting(order, orderBy) {
 }
 
 const headCells = [
-  { id: BACKEND_REPORTS_FIELDS['title'], label: 'Title' },
-  { id: BACKEND_REPORTS_FIELDS['country'], label: 'Recipient Office' },
-  { id: BACKEND_REPORTS_FIELDS['grant'], label: 'Grant' },
-  { id: BACKEND_REPORTS_FIELDS['reportType'], label: 'Report Type' },
-  { id: BACKEND_REPORTS_FIELDS['reportEndDate'], label: 'Report End Date' },
-  { id: BACKEND_REPORTS_FIELDS['grantExpiryDate'], label: 'Grant Expiry' }
+  { id: BACKEND_REPORTS_FIELDS['title'], label: 'Title', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['country'], label: 'Recipient Office', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['grant'], label: 'Grant', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['reportType'], label: 'Report Type', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['reportEndDate'], label: 'Report End Date', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['grantExpiryDate'], label: 'Grant Expiry', sortable: true }
 ];
 
 const externalRefCell = {

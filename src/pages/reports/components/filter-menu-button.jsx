@@ -8,12 +8,12 @@ import useFilterStyles from 'styles/filter-styles';
 import { FILTERS_MAP, getPageFilters } from '../lib/filters-map';
 import { selectUserGroup, selectMenuBarPage } from 'selectors/ui-flags';
 
-export default function FilterMenuButton({ onSelectFilter, selected }) {
+export default function FilterMenuButton({ onSelectFilter, selected, filters }) {
   const classes = useFilterStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const group = useSelector(selectUserGroup);
   const pageName = useSelector(selectMenuBarPage);
-  const usersFilters = getPageFilters(group, pageName);
+  // const usersFilters = getPageFilters(group, pageName);
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -33,7 +33,7 @@ export default function FilterMenuButton({ onSelectFilter, selected }) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {usersFilters.map(filter => (
+        {filters.map(filter => (
           <StyledMenuItem
             key={FILTERS_MAP[filter].label}
             onClick={onSelectFilter(filter)}
@@ -56,7 +56,8 @@ export default function FilterMenuButton({ onSelectFilter, selected }) {
 
 FilterMenuButton.propTypes = {
   onSelectFilter: PropTypes.func.isRequired,
-  selected: PropTypes.object
+  selected: PropTypes.object,
+  filters: PropTypes.array.isRequired
 };
 
 export function FilterButton(props) {

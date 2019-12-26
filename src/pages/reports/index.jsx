@@ -7,6 +7,7 @@ import ReportsTable from 'components/table/reports-table';
 import { selectMenuBarPage } from 'selectors/ui-flags';
 import { initCertifiedReportsPage, initThematicReportsPage } from 'actions';
 import { THEMATIC_REPORTS, REPORTS } from 'lib/constants';
+import { onReceiveReports } from 'slices/reports';
 
 function useInitThematicReports(dispatch) {
   return () => {
@@ -42,13 +43,18 @@ const useInitPage = pageName => {
 
 export default function ReportsPage() {
   const pageName = useSelector(selectMenuBarPage);
-
+  const dispatch = useDispatch();
   const effect = useInitPage(pageName);
   useEffect(effect, [pageName]);
+  useEffect(() => {
+    if (pageName) {
+      dispatch(onReceiveReports([]));
+    }
+  }, [pageName]);
 
   return (
     <>
-      <ReportsFilter />
+      <ReportsFilter pageName={pageName} />
       <ReportsTable />
     </>
   );

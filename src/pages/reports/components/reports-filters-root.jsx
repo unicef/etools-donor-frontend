@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import { Grid, Box, Button, InputLabel, Paper } from '@material-ui/core';
@@ -8,17 +9,18 @@ import { onFetchReports } from 'actions';
 import FilterMenuButton from './filter-menu-button';
 
 import useFiltersQueries from 'lib/use-filters-queries';
-
 import { FORM_CONFIG, PAGE_DROPDOWN_NAME_MAP } from 'lib/constants';
-import { FILTERS_MAP } from '../lib/filters-map';
+import { FILTERS_MAP, getPageFilters } from '../lib/filters-map';
 import MandatoryFilters from './mandatory-filters';
 import { selectMandatoryFilterSelected } from 'selectors/filter';
 import DisableWrapper from 'components/DisableWrapper';
 import { selectMenuBarPage } from 'selectors/ui-flags';
+import { selectUserGroups } from 'selectors/user';
 
-export default function ReportsFilter() {
+export default function ReportsFilter({ pageName }) {
   const dispatch = useDispatch();
   const classes = useFilterStyles();
+  const userGroup = useSelector(selectUserGroups);
   const mandatorySelected = useSelector(selectMandatoryFilterSelected);
 
   function handleSubmit() {
@@ -29,6 +31,8 @@ export default function ReportsFilter() {
     clearFilters();
     dispatch(onFetchReports({}));
   }
+
+  const filters = getPageFilters(userGroup, pageName);
 
   const {
     handleSelectFilter,
@@ -56,7 +60,11 @@ export default function ReportsFilter() {
         <Paper>
           <Grid item xs={12} className={classes.filterContainer} container wrap="nowrap">
             <Box className={classes.filterMenu}>
-              <FilterMenuButton onSelectFilter={handleSelectFilter} selected={filtersActiveState} />
+              <FilterMenuButton
+                onSelectFilter={handleSelectFilter}
+                selected={filtersActiveState}
+                filters={filters}
+              />
             </Box>
 
             <Box display="flex" flex="1 1 auto" alignItems="flex-start" flexWrap="wrap">
@@ -105,3 +113,7 @@ export default function ReportsFilter() {
     </form>
   );
 }
+
+ReportsFilter.propTypes = {
+  pageName: PropTypes.string
+};

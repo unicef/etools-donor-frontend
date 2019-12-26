@@ -1,7 +1,7 @@
 import { takeLatest, call, put, all, select } from 'redux-saga/effects';
 import { format, subYears, startOfYear, endOfYear, getYear } from 'date-fns';
 import { keys } from 'ramda';
-import { selectDonorCode, selectIsUsGov } from 'selectors/ui-flags';
+import { selectDonorCode, selectIsUsGov, selectMenuBarPage } from 'selectors/ui-flags';
 import { selectReportYear, selectTheme } from 'selectors/filter';
 import { removeEmpties } from 'lib/helpers';
 import { getUsGovReports, getThematicReports, getReports } from 'api';
@@ -19,6 +19,7 @@ import {
   EARLIEST_REPORTS_YEAR,
   DATE_FORMAT
 } from 'pages/reports/constants';
+import { THEMATIC_REPORTS, REPORTS } from 'lib/constants';
 
 // Returns date filters for both last year and this year to be passed to
 // the Certified Reports api since its an endpoint called by year.
@@ -109,27 +110,38 @@ function* getCallerFunc(payload) {
   const isUsGov = yield select(selectIsUsGov);
 
   const theme = yield select(selectTheme);
+  const reportPageName = yield select(selectMenuBarPage);
+
   let result = {
     params: {
       ...removeEmpties(payload)
     }
   };
 
-  if (isUsGov) {
-    result.caller = getUsGovReports;
-    result.arg = yield select(selectReportYear);
-    result.params.donor_code = donorCode;
-  } else if (theme) {
-    result.caller = getThematicReports;
-    result.arg = theme;
-  } else {
-    result.caller = getCertifiedReports;
-    result.params.donor_code = donorCode;
+  switch (reportPageName) {
+    case THEMATIC_REPORTS:
+      result.caller = getThematicReports;
+      result.arg = theme;
+      break;
+    case REPORTS: {
+      yield call(waitFor, selectDonorCode);
+      if (isUsGov) {
+        result.caller = getUsGovReports;
+        result.arg = yield select(selectReportYear);
+        result.params.donor_code = donorCode;
+        break;
+      } else {
+        result.caller = getCertifiedReports;
+        result.params.donor_code = donorCode;
+        break;
+      }
+    }
   }
+
   return result;
 }
 
-function* fetchReports({ payload }) {
+function* handleFetchReports({ payload }) {
   try {
     yield put(setLoading(true));
 
@@ -145,12 +157,6 @@ function* fetchReports({ payload }) {
   } finally {
     yield put(setLoading(false));
   }
-}
-
-function* handleFetchReports(action) {
-  // wait for donor api to return in case of race condition, donor code needed for reports filter call
-  yield call(waitFor, selectDonorCode);
-  yield call(fetchReports, action);
 }
 
 export default function*() {
