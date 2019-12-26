@@ -71,7 +71,7 @@ export default function UserRowItem({ user }) {
   async function onChange(e) {
     const newVal = e.target.value;
     const payload = {
-      user: user.user,
+      id: user.id,
       group_name: newVal
     };
     dispatch(userRoleEdited(payload));

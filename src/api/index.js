@@ -35,9 +35,9 @@ async function post(uri, body = {}) {
     throw err;
   }
 }
-async function patch(uri, body = {}) {
+async function patch(uri) {
   try {
-    const response = await axios.patch(`${backendPath}${uri}`, body, getBaseOptions());
+    const response = await axios.patch(`${backendPath}${uri}`, null, getBaseOptions());
     return response.data;
   } catch (err) {
     throw err;
@@ -82,7 +82,7 @@ export async function createRole(role) {
 }
 
 export async function patchRole(role) {
-  const url = process.env.REACT_APP_USER_ROLES_ENDPOINT;
+  const url = `${process.env.REACT_APP_USER_ROLES_ENDPOINT}${role.id}/`;
   const res = await patch(url, role);
   return res;
 }
