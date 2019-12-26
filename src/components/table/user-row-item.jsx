@@ -57,6 +57,9 @@ const useStyles = makeStyles(theme => ({
   },
   donorName: {
     minWidth: 250
+  },
+  roleSelector: {
+    width: 120
   }
 }));
 
@@ -85,7 +88,7 @@ export default function UserRowItem({ user }) {
       </TableCell>
       <TableCell align="left">{user.user_email || '-'}</TableCell>
       <TableCell align="left" className={classes.donorName}>
-        <FormControl disabled={!editing}>
+        <FormControl className={classes.roleSelector} disabled={!editing}>
           <Select
             value={userRole}
             onChange={onChange}
