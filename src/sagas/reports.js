@@ -106,7 +106,6 @@ function* getCertifiedReports(params) {
 // Tricky business requirement to call different endpoint based on donor property us_gov first,
 // then whether theme or year were selected at report page
 function* getCallerFunc(payload) {
-  const donorCode = yield select(selectDonorCode);
   const isUsGov = yield select(selectIsUsGov);
 
   const theme = yield select(selectTheme);
@@ -125,6 +124,7 @@ function* getCallerFunc(payload) {
       break;
     case REPORTS: {
       yield call(waitFor, selectDonorCode);
+      const donorCode = yield select(selectDonorCode);
       if (isUsGov) {
         result.caller = getUsGovReports;
         result.arg = yield select(selectReportYear);
@@ -137,7 +137,6 @@ function* getCallerFunc(payload) {
       }
     }
   }
-
   return result;
 }
 

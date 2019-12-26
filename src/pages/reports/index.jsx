@@ -46,15 +46,14 @@ export default function ReportsPage() {
   const dispatch = useDispatch();
   const effect = useInitPage(pageName);
   useEffect(effect, [pageName]);
+
   useEffect(() => {
-    if (pageName) {
-      dispatch(onReceiveReports([]));
-    }
+    dispatch(onReceiveReports([]));
   }, [pageName]);
 
   return (
     <>
-      <ReportsFilter pageName={pageName} />
+      <ReportsFilter />
       <ReportsTable />
     </>
   );

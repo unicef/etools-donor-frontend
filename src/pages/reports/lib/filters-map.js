@@ -110,6 +110,9 @@ export const FILTERS_MAP = {
 };
 
 export const getPageFilters = (userGroup, currentPageName) => {
+  if (!userGroup || !currentPageName) {
+    return [];
+  }
   return keys(
     filter(({ permissionGroup, pageName }) => {
       const hasPermission = permissionGroup ? permissionGroup === userGroup : true;

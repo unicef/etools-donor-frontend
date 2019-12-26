@@ -18,7 +18,6 @@ const useFiltersQueries = FILTERS_MAP => {
 
   // names(keys) of selected filters for easy iteration on render
   const [selectedFilters, setSelectedFilters] = useState([]);
-  console.log('TCL: selectedFilters', { selectedFilters, filtersActiveState });
 
   const [filterValues, setFilterValues] = useQuery(useState(initialFilterValues));
 
@@ -30,12 +29,15 @@ const useFiltersQueries = FILTERS_MAP => {
     setFiltersActiveState({ ...filtersActiveState, ...activatedFilters });
   }, []);
 
+  // useEffect(() => {
+  //   console.log('XXXX', selectedFilters);
+  // }, [FILTERS_MAP]);
+
   // Render filters in UI if any are activated by effect run on initial render
   useEffect(() => {
     if (equals(filtersActiveState, initialFiltersActiveState) && !selectedFilters.length) {
       return;
     }
-    console.log('TCL: filtersActiveState', filtersActiveState);
     const onlyActiveFilters = keys(filtersActiveState).filter(key => filtersActiveState[key]);
     setSelectedFilters(onlyActiveFilters);
 
@@ -87,7 +89,8 @@ const useFiltersQueries = FILTERS_MAP => {
     selectedFilters,
     handleSelectFilter,
     handleChangeFilterValue,
-    clearFilters
+    clearFilters,
+    setSelectedFilters
   };
 };
 

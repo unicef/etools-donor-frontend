@@ -1,4 +1,10 @@
 import React, { useEffect } from 'react';
+
+if (process.env.NODE_ENV !== 'production') {
+  const whyDidYouRender = require('@welldone-software/why-did-you-render');
+  whyDidYouRender(React);
+}
+import { pick } from 'ramda';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
@@ -10,17 +16,16 @@ import FilterMenuButton from './filter-menu-button';
 
 import useFiltersQueries from 'lib/use-filters-queries';
 import { FORM_CONFIG, PAGE_DROPDOWN_NAME_MAP } from 'lib/constants';
-import { FILTERS_MAP, getPageFilters } from '../lib/filters-map';
+import { FILTERS_MAP } from '../lib/filters-map';
 import MandatoryFilters from './mandatory-filters';
 import { selectMandatoryFilterSelected } from 'selectors/filter';
 import DisableWrapper from 'components/DisableWrapper';
 import { selectMenuBarPage } from 'selectors/ui-flags';
-import { selectUserGroups } from 'selectors/user';
 
-export default function ReportsFilter({ pageName }) {
+export default function ReportsFilter() {
   const dispatch = useDispatch();
   const classes = useFilterStyles();
-  const userGroup = useSelector(selectUserGroups);
+  const pageName = useSelector(selectMenuBarPage);
   const mandatorySelected = useSelector(selectMandatoryFilterSelected);
 
   function handleSubmit() {
@@ -31,8 +36,6 @@ export default function ReportsFilter({ pageName }) {
     clearFilters();
     dispatch(onFetchReports({}));
   }
-
-  const filters = getPageFilters(userGroup, pageName);
 
   const {
     handleSelectFilter,
@@ -47,6 +50,10 @@ export default function ReportsFilter({ pageName }) {
     dispatch(onFetchReports(filterValues));
   }, []);
 
+  useEffect(() => {
+    clearFilters();
+  }, [pageName]);
+
   const pageDropdownName = PAGE_DROPDOWN_NAME_MAP[useSelector(selectMenuBarPage)];
 
   return (
@@ -60,11 +67,7 @@ export default function ReportsFilter({ pageName }) {
         <Paper>
           <Grid item xs={12} className={classes.filterContainer} container wrap="nowrap">
             <Box className={classes.filterMenu}>
-              <FilterMenuButton
-                onSelectFilter={handleSelectFilter}
-                selected={filtersActiveState}
-                filters={filters}
-              />
+              <FilterMenuButton onSelectFilter={handleSelectFilter} selected={filtersActiveState} />
             </Box>
 
             <Box display="flex" flex="1 1 auto" alignItems="flex-start" flexWrap="wrap">
@@ -114,6 +117,4 @@ export default function ReportsFilter({ pageName }) {
   );
 }
 
-ReportsFilter.propTypes = {
-  pageName: PropTypes.string
-};
+// ReportsFilter.whyDidYouRender = true;

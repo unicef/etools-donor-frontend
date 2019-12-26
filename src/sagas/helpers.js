@@ -6,7 +6,8 @@ export function* waitFor(selector) {
   }
   while (true) {
     yield take('*');
-    if (yield select(selector)) {
+    const value = yield select(selector);
+    if (value) {
       return;
     }
   }
