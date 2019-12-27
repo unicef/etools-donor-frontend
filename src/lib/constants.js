@@ -76,3 +76,6 @@ export const PAGE_DROPDOWN_NAME_MAP = {
   [REPORTS]: 'year',
   [THEMATIC_REPORTS]: 'theme'
 };
+
+export const USER_ROLE_PATCH_SUCCESS_MESSAGE = 'User role successfully changed.';
+export const USER_ROLE_CREATED_MESSAGE = 'User role created successfully.';

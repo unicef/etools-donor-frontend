@@ -91,6 +91,7 @@ export default function MainAppBar() {
               <ProtectedRouteUserManagement exact path={`${USERS_PORTAL_PATH}/`}>
                 <UsersManagement />
               </ProtectedRouteUserManagement>
+
               <Route path="*" component={NotFound} />
             </Switch>
           </Box>

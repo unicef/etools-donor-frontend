@@ -1,14 +1,13 @@
 import { takeLatest, call, put, all, select } from 'redux-saga/effects';
 import { format, subYears, startOfYear, endOfYear, getYear } from 'date-fns';
 import { keys } from 'ramda';
-import { selectDonorCode, selectIsUsGov, selectMenuBarPage } from 'selectors/ui-flags';
-import { selectReportYear, selectTheme } from 'selectors/filter';
+import { selectDonorCode, selectIsUsGov, selectMenuBarPage, selectError } from 'selectors/ui-flags';
+import { selectReportYear } from 'selectors/filter';
 import { removeEmpties } from 'lib/helpers';
 import { getUsGovReports, getThematicReports, getReports } from 'api';
 import { waitFor } from './helpers';
 import { setLoading } from 'slices/ui';
 import { onReceiveReports } from 'slices/reports';
-import { selectError } from 'selectors/errors';
 import { setError } from 'slices/error';
 import { onFetchReports } from 'actions';
 import { selectReports } from 'selectors/collections';
@@ -108,7 +107,6 @@ function* getCertifiedReports(params) {
 function* getCallerFunc(payload) {
   const isUsGov = yield select(selectIsUsGov);
 
-  const theme = yield select(selectTheme);
   const reportPageName = yield select(selectMenuBarPage);
 
   let result = {
@@ -120,7 +118,6 @@ function* getCallerFunc(payload) {
   switch (reportPageName) {
     case THEMATIC_REPORTS:
       result.caller = getThematicReports;
-      result.arg = theme;
       break;
     case REPORTS: {
       yield call(waitFor, selectDonorCode);

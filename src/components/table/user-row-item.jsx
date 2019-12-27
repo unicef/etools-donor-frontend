@@ -69,16 +69,14 @@ export default function UserRowItem({ user }) {
   const groups = useSelector(selectUserGroups);
   const dispatch = useDispatch();
   const [editing, setIsEditing] = useState(false);
-  const [userRole, setUserRole] = useState(user.group_name || '-');
 
   async function onChange(e) {
     const newVal = e.target.value;
     const payload = {
       id: user.id,
-      group_name: newVal
+      group: newVal
     };
     dispatch(userRoleEdited(payload));
-    setUserRole(newVal);
   }
 
   return (
@@ -90,7 +88,7 @@ export default function UserRowItem({ user }) {
       <TableCell align="left" className={classes.donorName}>
         <FormControl className={classes.roleSelector} disabled={!editing}>
           <Select
-            value={userRole}
+            value={user.group}
             onChange={onChange}
             inputProps={{
               name: 'select-role',
@@ -98,7 +96,7 @@ export default function UserRowItem({ user }) {
             }}
           >
             {groups.map(group => (
-              <MenuItem key={group.id} value={group.name}>
+              <MenuItem key={group.id} value={group.id}>
                 {group.name}
               </MenuItem>
             ))}

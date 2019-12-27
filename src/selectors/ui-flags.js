@@ -6,6 +6,8 @@ export const selectCreatedRole = state => state.createdRole;
 export const selectFormError = state => state.formError;
 export const selectUi = state => state.ui;
 export const selectUserProfile = state => state.userProfile;
+export const selectError = state => state.error;
+export const selectSuccess = state => state.success;
 
 export const selectLoading = createSelector(
   selectUi,

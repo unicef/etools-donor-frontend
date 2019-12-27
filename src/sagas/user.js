@@ -26,6 +26,8 @@ import { parseFormError } from 'lib/error-parsers';
 import { setLoading } from 'slices/ui';
 import { onReceiveUserProfile } from 'slices/user-profile';
 import { selectDonorId } from 'selectors/ui-flags';
+import { USER_ROLE_PATCH_SUCCESS_MESSAGE, USER_ROLE_CREATED_MESSAGE } from 'lib/constants';
+import { actionSucceeded } from 'slices/success';
 
 function* handleFetchUserRoles(action) {
   yield put(setLoading(true));
@@ -56,6 +58,7 @@ function* handleCreateUserRole({ payload }) {
     const user = yield call(createUser, payload.user);
     const role = yield call(createRole, { ...payload.rolePayload, user: user.id });
     yield put(createRoleSuccess(role));
+    yield put(actionSucceeded(USER_ROLE_CREATED_MESSAGE));
   } catch (err) {
     const formErrors = parseFormError(err);
     yield put(onFormError(formErrors));
@@ -86,6 +89,7 @@ function* handleUserRolePatch({ payload }) {
   try {
     const role = yield call(patchRole, payload);
     yield put(createRoleSuccess(role));
+    yield put(actionSucceeded(USER_ROLE_PATCH_SUCCESS_MESSAGE));
   } catch (err) {
     yield put(setError(err));
   } finally {

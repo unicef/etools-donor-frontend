@@ -26,7 +26,8 @@ const useFiltersQueries = FILTERS_MAP => {
   useEffect(() => {
     const filtersFromUrl = pickBy(isValidQuery, filterValues);
     const activatedFilters = mapObjIndexed(always(true), filtersFromUrl);
-    setFiltersActiveState({ ...filtersActiveState, ...activatedFilters });
+    const nedActiveState = { ...filtersActiveState, ...activatedFilters };
+    setFiltersActiveState(nedActiveState);
   }, []);
 
   // useEffect(() => {

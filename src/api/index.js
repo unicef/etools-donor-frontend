@@ -35,9 +35,9 @@ async function post(uri, body = {}) {
     throw err;
   }
 }
-async function patch(uri) {
+async function patch(uri, body) {
   try {
-    const response = await axios.patch(`${backendPath}${uri}`, null, getBaseOptions());
+    const response = await axios.patch(`${backendPath}${uri}`, body, getBaseOptions());
     return response.data;
   } catch (err) {
     throw err;
@@ -129,7 +129,7 @@ export function getUsGovReports(params, year) {
   return get(computedUrl, params);
 }
 
-export function getThematicReports(params, theme) {
-  const computedUrl = `${process.env.REACT_APP_REPORTS_ENDPOINT}Thematic%20Reports/?theme=${theme}`;
+export function getThematicReports(params) {
+  const computedUrl = `${process.env.REACT_APP_REPORTS_ENDPOINT}Thematic%20Reports/`;
   return get(computedUrl, params);
 }

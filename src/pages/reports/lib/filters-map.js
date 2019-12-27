@@ -11,7 +11,8 @@ import {
   TITLE_FIELD,
   EXTERNAL_REF_GRANT_FIELD,
   REPORT_GROUP_FIELD,
-  REPORT_GENERATED_FIELD
+  REPORT_GENERATED_FIELD,
+  THEME_FIELD
 } from '../constants';
 
 import { filter, keys } from 'ramda';
@@ -29,8 +30,9 @@ import GrantsFilter from '../components/grants-filter';
 import ExternalGrantsFilter from '../components/external-grants-filter';
 import TitleSearchFilter from '../components/title-search-filter';
 import reportingGroupFilter from '../components/reporting-group-filter';
-import { UNICEF_USER_ROLE, REPORTS } from 'lib/constants';
+import { UNICEF_USER_ROLE, REPORTS, THEMATIC_REPORTS } from 'lib/constants';
 import ReportGeneratedFilter from '../components/report-generated-filter';
+import ThemeFilter from '../components/theme-filter';
 
 export const FILTERS_MAP = {
   [GRANT_FIELD]: {
@@ -106,6 +108,12 @@ export const FILTERS_MAP = {
     Component: ReportGeneratedFilter,
     gridSize: 2,
     permissionGroup: UNICEF_USER_ROLE
+  },
+
+  [THEME_FIELD]: {
+    label: 'Theme',
+    Component: ThemeFilter,
+    pageName: THEMATIC_REPORTS
   }
 };
 
