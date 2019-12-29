@@ -1,4 +1,4 @@
-import { propOr } from 'ramda';
+import { propOr, prop } from 'ramda';
 import { createSelector } from 'reselect';
 import { UNICEF_USER_ROLE } from 'lib/constants';
 
@@ -26,6 +26,11 @@ export const selectParamDonorId = createSelector(
 export const selectUserGroup = createSelector(
   selectUserProfile,
   profile => profile.group.name
+);
+
+export const selectIsSuperUser = createSelector(
+  selectUserProfile,
+  prop('is_superuser')
 );
 
 export const selectUserProfileDonor = createSelector(

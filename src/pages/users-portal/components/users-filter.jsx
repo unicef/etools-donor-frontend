@@ -17,12 +17,14 @@ import { onFetchUserRoles, onFetchUserGroups } from 'actions';
 import { setValueFromEvent } from 'lib/helpers';
 import { setUserRoles } from 'slices/user-roles';
 import { selectDonorId } from 'selectors/ui-flags';
+import { useParams } from 'react-router-dom';
 
 export default function UsersFilter() {
   const classes = useFilterStyles();
   const dispatch = useDispatch();
   const groups = useSelector(selectUserGroups);
   const donorId = useSelector(selectDonorId);
+  const { donorId: maybeParamDonor } = useParams();
 
   useEffect(() => {
     if (!groups.length) {
@@ -41,7 +43,7 @@ export default function UsersFilter() {
   useEffect(() => {
     const queryObj = {
       group: selectedRoles.map(name => prop('id', find(propEq('name', name), groups)))[0], //TODO: fix multi on backend
-      donor: donorId,
+      donor: maybeParamDonor || donorId,
       search: searchQuery || undefined
     };
     dispatch(onFetchUserRoles(queryObj));

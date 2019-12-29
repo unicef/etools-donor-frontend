@@ -87,10 +87,9 @@ export default function MainAppBar() {
               <ProtectedRouteReportPage exact path={`/${THEMATIC_REPORTS}`}>
                 <ReportsPage />
               </ProtectedRouteReportPage>
-
-              <ProtectedRouteUserManagement exact path={`${USERS_PORTAL_PATH}/`}>
-                <UsersManagement />
-              </ProtectedRouteUserManagement>
+              {/* Optional donorId param here since donor list is not aware of what page
+              to link to per donor and only super users can choose donor for user management */}
+              <ProtectedRouteUserManagement path={`${USERS_PORTAL_PATH}/:donorId?`} />
 
               <Route path="*" component={NotFound} />
             </Switch>

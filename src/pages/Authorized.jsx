@@ -7,6 +7,8 @@ import { Route } from 'react-router-dom';
 import { selectUserProfileDonorId } from 'selectors/ui-flags';
 import { usePermissions } from 'components/PermissionRedirect';
 import { THEMATIC_REPORTS_PATH } from 'lib/constants';
+import DonorsList from './donors-list';
+import UsersManagement from './users-portal';
 
 export function ProtectedRouteDonorsList({ children, ...rest }) {
   const { isUnicefUser } = usePermissions();
@@ -35,11 +37,23 @@ export function ProtectedRouteReportPage({ children, ...rest }) {
   );
 }
 
-export function ProtectedRouteUserManagement({ children, ...rest }) {
-  const { isDonorAdmin } = usePermissions();
+export function ProtectedRouteUserManagement({ ...rest }) {
+  const { isDonorAdmin, isSuperUser } = usePermissions();
 
   return (
-    <Route {...rest} render={() => (isDonorAdmin ? children : <Redirect to="/not-found" />)} />
+    <Route
+      {...rest}
+      render={({ match }) => {
+        const { donorId } = match.params;
+        return !donorId && isSuperUser ? (
+          <DonorsList />
+        ) : isDonorAdmin || (donorId && isSuperUser) ? (
+          <UsersManagement />
+        ) : (
+          <Redirect to="/not-found" />
+        );
+      }}
+    />
   );
 }
 
@@ -49,4 +63,6 @@ const ProtectedRouteProps = {
 
 ProtectedRouteDonorsList.propTypes = ProtectedRouteProps;
 ProtectedRouteReportPage.propTypes = ProtectedRouteProps;
-ProtectedRouteUserManagement.propTypes = ProtectedRouteProps;
+ProtectedRouteUserManagement.propTypes = {
+  rest: function(props, propName, componentName) {}
+};

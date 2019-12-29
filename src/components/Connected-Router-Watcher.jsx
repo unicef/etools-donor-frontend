@@ -7,19 +7,21 @@ import { useEffect } from 'react';
 import { selectPageName, selectParamDonorId } from 'selectors/ui-flags';
 import { usePermissions } from './PermissionRedirect';
 import { initDonorsList } from 'actions';
+import { selectDonors } from 'selectors/collections';
 
 export default function ConnectedRouterWatcher({ children }) {
   const location = useLocation();
   const currentPageName = useSelector(selectPageName);
   const currentDonorId = useSelector(selectParamDonorId);
-  const { isUnicefUser } = usePermissions();
+  const donors = useSelector(selectDonors);
+  const { isUnicefUser, isSuperUser } = usePermissions();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isUnicefUser) {
+    if ((isUnicefUser || isSuperUser) && !donors.length) {
       dispatch(initDonorsList());
     }
-  }, [isUnicefUser]);
+  }, [isUnicefUser, isSuperUser]);
 
   useEffect(() => {
     // only dispatch if actual route changed, children change will trigger re-render of this component
