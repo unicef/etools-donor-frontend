@@ -17,7 +17,6 @@ import useFiltersQueries from 'lib/use-filters-queries';
 import { FORM_CONFIG } from 'lib/constants';
 import { FILTERS_MAP } from '../lib/filters-map';
 import MandatoryFilters from './mandatory-filters';
-import { selectMandatoryFilterSelected } from 'selectors/filter';
 import { selectMenuBarPage } from 'selectors/ui-flags';
 
 function usePrevious(value) {
@@ -32,7 +31,6 @@ export default function ReportsFilter() {
   const dispatch = useDispatch();
   const classes = useFilterStyles();
   const pageName = useSelector(selectMenuBarPage);
-  const mandatorySelected = useSelector(selectMandatoryFilterSelected);
 
   function handleSubmit(e) {
     e.preventDefault();

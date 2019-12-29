@@ -64,5 +64,5 @@ const ProtectedRouteProps = {
 ProtectedRouteDonorsList.propTypes = ProtectedRouteProps;
 ProtectedRouteReportPage.propTypes = ProtectedRouteProps;
 ProtectedRouteUserManagement.propTypes = {
-  rest: function(props, propName, componentName) {}
+  rest: function() {}
 };

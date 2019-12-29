@@ -4,9 +4,7 @@ import { Grid, Box, Link, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import bgImage from './img/home-bkg-3.jpg';
 import unLogo from './img/un-wreath.png';
-import unhcrLogo from './img/logo-unhcr.png';
 import unicefLogo from './img/logo-unicef.png';
-import wfpLogo from './img/logo-wfp-2.png';
 import clsx from 'clsx';
 
 const useStyles = makeStyles(() => ({

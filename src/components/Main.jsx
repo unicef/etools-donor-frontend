@@ -7,7 +7,6 @@ import AppToolbar from './App-Bar';
 import { DRAWER_WIDTH, USERS_PORTAL_PATH, REPORTS, THEMATIC_REPORTS } from '../lib/constants';
 import DonorsList from 'pages/donors-list';
 import ContentHeader from './Content-Header';
-import UsersManagement from 'pages/users-portal';
 import ReportsPage from 'pages/reports';
 import {
   ProtectedRouteDonorsList,
