@@ -21,6 +21,7 @@ import { DONOR_ADMIN_ROLE, REPORTS, THEMATIC_REPORTS, USERS_PORTAL } from '../li
 import clsx from 'clsx';
 import { selectUserGroup, selectMenuBarPage } from 'selectors/ui-flags';
 import { menuItemSelected } from 'slices/ui';
+import { usePermissions } from './PermissionRedirect';
 
 export const useNav = () => {
   const history = useHistory();
@@ -35,25 +36,25 @@ export const useNav = () => {
     }
   };
 
-  const userGroup = useSelector(selectUserGroup);
-  const isAdmin = userGroup === DONOR_ADMIN_ROLE;
-
   function navSelected(page) {
     return page === useSelector(selectMenuBarPage);
   }
 
-  return { handleNav, navSelected, isAdmin };
+  return { handleNav, navSelected };
 };
 
 export default function ConnectedDrawer() {
   const classes = useMainStyles();
   const dispatch = useDispatch();
 
+  const { isDonorAdmin, isSuperUser } = usePermissions();
+  const hasAccessUserManagement = isDonorAdmin || isSuperUser;
+
   useEffect(() => {
     dispatch(menuItemSelected(REPORTS));
   }, []);
 
-  const { handleNav, navSelected, isAdmin } = useNav();
+  const { handleNav, navSelected } = useNav();
   return (
     <Drawer
       className={classes.drawer}
@@ -96,7 +97,7 @@ export default function ConnectedDrawer() {
           <ListItemText primary="Thematic Reports" />
         </ListItem>
 
-        {isAdmin && (
+        {hasAccessUserManagement && (
           <ListItem selected={navSelected(USERS_PORTAL)} onClick={handleNav(USERS_PORTAL)} button>
             <ListItemIcon>
               <SettingsIcon />

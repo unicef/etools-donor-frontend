@@ -19,9 +19,9 @@ export const usePermissions = () => {
 
 export default function PermissionRedirect() {
   const usersDonorId = useSelector(selectUserProfileDonorId);
-  const userGroup = useSelector(selectUserGroup);
+  const { isUnicefUser, isSuperUser } = usePermissions();
 
-  if (userGroup === UNICEF_USER_ROLE) {
+  if (isUnicefUser || isSuperUser) {
     return <Redirect to="/donors" />;
   } else {
     return <Redirect to={`${REPORTS_PATH}/${usersDonorId}`} />;
