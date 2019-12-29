@@ -17,9 +17,9 @@ import {
 import DescriptionIcon from '@material-ui/icons/Description';
 import SettingsIcon from '@material-ui/icons/Settings';
 import logo from 'assets/images/UNICEF_logo.png';
-import { DONOR_ADMIN_ROLE, REPORTS, THEMATIC_REPORTS, USERS_PORTAL } from '../lib/constants';
+import { REPORTS, THEMATIC_REPORTS, USERS_PORTAL } from '../lib/constants';
 import clsx from 'clsx';
-import { selectUserGroup, selectMenuBarPage } from 'selectors/ui-flags';
+import { selectMenuBarPage } from 'selectors/ui-flags';
 import { menuItemSelected } from 'slices/ui';
 import { usePermissions } from './PermissionRedirect';
 
