@@ -104,7 +104,7 @@ const useStyles = makeStyles(() => ({
     marginBottom: '1rem'
   },
   footerLogo: {
-    maxHeight: 65
+    maxHeight: 130
   }
 }));
 
@@ -132,9 +132,9 @@ export default function LandingPage() {
                 </h3>
               </Box>
               <Box display="flex" alignItems="center" className={classes.linkContainer}>
-                <Link className={classes.navLink}>Link One</Link>
+                {/* <Link className={classes.navLink}>Link One</Link>
                 <Link className={classes.navLink}>Link Two</Link>
-                <Link className={classes.navLink}>Link Three</Link>
+                <Link className={classes.navLink}>Link Three</Link> */}
               </Box>
             </Box>
 
@@ -180,15 +180,9 @@ export default function LandingPage() {
                 qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit
               </strong>
             </Typography>
-            <Grid container>
-              <Grid item xs={4}>
-                <img src={unhcrLogo} alt="UNHCR" className={classes.footerLogo} />
-              </Grid>
-              <Grid item xs={4}>
+            <Grid container justify="center">
+              <Grid item xs={8}>
                 <img src={unicefLogo} alt="unicef" className={classes.footerLogo} />
-              </Grid>
-              <Grid item xs={4}>
-                <img src={wfpLogo} alt="WFP" className={classes.footerLogo} />
               </Grid>
             </Grid>
           </Grid>
