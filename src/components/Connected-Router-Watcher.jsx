@@ -14,14 +14,14 @@ export default function ConnectedRouterWatcher({ children }) {
   const currentPageName = useSelector(selectPageName);
   const currentDonorId = useSelector(selectParamDonorId);
   const donors = useSelector(selectDonors);
-  const { isUnicefUser, isSuperUser } = usePermissions();
+  const { canViewDonors } = usePermissions();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if ((isUnicefUser || isSuperUser) && !donors.length) {
+    if (canViewDonors && !donors.length) {
       dispatch(initDonorsList());
     }
-  }, [isUnicefUser, isSuperUser]);
+  }, [canViewDonors]);
 
   useEffect(() => {
     // only dispatch if actual route changed, children change will trigger re-render of this component

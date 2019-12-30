@@ -6,7 +6,8 @@ import {
   createRole,
   getUserProfile,
   patchRole,
-  deleteRole
+  deleteRole,
+  getUser
 } from 'api';
 import { setUserRoles } from 'slices/user-roles';
 import { setError } from 'slices/error';
@@ -22,17 +23,23 @@ import {
 import { setGroups } from 'slices/user-groups';
 import { createRoleSuccess } from 'slices/created-role';
 import { onFormError } from 'slices/form-error';
-import { parseFormError } from 'lib/error-parsers';
+import { parseFormError, checkUserExists } from 'lib/error-parsers';
 import { setLoading } from 'slices/ui';
 import { onReceiveUserProfile } from 'slices/user-profile';
-import { selectDonorId } from 'selectors/ui-flags';
+import { selectDonorId, selectUserDonor } from 'selectors/ui-flags';
 import { USER_ROLE_PATCH_SUCCESS_MESSAGE, USER_ROLE_CREATED_MESSAGE } from 'lib/constants';
 import { actionSucceeded } from 'slices/success';
+import { waitFor } from './helpers';
 
 function* handleFetchUserRoles(action) {
+  yield call(waitFor, selectUserDonor);
+  const { id: donor } = yield select(selectUserDonor);
   yield put(setLoading(true));
   try {
-    const userRoles = yield call(getUserRoles, action.payload);
+    const userRoles = yield call(getUserRoles, {
+      ...action.payload,
+      donor
+    });
     yield put(setUserRoles(userRoles));
   } catch (err) {
     yield put(setError(err));
@@ -53,9 +60,30 @@ function* handleFetchUserGroups() {
   }
 }
 
+function* handleCreateUser(payload) {
+  yield put(setLoading(true));
+  let user;
+  try {
+    user = yield call(createUser, payload);
+  } catch (err) {
+    const formErrors = parseFormError(err);
+    const userExists = checkUserExists(formErrors);
+
+    if (userExists) {
+      user = yield call(getUser, { username: payload.username });
+    } else {
+      throw err;
+    }
+  } finally {
+    yield put(setLoading(false));
+  }
+  return user;
+}
+
 function* handleCreateUserRole({ payload }) {
   try {
-    const user = yield call(createUser, payload.user);
+    // const user = yield call(createUser, payload.user);
+    const user = yield call(handleCreateUser, payload.user);
     const role = yield call(createRole, { ...payload.rolePayload, user: user.id });
     yield put(createRoleSuccess(role));
     yield put(actionSucceeded(USER_ROLE_CREATED_MESSAGE));

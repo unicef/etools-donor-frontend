@@ -12,3 +12,7 @@ export function getErrorState(err, ...fields) {
       }, false)
     : false;
 }
+
+export function checkUserExists(formError) {
+  return Boolean(formError.username) || false;
+}

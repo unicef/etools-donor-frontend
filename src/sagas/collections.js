@@ -1,4 +1,4 @@
-import { takeLatest, call, put, all, select } from 'redux-saga/effects';
+import { takeLatest, take, call, put, all, select } from 'redux-saga/effects';
 
 import {
   getDonors,
@@ -14,7 +14,7 @@ import { propEq, equals } from 'ramda';
 import { setError } from 'slices/error';
 import { setDonors } from 'slices/donors';
 import { initDonorsList, initCertifiedReportsPage, initThematicReportsPage } from 'actions';
-import { setLoading } from 'slices/ui';
+import { setLoading, onRouteChange } from 'slices/ui';
 import { onReceiveGrants } from 'slices/grants';
 import { onReceiveExternalGrants } from 'slices/external-grants';
 import { onReceivethemes } from 'slices/themes';
@@ -30,7 +30,7 @@ import {
   selectGrants,
   selectExternalGrants
 } from 'selectors/collections';
-import { reportPageLoaded } from 'slices/donor';
+import { currentDonorSelected } from 'slices/donor';
 import { UNICEF_USER_ROLE } from 'lib/constants';
 
 function* handleFetchDonors() {
@@ -97,25 +97,29 @@ function* handleFetchStatic() {
 }
 
 // Encapsulate logic for grabbing the current donor and persisting to state
-// for easier access.Only UNICEF user can operate on any donor.
-function* handleCurrentDonor(action) {
+// for easier access.Only UNICEF user or SuperUser can operate on any donor.
+function* handleCurrentDonor({ payload }) {
   const profile = yield select(selectUserProfile);
   const group = yield select(selectUserGroup);
   let donor;
 
-  if (group === UNICEF_USER_ROLE) {
+  if (group === UNICEF_USER_ROLE || profile.is_superuser) {
     yield call(waitForLength, selectDonors);
     const donors = yield select(selectDonors);
-    donor = donors.find(propEq('id', Number(action.payload)));
+    donor = donors.find(propEq('id', Number(payload.donorId)));
   } else {
     donor = profile.donor;
   }
 
-  yield put(reportPageLoaded(donor));
+  yield put(currentDonorSelected(donor));
 }
 
 export function* donorsSaga() {
   yield takeLatest(initDonorsList.type, handleFetchDonors);
+}
+
+export function* currentDonorSaga() {
+  yield takeLatest([onRouteChange.type], handleCurrentDonor);
 }
 
 function* fetchReportFilterCollections(action) {
@@ -123,8 +127,7 @@ function* fetchReportFilterCollections(action) {
     call(maybeFetch, handleFetchGrants, selectGrants, action),
     call(maybeFetch, handleFetchExternalGrants, selectExternalGrants, action),
     call(handleFetchStatic),
-    call(maybeFetch, handleFetchOffices, selectOffices),
-    call(handleCurrentDonor, action)
+    call(maybeFetch, handleFetchOffices, selectOffices)
   ]);
 }
 
@@ -142,5 +145,5 @@ export function* filtersSaga() {
 }
 
 export default function*() {
-  yield all([filtersSaga(), donorsSaga()]);
+  yield all([filtersSaga(), donorsSaga(), currentDonorSaga()]);
 }

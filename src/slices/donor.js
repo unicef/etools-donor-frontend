@@ -4,7 +4,7 @@ const donorSlice = createSlice({
   name: 'donor',
   initialState: '',
   reducers: {
-    reportPageLoaded(state, action) {
+    currentDonorSelected(state, action) {
       return action.payload;
     }
   }
@@ -12,4 +12,4 @@ const donorSlice = createSlice({
 
 export const { reducer: donorReducer } = donorSlice;
 
-export const { reportPageLoaded } = donorSlice.actions;
+export const { currentDonorSelected } = donorSlice.actions;

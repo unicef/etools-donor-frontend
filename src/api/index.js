@@ -75,6 +75,15 @@ export async function createUser(user) {
   return res;
 }
 
+export async function getUser(user) {
+  const url = process.env.REACT_APP_USERS_ENDPOINT;
+  const res = await get(url, user);
+  if (Array.isArray(res)) {
+    return res[0];
+  }
+  return res;
+}
+
 export async function createRole(role) {
   const url = process.env.REACT_APP_USER_ROLES_ENDPOINT;
   const res = await post(url, role);

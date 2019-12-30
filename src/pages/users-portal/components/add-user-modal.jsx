@@ -30,6 +30,7 @@ import { selectCreatedRole, selectFormError, selectDonorId } from 'selectors/ui-
 import { onCreateUserRole } from 'actions';
 import { getErrorState } from 'lib/error-parsers';
 import { onResetFormError, onFormError } from 'slices/form-error';
+import { useParams } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -68,6 +69,8 @@ export default function AddUserModal({ open, onClose }) {
   const dispatch = useDispatch();
   const donorId = useSelector(selectDonorId);
 
+  const { donorId: donorIdParams } = useParams();
+
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -105,9 +108,10 @@ export default function AddUserModal({ open, onClose }) {
       last_name: lastName,
       email
     };
+
     const rolePayload = {
       group: prop('id', groups.find(g => g.name === role)),
-      donor: donorId
+      donor: donorIdParams || donorId
     };
     setLoading(true);
     dispatch(onCreateUserRole({ user, rolePayload }));

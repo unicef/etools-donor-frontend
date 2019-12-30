@@ -71,7 +71,7 @@ export const useTableStyles = makeStyles(theme => ({
   },
   actionsCell: {
     '&:last-child': {
-      width: 70
+      width: 140
     }
   }
 }));

@@ -52,8 +52,10 @@ export default function ReportsFilter() {
   } = useFiltersQueries(FILTERS_MAP);
 
   useEffect(() => {
-    dispatch(onFetchReports(filterValues));
-  }, []);
+    if (pageName) {
+      dispatch(onFetchReports(filterValues));
+    }
+  }, [pageName]);
 
   const prevPageName = usePrevious(pageName);
 

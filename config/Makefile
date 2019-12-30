@@ -5,7 +5,7 @@ help:
 	@echo "release-dev             build production image and push as dev tag to docker hub"
 
 rm-container:
-	@docker ps -a | awk '{ print $1 $2 }' | grep frontend:dev | awk '{print $1 }' | xargs -I {} docker rm {}
+	@docker ps -a | grep frontend:dev |  awk '{ print $1 }'| xargs -I {} docker rm {}
 
 rm-image:
 	@docker rmi unicef/donor-reporting-portal-frontend:dev --force

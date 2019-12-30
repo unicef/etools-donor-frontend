@@ -1,5 +1,6 @@
 import { select, take, call } from 'redux-saga/effects';
 import { isEmpty } from 'ramda';
+
 export function* waitFor(selector) {
   if (yield select(selector)) {
     return;

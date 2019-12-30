@@ -1,10 +1,9 @@
 import React from 'react';
-
 import { Grid, Box, Link, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import bgImage from './img/home-bkg-3.jpg';
-import unLogo from './img/un-wreath.png';
 import unicefLogo from './img/logo-unicef.png';
+import logo from 'assets/images/unicef-icon.png';
 import clsx from 'clsx';
 
 const useStyles = makeStyles(() => ({
@@ -121,7 +120,7 @@ export default function LandingPage() {
         <Grid item xs={9} container className={classes.nav}>
           <Box display="flex" className={classes.container} justifyContent="space-between">
             <Box display="flex">
-              <img src={unLogo} alt="UN Logo" />
+              <img src={logo} alt="UN Logo" />
               <Box display="flex" alignItems="center" className={classes.titleContainer}>
                 <h3 className={classes.logoTitle}>
                   Donor <br />
@@ -159,7 +158,7 @@ export default function LandingPage() {
             alignItems="center"
             justify="center"
           >
-            <img src={unLogo} className={classes.logoSplash} alt="UN Logo" />
+            <img src={logo} className={classes.logoSplash} alt="UN Logo" />
             <Typography variant="h4" className={classes.hWelcome}>
               <strong>Welcome to the Donor Reporting Portal</strong>
             </Typography>
@@ -178,11 +177,7 @@ export default function LandingPage() {
                 qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit
               </strong>
             </Typography>
-            <Grid container justify="center">
-              <Grid item xs={8}>
-                <img src={unicefLogo} alt="unicef" className={classes.footerLogo} />
-              </Grid>
-            </Grid>
+            <Grid container justify="center" />
           </Grid>
         </Grid>
       </Grid>

@@ -11,17 +11,14 @@ import DonorsList from './donors-list';
 import UsersManagement from './users-portal';
 
 export function ProtectedRouteDonorsList({ children, ...rest }) {
-  const { isUnicefUser, isSuperUser } = usePermissions();
+  const { canViewDonors } = usePermissions();
   return (
-    <Route
-      {...rest}
-      render={() => (isUnicefUser || isSuperUser ? children : <Redirect to="/not-found" />)}
-    />
+    <Route {...rest} render={() => (canViewDonors ? children : <Redirect to="/not-found" />)} />
   );
 }
 
 export function ProtectedRouteReportPage({ children, ...rest }) {
-  const { isUnicefUser, isSuperUser } = usePermissions();
+  const { canViewDonors } = usePermissions();
   const usersDonor = useSelector(selectUserProfileDonorId);
 
   return (
@@ -30,10 +27,9 @@ export function ProtectedRouteReportPage({ children, ...rest }) {
       render={({ match }) => {
         const { donorId } = match.params;
         const { path } = match;
-        const authorizedUser = isUnicefUser || isSuperUser;
         const thematicPath = path === THEMATIC_REPORTS_PATH;
         const unassignedDonorAttempt = Boolean(
-          usersDonor !== Number(donorId) && !authorizedUser && !thematicPath
+          usersDonor !== Number(donorId) && !canViewDonors && !thematicPath
         );
         return unassignedDonorAttempt ? <Redirect to="/not-found" /> : children;
       }}

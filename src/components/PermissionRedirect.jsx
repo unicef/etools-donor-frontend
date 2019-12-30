@@ -9,19 +9,20 @@ export const usePermissions = () => {
   const isUnicefUser = userGroup === UNICEF_USER_ROLE;
   const isDonorAdmin = userGroup === DONOR_ADMIN_ROLE;
   const isSuperUser = useSelector(selectIsSuperUser);
-
+  const canViewDonors = isUnicefUser || isSuperUser;
   return {
     isUnicefUser,
     isDonorAdmin,
-    isSuperUser
+    isSuperUser,
+    canViewDonors
   };
 };
 
 export default function PermissionRedirect() {
   const usersDonorId = useSelector(selectUserProfileDonorId);
-  const { isUnicefUser, isSuperUser } = usePermissions();
+  const { canViewDonors } = usePermissions();
 
-  if (isUnicefUser || isSuperUser) {
+  if (canViewDonors) {
     return <Redirect to="/donors" />;
   } else {
     return <Redirect to={`${REPORTS_PATH}/${usersDonorId}`} />;

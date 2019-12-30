@@ -35,7 +35,7 @@ export function getSorting(order, orderBy) {
   if (orderBy === BACKEND_PROPERTIES_USER_LAST_LOGIN) {
     func = getUserStatusStr;
   }
-  if (orderBy === BACKEND_REPORTS_FIELDS['country']) {
+  if (orderBy === BACKEND_REPORTS_FIELDS['recipientOffice']) {
     func = getRecipientOfficeStr;
   }
   return order === 'desc' ? (a, b) => desc(a, b, func) : (a, b) => -desc(a, b, func);
