@@ -5,7 +5,7 @@ const donorSlice = createSlice({
   initialState: '',
   reducers: {
     currentDonorSelected(state, action) {
-      return action.payload;
+      return action.payload || '';
     }
   }
 });

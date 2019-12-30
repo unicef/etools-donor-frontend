@@ -2,7 +2,6 @@ import React from 'react';
 import { Grid, Box, Link, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import bgImage from './img/home-bkg-3.jpg';
-import unicefLogo from './img/logo-unicef.png';
 import logo from 'assets/images/unicef-icon.png';
 import clsx from 'clsx';
 
