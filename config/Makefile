@@ -11,7 +11,7 @@ rm-image:
 	@docker rmi unicef/donor-reporting-portal-frontend:dev --force
 
 build:
-	cd .. && docker build \
+	cd .. && docker build --no-cache \
 			-t unicef/donor-reporting-portal-frontend .
 	docker tag unicef/donor-reporting-portal-frontend:latest unicef/donor-reporting-portal-frontend:dev
 

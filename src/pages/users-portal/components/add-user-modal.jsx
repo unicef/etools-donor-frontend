@@ -26,11 +26,10 @@ import { setValueFromEvent, oneIsEmpty } from 'lib/helpers';
 import { makeStyles } from '@material-ui/styles';
 import { FORM_CONFIG } from '../../../lib/constants';
 import { selectUserGroups } from 'selectors/user';
-import { selectCreatedRole, selectFormError, selectDonorId } from 'selectors/ui-flags';
+import { selectCreatedRole, selectFormError } from 'selectors/ui-flags';
 import { onCreateUserRole } from 'actions';
 import { getErrorState } from 'lib/error-parsers';
 import { onResetFormError, onFormError } from 'slices/form-error';
-import { useParams } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -67,9 +66,6 @@ const useStyles = makeStyles(theme => ({
 export default function AddUserModal({ open, onClose }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const donorId = useSelector(selectDonorId);
-
-  const { donorId: donorIdParams } = useParams();
 
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -102,6 +98,8 @@ export default function AddUserModal({ open, onClose }) {
   }
 
   async function onSubmit() {
+    dispatch(onFormError(null));
+
     const user = {
       username: email,
       first_name: firstName,
@@ -110,9 +108,9 @@ export default function AddUserModal({ open, onClose }) {
     };
 
     const rolePayload = {
-      group: prop('id', groups.find(g => g.name === role)),
-      donor: donorIdParams || donorId
+      group: prop('id', groups.find(g => g.name === role))
     };
+
     setLoading(true);
     dispatch(onCreateUserRole({ user, rolePayload }));
   }
@@ -260,6 +258,12 @@ export default function AddUserModal({ open, onClose }) {
               </Grid>
             </Grid>
           </Grid>
+          {getErrorState(formError, 'non_field_errors') && (
+            <FormHelperText className={classes.error}>
+              The email and role selected must be a unique combination. Change either the email or
+              the user role.
+            </FormHelperText>
+          )}
         </FormControl>
       </DialogContent>
       <DialogActions>
