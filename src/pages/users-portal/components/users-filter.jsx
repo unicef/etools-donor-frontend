@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router';
 import { find, prop, propEq } from 'ramda';
 import {
   Grid,
@@ -22,8 +21,6 @@ export default function UsersFilter() {
   const classes = useFilterStyles();
   const dispatch = useDispatch();
   const groups = useSelector(selectUserGroups);
-  const { donorId } = useParams();
-
   useEffect(() => {
     if (!groups.length) {
       dispatch(onFetchUserGroups());
@@ -40,10 +37,10 @@ export default function UsersFilter() {
 
   useEffect(() => {
     const queryObj = {
-      group: selectedRoles.map(name => prop('id', find(propEq('name', name), groups)))[0], //TODO: fix multi on backend
-      donor: donorId,
+      group: selectedRoles.map(name => prop('id', find(propEq('name', name), groups)))[0],
       search: searchQuery || undefined
     };
+
     dispatch(onFetchUserRoles(queryObj));
     return () => dispatch(setUserRoles([]));
   }, [searchQuery, selectedRoles]);

@@ -1,29 +1,39 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+
+if (process.env.NODE_ENV !== 'production') {
+  const whyDidYouRender = require('@welldone-software/why-did-you-render');
+  whyDidYouRender(React);
+}
+
+import { prop } from 'ramda';
 import { useDispatch, useSelector } from 'react-redux';
-import clsx from 'clsx';
-import { mapObjIndexed, always } from 'ramda';
-import { Grid, Box, Button, InputLabel, Paper } from '@material-ui/core';
-import { useParams } from 'react-router';
+import { Grid, Box, Button, Paper } from '@material-ui/core';
 
 import useFilterStyles from 'styles/filter-styles';
-import { initDonorsFilter, onFetchReports } from 'actions';
+import { onFetchReports } from 'actions';
 import FilterMenuButton from './filter-menu-button';
 
 import useFiltersQueries from 'lib/use-filters-queries';
-
 import { FORM_CONFIG } from 'lib/constants';
 import { FILTERS_MAP } from '../lib/filters-map';
 import MandatoryFilters from './mandatory-filters';
-import { selectMandatoryFilterSelected } from 'selectors/filter';
-import DisableWrapper from 'components/DisableWrapper';
+import { selectMenuBarPage } from 'selectors/ui-flags';
+
+function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
 
 export default function ReportsFilter() {
   const dispatch = useDispatch();
   const classes = useFilterStyles();
-  const mandatorySelected = useSelector(selectMandatoryFilterSelected);
-  const { donorId: id } = useParams();
+  const pageName = useSelector(selectMenuBarPage);
 
-  function handleSubmit() {
+  function handleSubmit(e) {
+    e.preventDefault();
     dispatch(onFetchReports(filterValues));
   }
 
@@ -32,9 +42,6 @@ export default function ReportsFilter() {
     dispatch(onFetchReports({}));
   }
 
-  const initialFiltersActiveState = mapObjIndexed(always(false), FILTERS_MAP); // set which filters are active on load
-  const initialFilterValues = mapObjIndexed(always(''), FILTERS_MAP); // set default filter values
-
   const {
     handleSelectFilter,
     handleChangeFilterValue,
@@ -42,21 +49,27 @@ export default function ReportsFilter() {
     filterValues,
     selectedFilters,
     clearFilters
-  } = useFiltersQueries({ initialFilterValues, initialFiltersActiveState });
+  } = useFiltersQueries(FILTERS_MAP);
 
   useEffect(() => {
-    dispatch(initDonorsFilter(id));
-    dispatch(onFetchReports(filterValues));
-  }, []);
+    if (pageName) {
+      dispatch(onFetchReports(filterValues));
+    }
+  }, [pageName]);
+
+  const prevPageName = usePrevious(pageName);
+
+  useEffect(() => {
+    if (prop('length', prevPageName)) {
+      clearFilters();
+    }
+  }, [pageName]);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <InputLabel className={clsx(classes.loneLabel, mandatorySelected && 'hidden')}>
-        Select a year or theme to enable filters
-      </InputLabel>
+    <>
       <MandatoryFilters />
 
-      <DisableWrapper disabled={!mandatorySelected}>
+      <form onSubmit={handleSubmit}>
         <Paper>
           <Grid item xs={12} className={classes.filterContainer} container wrap="nowrap">
             <Box className={classes.filterMenu}>
@@ -92,20 +105,17 @@ export default function ReportsFilter() {
             </Box>
           </Grid>
         </Paper>
-      </DisableWrapper>
-      <Grid container justify="flex-end" className={classes.button}>
-        <Button className={classes.formBtn} color="secondary" onClick={handleClear}>
-          {FORM_CONFIG.clear.label}
-        </Button>
-        <Button
-          className={classes.formBtn}
-          color="secondary"
-          onClick={handleSubmit}
-          disabled={!mandatorySelected}
-        >
-          {FORM_CONFIG.submit.label}
-        </Button>
-      </Grid>
-    </form>
+        <Grid container justify="flex-end" className={classes.button}>
+          <Button className={classes.formBtn} color="secondary" onClick={handleClear}>
+            {FORM_CONFIG.clear.label}
+          </Button>
+          <Button className={classes.formBtn} color="secondary" onClick={handleSubmit}>
+            {FORM_CONFIG.submit.label}
+          </Button>
+        </Grid>
+      </form>
+    </>
   );
 }
+
+// ReportsFilter.whyDidYouRender = true;

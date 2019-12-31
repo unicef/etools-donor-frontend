@@ -1,4 +1,4 @@
-import { propOr } from 'ramda';
+import { propOr, prop } from 'ramda';
 import { createSelector } from 'reselect';
 import { UNICEF_USER_ROLE } from 'lib/constants';
 
@@ -6,6 +6,8 @@ export const selectCreatedRole = state => state.createdRole;
 export const selectFormError = state => state.formError;
 export const selectUi = state => state.ui;
 export const selectUserProfile = state => state.userProfile;
+export const selectError = state => state.error;
+export const selectSuccess = state => state.success;
 
 export const selectLoading = createSelector(
   selectUi,
@@ -24,6 +26,11 @@ export const selectParamDonorId = createSelector(
 export const selectUserGroup = createSelector(
   selectUserProfile,
   profile => profile.group.name
+);
+
+export const selectIsSuperUser = createSelector(
+  selectUserProfile,
+  prop('is_superuser')
 );
 
 export const selectUserProfileDonor = createSelector(
@@ -47,6 +54,14 @@ export const selectDonorName = createSelector(
   [selectUserDonor],
   propOr('', 'name')
 );
+export const selectDonorId = createSelector(
+  [selectUi],
+  propOr('', 'donorId')
+);
+// export const selectDonorId = createSelector(
+//   [selectUserProfileDonor],
+//   propOr('', 'id')
+// );
 
 export const selectDonorCode = createSelector(
   selectUserDonor,
@@ -61,4 +76,9 @@ export const selectIsUsGov = createSelector(
 export const selectIsAuthorized = createSelector(
   [selectDonorName, selectUserGroup],
   (donorName, group) => Boolean(donorName.length) || group === UNICEF_USER_ROLE
+);
+
+export const selectMenuBarPage = createSelector(
+  [selectUi],
+  ui => ui.menuBarPage
 );

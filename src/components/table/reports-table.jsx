@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -14,41 +15,32 @@ import EnhancedTableToolbar from './table-toolbar';
 import EnhancedTableHead from './table-head';
 import { selectReports } from 'selectors/collections';
 import { usePermissions } from 'components/PermissionRedirect';
-import { useTable, getDisplayDate } from './lib';
+import { useTable, getDisplayDate, stableSort, getSorting } from './lib';
 import clsx from 'clsx';
-import { BACKEND_REPORTS_FIELDS } from '../../pages/reports/constants';
+import { BACKEND_REPORTS_FIELDS, BACKEND_THEMATIC_FIELDS } from '../../pages/reports/constants';
+import { selectMenuBarPage } from 'selectors/ui-flags';
+import { THEMATIC_REPORTS, REPORTS } from 'lib/constants';
 
-function desc(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
+export function getRecipientOfficeStr(report) {
+  const recipientOffices = report.recipient_office || [];
+  return recipientOffices.sort((a, b) => (a.toLowerCase() > b.toLowerCase() ? 1 : -1)).join(',');
 }
 
-function stableSort(array, cmp) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = cmp(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map(el => el[0]);
-}
+const certifiedReportsTableHeadings = [
+  { id: BACKEND_REPORTS_FIELDS['title'], label: 'Title', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['recipientOffice'], label: 'Recipient Office', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['reportType'], label: 'Report Type', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['reportEndDate'], label: 'Report End Date', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['grant'], label: 'Grant', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['grantExpiryDate'], label: 'Grant Expiry', sortable: true }
+];
 
-function getSorting(order, orderBy) {
-  return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
-}
-
-const headCells = [
-  { id: BACKEND_REPORTS_FIELDS['title'], label: 'Title' },
-  { id: BACKEND_REPORTS_FIELDS['country'], label: 'Recipient Office' },
-  { id: BACKEND_REPORTS_FIELDS['grant'], label: 'Grant' },
-  { id: BACKEND_REPORTS_FIELDS['reportType'], label: 'Report Type' },
-  { id: BACKEND_REPORTS_FIELDS['reportEndDate'], label: 'Report End Date' },
-  { id: BACKEND_REPORTS_FIELDS['grantExpiryDate'], label: 'Grant Expiry' }
+const thematicReportsTableHeadings = [
+  { id: BACKEND_THEMATIC_FIELDS['title'], label: 'Title', sortable: true },
+  { id: BACKEND_THEMATIC_FIELDS['theme'], label: 'Theme', sortable: true },
+  { id: BACKEND_THEMATIC_FIELDS['recipientOffice'], label: 'Recipient Office', sortable: true },
+  { id: BACKEND_THEMATIC_FIELDS['reportType'], label: 'Report Type', sortable: true },
+  { id: BACKEND_THEMATIC_FIELDS['reportEndDate'], label: 'Report End Date', sortable: true }
 ];
 
 const externalRefCell = {
@@ -72,6 +64,12 @@ export default function ReportsTable() {
   const { isUnicefUser } = usePermissions();
 
   const rows = useSelector(selectReports);
+  const pageName = useSelector(selectMenuBarPage);
+  const certifiedReports = pageName === REPORTS;
+  const headCells =
+    pageName === THEMATIC_REPORTS
+      ? thematicReportsTableHeadings
+      : getHeadCells(isUnicefUser, certifiedReportsTableHeadings);
 
   const {
     orderBy,
@@ -82,10 +80,9 @@ export default function ReportsTable() {
     handleRequestSort,
     handleChangeRowsPerPage,
     handleChangePage
-  } = useTable();
-
+  } = useTable(BACKEND_REPORTS_FIELDS['recipientOffice']);
+  const shouldShowExternalGrants = certifiedReports && !isUnicefUser;
   const emptyRows = getEmptyRows(rows);
-
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -93,7 +90,7 @@ export default function ReportsTable() {
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle" size="medium">
             <EnhancedTableHead
-              cells={getHeadCells(isUnicefUser, headCells)}
+              cells={headCells}
               classes={classes}
               order={order}
               orderBy={orderBy}
@@ -120,15 +117,22 @@ export default function ReportsTable() {
                           </Link>
                         </Typography>
                       </TableCell>
+                      {row.theme && (
+                        <TableCell className={classes.cell} align="left">
+                          {row.theme}
+                        </TableCell>
+                      )}
                       <TableCell className={classes.cell} align="left">
                         {row.recipient_office}
                       </TableCell>
-                      {!isUnicefUser && (
+                      {shouldShowExternalGrants && (
                         <TableCell align="left">{row.external_ref_grant}</TableCell>
                       )}
-                      <TableCell className={classes.cell} align="left">
-                        {row.grant_number}
-                      </TableCell>
+                      {certifiedReports && (
+                        <TableCell className={classes.cell} align="left">
+                          {row.grant_number}
+                        </TableCell>
+                      )}
                       <TableCell className={classes.cell} align="left">
                         {row.report_type}
                       </TableCell>
@@ -164,6 +168,7 @@ export default function ReportsTable() {
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
+        {/* <DocViewer fileType={docFileType} filePath={doc} /> */}
       </Paper>
     </div>
   );

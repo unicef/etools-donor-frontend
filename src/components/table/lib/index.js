@@ -2,8 +2,9 @@ import React from 'react';
 import { format } from 'date-fns';
 
 import { BACKEND_PROPERTIES_USER_LAST_LOGIN } from '../../../lib/constants';
-import { getUserStatusStr } from '../users';
-import { DISPLAY_FORMAT } from 'pages/reports/constants';
+import { DISPLAY_FORMAT, BACKEND_REPORTS_FIELDS } from 'pages/reports/constants';
+import { getUserStatusStr } from '../user-row-item';
+import { getRecipientOfficeStr } from '../reports-table';
 
 export function desc(a, b, func) {
   if (func(b) < func(a)) {
@@ -34,12 +35,15 @@ export function getSorting(order, orderBy) {
   if (orderBy === BACKEND_PROPERTIES_USER_LAST_LOGIN) {
     func = getUserStatusStr;
   }
+  if (orderBy === BACKEND_REPORTS_FIELDS['recipientOffice']) {
+    func = getRecipientOfficeStr;
+  }
   return order === 'desc' ? (a, b) => desc(a, b, func) : (a, b) => -desc(a, b, func);
 }
 
-export const useTable = () => {
+export const useTable = (defaultOrderBy = '') => {
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
+  const [orderBy, setOrderBy] = React.useState(defaultOrderBy);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const getEmptyRows = rows =>

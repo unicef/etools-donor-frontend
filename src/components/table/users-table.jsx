@@ -13,30 +13,30 @@ import EnhancedTableToolbar from './table-toolbar';
 import AddUserModal from 'pages/users-portal/components/add-user-modal';
 import { Button, Box } from '@material-ui/core';
 import { selectUserRoles } from 'selectors/user';
-import {
-  BACKEND_PROPERTIES_USER_LAST_LOGIN,
-  BACKEND_PROPERTIES_USER_LAST_NAME,
-  BACKEND_PROPERTIES_USER_FIRST_NAME
-} from '../../lib/constants';
+import { BACKEND_PROPERTIES_USER_LAST_LOGIN } from '../../lib/constants';
 import { stableSort, getSorting } from './lib';
 import { selectLoading } from 'selectors/ui-flags';
-import { LoaderLocal } from 'components/Loader';
-
-function fullName(user) {
-  const fullName = `${user[BACKEND_PROPERTIES_USER_FIRST_NAME]} ${user[BACKEND_PROPERTIES_USER_LAST_NAME]}`;
-
-  return fullName.length == 1 ? '-' : fullName;
-}
-
-export function getUserStatusStr(user) {
-  return user[BACKEND_PROPERTIES_USER_LAST_LOGIN] ? 'Accepted' : 'Invited';
-}
+import UserRowItem from './user-row-item';
 
 const headCells = [
-  { id: 'user_first_name', numeric: false, disablePadding: false, label: 'Name' },
-  { id: 'user_email', numeric: false, disablePadding: false, label: 'Email' },
-  { id: 'group_name', numeric: false, disablePadding: false, label: 'Role' },
-  { id: BACKEND_PROPERTIES_USER_LAST_LOGIN, numeric: false, disablePadding: false, label: 'Status' }
+  { id: 'user_first_name', numeric: false, disablePadding: false, label: 'Name', sortable: true },
+  { id: 'user_email', numeric: false, disablePadding: false, label: 'Email', sortable: true },
+  { id: 'group_name', numeric: false, disablePadding: false, label: 'Role', sortable: true },
+  {
+    id: BACKEND_PROPERTIES_USER_LAST_LOGIN,
+    numeric: false,
+    disablePadding: false,
+    label: 'Status',
+    sortable: true
+  },
+  {
+    id: 'none',
+    align: 'right',
+    numeric: true,
+    disablePadding: false,
+    label: '',
+    sortable: false
+  }
 ];
 
 export default function UsersTable() {
@@ -101,27 +101,15 @@ export default function UsersTable() {
             <TableBody>
               {stableSort(users, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((user, index) => {
-                  const labelId = `user-${index}`;
-
-                  return (
-                    <TableRow hover tabIndex={-1} key={index}>
-                      <TableCell component="th" id={labelId} scope="row">
-                        <Typography>{fullName(user)}</Typography>
-                      </TableCell>
-                      <TableCell align="left">{user.user_email || '-'}</TableCell>
-                      <TableCell align="left">{user.group_name || '-'}</TableCell>
-                      <TableCell align="left">{getUserStatusStr(user)}</TableCell>
-                    </TableRow>
-                  );
-                })}
+                .map((user, index) => (
+                  <UserRowItem user={user} key={index} />
+                ))}
 
               <TableRow>
                 <TableCell colSpan={4} className={classes.emptyLine}>
                   {!loading && users.length == 0 && (
                     <Typography color="primary">0 results returned</Typography>
                   )}
-                  {loading && <LoaderLocal />}
                 </TableCell>
               </TableRow>
               {users.length > 1 && emptyRows > 0 && (

@@ -68,5 +68,10 @@ export const useTableStyles = makeStyles(theme => ({
   emptyLine: {
     borderBottom: 'none',
     textAlign: 'center'
+  },
+  actionsCell: {
+    '&:last-child': {
+      width: 140
+    }
   }
 }));

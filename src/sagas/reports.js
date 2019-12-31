@@ -1,14 +1,13 @@
 import { takeLatest, call, put, all, select } from 'redux-saga/effects';
 import { format, subYears, startOfYear, endOfYear, getYear } from 'date-fns';
 import { keys } from 'ramda';
-import { selectDonorCode, selectIsUsGov } from 'selectors/ui-flags';
-import { selectReportYear, selectTheme } from 'selectors/filter';
+import { selectDonorCode, selectIsUsGov, selectMenuBarPage, selectError } from 'selectors/ui-flags';
+import { selectReportYear } from 'selectors/filter';
 import { removeEmpties } from 'lib/helpers';
 import { getUsGovReports, getThematicReports, getReports } from 'api';
 import { waitFor } from './helpers';
 import { setLoading } from 'slices/ui';
 import { onReceiveReports } from 'slices/reports';
-import { selectError } from 'selectors/errors';
 import { setError } from 'slices/error';
 import { onFetchReports } from 'actions';
 import { selectReports } from 'selectors/collections';
@@ -19,6 +18,7 @@ import {
   EARLIEST_REPORTS_YEAR,
   DATE_FORMAT
 } from 'pages/reports/constants';
+import { THEMATIC_REPORTS, REPORTS } from 'lib/constants';
 
 // Returns date filters for both last year and this year to be passed to
 // the Certified Reports api since its an endpoint called by year.
@@ -105,29 +105,39 @@ function* getCertifiedReports(params) {
 // Tricky business requirement to call different endpoint based on donor property us_gov first,
 // then whether theme or year were selected at report page
 function* getCallerFunc(payload) {
-  const donorCode = yield select(selectDonorCode);
   const isUsGov = yield select(selectIsUsGov);
 
-  const theme = yield select(selectTheme);
+  const reportPageName = yield select(selectMenuBarPage);
+
   let result = {
     params: {
-      ...removeEmpties(payload),
-      donor_code: donorCode
+      ...removeEmpties(payload)
     }
   };
 
-  if (isUsGov) {
-    result.caller = getUsGovReports;
-  } else if (theme) {
-    result.caller = getThematicReports;
-    result.arg = theme;
-  } else {
-    result.caller = getCertifiedReports;
+  switch (reportPageName) {
+    case THEMATIC_REPORTS:
+      result.caller = getThematicReports;
+      break;
+    case REPORTS: {
+      yield call(waitFor, selectDonorCode);
+      const donorCode = yield select(selectDonorCode);
+      if (isUsGov) {
+        result.caller = getUsGovReports;
+        result.arg = yield select(selectReportYear);
+        result.params.donor_code = donorCode;
+        break;
+      } else {
+        result.caller = getCertifiedReports;
+        result.params.donor_code = donorCode;
+        break;
+      }
+    }
   }
   return result;
 }
 
-function* fetchReports({ payload }) {
+function* handleFetchReports({ payload }) {
   try {
     yield put(setLoading(true));
 
@@ -143,12 +153,6 @@ function* fetchReports({ payload }) {
   } finally {
     yield put(setLoading(false));
   }
-}
-
-function* handleFetchReports(action) {
-  // wait for donor api to return in case of race condition, donor code needed for reports filter call
-  yield call(waitFor, selectDonorCode);
-  yield call(fetchReports, action);
 }
 
 export default function*() {

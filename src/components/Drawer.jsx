@@ -1,6 +1,6 @@
-import React from 'react';
-import { useHistory, useLocation } from 'react-router';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router';
+import { useSelector, useDispatch } from 'react-redux';
 import { useMainStyles } from './Main';
 import {
   Box,
@@ -17,31 +17,44 @@ import {
 import DescriptionIcon from '@material-ui/icons/Description';
 import SettingsIcon from '@material-ui/icons/Settings';
 import logo from 'assets/images/UNICEF_logo.png';
-import { REPORTS_PATH, USERS_PORTAL_PATH, DONOR_ADMIN_ROLE } from '../lib/constants';
+import { REPORTS, THEMATIC_REPORTS, USERS_PORTAL } from '../lib/constants';
 import clsx from 'clsx';
-import { selectUserProfileDonorId, selectUserGroup } from 'selectors/ui-flags';
+import { selectMenuBarPage } from 'selectors/ui-flags';
+import { menuItemSelected } from 'slices/ui';
+import { usePermissions } from './PermissionRedirect';
 
 export const useNav = () => {
   const history = useHistory();
-  const handleNav = path => () => history.push(path);
-  const goHome = handleNav('/');
-  const location = useLocation();
+  const dispatch = useDispatch();
 
-  const userGroup = useSelector(selectUserGroup);
-  const isAdmin = userGroup === DONOR_ADMIN_ROLE;
+  const handleNav = page => () => {
+    dispatch(menuItemSelected(page));
+    if (page === REPORTS) {
+      history.push('/');
+    } else {
+      history.push(`/${page}`);
+    }
+  };
 
-  function navSelected(path) {
-    return location.pathname.includes(path);
+  function navSelected(page) {
+    return page === useSelector(selectMenuBarPage);
   }
 
-  return { handleNav, goHome, navSelected, isAdmin };
+  return { handleNav, navSelected };
 };
 
 export default function ConnectedDrawer() {
   const classes = useMainStyles();
-  const donorId = useSelector(selectUserProfileDonorId);
+  const dispatch = useDispatch();
 
-  const { handleNav, goHome, navSelected, isAdmin } = useNav();
+  const { isDonorAdmin, isSuperUser } = usePermissions();
+  const hasAccessUserManagement = isDonorAdmin || isSuperUser;
+
+  useEffect(() => {
+    dispatch(menuItemSelected(REPORTS));
+  }, []);
+
+  const { handleNav, navSelected } = useNav();
   return (
     <Drawer
       className={classes.drawer}
@@ -66,19 +79,26 @@ export default function ConnectedDrawer() {
       <Divider />
 
       <List>
-        <ListItem selected={navSelected(REPORTS_PATH)} onClick={goHome} button>
+        <ListItem selected={navSelected(REPORTS)} onClick={handleNav(REPORTS)} button>
           <ListItemIcon>
             <DescriptionIcon />
           </ListItemIcon>
           <ListItemText primary="Reports" />
         </ListItem>
 
-        {isAdmin && (
-          <ListItem
-            selected={navSelected(USERS_PORTAL_PATH)}
-            onClick={handleNav(`${USERS_PORTAL_PATH}/${donorId}`)}
-            button
-          >
+        <ListItem
+          selected={navSelected(THEMATIC_REPORTS)}
+          onClick={handleNav(THEMATIC_REPORTS)}
+          button
+        >
+          <ListItemIcon>
+            <DescriptionIcon />
+          </ListItemIcon>
+          <ListItemText primary="Thematic Reports" />
+        </ListItem>
+
+        {hasAccessUserManagement && (
+          <ListItem selected={navSelected(USERS_PORTAL)} onClick={handleNav(USERS_PORTAL)} button>
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>

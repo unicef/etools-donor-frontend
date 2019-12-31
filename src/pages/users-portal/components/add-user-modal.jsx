@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router';
 import { prop, propOr } from 'ramda';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
@@ -67,7 +66,6 @@ const useStyles = makeStyles(theme => ({
 export default function AddUserModal({ open, onClose }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { donorId } = useParams();
 
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -100,16 +98,19 @@ export default function AddUserModal({ open, onClose }) {
   }
 
   async function onSubmit() {
+    dispatch(onFormError(null));
+
     const user = {
       username: email,
       first_name: firstName,
       last_name: lastName,
       email
     };
+
     const rolePayload = {
-      group: prop('id', groups.find(g => g.name === role)),
-      donor: donorId
+      group: prop('id', groups.find(g => g.name === role))
     };
+
     setLoading(true);
     dispatch(onCreateUserRole({ user, rolePayload }));
   }
@@ -178,12 +179,12 @@ export default function AddUserModal({ open, onClose }) {
                   id="email"
                   label="Email"
                   value={email}
-                  error={getErrorState(formError, 'username')}
+                  error={getErrorState(formError, 'email')}
                   onBlur={handleErrorState('email', email)}
                   onChange={setValueFromEvent(setEmail)}
                 />
-                {getErrorState(formError, 'username') && (
-                  <FormHelperText className={classes.error}>{formError['username']}</FormHelperText>
+                {getErrorState(formError, 'email') && (
+                  <FormHelperText className={classes.error}>{formError['email']}</FormHelperText>
                 )}
               </Grid>
             </Grid>
@@ -257,6 +258,12 @@ export default function AddUserModal({ open, onClose }) {
               </Grid>
             </Grid>
           </Grid>
+          {getErrorState(formError, 'non_field_errors') && (
+            <FormHelperText className={classes.error}>
+              The email and role selected must be a unique combination. Change either the email or
+              the user role.
+            </FormHelperText>
+          )}
         </FormControl>
       </DialogContent>
       <DialogActions>

@@ -11,7 +11,8 @@ import {
   TITLE_FIELD,
   EXTERNAL_REF_GRANT_FIELD,
   REPORT_GROUP_FIELD,
-  REPORT_GENERATED_FIELD
+  REPORT_GENERATED_FIELD,
+  THEME_FIELD
 } from '../constants';
 
 import { filter, keys } from 'ramda';
@@ -29,18 +30,21 @@ import GrantsFilter from '../components/grants-filter';
 import ExternalGrantsFilter from '../components/external-grants-filter';
 import TitleSearchFilter from '../components/title-search-filter';
 import reportingGroupFilter from '../components/reporting-group-filter';
-import { UNICEF_USER_ROLE } from 'lib/constants';
+import { UNICEF_USER_ROLE, REPORTS, THEMATIC_REPORTS } from 'lib/constants';
 import ReportGeneratedFilter from '../components/report-generated-filter';
+import ThemeFilter from '../components/theme-filter';
 
 export const FILTERS_MAP = {
   [GRANT_FIELD]: {
     label: 'Grant',
-    Component: GrantsFilter
+    Component: GrantsFilter,
+    pageName: REPORTS
   },
 
   [EXTERNAL_REF_GRANT_FIELD]: {
     label: 'External Reference Grant',
-    Component: ExternalGrantsFilter
+    Component: ExternalGrantsFilter,
+    pageName: REPORTS
   },
 
   [TITLE_FIELD]: {
@@ -51,17 +55,20 @@ export const FILTERS_MAP = {
 
   [GRANT_EXPIRY_BEFORE_FIELD]: {
     label: 'Grant Expiry Before Date',
-    Component: GrantExpiryBeforeFilter
+    Component: GrantExpiryBeforeFilter,
+    pageName: REPORTS
   },
 
   [GRANT_EXPIRY_AFTER_FIELD]: {
     label: 'Grant Expiry After Date',
-    Component: GrantExpiryAfterFilter
+    Component: GrantExpiryAfterFilter,
+    pageName: REPORTS
   },
 
   [GRANT_ISSUE_YEAR]: {
     label: 'Grant Issue Year',
     Component: GrantIssueYearFilter,
+    pageName: REPORTS,
     gridSize: 2
   },
 
@@ -101,14 +108,24 @@ export const FILTERS_MAP = {
     Component: ReportGeneratedFilter,
     gridSize: 2,
     permissionGroup: UNICEF_USER_ROLE
+  },
+
+  [THEME_FIELD]: {
+    label: 'Theme',
+    Component: ThemeFilter,
+    pageName: THEMATIC_REPORTS
   }
 };
 
-export const getFiltersByPermissions = userGroup => {
+export const getPageFilters = (userGroup, currentPageName) => {
+  if (!userGroup || !currentPageName) {
+    return [];
+  }
   return keys(
-    filter(
-      ({ permissionGroup }) => (permissionGroup ? permissionGroup === userGroup : true),
-      FILTERS_MAP
-    )
+    filter(({ permissionGroup, pageName }) => {
+      const hasPermission = permissionGroup ? permissionGroup === userGroup : true;
+      const belongsOnPage = pageName ? pageName === currentPageName : true;
+      return hasPermission && belongsOnPage;
+    }, FILTERS_MAP)
   );
 };

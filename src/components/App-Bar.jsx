@@ -6,6 +6,7 @@ import { makeStyles, AppBar, Toolbar, Box, Typography } from '@material-ui/core'
 import { DRAWER_WIDTH } from '../lib/constants';
 import ErrorsSnackbar from './Errors-Snackbar';
 import { selectUserName } from 'selectors/ui-flags';
+import SuccessSnackbar from './Success-Snackbar';
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -29,9 +30,6 @@ const useStyles = makeStyles(theme =>
         display: 'none'
       }
     },
-    logo: {
-      maxWidth: '170px'
-    },
     banner: {
       color: '#FFF',
       lineHeight: '1.25em',
@@ -51,6 +49,7 @@ export default function AppToolbar() {
         </Box>
       </Toolbar>
       <ErrorsSnackbar />
+      <SuccessSnackbar />
     </AppBar>
   );
 }

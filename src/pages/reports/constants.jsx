@@ -1,10 +1,18 @@
 export const BACKEND_REPORTS_FIELDS = {
   title: 'title',
-  country: 'recipient_office',
+  recipientOffice: 'recipient_office',
   grant: 'grant_number',
   reportType: 'report_type',
   reportEndDate: 'report_end_date',
   grantExpiryDate: 'grant_expiry_date'
+};
+
+export const BACKEND_THEMATIC_FIELDS = {
+  title: 'title',
+  theme: 'theme',
+  recipientOffice: 'recipient_office',
+  reportType: 'report_type',
+  reportEndDate: 'report_end_date'
 };
 
 // QUERY PARAM FIELD NAMES FOR BACKEND

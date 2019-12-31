@@ -1,4 +1,5 @@
 import { createSlice } from 'redux-starter-kit';
+import { TABLE_PAGES } from 'lib/constants';
 
 // const [page, donorId] = location.pathname.split('/').filter(Boolean);
 
@@ -6,7 +7,8 @@ export const uiSlice = createSlice({
   initialState: {
     loading: false,
     page: '',
-    donorId: ''
+    donorId: '',
+    menuBarPage: ''
   },
   reducers: {
     setLoading(state, action) {
@@ -34,9 +36,15 @@ export const uiSlice = createSlice({
     onRouteChange(state, { payload }) {
       state.page = payload.page;
       state.donorId = payload.donorId;
+      if (TABLE_PAGES.includes(payload.page)) {
+        state.menuBarPage = payload.page;
+      }
+    },
+    menuItemSelected(state, { payload }) {
+      state.menuBarPage = payload;
     }
   }
 });
 
 export const { reducer: uiReducer } = uiSlice;
-export const { setLoading, onRouteChange, resetLoading } = uiSlice.actions;
+export const { setLoading, onRouteChange, menuItemSelected, resetLoading } = uiSlice.actions;

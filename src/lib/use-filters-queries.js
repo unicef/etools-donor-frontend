@@ -9,7 +9,10 @@ import { hasValue, parseEventValue } from './helpers';
   when a filter value is changed, and when page is loaded initially while coninuously being
   in sync with the url params.
 */
-const useFiltersQueries = ({ initialFilterValues, initialFiltersActiveState }) => {
+const useFiltersQueries = FILTERS_MAP => {
+  const initialFiltersActiveState = mapObjIndexed(always(false), FILTERS_MAP); // set which filters are active on load
+  const initialFilterValues = mapObjIndexed(always(''), FILTERS_MAP); // set default filter values
+
   // filtersActiveState is object in form of {[filterName]: bool} indicating if filter has been selected
   const [filtersActiveState, setFiltersActiveState] = useState(initialFiltersActiveState);
 
@@ -23,7 +26,8 @@ const useFiltersQueries = ({ initialFilterValues, initialFiltersActiveState }) =
   useEffect(() => {
     const filtersFromUrl = pickBy(isValidQuery, filterValues);
     const activatedFilters = mapObjIndexed(always(true), filtersFromUrl);
-    setFiltersActiveState({ ...filtersActiveState, ...activatedFilters });
+    const nedActiveState = { ...filtersActiveState, ...activatedFilters };
+    setFiltersActiveState(nedActiveState);
   }, []);
 
   // Render filters in UI if any are activated by effect run on initial render
@@ -82,7 +86,8 @@ const useFiltersQueries = ({ initialFilterValues, initialFiltersActiveState }) =
     selectedFilters,
     handleSelectFilter,
     handleChangeFilterValue,
-    clearFilters
+    clearFilters,
+    setSelectedFilters
   };
 };
 

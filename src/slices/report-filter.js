@@ -10,11 +10,9 @@ const reportFiltersSlice = createSlice({
   reducers: {
     reportYearChanged(state, action) {
       state.reportYear = action.payload;
-      state.theme = '';
     },
     themeChanged(state, action) {
       state.theme = action.payload;
-      state.reportYear = '';
     }
   }
 });

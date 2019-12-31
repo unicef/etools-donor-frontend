@@ -1,4 +1,5 @@
-import { select, take } from 'redux-saga/effects';
+import { select, take, call } from 'redux-saga/effects';
+import { isEmpty } from 'ramda';
 
 export function* waitFor(selector) {
   if (yield select(selector)) {
@@ -6,7 +7,8 @@ export function* waitFor(selector) {
   }
   while (true) {
     yield take('*');
-    if (yield select(selector)) {
+    const value = yield select(selector);
+    if (value) {
       return;
     }
   }
@@ -24,4 +26,19 @@ export function* waitForLength(selector) {
       return;
     }
   }
+}
+
+export function* checkExisting(selector) {
+  const existing = yield select(selector);
+  if (!isEmpty(existing)) {
+    return true;
+  }
+  return false;
+}
+
+export function* maybeFetch(handler, selector, action) {
+  if (yield call(checkExisting, selector)) {
+    return;
+  }
+  yield call(handler, action);
 }

@@ -1,13 +1,12 @@
 import React from 'react';
 import { Switch } from 'react-router';
 import { Route } from 'react-router-dom';
-import { makeStyles, createStyles, Box, CssBaseline } from '@material-ui/core';
+import { makeStyles, createStyles, Box } from '@material-ui/core';
 import ConnectedDrawer from './Drawer';
 import AppToolbar from './App-Bar';
-import { DRAWER_WIDTH, REPORTS_PATH, USERS_PORTAL_PATH } from '../lib/constants';
+import { DRAWER_WIDTH, USERS_PORTAL_PATH, REPORTS, THEMATIC_REPORTS } from '../lib/constants';
 import DonorsList from 'pages/donors-list';
 import ContentHeader from './Content-Header';
-import UsersManagement from 'pages/users-portal';
 import ReportsPage from 'pages/reports';
 import {
   ProtectedRouteDonorsList,
@@ -61,9 +60,9 @@ export const useMainStyles = makeStyles(theme =>
 
 export default function MainAppBar() {
   const classes = useMainStyles();
+
   return (
     <div className={classes.root}>
-      <CssBaseline />
       <AppToolbar />
       <ConnectedDrawer />
 
@@ -80,13 +79,17 @@ export default function MainAppBar() {
                 <DonorsList />
               </ProtectedRouteDonorsList>
 
-              <ProtectedRouteReportPage exact path={`${REPORTS_PATH}/:donorId`}>
+              <ProtectedRouteReportPage exact path={`/${REPORTS}/:donorId?`}>
                 <ReportsPage />
               </ProtectedRouteReportPage>
 
-              <ProtectedRouteUserManagement exact path={`${USERS_PORTAL_PATH}/:donorId`}>
-                <UsersManagement />
-              </ProtectedRouteUserManagement>
+              <ProtectedRouteReportPage exact path={`/${THEMATIC_REPORTS}`}>
+                <ReportsPage />
+              </ProtectedRouteReportPage>
+              {/* Optional donorId param here since donor list is not aware of what page
+              to link to per donor and only super users can choose donor for user management */}
+              <ProtectedRouteUserManagement path={`${USERS_PORTAL_PATH}/:donorId?`} />
+
               <Route path="*" component={NotFound} />
             </Switch>
           </Box>

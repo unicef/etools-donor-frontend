@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { pathOr } from 'ramda';
 import { useSelector, useDispatch } from 'react-redux';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import { MySnackbarContentWrapper } from './Snackbars';
-import { setError } from 'slices/error';
-import { selectError } from 'selectors/ui-flags';
+import { successCleared } from 'slices/success';
+import { selectSuccess } from 'selectors/ui-flags';
 
 const useStyles2 = makeStyles(theme => ({
   margin: {
@@ -13,35 +12,26 @@ const useStyles2 = makeStyles(theme => ({
   }
 }));
 
-export default function ErrorsSnackbar() {
+export default function SuccessSnackbar() {
   const classes = useStyles2();
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-  const error = useSelector(selectError);
-  const [errorMessage, setErrorMessage] = useState('');
+  const successMessage = useSelector(selectSuccess);
 
-  function buildErrorMessage(error) {
-    let message = pathOr(`Error: ${error.message}`, ['response', 'data', 'detail'])(error);
-    if (error.config) {
-      message += `. Failure at url: ${error.config.url}`;
-    }
-    setErrorMessage(message);
-  }
   useEffect(() => {
-    if (error) {
-      buildErrorMessage(error);
+    if (successMessage) {
       setOpen(true);
     } else {
       setOpen(false);
     }
-  }, [error]);
+  }, [successMessage]);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
 
-    dispatch(setError(null));
+    dispatch(successCleared());
   };
 
   return (
@@ -52,12 +42,13 @@ export default function ErrorsSnackbar() {
           horizontal: 'center'
         }}
         open={open}
+        autoHideDuration={3000}
       >
         <MySnackbarContentWrapper
-          variant="error"
+          variant="success"
           onClose={handleClose}
           className={classes.margin}
-          message={errorMessage}
+          message={successMessage}
         />
       </Snackbar>
     </div>

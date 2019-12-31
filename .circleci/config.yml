@@ -48,7 +48,7 @@ jobs:
             TAG=${CIRCLE_BRANCH}
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker push unicef/donor-reporting-portal-frontend:$TAG
-
+  # Commented until rancher repo set up for this app
   # deploy:
   #   docker:
   #     - image: jonaskello/rancher-cli-k8s:v2.0.4
@@ -60,27 +60,27 @@ jobs:
   #         name: Patch Deploy
   #         command: rancher kubectl --namespace=etools-dev patch deployment /*donor-reporting-portal-frontend*/ -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
 
-workflows:
-  version: 2
-  build_and_test:
-    jobs:
-      - test
-      - build_and_push_image:
-          requires:
-            - test
-          filters:
-            branches:
-              only:
-                - master
-                - staging
-                - develop
-      # - deploy:
-      #     requires:
-      #       - test
-      #       - build_and_push_image
-      #     filters:
-      #       branches:
-      #         only:
-      #           - master
-      #           - staging
-      #           - develop
+# workflows:
+#   version: 2
+#   build_and_test:
+#     jobs:
+#       - test
+#       - build_and_push_image:
+#           requires:
+#             - test
+#           filters:
+#             branches:
+#               only:
+#                 - master
+#                 - staging
+#                 - develop
+# - deploy:
+#     requires:
+#       - test
+#       - build_and_push_image
+#     filters:
+#       branches:
+#         only:
+#           - master
+#           - staging
+#           - develop

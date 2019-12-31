@@ -9,21 +9,28 @@ import {
   getOffices
 } from 'api';
 
-import { propEq } from 'ramda';
+import { propEq, equals } from 'ramda';
 
 import { setError } from 'slices/error';
 import { setDonors } from 'slices/donors';
-import { initDonorsList, initDonorsFilter } from 'actions';
-import { setLoading } from 'slices/ui';
+import { initDonorsList, initCertifiedReportsPage, initThematicReportsPage } from 'actions';
+import { setLoading, onRouteChange } from 'slices/ui';
 import { onReceiveGrants } from 'slices/grants';
 import { onReceiveExternalGrants } from 'slices/external-grants';
 import { onReceivethemes } from 'slices/themes';
-import { onReceiveStaticAssets } from 'slices/static';
+import { onReceiveStaticAssets, staticAssetsInitialState } from 'slices/static';
 import { onReceiveOffices } from 'slices/offices';
 import { selectUserProfile, selectUserGroup } from 'selectors/ui-flags';
-import { waitForLength } from './helpers';
-import { selectDonors } from 'selectors/collections';
-import { reportPageLoaded } from 'slices/donor';
+import { waitForLength, maybeFetch } from './helpers';
+import {
+  selectDonors,
+  selectStaticAssets,
+  selectThemeCollection,
+  selectOffices,
+  selectGrants,
+  selectExternalGrants
+} from 'selectors/collections';
+import { currentDonorSelected } from 'slices/donor';
 import { UNICEF_USER_ROLE } from 'lib/constants';
 
 function* handleFetchDonors() {
@@ -75,6 +82,12 @@ function* handleFetchThemes() {
 }
 
 function* handleFetchStatic() {
+  const staticAssets = yield select(selectStaticAssets);
+
+  if (!equals(staticAssets, staticAssetsInitialState)) {
+    return;
+  }
+
   try {
     const staticDropdowns = yield call(getStaticAssets);
     yield put(onReceiveStaticAssets(staticDropdowns));
@@ -84,42 +97,53 @@ function* handleFetchStatic() {
 }
 
 // Encapsulate logic for grabbing the current donor and persisting to state
-// for easier access.Only UNICEF user can operate on any donor.
-function* handleCurrentDonor(action) {
+// for easier access.Only UNICEF user or SuperUser can operate on any donor.
+function* handleCurrentDonor({ payload }) {
   const profile = yield select(selectUserProfile);
   const group = yield select(selectUserGroup);
   let donor;
 
-  if (group === UNICEF_USER_ROLE) {
+  if (group === UNICEF_USER_ROLE || profile.is_superuser) {
     yield call(waitForLength, selectDonors);
     const donors = yield select(selectDonors);
-    donor = donors.find(propEq('id', Number(action.payload)));
+    donor = donors.find(propEq('id', Number(payload.donorId)));
   } else {
     donor = profile.donor;
   }
 
-  yield put(reportPageLoaded(donor));
+  yield put(currentDonorSelected(donor));
 }
 
 export function* donorsSaga() {
   yield takeLatest(initDonorsList.type, handleFetchDonors);
 }
 
-function* fetchFiltersCollections(action) {
+export function* currentDonorSaga() {
+  yield takeLatest([onRouteChange.type], handleCurrentDonor);
+}
+
+function* fetchReportFilterCollections(action) {
   yield all([
-    call(handleFetchGrants, action),
-    call(handleFetchExternalGrants, action),
-    call(handleFetchOffices),
-    call(handleFetchThemes),
+    call(maybeFetch, handleFetchGrants, selectGrants, action),
+    call(maybeFetch, handleFetchExternalGrants, selectExternalGrants, action),
     call(handleFetchStatic),
-    call(handleCurrentDonor, action)
+    call(maybeFetch, handleFetchOffices, selectOffices)
+  ]);
+}
+
+function* fetchThematicFilterCollections() {
+  yield all([
+    call(maybeFetch, handleFetchThemes, selectThemeCollection),
+    call(handleFetchStatic),
+    call(maybeFetch, handleFetchOffices, selectOffices)
   ]);
 }
 
 export function* filtersSaga() {
-  yield takeLatest(initDonorsFilter.type, fetchFiltersCollections);
+  yield takeLatest(initCertifiedReportsPage.type, fetchReportFilterCollections);
+  yield takeLatest(initThematicReportsPage.type, fetchThematicFilterCollections);
 }
 
 export default function*() {
-  yield all([filtersSaga(), donorsSaga()]);
+  yield all([filtersSaga(), donorsSaga(), currentDonorSaga()]);
 }
