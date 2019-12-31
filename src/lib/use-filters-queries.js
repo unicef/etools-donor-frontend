@@ -30,10 +30,6 @@ const useFiltersQueries = FILTERS_MAP => {
     setFiltersActiveState(nedActiveState);
   }, []);
 
-  // useEffect(() => {
-  //   console.log('XXXX', selectedFilters);
-  // }, [FILTERS_MAP]);
-
   // Render filters in UI if any are activated by effect run on initial render
   useEffect(() => {
     if (equals(filtersActiveState, initialFiltersActiveState) && !selectedFilters.length) {

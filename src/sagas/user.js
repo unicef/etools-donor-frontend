@@ -26,7 +26,7 @@ import { onFormError } from 'slices/form-error';
 import { parseFormError, checkUserExists } from 'lib/error-parsers';
 import { setLoading } from 'slices/ui';
 import { onReceiveUserProfile } from 'slices/user-profile';
-import { selectDonorId, selectUserDonor } from 'selectors/ui-flags';
+import { selectDonorId, selectUserDonor, selectUserProfileDonorId } from 'selectors/ui-flags';
 import { USER_ROLE_PATCH_SUCCESS_MESSAGE, USER_ROLE_CREATED_MESSAGE } from 'lib/constants';
 import { actionSucceeded } from 'slices/success';
 import { waitFor } from './helpers';
@@ -81,10 +81,19 @@ function* handleCreateUser(payload) {
 }
 
 function* handleCreateUserRole({ payload }) {
+  // if user selected donor, that id is used otherwise  the profile donor id is used
+  const donorId = yield select(selectUserProfileDonorId);
+  const { id: selectedDonorId } = yield select(selectUserDonor);
+
   try {
-    // const user = yield call(createUser, payload.user);
     const user = yield call(handleCreateUser, payload.user);
-    const role = yield call(createRole, { ...payload.rolePayload, user: user.id });
+
+    const role = yield call(createRole, {
+      ...payload.rolePayload,
+      donor: selectedDonorId || donorId,
+      user: user.id
+    });
+
     yield put(createRoleSuccess(role));
     yield put(actionSucceeded(USER_ROLE_CREATED_MESSAGE));
   } catch (err) {

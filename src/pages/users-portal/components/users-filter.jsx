@@ -21,7 +21,6 @@ export default function UsersFilter() {
   const classes = useFilterStyles();
   const dispatch = useDispatch();
   const groups = useSelector(selectUserGroups);
-
   useEffect(() => {
     if (!groups.length) {
       dispatch(onFetchUserGroups());
@@ -41,6 +40,7 @@ export default function UsersFilter() {
       group: selectedRoles.map(name => prop('id', find(propEq('name', name), groups)))[0],
       search: searchQuery || undefined
     };
+
     dispatch(onFetchUserRoles(queryObj));
     return () => dispatch(setUserRoles([]));
   }, [searchQuery, selectedRoles]);

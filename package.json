@@ -34,7 +34,6 @@
     "jest": "23.6.0",
     "jest-pnp-resolver": "1.0.2",
     "jest-resolve": "23.6.0",
-    "jest-watch-typeahead": "^0.2.1",
     "normalizr": "^3.4.1",
     "path-to-regexp": "^3.0.0",
     "pnp-webpack-plugin": "1.2.1",

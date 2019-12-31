@@ -1,4 +1,4 @@
-import { takeLatest, take, call, put, all, select } from 'redux-saga/effects';
+import { takeLatest, call, put, all, select } from 'redux-saga/effects';
 
 import {
   getDonors,
