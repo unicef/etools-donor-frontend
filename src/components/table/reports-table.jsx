@@ -33,7 +33,6 @@ export function getRecipientOfficeStr(report) {
 const certifiedReportsTableHeadings = [
   { id: BACKEND_REPORTS_FIELDS['title'], label: 'Title', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['recipientOffice'], label: 'Recipient Office', sortable: true },
-  // { id: BACKEND_REPORTS_FIELDS['externalRefGrant'], label: 'External Ref Grant', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['reportType'], label: 'Report Type', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['reportEndDate'], label: 'Report End Date', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['grant'], label: 'Grant', sortable: true },
