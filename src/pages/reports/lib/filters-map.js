@@ -15,13 +15,19 @@ import {
   THEME_FIELD
 } from '../constants';
 
-import { filter, keys } from 'ramda';
+import {
+  filter,
+  keys
+} from 'ramda';
 
 import {
   ReportEndDateBeforeFilter,
   ReportEndDateAfterFilter
 } from '../components/report-end-date-filter';
-import { GrantExpiryBeforeFilter, GrantExpiryAfterFilter } from '../components/grant-expiry-filter';
+import {
+  GrantExpiryBeforeFilter,
+  GrantExpiryAfterFilter
+} from '../components/grant-expiry-filter';
 import GrantIssueYearFilter from '../components/grant-issue-year-filter';
 import ReportTypeFilter from '../components/report-type-filter';
 import ReportCategoryFilter from '../components/report-category-filter';
@@ -30,9 +36,21 @@ import GrantsFilter from '../components/grants-filter';
 import ExternalGrantsFilter from '../components/external-grants-filter';
 import TitleSearchFilter from '../components/title-search-filter';
 import reportingGroupFilter from '../components/reporting-group-filter';
-import { UNICEF_USER_ROLE, REPORTS, THEMATIC_REPORTS } from 'lib/constants';
+import {
+  UNICEF_USER_ROLE,
+  REPORTS,
+  THEMATIC_REPORTS
+} from 'lib/constants';
 import ReportGeneratedFilter from '../components/report-generated-filter';
 import ThemeFilter from '../components/theme-filter';
+import {
+  useSelector
+} from 'react-redux';
+import {
+  selectIsSuperUser
+} from 'selectors/ui-flags';
+
+
 
 export const FILTERS_MAP = {
   [GRANT_FIELD]: {
@@ -121,9 +139,13 @@ export const getPageFilters = (userGroup, currentPageName) => {
   if (!userGroup || !currentPageName) {
     return [];
   }
+  const isSuperUser = useSelector(selectIsSuperUser);
   return keys(
-    filter(({ permissionGroup, pageName }) => {
-      const hasPermission = permissionGroup ? permissionGroup === userGroup : true;
+    filter(({
+      permissionGroup,
+      pageName
+    }) => {
+      const hasPermission = isSuperUser ? true : permissionGroup ? permissionGroup === userGroup : true;
       const belongsOnPage = pageName ? pageName === currentPageName : true;
       return hasPermission && belongsOnPage;
     }, FILTERS_MAP)
