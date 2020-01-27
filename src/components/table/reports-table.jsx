@@ -114,11 +114,15 @@ export default function ReportsTable() {
                         id={labelId}
                         scope="row"
                       >
-                        <Typography>
-                          <Link color="secondary" href={row.download_url}>
-                            {row.title}
-                          </Link>
-                        </Typography>
+                        {row.retracted ? (
+                          row.title
+                        ) : (
+                          <Typography>
+                            <Link color="secondary" href={row.download_url}>
+                              {row.title}
+                            </Link>
+                          </Typography>
+                        )}
                       </TableCell>
                       {row.theme && (
                         <TableCell className={classes.cell} align="left">
