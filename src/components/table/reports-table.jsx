@@ -17,7 +17,11 @@ import { selectReports } from 'selectors/collections';
 import { usePermissions } from 'components/PermissionRedirect';
 import { useTable, getDisplayDate, stableSort, getSorting } from './lib';
 import clsx from 'clsx';
-import { BACKEND_REPORTS_FIELDS, BACKEND_THEMATIC_FIELDS } from '../../pages/reports/constants';
+import {
+  BACKEND_REPORTS_FIELDS,
+  BACKEND_THEMATIC_FIELDS,
+  EXTERNAL_REF_GRANT_FIELD
+} from '../../pages/reports/constants';
 import { selectMenuBarPage } from 'selectors/ui-flags';
 import { THEMATIC_REPORTS, REPORTS } from 'lib/constants';
 
@@ -44,10 +48,9 @@ const thematicReportsTableHeadings = [
 ];
 
 const externalRefCell = {
-  id: 'external_ref_grant',
-  numeric: false,
-  disablePadding: false,
-  label: 'External Ref Grant'
+  id: EXTERNAL_REF_GRANT_FIELD,
+  label: 'External Ref Grant',
+  sortable: true
 };
 
 // inserts extra column for non-unicef users as per requirements
@@ -111,11 +114,15 @@ export default function ReportsTable() {
                         id={labelId}
                         scope="row"
                       >
-                        <Typography>
-                          <Link color="secondary" href={row.download_url}>
-                            {row.title}
-                          </Link>
-                        </Typography>
+                        {row.retracted ? (
+                          row.title
+                        ) : (
+                          <Typography>
+                            <Link color="secondary" href={row.download_url}>
+                              {row.title}
+                            </Link>
+                          </Typography>
+                        )}
                       </TableCell>
                       {row.theme && (
                         <TableCell className={classes.cell} align="left">
@@ -126,12 +133,7 @@ export default function ReportsTable() {
                         {row.recipient_office}
                       </TableCell>
                       {shouldShowExternalGrants && (
-                        <TableCell align="left">{row.external_ref_grant}</TableCell>
-                      )}
-                      {certifiedReports && (
-                        <TableCell className={classes.cell} align="left">
-                          {row.grant_number}
-                        </TableCell>
+                        <TableCell align="left">{row.external_reference}</TableCell>
                       )}
                       <TableCell className={classes.cell} align="left">
                         {row.report_type}
@@ -139,6 +141,11 @@ export default function ReportsTable() {
                       <TableCell className={clsx(classes.cell, classes.dateCell)} align="left">
                         {getDisplayDate(row.report_end_date)}
                       </TableCell>
+                      {certifiedReports && (
+                        <TableCell className={classes.cell} align="left">
+                          {row.grant_number}
+                        </TableCell>
+                      )}
                       <TableCell className={clsx(classes.cell, classes.dateCell)} align="left">
                         {getDisplayDate(row.grant_expiry_date)}
                       </TableCell>
