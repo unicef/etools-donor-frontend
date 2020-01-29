@@ -28,9 +28,9 @@ export function ProtectedRouteReportPage({ children, ...rest }) {
         const { donorId } = match.params;
         const { path } = match;
         const thematicPath = path === THEMATIC_REPORTS_PATH;
-        const unassignedDonorAttempt = Boolean(
+        const unassignedDonorAttempt = usersDonor ? Boolean(
           usersDonor !== Number(donorId) && !canViewDonors && !thematicPath
-        );
+        ) : Boolean(!canViewDonors);
         return unassignedDonorAttempt ? <Redirect to="/not-found" /> : children;
       }}
     />
