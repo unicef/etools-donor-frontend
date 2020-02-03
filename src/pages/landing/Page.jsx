@@ -159,7 +159,7 @@ export default function LandingPage() {
           >
             <img src={logo} className={classes.logoSplash} alt="UN Logo" />
             <Typography variant="h4" className={classes.hWelcome}>
-              <strong>Welcome to the Donor Reporting Portal</strong>
+              <strong>Welcome to the Donor Reporting Portals</strong>
             </Typography>
 
             <Typography variant="h4" className={classes.hSub} />
