@@ -117,12 +117,12 @@ export default function ReportsTable() {
                         {row.retracted ? (
                           row.title
                         ) : (
-                          <Typography>
-                            <Link color="secondary" href={row.download_url}>
-                              {row.title}
-                            </Link>
-                          </Typography>
-                        )}
+                            <Typography>
+                              <Link color="secondary" href={row.download_url}>
+                                {row.title}
+                              </Link>
+                            </Typography>
+                          )}
                       </TableCell>
                       {row.theme && (
                         <TableCell className={classes.cell} align="left">
@@ -130,7 +130,7 @@ export default function ReportsTable() {
                         </TableCell>
                       )}
                       <TableCell className={classes.cell} align="left">
-                        {row.recipient_office}
+                        {row.recipient_office.map((o, i) => <p key={i}>{o}</p>)}
                       </TableCell>
                       {shouldShowExternalGrants && (
                         <TableCell align="left">{row.external_reference}</TableCell>
