@@ -46,7 +46,7 @@ export default function UsersTable() {
   const [addUserModalOpen, setAddUserModalOpen] = useState(false);
 
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const users = useSelector(selectUserRoles);
 
   const onCloseAddUserModal = () => {
