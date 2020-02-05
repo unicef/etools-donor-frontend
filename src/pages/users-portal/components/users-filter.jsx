@@ -37,7 +37,7 @@ export default function UsersFilter() {
 
   useEffect(() => {
     const queryObj = {
-      group: selectedRoles.map(name => prop('id', find(propEq('name', name), groups)))[0],
+      group__in: selectedRoles.map(name => prop('id', find(propEq('name', name), groups))).join(),
       search: searchQuery || undefined
     };
 
