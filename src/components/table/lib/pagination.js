@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import {
+  useState
+} from 'react';
 
 export function usePagination() {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -13,5 +15,10 @@ export function usePagination() {
     setPage(0);
   };
 
-  return { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage };
+  return {
+    page,
+    rowsPerPage,
+    handleChangePage,
+    handleChangeRowsPerPage
+  };
 }

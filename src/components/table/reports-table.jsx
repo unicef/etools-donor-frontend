@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import { Link } from '@material-ui/core';
+import FiberNewIcon from '@material-ui/icons/FiberNew';
 
 import { useTableStyles } from 'styles/table-styles';
 import EnhancedTableToolbar from './table-toolbar';
@@ -115,14 +116,18 @@ export default function ReportsTable() {
                         scope="row"
                       >
                         {row.retracted ? (
-                          row.title
-                        ) : (
-                          <Typography>
-                            <Link color="secondary" href={row.download_url}>
-                              {row.title}
-                            </Link>
+                          <Typography noWrap>
+                            {row.is_new && <FiberNewIcon fontSize="small" color="error" />}
+                            {row.title}
                           </Typography>
-                        )}
+                        ) : (
+                            <Typography noWrap>
+                              <Link color="secondary" href={row.download_url}>
+                                {row.is_new && <FiberNewIcon fontSize="small" color="error" />}
+                                {row.title}
+                              </Link>
+                            </Typography>
+                          )}
                       </TableCell>
                       {row.theme && (
                         <TableCell className={classes.cell} align="left">
@@ -130,7 +135,7 @@ export default function ReportsTable() {
                         </TableCell>
                       )}
                       <TableCell className={classes.cell} align="left">
-                        {row.recipient_office}
+                        {row.recipient_office.map((o, i) => <p key={i}>{o}</p>)}
                       </TableCell>
                       {shouldShowExternalGrants && (
                         <TableCell align="left">{row.external_reference}</TableCell>

@@ -1,10 +1,21 @@
 import React from 'react';
-import { format } from 'date-fns';
+import {
+  format
+} from 'date-fns';
 
-import { BACKEND_PROPERTIES_USER_LAST_LOGIN } from '../../../lib/constants';
-import { DISPLAY_FORMAT, BACKEND_REPORTS_FIELDS } from 'pages/reports/constants';
-import { getUserStatusStr } from '../user-row-item';
-import { getRecipientOfficeStr } from '../reports-table';
+import {
+  BACKEND_PROPERTIES_USER_LAST_LOGIN
+} from '../../../lib/constants';
+import {
+  DISPLAY_FORMAT,
+  BACKEND_REPORTS_FIELDS
+} from 'pages/reports/constants';
+import {
+  getUserStatusStr
+} from '../user-row-item';
+import {
+  getRecipientOfficeStr
+} from '../reports-table';
 
 export function desc(a, b, func) {
   if (func(b) < func(a)) {
@@ -45,7 +56,7 @@ export const useTable = (defaultOrderBy = '') => {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState(defaultOrderBy);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const getEmptyRows = rows =>
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 

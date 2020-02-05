@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { getCookie } from './helpers';
+import {
+  getCookie
+} from './helpers';
 import Qs from 'qs';
 
 const backendPath = '/api';
@@ -10,7 +12,7 @@ const getBaseOptions = () => ({
   },
 
   withCredentials: true,
-  paramsSerializer: function(params) {
+  paramsSerializer: function (params) {
     return Qs.stringify(params, {
       arrayFormat: 'comma'
     });
@@ -18,39 +20,30 @@ const getBaseOptions = () => ({
 });
 
 export async function get(uri, params = {}, options = getBaseOptions()) {
-  const opt = { method: 'GET', params };
-  try {
-    const response = await axios.get(`${backendPath}${uri}`, { ...opt, ...options });
-    return response.data;
-  } catch (err) {
-    throw err;
-  }
+  const opt = {
+    method: 'GET',
+    params
+  };
+  const response = await axios.get(`${backendPath}${uri}`, {
+    ...opt,
+    ...options
+  });
+  return response.data;
 }
 
 async function post(uri, body = {}) {
-  try {
-    const response = await axios.post(`${backendPath}${uri}`, body, getBaseOptions());
-    return response.data;
-  } catch (err) {
-    throw err;
-  }
+  const response = await axios.post(`${backendPath}${uri}`, body, getBaseOptions());
+  return response.data;
 }
+
 async function patch(uri, body) {
-  try {
-    const response = await axios.patch(`${backendPath}${uri}`, body, getBaseOptions());
-    return response.data;
-  } catch (err) {
-    throw err;
-  }
+  const response = await axios.patch(`${backendPath}${uri}`, body, getBaseOptions());
+  return response.data;
 }
 
 async function del(uri) {
-  try {
-    const response = await axios.delete(`${backendPath}${uri}`, getBaseOptions());
-    return response.status === 204;
-  } catch (err) {
-    throw err;
-  }
+  const response = await axios.delete(`${backendPath}${uri}`, getBaseOptions());
+  return response.status === 204;
 }
 
 export function getUserRoles(params) {
@@ -58,7 +51,9 @@ export function getUserRoles(params) {
 }
 
 export function getUserGroups() {
-  return get(process.env.REACT_APP_USER_GROUPS_ENDPOINT, { search: 'Donor' });
+  return get(process.env.REACT_APP_USER_GROUPS_ENDPOINT, {
+    search: 'Donor'
+  });
 }
 
 export function getDonors() {
