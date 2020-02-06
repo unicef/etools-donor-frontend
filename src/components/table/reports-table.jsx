@@ -135,7 +135,7 @@ export default function ReportsTable() {
                         </TableCell>
                       )}
                       <TableCell className={classes.cell} align="left">
-                        {row.recipient_office.map((o, i) => <p key={i}>{o}</p>)}
+                        {row.recipient_office.join(', ')}
                       </TableCell>
                       {shouldShowExternalGrants && (
                         <TableCell align="left">{row.external_reference}</TableCell>
