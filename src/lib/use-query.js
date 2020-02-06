@@ -1,6 +1,13 @@
-import { useLocation, useHistory } from 'react-router-dom';
-import { pickBy } from 'ramda';
-import { hasValue } from './helpers';
+import {
+  useLocation,
+  useHistory
+} from 'react-router-dom';
+import {
+  pickBy
+} from 'ramda';
+import {
+  hasValue
+} from './helpers';
 
 function parseQuery(search) {
   const params = new URLSearchParams(search);
@@ -17,12 +24,18 @@ function parseQuery(search) {
 }
 
 function stringifyQuery(query) {
-  return new URLSearchParams(query).toString();
+  let stringified = new URLSearchParams(query).toString();
+  // replaces encoded commas with real commas
+  return stringified.replace('%2C', ',');
 }
 
 export default function useQuery([defaultQuery, setValue], method = 'replace') {
   const history = useHistory();
-  const { search, pathname, hash } = useLocation();
+  const {
+    search,
+    pathname,
+    hash
+  } = useLocation();
   const hasParams = search.indexOf('=') > -1;
 
   const setValueWithQuery = newQuery => {
@@ -32,5 +45,8 @@ export default function useQuery([defaultQuery, setValue], method = 'replace') {
     history[method](pathname + '?' + search + hash);
   };
 
-  return [hasParams ? { ...defaultQuery, ...parseQuery(search) } : defaultQuery, setValueWithQuery];
+  return [hasParams ? {
+    ...defaultQuery,
+    ...parseQuery(search)
+  } : defaultQuery, setValueWithQuery];
 }
