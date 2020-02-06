@@ -20,7 +20,6 @@ export default function DateFilterFactory(label) {
   function DateFilter({ value, onChange }) {
     const { classes } = useGetFilterClasses();
     const [date, setDate] = useState(new Date());
-    const minDate = startOfYear(new Date());
     const maxDate = endOfYear(new Date());
     useEffect(() => {
       const newDate = value ? parse(value, DATE_FORMAT, new Date()) : null;
@@ -43,7 +42,6 @@ export default function DateFilterFactory(label) {
               clearable
               // variant="inline"
               margin="none"
-              minDate={minDate}
               maxDate={maxDate}
               id="grant-from"
               format={DISPLAY_FORMAT}
