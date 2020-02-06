@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useGetFilterClasses } from 'styles/filter-styles';
 import { createMuiTheme } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
-import { format, parse, startOfYear, endOfYear } from 'date-fns';
+import { format, parse, endOfYear } from 'date-fns';
 import { FormControl } from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
