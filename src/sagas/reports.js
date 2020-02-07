@@ -1,16 +1,56 @@
-import { takeLatest, call, put, all, select } from 'redux-saga/effects';
-import { format, subYears, startOfYear, endOfYear, getYear } from 'date-fns';
-import { keys } from 'ramda';
-import { selectDonorCode, selectIsUsGov, selectMenuBarPage, selectError } from 'selectors/ui-flags';
-import { selectReportYear } from 'selectors/filter';
-import { removeEmpties } from 'lib/helpers';
-import { getUsGovReports, getThematicReports, getReports } from 'api';
-import { waitFor } from './helpers';
-import { setLoading } from 'slices/ui';
-import { onReceiveReports } from 'slices/reports';
-import { setError } from 'slices/error';
-import { onFetchReports } from 'actions';
-import { selectReports } from 'selectors/collections';
+import {
+  takeLatest,
+  call,
+  put,
+  all,
+  select
+} from 'redux-saga/effects';
+import {
+  format,
+  subYears,
+  startOfYear,
+  endOfYear,
+  getYear
+} from 'date-fns';
+import {
+  keys
+} from 'ramda';
+import {
+  selectDonorCode,
+  selectIsUsGov,
+  selectMenuBarPage,
+  selectError
+} from 'selectors/ui-flags';
+import {
+  selectReportYear
+} from 'selectors/filter';
+import {
+  removeEmpties
+} from 'lib/helpers';
+import {
+  getUsGovReports,
+  getThematicReports,
+  getReports
+} from 'api';
+import {
+  waitFor,
+  waitForBoolean
+} from './helpers';
+import {
+  setLoading
+} from 'slices/ui';
+import {
+  onReceiveReports
+} from 'slices/reports';
+import {
+  setError
+} from 'slices/error';
+import {
+  onFetchReports
+} from 'actions';
+import {
+  selectReports
+} from 'selectors/collections';
 
 import {
   REPORT_END_DATE_BEFORE_FIELD,
@@ -18,7 +58,10 @@ import {
   EARLIEST_REPORTS_YEAR,
   DATE_FORMAT
 } from 'pages/reports/constants';
-import { THEMATIC_REPORTS, REPORTS } from 'lib/constants';
+import {
+  THEMATIC_REPORTS,
+  REPORTS
+} from 'lib/constants';
 
 // Returns date filters for both last year and this year to be passed to
 // the Certified Reports api since its an endpoint called by year.
@@ -55,12 +98,14 @@ function* getInitialReports(params, filtersGetter) {
 
   // call sequentially and keep successful calls
   try {
-    const { year, ...defaultParams } = defaultFilters.lastYear;
+    const {
+      year,
+      ...defaultParams
+    } = defaultFilters.lastYear;
 
     if (year >= EARLIEST_REPORTS_YEAR) {
       const lastYearsReports = yield call(
-        getReports,
-        {
+        getReports, {
           ...params,
           ...defaultParams
         },
@@ -73,10 +118,12 @@ function* getInitialReports(params, filtersGetter) {
   }
 
   try {
-    const { year, ...defaultParams } = defaultFilters.thisYear;
+    const {
+      year,
+      ...defaultParams
+    } = defaultFilters.thisYear;
     const thisYearsReports = yield call(
-      getReports,
-      {
+      getReports, {
         ...params,
         ...defaultParams
       },
@@ -105,6 +152,7 @@ function* getCertifiedReports(params) {
 // Tricky business requirement to call different endpoint based on donor property us_gov first,
 // then whether theme or year were selected at report page
 function* getCallerFunc(payload) {
+  yield call(waitForBoolean, selectIsUsGov);
   const isUsGov = yield select(selectIsUsGov);
 
   const reportPageName = yield select(selectMenuBarPage);
@@ -137,11 +185,17 @@ function* getCallerFunc(payload) {
   return result;
 }
 
-function* handleFetchReports({ payload }) {
+function* handleFetchReports({
+  payload
+}) {
   try {
     yield put(setLoading(true));
 
-    const { caller, params, arg } = yield call(getCallerFunc, payload);
+    const {
+      caller,
+      params,
+      arg
+    } = yield call(getCallerFunc, payload);
 
     const reports = yield call(caller, params, arg);
     yield put(onReceiveReports(reports));
@@ -155,6 +209,6 @@ function* handleFetchReports({ payload }) {
   }
 }
 
-export default function*() {
+export default function* () {
   yield all([yield takeLatest(onFetchReports.type, handleFetchReports)]);
 }

@@ -1,5 +1,11 @@
-import { select, take, call } from 'redux-saga/effects';
-import { isEmpty } from 'ramda';
+import {
+  select,
+  take,
+  call
+} from 'redux-saga/effects';
+import {
+  isEmpty
+} from 'ramda';
 
 export function* waitFor(selector) {
   if (yield select(selector)) {
@@ -9,6 +15,20 @@ export function* waitFor(selector) {
     yield take('*');
     const value = yield select(selector);
     if (value) {
+      return;
+    }
+  }
+}
+
+export function* waitForBoolean(selector) {
+  const x = yield select(selector)
+  if (yield select(selector)) {
+    return;
+  }
+  while (true) {
+    yield take('*');
+    const value = yield select(selector);
+    if (typeof value === 'boolean') {
       return;
     }
   }
