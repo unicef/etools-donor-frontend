@@ -13,13 +13,11 @@ import {
   getYear
 } from 'date-fns';
 import {
-  keys
-} from 'ramda';
-import {
   selectDonorCode,
   selectIsUsGov,
   selectMenuBarPage,
-  selectError
+  selectError,
+  selectCurrentlyLoadedDonor
 } from 'selectors/ui-flags';
 import {
   selectReportYear
@@ -37,7 +35,8 @@ import {
   waitForBoolean
 } from './helpers';
 import {
-  setLoading
+  setLoading,
+  setCurrentlyLoadedDonor
 } from 'slices/ui';
 import {
   onReceiveReports
@@ -48,9 +47,6 @@ import {
 import {
   onFetchReports
 } from 'actions';
-import {
-  selectReports
-} from 'selectors/collections';
 
 import {
   REPORT_END_DATE_BEFORE_FIELD,
@@ -137,10 +133,11 @@ function* getInitialReports(params, filtersGetter) {
 }
 
 function* getCertifiedReports(params) {
-  const existingReports = yield select(selectReports);
+  const currentlyLoadedDonor = yield select(selectCurrentlyLoadedDonor);
 
   // this is default / initial load only
-  if (!existingReports.length && keys(params).length === 1) {
+  if (!currentlyLoadedDonor || currentlyLoadedDonor != params.donor_code) {
+    yield put(setCurrentlyLoadedDonor(params.donor_code))
     const reports = yield call(getInitialReports, params, getInitialReportsFilterDates);
     return reports;
   }
