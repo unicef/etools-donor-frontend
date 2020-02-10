@@ -6,6 +6,10 @@ export function usePagination() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
 
+  const resetPagination = () => {
+    setPage(0);
+  }
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -18,6 +22,7 @@ export function usePagination() {
   return {
     page,
     rowsPerPage,
+    resetPagination,
     handleChangePage,
     handleChangeRowsPerPage
   };
