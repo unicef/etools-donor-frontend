@@ -61,7 +61,7 @@ export default function DonorsList() {
   const [searchActive, setSearchActive] = useState(false);
   const loading = useSelector(selectLoading);
 
-  const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = usePagination();
+  const { page, rowsPerPage, resetPagination, handleChangePage, handleChangeRowsPerPage } = usePagination();
 
   const donors = useSelector(selectDonors);
   const pageName = useSelector(state => state.ui.menuBarPage);
@@ -73,6 +73,7 @@ export default function DonorsList() {
   }, [donors]);
 
   function handleSearch(e) {
+    resetPagination();
     const { value } = e.target;
     setQuery(value);
     setFilteredList(donors.filter(({ name }) => name.toLowerCase().includes(value.toLowerCase())));
