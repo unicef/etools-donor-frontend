@@ -21,8 +21,8 @@ export function* waitFor(selector) {
 }
 
 export function* waitForBoolean(selector) {
-  const x = yield select(selector)
-  if (yield select(selector)) {
+  const bool = yield select(selector);
+  if (typeof bool === 'boolean') {
     return;
   }
   while (true) {
