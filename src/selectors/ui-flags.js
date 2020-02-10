@@ -17,6 +17,11 @@ export const selectError = state => state.error;
 export const selectSuccess = state => state.success;
 export const selectUserDonor = state => state.donor;
 
+export const selectCurrentlyLoadedDonor = createSelector(
+  selectUi,
+  ui => ui.currentlyLoadedDonor
+);
+
 export const selectLoading = createSelector(
   selectUi,
   ui => ui.loading
