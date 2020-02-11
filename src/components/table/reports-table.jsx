@@ -122,7 +122,7 @@ export default function ReportsTable() {
                           </Typography>
                         ) : (
                             <Typography noWrap>
-                              <Link color="secondary" href={row.download_url}>
+                              <Link color="secondary" href={row.download_url} target="_blank">
                                 {row.is_new && <FiberNewIcon fontSize="small" color="error" />}
                                 {row.title}
                               </Link>
