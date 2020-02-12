@@ -28,14 +28,6 @@ const headCells = [
     disablePadding: false,
     label: 'Status',
     sortable: true
-  },
-  {
-    id: 'none',
-    align: 'right',
-    numeric: true,
-    disablePadding: false,
-    label: '',
-    sortable: false
   }
 ];
 
@@ -44,6 +36,7 @@ export default function UsersTable() {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
   const [addUserModalOpen, setAddUserModalOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState({});
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
@@ -68,6 +61,11 @@ export default function UsersTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  const handleClickEdit = (user) => {
+    setEditingUser(user);
+    openAddUserModal();
+  }
 
   const emptyRows =
     users.length === 0 ? 1 : rowsPerPage - Math.min(rowsPerPage, users.length - page * rowsPerPage);
@@ -102,7 +100,7 @@ export default function UsersTable() {
               {stableSort(users, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((user, index) => (
-                  <UserRowItem user={user} key={index} />
+                  <UserRowItem user={user} key={index} onClickEdit={(user) => handleClickEdit(user)} />
                 ))}
 
               <TableRow>
@@ -136,7 +134,7 @@ export default function UsersTable() {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-      <AddUserModal open={addUserModalOpen} onClose={onCloseAddUserModal} />
+      <AddUserModal open={addUserModalOpen} onClose={onCloseAddUserModal} userProp={editingUser} />
     </div>
   );
 }

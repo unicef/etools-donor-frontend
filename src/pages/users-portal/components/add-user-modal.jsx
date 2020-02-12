@@ -30,6 +30,7 @@ import { selectCreatedRole, selectFormError } from 'selectors/ui-flags';
 import { onCreateUserRole } from 'actions';
 import { getErrorState } from 'lib/error-parsers';
 import { onResetFormError, onFormError } from 'slices/form-error';
+import { userRoleEdited, deleteUserRole } from 'actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -63,7 +64,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function AddUserModal({ open, onClose }) {
+export default function AddUserModal({ open, onClose, userProp = {} }) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -72,6 +73,8 @@ export default function AddUserModal({ open, onClose }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [role, setRole] = useState('');
+  const [isEditMode, setEditMode] = useState(false);
+  const [user, setUser] = useState({});
 
   const createdRole = useSelector(selectCreatedRole);
   const groups = useSelector(selectUserGroups);
@@ -82,6 +85,8 @@ export default function AddUserModal({ open, onClose }) {
     setFirstName('');
     setLastName('');
     setRole('');
+    setEditMode(false);
+    setUser({});
   }
 
   function handleErrorState(modelName, stateProp) {
@@ -115,6 +120,21 @@ export default function AddUserModal({ open, onClose }) {
     dispatch(onCreateUserRole({ user, rolePayload }));
   }
 
+  async function onEditSubmit() {
+    const roleId = prop('id', groups.find(g => g.name === role));
+    const payload = {
+      id: userProp.id,
+      group: roleId
+    };
+    dispatch(userRoleEdited(payload));
+  }
+
+  const handleDelete = () => {
+    resetForm();
+    onClose();
+    dispatch(deleteUserRole(user.id))
+  }
+
   useEffect(() => {
     if (formError) {
       setLoading(false);
@@ -132,6 +152,21 @@ export default function AddUserModal({ open, onClose }) {
       dispatch(onResetFormError());
     }
   }, [open]);
+
+  useEffect(() => {
+    setUser(userProp);
+  })
+
+  // check if user object is populated, set state with user data
+  useEffect(() => {
+    if (Object.entries(user).length > 0) {
+      setEditMode(true)
+      setEmail(user.user_email);
+      setFirstName(user.user_first_name);
+      setLastName(user.user_last_name);
+      setRole(user.group_name);
+    }
+  }, [user])
 
   const stopPropagationForTab = event => {
     if (event.key === 'Tab') {
@@ -151,7 +186,7 @@ export default function AddUserModal({ open, onClose }) {
       <DialogTitle className={classes.dialogTitle} disableTypography>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Typography variant="h6" color="inherit">
-            Add New User
+            {isEditMode ? "Edit User Role" : "Add New User"}
           </Typography>
           <IconButton className={classes.closeButton} onClick={onClose}>
             <CloseIcon />
@@ -159,13 +194,15 @@ export default function AddUserModal({ open, onClose }) {
         </Box>
       </DialogTitle>
 
-      <Grid item>
-        <Paper className={classes.contentHeader} elevation={0}>
-          <Typography variant="subtitle1">
-            Email with invitation will be sent to provided email.
-          </Typography>
-        </Paper>
-      </Grid>
+      {!isEditMode &&
+        <Grid item>
+          <Paper className={classes.contentHeader} elevation={0}>
+            <Typography variant="subtitle1">
+              Email with invitation will be sent to provided email.
+            </Typography>
+          </Paper>
+        </Grid>
+      }
 
       <DialogContent>
         <FormControl className={classes.formControl}>
@@ -182,6 +219,7 @@ export default function AddUserModal({ open, onClose }) {
                   error={getErrorState(formError, 'email')}
                   onBlur={handleErrorState('email', email)}
                   onChange={setValueFromEvent(setEmail)}
+                  disabled={isEditMode}
                 />
                 {getErrorState(formError, 'email') && (
                   <FormHelperText className={classes.error}>{formError['email']}</FormHelperText>
@@ -200,6 +238,7 @@ export default function AddUserModal({ open, onClose }) {
                   onBlur={handleErrorState('first_name', firstName)}
                   error={getErrorState(formError, 'first_name')}
                   onChange={setValueFromEvent(setFirstName)}
+                  disabled={isEditMode}
                 />
                 {getErrorState(formError, 'first_name') && (
                   <FormHelperText className={classes.error}>
@@ -218,6 +257,7 @@ export default function AddUserModal({ open, onClose }) {
                   onBlur={handleErrorState('last_name', lastName)}
                   error={getErrorState(formError, 'last_name')}
                   onChange={setValueFromEvent(setLastName)}
+                  disabled={isEditMode}
                 />
                 {getErrorState(formError, 'last_name') && (
                   <FormHelperText className={classes.error}>
@@ -229,10 +269,7 @@ export default function AddUserModal({ open, onClose }) {
 
             <Grid container spacing={3}>
               <Grid item xs={5}>
-                <form
-                  action="
-              "
-                />
+                <form action="" />
                 <FormControl className={classes.formControl} required>
                   <InputLabel htmlFor="roles">{FORM_CONFIG.role.label}</InputLabel>
                   <Select
@@ -267,10 +304,15 @@ export default function AddUserModal({ open, onClose }) {
         </FormControl>
       </DialogContent>
       <DialogActions>
+        {isEditMode && (
+          <Button onClick={handleDelete} style={{ color: 'red' }} disabled={loading}>
+            Delete User
+          </Button>)
+        }
         <Button onClick={onClose} color="primary" disabled={loading}>
           Cancel
         </Button>
-        <Button onClick={onSubmit} color="secondary" disabled={onSubmitDisabled} autoFocus>
+        <Button onClick={isEditMode ? onEditSubmit : onSubmit} color="secondary" disabled={onSubmitDisabled} autoFocus>
           {btnContent}
         </Button>
       </DialogActions>
@@ -280,5 +322,6 @@ export default function AddUserModal({ open, onClose }) {
 
 AddUserModal.propTypes = {
   open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired,
+  userProp: PropTypes.object
 };
