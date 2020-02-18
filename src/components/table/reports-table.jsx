@@ -116,13 +116,13 @@ export default function ReportsTable() {
                         scope="row"
                       >
                         {row.retracted ? (
-                          <Typography noWrap>
+                          <Typography>
                             {row.is_new && <FiberNewIcon fontSize="small" color="error" />}
                             {row.title}
                           </Typography>
                         ) : (
-                            <Typography noWrap>
-                              <Link color="secondary" href={row.download_url}>
+                            <Typography>
+                              <Link color="secondary" href={row.download_url} target="_blank">
                                 {row.is_new && <FiberNewIcon fontSize="small" color="error" />}
                                 {row.title}
                               </Link>

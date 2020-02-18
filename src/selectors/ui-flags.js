@@ -1,6 +1,13 @@
-import { propOr, prop } from 'ramda';
-import { createSelector } from 'reselect';
-import { UNICEF_USER_ROLE } from 'lib/constants';
+import {
+  propOr,
+  prop
+} from 'ramda';
+import {
+  createSelector
+} from 'reselect';
+import {
+  UNICEF_USER_ROLE
+} from 'lib/constants';
 
 export const selectCreatedRole = state => state.createdRole;
 export const selectFormError = state => state.formError;
@@ -8,6 +15,12 @@ export const selectUi = state => state.ui;
 export const selectUserProfile = state => state.userProfile;
 export const selectError = state => state.error;
 export const selectSuccess = state => state.success;
+export const selectUserDonor = state => state.donor;
+
+export const selectCurrentlyLoadedDonor = createSelector(
+  selectUi,
+  ui => ui.currentlyLoadedDonor
+);
 
 export const selectLoading = createSelector(
   selectUi,
@@ -37,8 +50,6 @@ export const selectUserProfileDonor = createSelector(
   selectUserProfile,
   propOr({}, 'donor')
 );
-
-export const selectUserDonor = state => state.donor;
 
 export const selectUserName = createSelector(
   selectUserProfile,
@@ -70,7 +81,7 @@ export const selectDonorCode = createSelector(
 
 export const selectIsUsGov = createSelector(
   selectUserDonor,
-  propOr(false, 'us_gov')
+  prop('us_gov')
 );
 
 export const selectIsAuthorized = createSelector(
