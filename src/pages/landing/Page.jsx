@@ -135,7 +135,6 @@ export default function LandingPage() {
             </Box>
 
             <Box display="flex" alignItems="center">
-              <Button className={clsx(classes.btn, classes.noHover)}>Register</Button>
               <Button
                 className={clsx(classes.btn, classes.signInBtn)}
                 variant="contained"
