@@ -144,10 +144,10 @@ export const FILTERS_MAP = {
 };
 
 export const getPageFilters = (userGroup, currentPageName) => {
+  const isSuperUser = useSelector(selectIsSuperUser);
   if (!userGroup || !currentPageName) {
     return [];
   }
-  const isSuperUser = useSelector(selectIsSuperUser);
   return keys(
     filter(({
       permissionGroup,
