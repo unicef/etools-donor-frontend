@@ -116,7 +116,7 @@ export default function DonorsList() {
                     <TableRow hover key={row.code}>
                       <TableCell component="th" scope="row">
                         <Link className={classes.link} to={`/${pageName}/${row.id}`}>
-                          {row.name}
+                          {`${row.name} [${row.code}]`}
                         </Link>
                       </TableCell>
                     </TableRow>
