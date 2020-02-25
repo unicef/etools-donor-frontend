@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import { Link } from '@material-ui/core';
+import { Tooltip } from '@material-ui/core';
 import FiberNewIcon from '@material-ui/icons/FiberNew';
 
 import { useTableStyles } from 'styles/table-styles';
@@ -115,45 +116,64 @@ export default function ReportsTable() {
                         id={labelId}
                         scope="row"
                       >
-                        {row.retracted ? (
-                          <Typography>
-                            {row.is_new && <FiberNewIcon fontSize="small" color="error" />}
-                            {row.title}
-                          </Typography>
-                        ) : (
-                            <Typography>
-                              <Link color="secondary" href={row.download_url} target="_blank">
+                        {
+                          row.retracted ? (
+                            <Tooltip title={row.title}>
+                              <Typography className={classes.overflow}>
                                 {row.is_new && <FiberNewIcon fontSize="small" color="error" />}
                                 {row.title}
-                              </Link>
-                            </Typography>
-                          )}
+                              </Typography>
+                            </Tooltip>
+                          ) : (
+                              <Tooltip title={row.title}>
+                                <Typography className={classes.overflow}>
+                                  <Link color="secondary" href={row.download_url} target="_blank">
+                                    {row.is_new && <FiberNewIcon fontSize="small" color="error" />}
+                                    {row.title}
+                                  </Link>
+                                </Typography>
+                              </Tooltip>
+                            )}
                       </TableCell>
                       {row.theme && (
-                        <TableCell className={classes.cell} align="left">
-                          {row.theme}
-                        </TableCell>
+                        <Tooltip title={row.theme}>
+                          <TableCell className={classes.cell} align="left">
+                            {row.theme}
+                          </TableCell>
+                        </Tooltip>
                       )}
-                      <TableCell className={classes.cell} align="left">
-                        {row.recipient_office ? row.recipient_office.join(', ') : row.recipientOffice}
-                      </TableCell>
+                      <Tooltip title={row.recipientOffice ? row.recipientOffice : ''}>
+                        <TableCell className={classes.cell} align="left">
+                          {row.recipient_office ? row.recipient_office.join(', ') : row.recipientOffice}
+                        </TableCell>
+                      </Tooltip>
                       {shouldShowExternalGrants && (
-                        <TableCell align="left">{row.external_reference}</TableCell>
+                        <Tooltip title={row.external_reference}>
+                          <TableCell className={classes.cell} align="left">{row.external_reference}</TableCell>
+                        </Tooltip>
                       )}
-                      <TableCell className={classes.cell} align="left">
-                        {row.report_type}
-                      </TableCell>
-                      <TableCell className={clsx(classes.cell, classes.dateCell)} align="left">
-                        {getDisplayDate(row.report_end_date)}
-                      </TableCell>
-                      {certifiedReports && (
+                      <Tooltip title={row.report_type}>
                         <TableCell className={classes.cell} align="left">
-                          {row.grant_number}
+                          {row.report_type}
                         </TableCell>
+                      </Tooltip>
+                      <Tooltip title={getDisplayDate(row.report_end_date)}>
+                        <TableCell className={clsx(classes.cell, classes.dateCell)} align="left">
+                          {getDisplayDate(row.report_end_date)}
+                        </TableCell>
+                      </Tooltip>
+                      {certifiedReports && (
+                        <Tooltip title={row.grant_number}>
+                          <TableCell className={classes.cell} align="left">
+                            {row.grant_number}
+                          </TableCell>
+                        </Tooltip>
                       )}
-                      <TableCell className={clsx(classes.cell, classes.dateCell)} align="left">
-                        {getDisplayDate(row.grant_expiry_date)}
-                      </TableCell>
+                      <Tooltip title={getDisplayDate(row.grant_expiry_date)}>
+                        <TableCell className={clsx(classes.cell, classes.dateCell)} align="left">
+                          {getDisplayDate(row.grant_expiry_date)}
+                        </TableCell>
+                      </Tooltip>
                     </TableRow>
                   );
                 })}
@@ -181,7 +201,7 @@ export default function ReportsTable() {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
         {/* <DocViewer fileType={docFileType} filePath={doc} /> */}
-      </Paper>
-    </div>
+      </Paper >
+    </div >
   );
 }
