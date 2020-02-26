@@ -118,14 +118,14 @@ export default function ReportsTable() {
                       >
                         {
                           row.retracted ? (
-                            <Tooltip title={row.title}>
+                            <Tooltip title={row.title ? row.title : ''}>
                               <Typography className={classes.overflow}>
                                 {row.is_new && <FiberNewIcon fontSize="small" color="error" />}
                                 {row.title}
                               </Typography>
                             </Tooltip>
                           ) : (
-                              <Tooltip title={row.title}>
+                              <Tooltip title={row.title ? row.title : ''}>
                                 <Typography className={classes.overflow}>
                                   <Link color="secondary" href={row.download_url} target="_blank">
                                     {row.is_new && <FiberNewIcon fontSize="small" color="error" />}
@@ -136,7 +136,7 @@ export default function ReportsTable() {
                             )}
                       </TableCell>
                       {row.theme && (
-                        <Tooltip title={row.theme}>
+                        <Tooltip title={row.theme ? row.theme : ''}>
                           <TableCell className={classes.cell} align="left">
                             {row.theme}
                           </TableCell>
@@ -148,28 +148,28 @@ export default function ReportsTable() {
                         </TableCell>
                       </Tooltip>
                       {shouldShowExternalGrants && (
-                        <Tooltip title={row.external_reference}>
+                        <Tooltip title={row.external_reference ? row.external_reference : ''}>
                           <TableCell className={classes.cell} align="left">{row.external_reference}</TableCell>
                         </Tooltip>
                       )}
-                      <Tooltip title={row.report_type}>
+                      <Tooltip title={row.report_type ? row.report_type : ''}>
                         <TableCell className={classes.cell} align="left">
                           {row.report_type}
                         </TableCell>
                       </Tooltip>
-                      <Tooltip title={getDisplayDate(row.report_end_date)}>
+                      <Tooltip title={row.report_end_date ? getDisplayDate(row.report_end_date) : ''}>
                         <TableCell className={clsx(classes.cell, classes.dateCell)} align="left">
                           {getDisplayDate(row.report_end_date)}
                         </TableCell>
                       </Tooltip>
                       {certifiedReports && (
-                        <Tooltip title={row.grant_number}>
+                        <Tooltip title={row.grant_number ? row.grant_number : ''}>
                           <TableCell className={classes.cell} align="left">
                             {row.grant_number}
                           </TableCell>
                         </Tooltip>
                       )}
-                      <Tooltip title={getDisplayDate(row.grant_expiry_date)}>
+                      <Tooltip title={row.grant_expiry_date ? getDisplayDate(row.grant_expiry_date) : ''}>
                         <TableCell className={clsx(classes.cell, classes.dateCell)} align="left">
                           {getDisplayDate(row.grant_expiry_date)}
                         </TableCell>
