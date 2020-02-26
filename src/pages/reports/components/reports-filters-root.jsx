@@ -62,6 +62,7 @@ export default function ReportsFilter() {
   useEffect(() => {
     if (prop('length', prevPageName)) {
       clearFilters();
+      dispatch(onFetchReports({}));
     }
   }, [pageName]);
 

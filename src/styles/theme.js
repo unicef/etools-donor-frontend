@@ -1,19 +1,27 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import {
+  createMuiTheme
+} from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 import grey from '@material-ui/core/colors/grey';
 
 blue['A400'] = '#0199ff';
 
-export const getColorTheme = () => ({ ...blue, 500: '#0099FF' });
+export const getColorTheme = () => ({
+  ...blue,
+  500: '#0099FF'
+});
 
 grey['A100'] = '#e5eaf0';
 
 export default createMuiTheme({
   palette: {
-    primary: { ...grey, strong: '#233944' },
+    primary: {
+      ...grey,
+      strong: '#233944'
+    },
     secondary: blue,
     success: {
-      primary: '#72C300',
+      main: '#72C300',
       secondary: '#BEF078'
     },
     background: {

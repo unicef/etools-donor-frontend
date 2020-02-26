@@ -1,4 +1,7 @@
-import { lighten, makeStyles } from '@material-ui/core/styles';
+import {
+  lighten,
+  makeStyles
+} from '@material-ui/core/styles';
 
 export const useToolbarStyles = makeStyles(theme => ({
   root: {
@@ -6,16 +9,13 @@ export const useToolbarStyles = makeStyles(theme => ({
     paddingRight: theme.spacing(3),
     marginBottom: theme.spacing(2)
   },
-  highlight:
-    theme.palette.type === 'light'
-      ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85)
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark
-        },
+  highlight: theme.palette.type === 'light' ? {
+    color: theme.palette.secondary.main,
+    backgroundColor: lighten(theme.palette.secondary.light, 0.85)
+  } : {
+    color: theme.palette.text.primary,
+    backgroundColor: theme.palette.secondary.dark
+  },
   spacer: {
     flex: '1 1 100%'
   },
@@ -43,7 +43,14 @@ export const useTableStyles = makeStyles(theme => ({
     overflowX: 'auto'
   },
   cell: {
-    paddingRight: 14
+    paddingRight: 14,
+    maxWidth: 0,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
+  },
+  overflow: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
   },
   titleCell: {
     width: '20%'

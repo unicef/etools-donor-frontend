@@ -1,8 +1,20 @@
-import { useState, useEffect } from 'react';
+import {
+  useState,
+  useEffect
+} from 'react';
 
-import { mapObjIndexed, keys, pickBy, always, equals } from 'ramda';
+import {
+  mapObjIndexed,
+  keys,
+  pickBy,
+  always,
+  equals
+} from 'ramda';
 import useQuery from './use-query';
-import { hasValue, parseEventValue } from './helpers';
+import {
+  hasValue,
+  parseEventValue
+} from './helpers';
 
 /*
   This hook encapsulates the flow of handling data when a filter is selected to be activated,
@@ -26,7 +38,10 @@ const useFiltersQueries = FILTERS_MAP => {
   useEffect(() => {
     const filtersFromUrl = pickBy(isValidQuery, filterValues);
     const activatedFilters = mapObjIndexed(always(true), filtersFromUrl);
-    const nedActiveState = { ...filtersActiveState, ...activatedFilters };
+    const nedActiveState = {
+      ...filtersActiveState,
+      ...activatedFilters
+    };
     setFiltersActiveState(nedActiveState);
   }, []);
 
