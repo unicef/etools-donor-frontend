@@ -73,7 +73,7 @@ workflows:
               only:
                 - master
                 - develop
-- deploy:
+  deploy:
     requires:
       - test
       - build_and_push_image
