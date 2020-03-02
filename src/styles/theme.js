@@ -17,7 +17,8 @@ export default createMuiTheme({
   palette: {
     primary: {
       ...grey,
-      strong: '#233944'
+      // strong: '#233944'
+      strong: '#1CABE2'
     },
     secondary: blue,
     success: {
@@ -111,7 +112,6 @@ export default createMuiTheme({
         }
       }
     },
-
     MuiTableCell: {
       root: {
         paddingDefault: {

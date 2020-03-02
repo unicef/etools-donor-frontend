@@ -32,7 +32,11 @@ export const useMainStyles = makeStyles(theme =>
     drawerHeader: {
       padding: theme.spacing(1)
     },
-    toolbar: { ...theme.mixins.toolbar, maxHeight: 64 },
+    toolbar: {
+      ...theme.mixins.toolbar,
+      minHeight: 64,
+      height: 112
+    },
     content: {
       flexGrow: 1,
       backgroundColor: theme.palette.background.default
@@ -65,7 +69,6 @@ export default function MainAppBar() {
     <div className={classes.root}>
       <AppToolbar />
       <ConnectedDrawer />
-
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <ContentHeader />
@@ -95,6 +98,7 @@ export default function MainAppBar() {
           </Box>
         </div>
       </main>
+
     </div>
   );
 }
