@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid, Box, Link, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import bgImage from './img/home-bkg-3.jpg';
-import logo from 'assets/images/unicef-icon.png';
+import circleLogo from 'assets/images/unicef_circle_logo.png';
 import clsx from 'clsx';
 
 const useStyles = makeStyles(() => ({
@@ -13,7 +13,7 @@ const useStyles = makeStyles(() => ({
     height: '100vh',
     color: 'white',
     '& a': {
-      color: 'white'
+      color: '#1CABE2'
     }
   },
   maskOverlay: {
@@ -27,48 +27,17 @@ const useStyles = makeStyles(() => ({
     margin: 0,
     justifyContent: 'center'
   },
-  nav: {
-    zIndex: 100,
-    padding: '1rem',
-    maxHeight: 80,
-    '& *': {
-      maxHeight: '100%'
-    }
-  },
   container: {
     width: '100%'
   },
-  logoTitle: {
-    margin: 0,
-    lineHeight: '1rem',
-    paddingLeft: 8,
-    borderLeft: '1px solid white'
-  },
-  titleContainer: {
-    padding: 4
-  },
-  navLink: {
-    fontSize: '1rem',
-    lineHeight: 1.5,
-    fontWeight: 400,
-    margin: '0 16px'
-  },
-  linkContainer: {
-    margin: '0 64px'
-  },
   btn: {
-    color: 'white',
-    margin: '0 8px'
-  },
-  noHover: {
-    '&:hover': {
-      backgroundColor: 'transparent'
-    }
+    color: 'blue',
+    margin: '8px'
   },
   signInBtn: {
-    backgroundColor: '#6B5CA5',
+    backgroundColor: 'white',
     '&:hover': {
-      backgroundColor: '#6B5CA5'
+      backgroundColor: 'white'
     },
     '& a:hover': {
       textDecoration: 'none'
@@ -85,22 +54,10 @@ const useStyles = makeStyles(() => ({
     }
   },
   logoSplash: {
-    maxWidth: 130
+    maxWidth: 260
   },
   hWelcome: {
     fontSize: '2.5rem'
-  },
-  hSub: {
-    fontSize: '1.5rem',
-    marginBottom: '1.5rem'
-  },
-  mainP: {
-    fontSize: '1.3em',
-    lineHeight: 1.5,
-    marginBottom: '1rem'
-  },
-  footerLogo: {
-    maxHeight: 130
   }
 }));
 
@@ -115,37 +72,6 @@ export default function LandingPage() {
   return (
     <div className={classes.root}>
       <Grid container spacing={3} className={classes.maskOverlay}>
-        {/* Nav */}
-        <Grid item xs={9} container className={classes.nav}>
-          <Box display="flex" className={classes.container} justifyContent="space-between">
-            <Box display="flex">
-              <img src={logo} alt="UN Logo" />
-              <Box display="flex" alignItems="center" className={classes.titleContainer}>
-                <h3 className={classes.logoTitle}>
-                  Donor <br />
-                  Reporting <br />
-                  Portal
-                </h3>
-              </Box>
-              <Box display="flex" alignItems="center" className={classes.linkContainer}>
-                {/* <Link className={classes.navLink}>Link One</Link>
-                <Link className={classes.navLink}>Link Two</Link>
-                <Link className={classes.navLink}>Link Three</Link> */}
-              </Box>
-            </Box>
-
-            <Box display="flex" alignItems="center">
-              <Button
-                className={clsx(classes.btn, classes.signInBtn)}
-                variant="contained"
-                onClick={signIn}
-              >
-                <Link href="/sociallogin/unicef-azuread-b2c-oauth2/">Sign In</Link>
-              </Button>
-            </Box>
-          </Box>
-        </Grid>
-
         <Grid container className={classes.main} alignItems="center" justify="center">
           <Grid
             item
@@ -156,17 +82,21 @@ export default function LandingPage() {
             alignItems="center"
             justify="center"
           >
-            <img src={logo} className={classes.logoSplash} alt="UN Logo" />
+            <img src={circleLogo} className={classes.logoSplash} alt="UN Logo" />
             <Typography variant="h4" className={classes.hWelcome}>
               <strong>Welcome to the Donor Reporting Portal</strong>
             </Typography>
-
-            <Typography variant="h4" className={classes.hSub} />
-
-            <Typography variant="body2" className={classes.mainP}>
-              <strong />
-            </Typography>
-            <Grid container justify="center" />
+            <Grid container justify="center">
+              <Box display="flex" alignItems="center">
+                <Button
+                  className={clsx(classes.btn, classes.signInBtn)}
+                  variant="container"
+                  onClick={signIn}
+                >
+                  <Link href="/sociallogin/unicef-azuread-b2c-oauth2/">Sign In</Link>
+                </Button>
+              </Box>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
