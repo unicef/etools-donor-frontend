@@ -11,9 +11,7 @@ const useStyles = makeStyles(theme =>
     root: {
       width: ' 100%',
       margin: 0,
-      padding: `16px 24px 0 24px`,
-      // background: '#fff',
-      // borderBottom: '2px #e0e0e0 solid'
+      padding: `16px 24px 0 24px`
     },
     title: {
       fontSize: '1.5rem',

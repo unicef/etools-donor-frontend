@@ -101,7 +101,6 @@ export default function MainAppBar() {
           </Box>
         </div>
       </main>
-
     </div>
   );
 }
