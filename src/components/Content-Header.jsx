@@ -12,11 +12,16 @@ const useStyles = makeStyles(theme =>
       width: ' 100%',
       margin: 0,
       padding: `16px 24px 0 24px`,
-      background: '#fff',
-      borderBottom: '2px #e0e0e0 solid'
+      // background: '#fff',
+      // borderBottom: '2px #e0e0e0 solid'
     },
     title: {
-      fontSize: '1.25rem'
+      fontSize: '1.5rem',
+      fontWeight: 500,
+      color: '#244784'
+    },
+    description: {
+      fontSize: '1rem'
     },
     content: {
       minHeight: 64,
@@ -36,9 +41,15 @@ function ContentHeader({ children, location }) {
       className={`${classes.root} ${classes.content}`}
       container
     >
-      <Typography className={classes.title} variant="h5">
-        {title}
+      <Grid>
+        <Typography className={classes.title} variant="h5">
+          {title}
+        </Typography>
+        <Typography className={classes.description}>
+          {/* {description} */}
+          A short introduction of an overview of what is on this page lorem ipsum dolar set.
       </Typography>
+      </Grid>
       {children}
     </Grid>
   );

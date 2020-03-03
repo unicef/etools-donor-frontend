@@ -18,6 +18,7 @@ import { FORM_CONFIG } from 'lib/constants';
 import { FILTERS_MAP } from '../lib/filters-map';
 import MandatoryFilters from './mandatory-filters';
 import { selectMenuBarPage } from 'selectors/ui-flags';
+import { REPORTS } from 'lib/constants';
 
 function usePrevious(value) {
   const ref = useRef();
@@ -31,6 +32,7 @@ export default function ReportsFilter() {
   const dispatch = useDispatch();
   const classes = useFilterStyles();
   const pageName = useSelector(selectMenuBarPage);
+  const reportPageName = useSelector(selectMenuBarPage);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -68,55 +70,58 @@ export default function ReportsFilter() {
 
   return (
     <>
-      <MandatoryFilters />
-
-      <form onSubmit={handleSubmit}>
-        <Paper>
-          <Grid item xs={12} className={classes.filterContainer} container wrap="nowrap">
-            <Box className={classes.filterMenu}>
-              <FilterMenuButton onSelectFilter={handleSelectFilter} selected={filtersActiveState} />
-            </Box>
-
-            <Box display="flex" flex="1 1 auto" alignItems="flex-start" flexWrap="wrap">
-              <Grid
-                className={classes.filterComponents}
-                container
-                direction="row"
-                flex="1 1 auto"
-                spacing={2}
-              >
-                {selectedFilters.map((filter, idx) => {
-                  const { Component: FilterComponent } = FILTERS_MAP[filter];
-
-                  return (
-                    <Grid
-                      item
-                      className={classes.filterBox}
-                      sm={FILTERS_MAP[filter].gridSize || 3}
-                      key={idx}
-                    >
-                      <FilterComponent
-                        onChange={handleChangeFilterValue(filter)}
-                        value={filterValues[filter]}
-                      />
-                    </Grid>
-                  );
-                })}
-              </Grid>
-            </Box>
+      <Paper className={classes.filterPaper}>
+        <form onSubmit={handleSubmit}>
+          <Grid
+            container
+            spacing={0}
+            alignItems="flex-start"
+            direction="row"
+          >
+            {reportPageName === REPORTS && (
+              <Grid item style={{ width: '240px' }}><MandatoryFilters className={classes.yearFilter} /></Grid>
+            )}
+            <Grid item><FilterMenuButton onSelectFilter={handleSelectFilter} selected={filtersActiveState} /></Grid>
           </Grid>
-        </Paper>
-        <Grid container justify="flex-end" className={classes.button}>
-          <Button className={classes.formBtn} color="secondary" onClick={handleClear}>
-            {FORM_CONFIG.clear.label}
-          </Button>
-          <Button className={classes.formBtn} color="secondary" onClick={handleSubmit}>
-            {FORM_CONFIG.submit.label}
-          </Button>
-        </Grid>
-      </form>
+          <Box display="flex" flex="1 1 auto" alignItems="flex-start" flexWrap="wrap">
+            <Grid
+              className={classes.filterComponents}
+              container
+              direction="row"
+              flex="1 1 auto"
+              spacing={2}
+            >
+              {selectedFilters.map((filter, idx) => {
+                const { Component: FilterComponent } = FILTERS_MAP[filter];
+
+                return (
+                  <Grid
+                    item
+                    className={classes.filterBox}
+                    sm={FILTERS_MAP[filter].gridSize || 3}
+                    key={idx}
+                  >
+                    <FilterComponent
+                      onChange={handleChangeFilterValue(filter)}
+                      value={filterValues[filter]}
+                    />
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Box>
+          <Grid container alignContent="flex-start" className={classes.button}>
+            <Button className={classes.formBtn} variant="contained" color="secondary" onClick={handleClear}>
+              {FORM_CONFIG.clear.label}
+            </Button>
+            <Button className={classes.formBtn} variant="contained" color="secondary" onClick={handleSubmit}>
+              {FORM_CONFIG.submit.label}
+            </Button>
+          </Grid>
+        </form>
+      </Paper>
     </>
   );
 }
 
-// ReportsFilter.whyDidYouRender = true;
+      // ReportsFilter.whyDidYouRender = true;
