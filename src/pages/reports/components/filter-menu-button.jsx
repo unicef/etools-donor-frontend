@@ -9,6 +9,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import useFilterStyles from 'styles/filter-styles';
 import { FILTERS_MAP, getPageFilters } from '../lib/filters-map';
 import { selectUserGroup, selectMenuBarPage, selectIsSuperUser } from 'selectors/ui-flags';
+import clsx from 'clsx';
 
 export default function FilterMenuButton({ onSelectFilter, selected }) {
   const classes = useFilterStyles();
@@ -65,9 +66,9 @@ export function FilterButton(props) {
   const classes = useFilterStyles();
 
   return (
-    <Button className={classes.filterBtn} size="small" {...props}>
+    <Button className={clsx(classes.filterBox, classes.filterBtn)} size="small" {...props}>
       <FilterListIcon className={classes.filterIcon} />
-      Filter
+      More Filters
     </Button>
   );
 }
