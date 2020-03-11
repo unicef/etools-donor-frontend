@@ -30,7 +30,7 @@ import { selectCreatedRole, selectFormError } from 'selectors/ui-flags';
 import { onCreateUserRole } from 'actions';
 import { getErrorState } from 'lib/error-parsers';
 import { onResetFormError, onFormError } from 'slices/form-error';
-import { userRoleEdited, deleteUserRole } from 'actions';
+import { userRoleEdited } from 'actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -127,12 +127,6 @@ export default function AddUserModal({ open, onClose, userProp = {} }) {
       group: roleId
     };
     dispatch(userRoleEdited(payload));
-  }
-
-  const handleDelete = () => {
-    resetForm();
-    onClose();
-    dispatch(deleteUserRole(user.id))
   }
 
   useEffect(() => {
@@ -304,11 +298,6 @@ export default function AddUserModal({ open, onClose, userProp = {} }) {
         </FormControl>
       </DialogContent>
       <DialogActions>
-        {isEditMode && (
-          <Button onClick={handleDelete} style={{ color: 'red' }} disabled={loading}>
-            Delete User
-          </Button>)
-        }
         <Button onClick={onClose} color="primary" disabled={loading}>
           Cancel
         </Button>

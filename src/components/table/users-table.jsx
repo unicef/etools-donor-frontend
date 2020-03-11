@@ -28,7 +28,8 @@ const headCells = [
     disablePadding: false,
     label: 'Status',
     sortable: true
-  }
+  },
+  { id: 'actions', numeric: false, disablePadding: false, label: 'Actions', sortable: false }
 ];
 
 export default function UsersTable() {
@@ -43,6 +44,7 @@ export default function UsersTable() {
   const users = useSelector(selectUserRoles);
 
   const onCloseAddUserModal = () => {
+    setEditingUser({});
     setAddUserModalOpen(false);
   };
   const openAddUserModal = () => setAddUserModalOpen(true);
