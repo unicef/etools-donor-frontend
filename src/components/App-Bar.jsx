@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createStyles } from '@material-ui/styles';
-import { makeStyles, AppBar, Toolbar, Box, Typography, IconButton } from '@material-ui/core';
+import { makeStyles, AppBar, Toolbar, Box, Typography, IconButton, Link } from '@material-ui/core';
 import horizontalLogo from '../assets/images/UNICEF_White_Horizontal.png';
 import ErrorsSnackbar from './Errors-Snackbar';
 import { selectUserName } from 'selectors/ui-flags';
@@ -55,8 +55,7 @@ export default function AppToolbar() {
   const userName = useSelector(selectUserName);
 
   function logout() {
-    const url = window.location.origin;
-    window.location.href = `${url}/social/unicef-logout`;
+    window.location.href = `/social/unicef-logout/`;
   }
 
   return (
