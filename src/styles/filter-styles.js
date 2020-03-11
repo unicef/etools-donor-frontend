@@ -1,4 +1,7 @@
-import { makeStyles, createStyles } from '@material-ui/styles';
+import {
+  makeStyles,
+  createStyles
+} from '@material-ui/styles';
 import clsx from 'clsx';
 
 const useFilterStyles = makeStyles(theme =>
@@ -9,9 +12,8 @@ const useFilterStyles = makeStyles(theme =>
       background: theme.palette.common.white
     },
     button: {
-      marginTop: theme.spacing(2),
       display: 'flex',
-      justifyContent: 'flex-end'
+      justifyContent: 'flex-start'
     },
     filterComponents: {
       margin: 0
@@ -24,7 +26,7 @@ const useFilterStyles = makeStyles(theme =>
       boxSizing: 'initial'
     },
     filterBox: {
-      margin: `0 ${theme.spacing(2)}px ${theme.spacing(3)}px 0 `,
+      margin: `0 ${theme.spacing(2)}px ${theme.spacing(2)}px 0 `,
       maxWidth: 400
     },
     btn: {
@@ -39,11 +41,17 @@ const useFilterStyles = makeStyles(theme =>
       cursor: 'pointer',
       padding: '4px 16px 4px 12px',
       fontWeight: 400,
-      marginTop: theme.spacing(1),
       fontSize: 14,
       borderRadius: 14,
       lineHeight: `${theme.spacing(3)}px`,
       border: `1px solid #e5eaf0;`
+    },
+    filterPaper: {
+      padding: 20
+    },
+    yearFilter: {
+      backgroundColor: '#fafafa',
+      width: 240
     },
     filterMenu: {
       marginRight: 32
@@ -120,5 +128,9 @@ export const useGetFilterClasses = () => {
     disableUnderline: true
   };
 
-  return { classes, labelProps, selectProps };
+  return {
+    classes,
+    labelProps,
+    selectProps
+  };
 };
