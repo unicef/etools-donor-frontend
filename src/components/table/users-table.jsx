@@ -29,7 +29,7 @@ const headCells = [
     label: 'Status',
     sortable: true
   },
-  { id: 'actions', numberic: false, disablePadding: false, label: 'Actions', sortable: false }
+  { id: 'actions', numeric: false, disablePadding: false, label: 'Actions', sortable: false }
 ];
 
 export default function UsersTable() {
