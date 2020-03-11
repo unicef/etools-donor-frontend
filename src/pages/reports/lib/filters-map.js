@@ -126,7 +126,8 @@ export const FILTERS_MAP = {
   [REPORT_GROUP_FIELD]: {
     label: 'Report Group',
     Component: reportingGroupFilter,
-    permissionGroup: UNICEF_USER_ROLE
+    permissionGroup: UNICEF_USER_ROLE,
+    pageName: REPORTS
   },
 
   [REPORT_GENERATED_FIELD]: {

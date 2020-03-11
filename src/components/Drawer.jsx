@@ -4,21 +4,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useMainStyles } from './Main';
 import {
   Box,
-  Typography,
-  Divider,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Drawer,
-  Link
+  Drawer
 } from '@material-ui/core';
 
 import DescriptionIcon from '@material-ui/icons/Description';
 import SettingsIcon from '@material-ui/icons/Settings';
-import logo from 'assets/images/UNICEF_logo.png';
 import { REPORTS, THEMATIC_REPORTS, USERS_PORTAL } from '../lib/constants';
-import clsx from 'clsx';
 import { selectMenuBarPage } from 'selectors/ui-flags';
 import { menuItemSelected } from 'slices/ui';
 import { usePermissions } from './PermissionRedirect';
@@ -64,20 +59,7 @@ export default function ConnectedDrawer() {
       }}
       anchor="left"
     >
-      <Box bgcolor="white" className={clsx(classes.toolbar, classes.drawerHeader)} display="flex">
-        <Box>
-          <img src={logo} className={classes.logo} alt="Unicef Logo" />
-        </Box>
-        <Box display="flex" alignItems="center" flexGrow={1}>
-          <Link href="/">
-            <Typography color="secondary" className={classes.title}>
-              Donor Reporting Portal
-            </Typography>
-          </Link>
-        </Box>
-      </Box>
-      <Divider />
-
+      <Box className={classes.toolbar} />
       <List>
         <ListItem selected={navSelected(REPORTS)} onClick={handleNav(REPORTS)} button>
           <ListItemIcon>

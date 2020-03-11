@@ -16,6 +16,8 @@ import {
 
 import PermissionRedirect from './PermissionRedirect';
 import NotFound from './404';
+import { useSelector } from 'react-redux';
+import { selectDonorName } from 'selectors/ui-flags';
 
 export const useMainStyles = makeStyles(theme =>
   createStyles({
@@ -32,7 +34,11 @@ export const useMainStyles = makeStyles(theme =>
     drawerHeader: {
       padding: theme.spacing(1)
     },
-    toolbar: { ...theme.mixins.toolbar, maxHeight: 64 },
+    toolbar: {
+      ...theme.mixins.toolbar,
+      minHeight: 64,
+      height: 112
+    },
     content: {
       flexGrow: 1,
       backgroundColor: theme.palette.background.default
@@ -60,15 +66,15 @@ export const useMainStyles = makeStyles(theme =>
 
 export default function MainAppBar() {
   const classes = useMainStyles();
+  const pageName = useSelector(selectDonorName);
 
   return (
     <div className={classes.root}>
       <AppToolbar />
       <ConnectedDrawer />
-
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <ContentHeader />
+        {pageName && <ContentHeader />}
 
         <div className={classes.contentWrapper}>
           <Box flexDirection="column">
