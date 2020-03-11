@@ -14,9 +14,11 @@ import {
   BACKEND_PROPERTIES_USER_LAST_LOGIN
 } from 'lib/constants';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import clsx from 'clsx';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteUserRole } from 'actions';
 import { selectUserGroups } from 'selectors/user';
 import { prop } from 'ramda';
 
@@ -53,6 +55,11 @@ export default function UserRowItem({ user, onClickEdit }) {
   const labelId = `user-${user.id}`;
   const classes = useStyles();
   const groups = useSelector(selectUserGroups);
+  const dispatch = useDispatch();
+
+  const handleDelete = () => {
+    dispatch(deleteUserRole(user.id))
+  }
 
   return (
     <TableRow hover tabIndex={-1}>
@@ -62,6 +69,9 @@ export default function UserRowItem({ user, onClickEdit }) {
       <TableCell align="left">{user.user_email || '-'}</TableCell>
       <TableCell align="left">
         {prop('name', groups.find(group => group.id === user.group))}
+      </TableCell>
+      <TableCell align="left">{getUserStatusStr(user)}</TableCell>
+      <TableCell align="left">
         <IconButton
           color="primary"
           className={clsx(classes.icon, classes.iconMargin)}
@@ -72,8 +82,18 @@ export default function UserRowItem({ user, onClickEdit }) {
             <EditIcon className={classes.actionIcon} />
           </Tooltip>
         </IconButton>
+        <IconButton
+          color="primary"
+          className={clsx(classes.icon, classes.iconMargin)}
+          size="small"
+          onClick={() => handleDelete(user)}
+        >
+          <Tooltip title="Delete" placement="top">
+            <DeleteIcon className={classes.actionIcon} />
+          </Tooltip>
+        </IconButton>
+
       </TableCell>
-      <TableCell align="left">{getUserStatusStr(user)}</TableCell>
     </TableRow>
   );
 }
