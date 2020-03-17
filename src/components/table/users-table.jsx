@@ -17,6 +17,9 @@ import { BACKEND_PROPERTIES_USER_LAST_LOGIN } from '../../lib/constants';
 import { stableSort, getSorting } from './lib';
 import { selectLoading } from 'selectors/ui-flags';
 import UserRowItem from './user-row-item';
+import DeleteUserDialog from 'components/DeleteUserDialog';
+import { deleteUserRole } from 'actions';
+import { useDispatch } from 'react-redux';
 
 const headCells = [
   { id: 'user_first_name', numeric: false, disablePadding: false, label: 'Name', sortable: true },
@@ -34,19 +37,22 @@ const headCells = [
 
 export default function UsersTable() {
   const classes = useTableStyles();
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('name');
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('name');
   const [addUserModalOpen, setAddUserModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState({});
-
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(25);
+  const [deleteUser, setDeleteUser] = useState({});
+  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
   const users = useSelector(selectUserRoles);
 
   const onCloseAddUserModal = () => {
     setEditingUser({});
     setAddUserModalOpen(false);
   };
+
   const openAddUserModal = () => setAddUserModalOpen(true);
 
   const handleRequestSort = (event, property) => {
@@ -67,6 +73,20 @@ export default function UsersTable() {
   const handleClickEdit = (user) => {
     setEditingUser(user);
     openAddUserModal();
+  }
+
+  const handleClickDelete = (user) => {
+    setDeleteUser(user);
+    setOpen(true);
+  }
+
+  const handleCancelDelete = () => {
+    setOpen(false);
+  }
+
+  const handleConfirmDelete = () => {
+    dispatch(deleteUserRole(deleteUser.id))
+    setOpen(false);
   }
 
   const emptyRows =
@@ -102,7 +122,7 @@ export default function UsersTable() {
               {stableSort(users, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((user, index) => (
-                  <UserRowItem user={user} key={index} onClickEdit={(user) => handleClickEdit(user)} />
+                  <UserRowItem user={user} key={index} onClickEdit={(user) => handleClickEdit(user)} onClickDelete = {(user) => handleClickDelete(user)}/>
                 ))}
 
               <TableRow>
@@ -137,6 +157,7 @@ export default function UsersTable() {
         />
       </Paper>
       <AddUserModal open={addUserModalOpen} onClose={onCloseAddUserModal} userProp={editingUser} />
+      <DeleteUserDialog open={open} onCancel={handleCancelDelete} onConfirmDelete={handleConfirmDelete} />
     </div>
   );
 }
