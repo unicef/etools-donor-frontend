@@ -1,10 +1,16 @@
-import { keys } from 'ramda';
-import { USERS_PORTAL_PATH, REPORTS_PATH, THEMATIC_REPORTS_PATH } from './constants';
+import {
+  keys
+} from 'ramda';
+import {
+  USERS_PORTAL_PATH,
+  REPORTS_PATH,
+  THEMATIC_REPORTS_PATH
+} from './constants';
 
 export const PAGE_TITLES_MAP = {
   [USERS_PORTAL_PATH]: 'User Management',
   [REPORTS_PATH]: 'Reports',
-  [THEMATIC_REPORTS_PATH]: 'Reports'
+  [THEMATIC_REPORTS_PATH]: 'Thematic Reports'
 };
 
 export function getSubheadingFromParams(pathname, donorName = '') {

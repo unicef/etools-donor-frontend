@@ -43,10 +43,6 @@ function ContentHeader({ children, location }) {
         <Typography className={classes.title} variant="h5">
           {title}
         </Typography>
-        <Typography className={classes.description}>
-          {/* {description} */}
-          A short introduction of an overview of what is on this page lorem ipsum dolar set.
-      </Typography>
       </Grid>
       {children}
     </Grid>
