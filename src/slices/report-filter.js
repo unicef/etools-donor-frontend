@@ -1,9 +1,6 @@
 import {
   createSlice
 } from 'redux-starter-kit';
-import DateFns from '@date-io/date-fns';
-
-const dateUtils = new DateFns();
 
 const reportFiltersSlice = createSlice({
   initialState: {
