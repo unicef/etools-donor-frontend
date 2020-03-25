@@ -1,6 +1,12 @@
-import { createSelector } from 'reselect';
-import { selectMenuBarPage } from './ui-flags';
-import { THEMATIC_REPORTS } from 'lib/constants';
+import {
+  createSelector
+} from 'reselect';
+import {
+  selectMenuBarPage
+} from './ui-flags';
+import {
+  THEMATIC_REPORTS
+} from 'lib/constants';
 
 export const selectReportFilter = state => state.reportFilter;
 

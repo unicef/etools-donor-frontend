@@ -124,16 +124,16 @@ export function getOffices() {
 }
 
 export function getReports(params, year) {
-  const computedUrl = `${process.env.REACT_APP_REPORTS_ENDPOINT}${year} Certified Reports/`;
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<folder>', `${year} Certified Reports`);
   return get(computedUrl, params);
 }
 
 export function getUsGovReports(params, year) {
-  const computedUrl = `${process.env.REACT_APP_REPORTS_ENDPOINT}${year} US Gov Certified Reports/`;
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<folder>', `${year} US Gov Certified Reports`);
   return get(computedUrl, params);
 }
 
 export function getThematicReports(params) {
-  const computedUrl = `${process.env.REACT_APP_REPORTS_ENDPOINT}Thematic%20Reports/`;
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<folder>', `Thematic%20Reports`);
   return get(computedUrl, params);
 }
