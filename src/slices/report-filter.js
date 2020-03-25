@@ -1,11 +1,13 @@
-import { createSlice } from 'redux-starter-kit';
+import {
+  createSlice
+} from 'redux-starter-kit';
 import DateFns from '@date-io/date-fns';
 
 const dateUtils = new DateFns();
 
 const reportFiltersSlice = createSlice({
   initialState: {
-    reportYear: dateUtils.getYear(new Date())
+    reportYear: ''
   },
   reducers: {
     reportYearChanged(state, action) {
@@ -17,5 +19,10 @@ const reportFiltersSlice = createSlice({
   }
 });
 
-export const { reducer: reportFilter } = reportFiltersSlice;
-export const { reportYearChanged, themeChanged } = reportFiltersSlice.actions;
+export const {
+  reducer: reportFilter
+} = reportFiltersSlice;
+export const {
+  reportYearChanged,
+  themeChanged
+} = reportFiltersSlice.actions;
