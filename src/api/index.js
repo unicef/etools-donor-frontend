@@ -4,6 +4,11 @@ import {
 } from './helpers';
 import Qs from 'qs';
 
+const currentDate = () => {
+  let date = new Date();
+  return date.getFullYear();
+};
+
 const backendPath = '/api';
 
 const getBaseOptions = () => ({
@@ -123,7 +128,7 @@ export function getOffices() {
   return get(process.env.REACT_APP_BUSINESS_AREA_ENDPOINT);
 }
 
-export function getReports(params, year) {
+export function getReports(params, year = currentDate()) {
   const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<folder>', `${year} Certified Reports`);
   return get(computedUrl, params);
 }
