@@ -75,7 +75,7 @@ export default function ReportsFilter() {
           <Grid
             container
             spacing={0}
-            alignItems="flex-start"
+            alignItems="flex-end"
             direction="row"
           >
             {reportPageName === REPORTS && (
