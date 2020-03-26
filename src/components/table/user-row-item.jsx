@@ -17,8 +17,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import clsx from 'clsx';
-import { useSelector, useDispatch } from 'react-redux';
-import { deleteUserRole } from 'actions';
+import { useSelector } from 'react-redux';
 import { selectUserGroups } from 'selectors/user';
 import { prop } from 'ramda';
 
@@ -51,15 +50,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function UserRowItem({ user, onClickEdit }) {
+export default function UserRowItem({ user, onClickEdit, onClickDelete }) {
   const labelId = `user-${user.id}`;
   const classes = useStyles();
   const groups = useSelector(selectUserGroups);
-  const dispatch = useDispatch();
-
-  const handleDelete = () => {
-    dispatch(deleteUserRole(user.id))
-  }
 
   return (
     <TableRow hover tabIndex={-1}>
@@ -86,7 +80,7 @@ export default function UserRowItem({ user, onClickEdit }) {
           color="primary"
           className={clsx(classes.icon, classes.iconMargin)}
           size="small"
-          onClick={() => handleDelete(user)}
+          onClick={() => onClickDelete(user)}
         >
           <Tooltip title="Delete" placement="top">
             <DeleteIcon className={classes.actionIcon} />
@@ -100,5 +94,6 @@ export default function UserRowItem({ user, onClickEdit }) {
 
 UserRowItem.propTypes = {
   user: PropTypes.object,
-  onClickEdit: PropTypes.func
+  onClickEdit: PropTypes.func,
+  onClickDelete: PropTypes.func
 };

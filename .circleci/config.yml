@@ -21,7 +21,6 @@ jobs:
       - run:
           name: Run Tests
           command: npm test
-
   build_and_push_image:
     working_directory: ~/code
     docker:
@@ -29,6 +28,13 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - run:
+          name: Exporting revision number
+          command: |
+            REVNO=${CIRCLE_SHA1}
+            BUILDDATE=$(date -u +%F_%T)
+            sed -i "0,/revNo/s//$REVNO/" package.json
+            sed -i "0,/bDate/s//$BUILDDATE/" package.json
       - run:
           name: Install Docker client
           command: |
@@ -48,39 +54,17 @@ jobs:
             TAG=${CIRCLE_BRANCH}
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker push unicef/donor-reporting-portal-frontend:$TAG
-  # Commented until rancher repo set up for this app
-  # deploy:
-  #   docker:
-  #     - image: jonaskello/rancher-cli-k8s:v2.0.4
-  #   steps:
-  #     - run:
-  #         name: Rancher Login
-  #         command: rancher login $RANCHER2_SERVER_URL --token $RANCHER2_BEARER_TOKEN --context $RANCHER_CONTEXT
-  #     - run:
-  #         name: Patch Deploy
-  #         command: rancher kubectl --namespace=etools-dev patch deployment /*donor-reporting-portal-frontend*/ -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
 
-# workflows:
-#   version: 2
-#   build_and_test:
-#     jobs:
-#       - test
-#       - build_and_push_image:
-#           requires:
-#             - test
-#           filters:
-#             branches:
-#               only:
-#                 - master
-#                 - staging
-#                 - develop
-# - deploy:
-#     requires:
-#       - test
-#       - build_and_push_image
-#     filters:
-#       branches:
-#         only:
-#           - master
-#           - staging
-#           - develop
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - test
+      - build_and_push_image:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+                - develop

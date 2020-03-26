@@ -29,7 +29,8 @@ const useStyles = makeStyles(theme =>
       fill: theme.palette.primary[400]
     },
     headerLogo: {
-      width: 384
+      width: '25%',
+      height: '25%'
     },
     noPrint: {
       '@media print': {
