@@ -11,6 +11,8 @@ const currentDate = () => {
 
 const backendPath = '/api';
 
+const currentEnvirontment = () => process.env.NODE_ENV;
+
 const getBaseOptions = () => ({
   headers: {
     'X-CSRFToken': getCookie('csrftoken')
@@ -129,16 +131,19 @@ export function getOffices() {
 }
 
 export function getReports(params, year = currentDate()) {
-  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<folder>', `${year} Certified Reports`);
+  let env = currentEnvirontment() == 'development' ? 'unitst' : 'unicef';
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<tenant>', env).replace('<folder>', `${year} Certified Reports`);
   return get(computedUrl, params);
 }
 
 export function getUsGovReports(params, year) {
-  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<folder>', `${year} US Gov Certified Reports`);
+  let env = currentEnvirontment() == 'development' ? 'unitst' : 'unicef';
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<tenant>', env).replace('<folder>', `${year} US Gov Certified Reports`);
   return get(computedUrl, params);
 }
 
 export function getThematicReports(params) {
-  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<folder>', `Thematic%20Reports`);
+  let env = currentEnvirontment() == 'development' ? 'unitst' : 'unicef';
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<tenant>', env).replace('<folder>', `Thematic%20Reports`);
   return get(computedUrl, params);
 }
