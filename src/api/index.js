@@ -11,8 +11,6 @@ const currentDate = () => {
 
 const backendPath = '/api';
 
-const currentEnvirontment = () => process.env.NODE_ENV;
-
 const getBaseOptions = () => ({
   headers: {
     'X-CSRFToken': getCookie('csrftoken')
@@ -25,6 +23,8 @@ const getBaseOptions = () => ({
     });
   }
 });
+
+const tenantName = () => process.env.TENANT_NAME
 
 export async function get(uri, params = {}, options = getBaseOptions()) {
   const opt = {
@@ -130,20 +130,17 @@ export function getOffices() {
   return get(process.env.REACT_APP_BUSINESS_AREA_ENDPOINT);
 }
 
-export function getReports(params, year = currentDate()) {
-  let env = currentEnvirontment() == 'production' ? 'unicef' : 'unitst';
-  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', env).replace('<folder>', `${year} Certified Reports`);
+export async function getReports(params, year = currentDate()) {
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', tenantName()).replace('<folder>', `${year} Certified Reports`);
   return get(computedUrl, params);
 }
 
-export function getUsGovReports(params, year) {
-  let env = currentEnvirontment() == 'production' ? 'unicef' : 'unitst';
-  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', env).replace('<folder>', `${year} US Gov Certified Reports`);
+export async function getUsGovReports(params, year) {
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', tenantName()).replace('<folder>', `${year} US Gov Certified Reports`);
   return get(computedUrl, params);
 }
 
-export function getThematicReports(params) {
-  let env = currentEnvirontment() == 'production' ? 'unicef' : 'unitst';
-  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', env).replace('<folder>', `Thematic%20Reports`);
+export async function getThematicReports(params) {
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', tenantName()).replace('<folder>', `Thematic%20Reports`);
   return get(computedUrl, params);
 }
