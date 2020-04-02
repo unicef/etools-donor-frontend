@@ -132,18 +132,18 @@ export function getOffices() {
 
 export function getReports(params, year = currentDate()) {
   let env = currentEnvirontment() == 'development' ? 'unitst' : 'unicef';
-  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<tenant>', env).replace('<folder>', `${year} Certified Reports`);
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', env).replace('<folder>', `${year} Certified Reports`);
   return get(computedUrl, params);
 }
 
 export function getUsGovReports(params, year) {
   let env = currentEnvirontment() == 'development' ? 'unitst' : 'unicef';
-  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<tenant>', env).replace('<folder>', `${year} US Gov Certified Reports`);
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', env).replace('<folder>', `${year} US Gov Certified Reports`);
   return get(computedUrl, params);
 }
 
 export function getThematicReports(params) {
   let env = currentEnvirontment() == 'development' ? 'unitst' : 'unicef';
-  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<tenant>', env).replace('<folder>', `Thematic%20Reports`);
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', env).replace('<folder>', `Thematic%20Reports`);
   return get(computedUrl, params);
 }
