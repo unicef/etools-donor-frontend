@@ -24,8 +24,6 @@ const getBaseOptions = () => ({
   }
 });
 
-const tenantName = () => process.env.TENANT_NAME || 'unicef';
-
 export async function get(uri, params = {}, options = getBaseOptions()) {
   const opt = {
     method: 'GET',
@@ -131,16 +129,16 @@ export function getOffices() {
 }
 
 export async function getReports(params, year = currentDate()) {
-  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', tenantName()).replace('<folder>', `${year} Certified Reports`);
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<folder>', `${year} Certified Reports`);
   return get(computedUrl, params);
 }
 
 export async function getUsGovReports(params, year) {
-  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', tenantName()).replace('<folder>', `${year} US Gov Certified Reports`);
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<folder>', `${year} US Gov Certified Reports`);
   return get(computedUrl, params);
 }
 
 export async function getThematicReports(params) {
-  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', tenantName()).replace('<folder>', `Thematic%20Reports`);
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<folder>', `Thematic%20Reports`);
   return get(computedUrl, params);
 }
