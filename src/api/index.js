@@ -24,7 +24,7 @@ const getBaseOptions = () => ({
   }
 });
 
-const tenantName = () => process.env.TENANT_NAME
+const tenantName = () => process.env.REACT_APP_TENANT_NAME
 
 export async function get(uri, params = {}, options = getBaseOptions()) {
   const opt = {
