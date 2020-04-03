@@ -24,7 +24,7 @@ const getBaseOptions = () => ({
   }
 });
 
-const tenantName = () => process.env.TENANT_NAME || 'unicef';
+const tenantName = () => process.env.TENANT_NAME || 'unitst';
 
 export async function get(uri, params = {}, options = getBaseOptions()) {
   const opt = {
