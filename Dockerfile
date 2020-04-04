@@ -4,6 +4,10 @@ FROM node:11.9.0-alpine as builder
 WORKDIR /code
 ADD . /code
 RUN npm install --silent
+
+# ARG REACT_APP_TENANT_NAME
+ENV REACT_APP_TENANT_NAME ${REACT_APP_TENANT_NAME}
+
 RUN npm run build
 
 FROM node:11.9.0-alpine

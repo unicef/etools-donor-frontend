@@ -6,6 +6,8 @@ ADD package-lock.json /tmp/
 
 RUN npm install --no-save
 
+ENV REACT_APP_TENANT_NAME $REACT_APP_TENANT_NAME
+
 ADD . /code/
 WORKDIR /code
 RUN cp -a /tmp/node_modules /code/node_modules
