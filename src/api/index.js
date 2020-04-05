@@ -24,7 +24,12 @@ const getBaseOptions = () => ({
   }
 });
 
-const tenantName = () => process.env.TENANT_NAME || 'unitst';
+const setTenantName = () => {
+  if (window.location.href.includes('tst') || window.location.href.includes('localhost')) {
+    return 'unitst';
+  }
+  return 'unicef';
+}
 
 export async function get(uri, params = {}, options = getBaseOptions()) {
   const opt = {
@@ -131,16 +136,16 @@ export function getOffices() {
 }
 
 export async function getReports(params, year = currentDate()) {
-  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', tenantName()).replace('<folder>', `${year} Certified Reports`);
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', setTenantName()).replace('<folder>', `${year} Certified Reports`);
   return get(computedUrl, params);
 }
 
 export async function getUsGovReports(params, year) {
-  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', tenantName()).replace('<folder>', `${year} US Gov Certified Reports`);
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', setTenantName()).replace('<folder>', `${year} US Gov Certified Reports`);
   return get(computedUrl, params);
 }
 
 export async function getThematicReports(params) {
-  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', tenantName()).replace('<folder>', `Thematic%20Reports`);
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', setTenantName()).replace('<folder>', `Thematic%20Reports`);
   return get(computedUrl, params);
 }
