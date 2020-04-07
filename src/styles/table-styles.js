@@ -40,7 +40,7 @@ export const useTableStyles = makeStyles(theme => ({
     minWidth: 750
   },
   tableWrapper: {
-    overflowX: 'scroll'
+    overflowX: 'auto'
   },
   cell: {
     paddingRight: 14,
