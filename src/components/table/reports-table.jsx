@@ -169,11 +169,13 @@ export default function ReportsTable() {
                           </TableCell>
                         </Tooltip>
                       )}
-                      <Tooltip title={row.grant_expiry_date ? getDisplayDate(row.grant_expiry_date) : ''}>
-                        <TableCell className={clsx(classes.cell, classes.dateCell)} align="left">
-                          {getDisplayDate(row.grant_expiry_date)}
-                        </TableCell>
-                      </Tooltip>
+                      {certifiedReports && (
+                        <Tooltip title={row.grant_expiry_date ? getDisplayDate(row.grant_expiry_date) : ''}>
+                          <TableCell className={clsx(classes.cell, classes.dateCell)} align="left">
+                            {getDisplayDate(row.grant_expiry_date)}
+                          </TableCell>
+                        </Tooltip>
+                      )}
                     </TableRow>
                   );
                 })}

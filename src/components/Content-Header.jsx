@@ -24,6 +24,10 @@ const useStyles = makeStyles(theme =>
     content: {
       minHeight: 64,
       paddingBottom: theme.spacing(1)
+    },
+    betaWarning: {
+      color: theme.palette.flags.red,
+      fontSize: '18px'
     }
   })
 );
@@ -40,6 +44,9 @@ function ContentHeader({ children, location }) {
       container
     >
       <Grid>
+        {location.pathname.includes('reports') && (<Typography className={classes.betaWarning}>
+          This is a Beta version of this site, and should not be used for sending reports.
+        </Typography>)}
         <Typography className={classes.title} variant="h5">
           {title}
         </Typography>

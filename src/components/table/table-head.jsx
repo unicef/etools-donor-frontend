@@ -14,7 +14,7 @@ export default function EnhancedTableHead(props) {
       <TableRow>
         {cells.map(headCell => (
           <TableCell
-            className={clsx(classes.cell, classes.actionsCell)}
+            className={clsx(classes.cell)}
             key={headCell.id}
             align={headCell.align || 'left'}
             padding={headCell.disablePadding ? 'none' : 'default'}
@@ -34,8 +34,8 @@ export default function EnhancedTableHead(props) {
                 ) : null}
               </TableSortLabel>
             ) : (
-              <span>{headCell.label}</span>
-            )}
+                <span>{headCell.label}</span>
+              )}
           </TableCell>
         ))}
       </TableRow>
