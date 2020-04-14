@@ -4,7 +4,7 @@ import { useParams } from 'react-router';
 
 import ReportsFilter from 'pages/reports/components/reports-filters-root';
 import ReportsTable from 'components/table/reports-table';
-import { selectMenuBarPage } from 'selectors/ui-flags';
+import { selectPageName } from 'selectors/ui-flags';
 import { initCertifiedReportsPage, initThematicReportsPage } from 'actions';
 import { THEMATIC_REPORTS, REPORTS } from 'lib/constants';
 import { onReceiveReports } from 'slices/reports';
@@ -16,7 +16,7 @@ function useInitThematicReports(dispatch) {
 }
 
 function useDefaultHook() {
-  return () => {};
+  return () => { };
 }
 
 function useInitiCertifiedReports(dispatch, donorId) {
@@ -42,7 +42,7 @@ const useInitPage = pageName => {
 };
 
 export default function ReportsPage() {
-  const pageName = useSelector(selectMenuBarPage);
+  const pageName = useSelector(selectPageName);
   const dispatch = useDispatch();
   const effect = useInitPage(pageName);
   useEffect(effect, [pageName]);
