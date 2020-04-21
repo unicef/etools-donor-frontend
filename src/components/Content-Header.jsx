@@ -45,7 +45,7 @@ function ContentHeader({ children, location }) {
     >
       <Grid>
         {location.pathname.includes('reports') && (<Typography className={classes.betaWarning}>
-          This is a Beta version of this site, and should not be used for sending reports.
+          This is a Beta version of the site. It should not be used for sending reports.
         </Typography>)}
         <Typography className={classes.title} variant="h5">
           {title}
