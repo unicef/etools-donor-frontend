@@ -101,7 +101,7 @@ export default function LandingPage() {
               </Box>
             </Grid>
             <Typography className={classes.browserAdvice}>
-              This site works best in the latest versions of Google Chrome, Safari, Microsoft Edge, And Firefox.
+              This site works best in the latest versions of Google Chrome, Safari, Microsoft Edge, and Firefox.
             </Typography>
           </Grid>
         </Grid>
