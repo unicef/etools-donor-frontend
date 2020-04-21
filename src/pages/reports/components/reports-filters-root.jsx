@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 if (process.env.NODE_ENV !== 'production') {
   const whyDidYouRender = require('@welldone-software/why-did-you-render');
@@ -19,6 +19,7 @@ import { FILTERS_MAP } from '../lib/filters-map';
 import MandatoryFilters from './mandatory-filters';
 import { selectMenuBarPage } from 'selectors/ui-flags';
 import { REPORTS } from 'lib/constants';
+import { selectReportYear } from 'selectors/filter';
 
 function usePrevious(value) {
   const ref = useRef();
@@ -33,9 +34,15 @@ export default function ReportsFilter() {
   const classes = useFilterStyles();
   const pageName = useSelector(selectMenuBarPage);
   const reportPageName = useSelector(selectMenuBarPage);
+  const reportYear = useSelector(selectReportYear);
+  const [showValidation, setShowValidation] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
+    if (!reportYear && reportPageName === REPORTS) {
+      setShowValidation(true);
+      return;
+    }
     dispatch(onFetchReports(filterValues));
   }
 
@@ -52,6 +59,12 @@ export default function ReportsFilter() {
     selectedFilters,
     clearFilters
   } = useFiltersQueries(FILTERS_MAP);
+
+  useEffect(() => {
+    if (reportYear) {
+      setShowValidation(false);
+    }
+  }, [reportYear])
 
   useEffect(() => {
     if (pageName) {
@@ -72,6 +85,11 @@ export default function ReportsFilter() {
     <>
       <Paper className={classes.filterPaper}>
         <form onSubmit={handleSubmit}>
+          {showValidation && (
+            <Grid container alignContent="flex-start">
+              <span className={classes.validationWarning}>You must select a Report Year in order to submit.</span>
+            </Grid>
+          )}
           <Grid
             container
             spacing={0}

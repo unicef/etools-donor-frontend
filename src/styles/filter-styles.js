@@ -29,6 +29,9 @@ const useFilterStyles = makeStyles(theme =>
       margin: `0 ${theme.spacing(2)}px ${theme.spacing(2)}px 0 `,
       maxWidth: 400
     },
+    validationWarning: {
+      color: 'red'
+    },
     btn: {
       backgroundColor: '#e5eaf0'
     },
