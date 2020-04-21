@@ -141,7 +141,8 @@ function* getCertifiedReports(params) {
     const reports = yield call(getInitialReports, params, getInitialReportsFilterDates);
     return reports;
   }
-  const reports = yield call(getReports, params);
+  const reportYear = yield select(selectReportYear);
+  const reports = yield call(getReports, params, reportYear);
   return reports;
 }
 
