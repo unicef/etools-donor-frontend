@@ -20,6 +20,7 @@ import MandatoryFilters from './mandatory-filters';
 import { selectMenuBarPage } from 'selectors/ui-flags';
 import { REPORTS } from 'lib/constants';
 import { selectReportYear } from 'selectors/filter';
+import { reportYearChanged } from 'slices/report-filter';
 
 function usePrevious(value) {
   const ref = useRef();
@@ -49,6 +50,7 @@ export default function ReportsFilter() {
   function handleClear() {
     clearFilters();
     dispatch(onFetchReports({}));
+    dispatch(reportYearChanged(''))
   }
 
   const {
