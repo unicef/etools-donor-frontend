@@ -6,18 +6,19 @@ import { reportYearChanged } from 'slices/report-filter';
 import { Grid } from '@material-ui/core';
 import useFilterStyles from 'styles/filter-styles';
 import { parseEventValue } from 'lib/helpers';
-import { selectDonorId } from 'selectors/ui-flags';
+import { setCurrentlyLoadedDonor } from 'slices/ui';
 
 export default function MandatoryFilters() {
   const dispatch = useDispatch();
   const classes = useFilterStyles();
   const reportYear = useSelector(selectReportYear);
-  const donorId = useSelector(selectDonorId);
 
-  // resets value of year dropdown if donor changed
   useEffect(() => {
     dispatch(reportYearChanged(''))
-  }, [donorId])
+    return function cleanup() {
+      dispatch(setCurrentlyLoadedDonor(''))
+    }
+  }, [])
 
   return (
     <Grid item style={{ width: '100%' }}>
