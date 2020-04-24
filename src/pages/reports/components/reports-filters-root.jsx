@@ -49,8 +49,9 @@ export default function ReportsFilter() {
 
   function handleClear() {
     clearFilters();
+    const year = new Date().getFullYear();
+    dispatch(reportYearChanged(year));
     dispatch(onFetchReports({}));
-    dispatch(reportYearChanged(''))
   }
 
   const {
