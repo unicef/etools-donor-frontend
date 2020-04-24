@@ -1,4 +1,6 @@
-import { createSlice } from 'redux-starter-kit';
+import {
+  createSlice
+} from 'redux-starter-kit';
 
 const grantsSlice = createSlice({
   initialState: [],
@@ -9,5 +11,9 @@ const grantsSlice = createSlice({
   }
 });
 
-export const { reducer: grants } = grantsSlice;
-export const { onReceiveGrants } = grantsSlice.actions;
+export const {
+  reducer: grants
+} = grantsSlice;
+export const {
+  onReceiveGrants
+} = grantsSlice.actions;
