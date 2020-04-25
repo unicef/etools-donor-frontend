@@ -1,4 +1,10 @@
-import { takeLatest, call, put, all, select } from 'redux-saga/effects';
+import {
+  takeLatest,
+  call,
+  put,
+  all,
+  select
+} from 'redux-saga/effects';
 
 import {
   getDonors,
@@ -9,29 +15,62 @@ import {
   getOffices
 } from 'api';
 
-import { propEq, equals } from 'ramda';
+import {
+  propEq,
+  equals
+} from 'ramda';
 
-import { setError } from 'slices/error';
-import { setDonors } from 'slices/donors';
-import { initDonorsList, initCertifiedReportsPage, initThematicReportsPage } from 'actions';
-import { setLoading, onRouteChange } from 'slices/ui';
-import { onReceiveGrants } from 'slices/grants';
-import { onReceiveExternalGrants } from 'slices/external-grants';
-import { onReceivethemes } from 'slices/themes';
-import { onReceiveStaticAssets, staticAssetsInitialState } from 'slices/static';
-import { onReceiveOffices } from 'slices/offices';
-import { selectUserProfile, selectUserGroup } from 'selectors/ui-flags';
-import { waitForLength, maybeFetch } from './helpers';
+import {
+  setError
+} from 'slices/error';
+import {
+  setDonors
+} from 'slices/donors';
+import {
+  initDonorsList,
+  initCertifiedReportsPage,
+  initThematicReportsPage
+} from 'actions';
+import {
+  setLoading,
+  onRouteChange
+} from 'slices/ui';
+import {
+  onReceiveGrants
+} from 'slices/grants';
+import {
+  onReceiveExternalGrants
+} from 'slices/external-grants';
+import {
+  onReceivethemes
+} from 'slices/themes';
+import {
+  onReceiveStaticAssets,
+  staticAssetsInitialState
+} from 'slices/static';
+import {
+  onReceiveOffices
+} from 'slices/offices';
+import {
+  selectUserProfile,
+  selectUserGroup
+} from 'selectors/ui-flags';
+import {
+  waitForLength,
+  maybeFetch
+} from './helpers';
 import {
   selectDonors,
   selectStaticAssets,
   selectThemeCollection,
-  selectOffices,
-  selectGrants,
-  selectExternalGrants
+  selectOffices
 } from 'selectors/collections';
-import { currentDonorSelected } from 'slices/donor';
-import { UNICEF_USER_ROLE } from 'lib/constants';
+import {
+  currentDonorSelected
+} from 'slices/donor';
+import {
+  UNICEF_USER_ROLE
+} from 'lib/constants';
 
 function* handleFetchDonors() {
   try {
@@ -45,7 +84,9 @@ function* handleFetchDonors() {
   }
 }
 
-function* handleFetchGrants({ payload }) {
+function* handleFetchGrants({
+  payload
+}) {
   try {
     const grants = yield call(getGrants, payload);
     yield put(onReceiveGrants(grants));
@@ -63,7 +104,9 @@ function* handleFetchOffices() {
   }
 }
 
-function* handleFetchExternalGrants({ payload }) {
+function* handleFetchExternalGrants({
+  payload
+}) {
   try {
     const grants = yield call(getExternalGrants, payload);
     yield put(onReceiveExternalGrants(grants));
@@ -97,8 +140,10 @@ function* handleFetchStatic() {
 }
 
 // Encapsulate logic for grabbing the current donor and persisting to state
-// for easier access.Only UNICEF user or SuperUser can operate on any donor.
-function* handleCurrentDonor({ payload }) {
+// for easier access. Only UNICEF user or SuperUser can operate on any donor.
+function* handleCurrentDonor({
+  payload
+}) {
   const profile = yield select(selectUserProfile);
   const group = yield select(selectUserGroup);
   let donor;
@@ -124,8 +169,8 @@ export function* currentDonorSaga() {
 
 function* fetchReportFilterCollections(action) {
   yield all([
-    call(maybeFetch, handleFetchGrants, selectGrants, action),
-    call(maybeFetch, handleFetchExternalGrants, selectExternalGrants, action),
+    call(handleFetchGrants, action),
+    call(handleFetchExternalGrants, action),
     call(handleFetchStatic),
     call(maybeFetch, handleFetchOffices, selectOffices)
   ]);
@@ -144,6 +189,6 @@ export function* filtersSaga() {
   yield takeLatest(initThematicReportsPage.type, fetchThematicFilterCollections);
 }
 
-export default function*() {
+export default function* () {
   yield all([filtersSaga(), donorsSaga(), currentDonorSaga()]);
 }
