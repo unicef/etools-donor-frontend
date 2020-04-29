@@ -58,6 +58,14 @@ import {
   THEMATIC_REPORTS,
   REPORTS
 } from 'lib/constants';
+import {
+  isEmpty
+} from 'ramda';
+
+const currentDate = () => {
+  let date = new Date();
+  return date.getFullYear();
+};
 
 // Returns date filters for both last year and this year to be passed to
 // the Certified Reports api since its an endpoint called by year.
@@ -167,8 +175,9 @@ function* getCallerFunc(payload) {
       yield call(waitFor, selectDonorCode);
       const donorCode = yield select(selectDonorCode);
       if (isUsGov) {
+        const reportYear = yield select(selectReportYear);
         result.caller = getUsGovReports;
-        result.arg = yield select(selectReportYear);
+        result.arg = isEmpty(reportYear) ? currentDate() : reportYear;
         result.params.donor_code = donorCode;
         break;
       } else {
