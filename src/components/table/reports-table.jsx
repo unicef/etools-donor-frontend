@@ -33,7 +33,7 @@ export function getRecipientOfficeStr(report) {
 }
 
 const certifiedReportsTableHeadings = [
-  { id: BACKEND_REPORTS_FIELDS['title'], label: 'Title', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['title'], label: 'Filename', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['recipientOffice'], label: 'Recipient Office', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['reportType'], label: 'Report Type', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['reportEndDate'], label: 'Report End Date', sortable: true },
@@ -42,7 +42,7 @@ const certifiedReportsTableHeadings = [
 ];
 
 const thematicReportsTableHeadings = [
-  { id: BACKEND_THEMATIC_FIELDS['title'], label: 'Title', sortable: true },
+  { id: BACKEND_THEMATIC_FIELDS['title'], label: 'Filename', sortable: true },
   { id: BACKEND_THEMATIC_FIELDS['theme'], label: 'Theme', sortable: true },
   { id: BACKEND_THEMATIC_FIELDS['recipientOffice'], label: 'Recipient Office', sortable: true },
   { id: BACKEND_THEMATIC_FIELDS['reportType'], label: 'Report Type', sortable: true },
