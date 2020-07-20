@@ -32,6 +32,10 @@ const setTenantName = () => {
 }
 
 export async function get(uri, params = {}, options = getBaseOptions()) {
+  params = {
+    ...params,
+    retracted__not: 'no'
+  }
   const opt = {
     method: 'GET',
     params
