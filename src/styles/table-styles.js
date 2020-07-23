@@ -75,5 +75,8 @@ export const useTableStyles = makeStyles(theme => ({
   emptyLine: {
     borderBottom: 'none',
     textAlign: 'center'
+  },
+  tableContainer: {
+    maxHeight: 'calc(100vh - 526px)'
   }
 }));

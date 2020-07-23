@@ -8,8 +8,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import { Link } from '@material-ui/core';
-import { Tooltip } from '@material-ui/core';
+import { Link, Tooltip, TableContainer } from '@material-ui/core';
 import FiberNewIcon from '@material-ui/icons/FiberNew';
 
 import { useTableStyles } from 'styles/table-styles';
@@ -92,8 +91,8 @@ export default function ReportsTable() {
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <EnhancedTableToolbar />
-        <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-labelledby="tableTitle" size="medium">
+        <TableContainer className={classes.tableContainer} aria-label="sticky table">
+          <Table stickyHeader className={classes.table} aria-labelledby="tableTitle" size="medium">
             <EnhancedTableHead
               cells={headCells}
               classes={classes}
@@ -186,7 +185,7 @@ export default function ReportsTable() {
               )}
             </TableBody>
           </Table>
-        </div>
+        </TableContainer>
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
