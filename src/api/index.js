@@ -140,7 +140,7 @@ export function getOffices() {
 }
 
 export async function getReports(params, year = currentDate()) {
-  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', setTenantName()).replace('<folder>', `${year} Certified Reports`);
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', setTenantName()).replace('<folder>', `${year}`);
   return get(computedUrl, params);
 }
 
