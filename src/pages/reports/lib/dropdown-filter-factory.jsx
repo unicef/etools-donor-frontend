@@ -9,7 +9,17 @@ import clsx from 'clsx';
 export default function DropdownFilterFactory(selector, label, filterProp = 'label') {
   const Component = ({ value = '', onChange, ...props }) => {
     const { classes } = useGetFilterClasses();
-    const options = useSelector(selector) || [];
+    let options = useSelector(selector) || [];
+
+    if (label == "Library") {
+      options = [
+        { code: 2019, label: '2019 Certified Reports' },
+        { code: 2020, label: '2020 Certified Reports' },
+        { code: 2021, label: '2021 Certified Reports' },
+        { code: '2020-08 Grant Documents Internal', label: '2020_08_GrantDocuments_Internal' },
+        { code: '2020-08 Grant Documents External', label: '2020_08_GrantDocuments_External' }
+      ]
+    }
 
     return (
       <FormControl

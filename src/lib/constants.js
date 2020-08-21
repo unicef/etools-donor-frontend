@@ -34,7 +34,7 @@ export const FORM_CONFIG = {
     label: 'Report Category'
   },
   reportYear: {
-    label: 'Report Year'
+    label: 'Library'
   },
   reportingGroup: {
     label: 'Reporting Group'

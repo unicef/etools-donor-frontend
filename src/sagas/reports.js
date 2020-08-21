@@ -113,7 +113,7 @@ function* getInitialReports(params, filtersGetter) {
           ...params,
           ...defaultParams
         },
-        year
+        year + ' Certified Reports'
       );
       result = lastYearsReports;
     }
@@ -131,7 +131,7 @@ function* getInitialReports(params, filtersGetter) {
         ...params,
         ...defaultParams
       },
-      year
+      year + ' Certified Reports'
     );
     result = [...result, ...thisYearsReports];
   } catch (err) {
