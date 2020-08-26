@@ -82,7 +82,7 @@ export default function DonorsList() {
   return (
     <Grid container direction="row" justify="center">
       <Loader loading={loading} fullscreen />
-      <Grid item xs={4}>
+      <Grid item xs={12} md={4}>
         <Typography>Select Donor:</Typography>
 
         <Paper className={clsx(classes.root)}>
