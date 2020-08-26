@@ -115,24 +115,14 @@ export default function ReportsTable() {
                         id={labelId}
                         scope="row"
                       >
-                        {
-                          row.retracted ? (
-                            <Tooltip title={row.title ? row.title : ''}>
-                              <Typography className={classes.overflow}>
-                                {row.is_new && <FiberNewIcon fontSize="small" color="error" />}
-                                {row.title}
-                              </Typography>
-                            </Tooltip>
-                          ) : (
-                              <Tooltip title={row.title ? row.title : ''}>
-                                <Typography className={classes.overflow}>
-                                  <Link color="secondary" href={row.download_url} target="_blank">
-                                    {row.is_new && <FiberNewIcon fontSize="small" color="error" />}
-                                    {row.title}
-                                  </Link>
-                                </Typography>
-                              </Tooltip>
-                            )}
+                        <Tooltip title={row.title ? row.title : ''}>
+                          <Typography className={classes.overflow}>
+                            <Link color="secondary" href={row.download_url} target="_blank">
+                              {row.is_new && <FiberNewIcon fontSize="small" color="error" />}
+                              {row.title}
+                            </Link>
+                          </Typography>
+                        </Tooltip>
                       </TableCell>
                       {row.theme && (
                         <Tooltip title={row.theme ? row.theme : ''}>
