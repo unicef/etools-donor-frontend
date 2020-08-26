@@ -32,10 +32,6 @@ const setTenantName = () => {
 }
 
 export async function get(uri, params = {}, options = getBaseOptions()) {
-  params = {
-    ...params,
-    retracted__not: 'no'
-  }
   const opt = {
     method: 'GET',
     params
@@ -140,16 +136,28 @@ export function getOffices() {
 }
 
 export async function getReports(params, year = currentDate()) {
+  params = {
+    ...params,
+    retracted__not: 'yes'
+  }
   const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', setTenantName()).replace('<folder>', `${year}`);
   return get(computedUrl, params);
 }
 
 export async function getUsGovReports(params, year) {
+  params = {
+    ...params,
+    retracted__not: 'yes'
+  }
   const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', setTenantName()).replace('<folder>', `${year} US Gov Certified Reports`);
   return get(computedUrl, params);
 }
 
 export async function getThematicReports(params) {
+  params = {
+    ...params,
+    retracted__not: 'yes'
+  }
   const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', setTenantName()).replace('<folder>', `Thematic%20Reports`);
   return get(computedUrl, params);
 }
