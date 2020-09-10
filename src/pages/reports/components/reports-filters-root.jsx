@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 if (process.env.NODE_ENV !== 'production') {
   const whyDidYouRender = require('@welldone-software/why-did-you-render');
@@ -16,10 +16,7 @@ import FilterMenuButton from './filter-menu-button';
 import useFiltersQueries from 'lib/use-filters-queries';
 import { FORM_CONFIG } from 'lib/constants';
 import { FILTERS_MAP } from '../lib/filters-map';
-import MandatoryFilters from './mandatory-filters';
 import { selectMenuBarPage } from 'selectors/ui-flags';
-import { REPORTS } from 'lib/constants';
-import { selectReportYear } from 'selectors/filter';
 import { reportYearChanged } from 'slices/report-filter';
 
 function usePrevious(value) {
@@ -34,16 +31,9 @@ export default function ReportsFilter() {
   const dispatch = useDispatch();
   const classes = useFilterStyles();
   const pageName = useSelector(selectMenuBarPage);
-  const reportPageName = useSelector(selectMenuBarPage);
-  const reportYear = useSelector(selectReportYear);
-  const [showValidation, setShowValidation] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!reportYear && reportPageName === REPORTS) {
-      setShowValidation(true);
-      return;
-    }
     dispatch(onFetchReports(filterValues));
   }
 
@@ -64,12 +54,6 @@ export default function ReportsFilter() {
   } = useFiltersQueries(FILTERS_MAP);
 
   useEffect(() => {
-    if (reportYear) {
-      setShowValidation(false);
-    }
-  }, [reportYear])
-
-  useEffect(() => {
     if (pageName) {
       dispatch(onFetchReports(filterValues));
     }
@@ -88,20 +72,12 @@ export default function ReportsFilter() {
     <>
       <Paper className={classes.filterPaper}>
         <form onSubmit={handleSubmit}>
-          {showValidation && (
-            <Grid container alignContent="flex-start">
-              <span className={classes.validationWarning}>You must select a Report Year in order to submit.</span>
-            </Grid>
-          )}
           <Grid
             container
             spacing={0}
             alignItems="flex-end"
             direction="row"
           >
-            {reportPageName === REPORTS && (
-              <Grid item style={{ width: '240px' }}><MandatoryFilters className={classes.yearFilter} /></Grid>
-            )}
             <Grid item><FilterMenuButton onSelectFilter={handleSelectFilter} selected={filtersActiveState} /></Grid>
           </Grid>
           <Box display="flex" flex="1 1 auto" alignItems="flex-start" flexWrap="wrap">

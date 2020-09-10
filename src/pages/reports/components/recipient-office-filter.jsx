@@ -8,7 +8,7 @@ import SearchableDropdownFilterFactory, {
 import { QUERY_PROPERTY_RECIPIENT_OFFICE } from '../constants';
 
 export default function RecipientOfficeFilter({ ...props }) {
-  const getLabel = propOr('',QUERY_PROPERTY_RECIPIENT_OFFICE);
+  const getLabel = propOr('', QUERY_PROPERTY_RECIPIENT_OFFICE);
 
   const Component = SearchableDropdownFilterFactory(
     selectOffices,

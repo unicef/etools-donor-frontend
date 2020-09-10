@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import Table from '@material-ui/core/Table';
@@ -14,7 +14,7 @@ import FiberNewIcon from '@material-ui/icons/FiberNew';
 import { useTableStyles } from 'styles/table-styles';
 import EnhancedTableToolbar from './table-toolbar';
 import EnhancedTableHead from './table-head';
-import { selectReports } from 'selectors/collections';
+import { selectReportsArray } from 'selectors/collections';
 import { usePermissions } from 'components/PermissionRedirect';
 import { useTable, getDisplayDate, stableSort, getSorting } from './lib';
 import clsx from 'clsx';
@@ -25,6 +25,7 @@ import {
 } from '../../pages/reports/constants';
 import { selectMenuBarPage } from 'selectors/ui-flags';
 import { THEMATIC_REPORTS, REPORTS } from 'lib/constants';
+// import { useEffect } from 'react';
 
 export function getRecipientOfficeStr(report) {
   const recipientOffices = report.recipient_office || [];
@@ -63,11 +64,21 @@ const getHeadCells = (isUnicefUser, cells) => {
 };
 
 export default function ReportsTable() {
+  // const [reportData, setReportData] = useState([]);
   const classes = useTableStyles();
 
   const { isUnicefUser } = usePermissions();
-
-  const rows = useSelector(selectReports);
+  const reportsData = useSelector(selectReportsArray);
+  // const nextLink = useSelector(selectNextLink);
+  // const previousLink = useSelector(selectPreviousLink);
+  // const rows = reportsData.items || [];
+  // useEffect(() => {
+  //   setReportData(reportsData)
+  // }, [reportsData])
+  // if (reportsData.items) {
+  //   setData(rows);
+  // }
+  console.log(reportsData)
   const pageName = useSelector(selectMenuBarPage);
   const certifiedReports = pageName === REPORTS;
   const headCells =
@@ -80,13 +91,14 @@ export default function ReportsTable() {
     order,
     page,
     rowsPerPage,
-    getEmptyRows,
+    // getEmptyRows,
     handleRequestSort,
-    handleChangeRowsPerPage,
-    handleChangePage
+    // handleChangeRowsPerPage,
+    // handleChangePage,
+    handleChangePage2
   } = useTable(BACKEND_REPORTS_FIELDS['recipientOffice']);
   const shouldShowExternalGrants = certifiedReports && !isUnicefUser;
-  const emptyRows = getEmptyRows(rows);
+  // const emptyRows = getEmptyRows(rows);
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -99,16 +111,16 @@ export default function ReportsTable() {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={reportsData ? reportsData.length : 0}
             />
             <TableBody>
-              {stableSort(rows, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              {stableSort(reportsData || [], getSorting(order, orderBy))
+                // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                       <TableCell
                         className={clsx(classes.cell, classes.titleCell)}
                         component="th"
@@ -168,15 +180,15 @@ export default function ReportsTable() {
                     </TableRow>
                   );
                 })}
-              {emptyRows > 0 && (
+              {/* {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
-              )}
+              )} */}
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
+        {/* <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={rows.length}
@@ -190,9 +202,24 @@ export default function ReportsTable() {
           }}
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
+        /> */}
+        <TablePagination
+          // rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={-1}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          backIconButtonProps={{
+            'aria-label': 'previous page'
+          }}
+          nextIconButtonProps={{
+            'aria-label': 'next page'
+          }}
+          onChangePage={handleChangePage2}
+        // onChangeRowsPerPage={handleChangeRowsPerPage}
         />
         {/* <DocViewer fileType={docFileType} filePath={doc} /> */}
-      </Paper >
-    </div >
+      </Paper>
+    </div>
   );
 }

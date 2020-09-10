@@ -7,14 +7,10 @@ import {
 } from 'redux-saga/effects';
 import {
   format,
-  subYears,
-  startOfYear,
-  endOfYear,
-  getYear
+  subYears
 } from 'date-fns';
 import {
   selectDonorCode,
-  selectIsUsGov,
   selectMenuBarPage,
   selectError,
   selectCurrentlyLoadedDonor
@@ -26,13 +22,11 @@ import {
   removeEmpties
 } from 'lib/helpers';
 import {
-  getUsGovReports,
   getThematicReports,
   getReports
 } from 'api';
 import {
-  waitFor,
-  waitForBoolean
+  waitFor
 } from './helpers';
 import {
   setLoading,
@@ -51,21 +45,12 @@ import {
 import {
   REPORT_END_DATE_BEFORE_FIELD,
   REPORT_END_DATE_AFTER_FIELD,
-  EARLIEST_REPORTS_YEAR,
   DATE_FORMAT
 } from 'pages/reports/constants';
 import {
   THEMATIC_REPORTS,
   REPORTS
 } from 'lib/constants';
-import {
-  isEmpty
-} from 'ramda';
-
-const currentDate = () => {
-  let date = new Date();
-  return date.getFullYear();
-};
 
 // Returns date filters for both last year and this year to be passed to
 // the Certified Reports api since its an endpoint called by year.
@@ -73,67 +58,24 @@ const currentDate = () => {
 // from beginning of this year to today.
 function getInitialReportsFilterDates() {
   const today = new Date();
-
   const lastYearAfterDate = subYears(today, 1);
-
-  const lastYearBeforeDate = endOfYear(lastYearAfterDate);
-
-  const lastYear = getYear(lastYearAfterDate);
-  const thisYear = getYear(today);
-  const thisYearAfterDate = startOfYear(today);
-
   return {
-    lastYear: {
-      year: lastYear,
-      [REPORT_END_DATE_BEFORE_FIELD]: format(lastYearBeforeDate, DATE_FORMAT),
-      [REPORT_END_DATE_AFTER_FIELD]: format(lastYearAfterDate, DATE_FORMAT)
-    },
-    thisYear: {
-      year: thisYear,
-      [REPORT_END_DATE_BEFORE_FIELD]: format(today, DATE_FORMAT),
-      [REPORT_END_DATE_AFTER_FIELD]: format(thisYearAfterDate, DATE_FORMAT)
-    }
-  };
+    [REPORT_END_DATE_AFTER_FIELD]: format(lastYearAfterDate, DATE_FORMAT),
+    [REPORT_END_DATE_BEFORE_FIELD]: format(today, DATE_FORMAT)
+  }
 }
 
 function* getInitialReports(params, filtersGetter) {
   const defaultFilters = filtersGetter();
   let result = [];
 
-  // call sequentially and keep successful calls
   try {
-    const {
-      year,
-      ...defaultParams
-    } = defaultFilters.lastYear;
-
-    if (year >= EARLIEST_REPORTS_YEAR) {
-      const lastYearsReports = yield call(
-        getReports, {
-          ...params,
-          ...defaultParams
-        },
-        year + ' Certified Reports'
-      );
-      result = lastYearsReports;
-    }
-  } catch (err) {
-    yield put(setError(err));
-  }
-
-  try {
-    const {
-      year,
-      ...defaultParams
-    } = defaultFilters.thisYear;
-    const thisYearsReports = yield call(
+    result = yield call(
       getReports, {
         ...params,
-        ...defaultParams
-      },
-      year + ' Certified Reports'
-    );
-    result = [...result, ...thisYearsReports];
+        ...defaultFilters
+      }
+    )
   } catch (err) {
     yield put(setError(err));
   }
@@ -154,8 +96,6 @@ function* getCertifiedReports(params) {
   return reports;
 }
 
-// Tricky business requirement to call different endpoint based on donor property us_gov first,
-// then whether theme or year were selected at report page
 function* getCallerFunc(payload) {
   const reportPageName = yield select(selectMenuBarPage);
 
@@ -170,21 +110,11 @@ function* getCallerFunc(payload) {
       result.caller = getThematicReports;
       break;
     case REPORTS: {
-      yield call(waitForBoolean, selectIsUsGov);
-      const isUsGov = yield select(selectIsUsGov);
       yield call(waitFor, selectDonorCode);
       const donorCode = yield select(selectDonorCode);
-      if (isUsGov) {
-        const reportYear = yield select(selectReportYear);
-        result.caller = getUsGovReports;
-        result.arg = isEmpty(reportYear) ? currentDate() : reportYear;
-        result.params.donor_code = donorCode;
-        break;
-      } else {
-        result.caller = getCertifiedReports;
-        result.params.donor_code = donorCode;
-        break;
-      }
+      result.caller = getCertifiedReports;
+      result.params.donor_code = donorCode;
+      break;
     }
   }
   return result;

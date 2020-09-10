@@ -16,6 +16,16 @@ import {
 import {
   getRecipientOfficeStr
 } from '../reports-table';
+import useFiltersQueries from 'lib/use-filters-queries';
+import {
+  FILTERS_MAP
+} from '../../../pages/reports/lib/filters-map';
+import {
+  useDispatch
+} from 'react-redux';
+import {
+  onFetchReports
+} from 'actions';
 
 export function desc(a, b, func) {
   if (func(b) < func(a)) {
@@ -53,6 +63,7 @@ export function getSorting(order, orderBy) {
 }
 
 export const useTable = (defaultOrderBy = '') => {
+  const dispatch = useDispatch();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState(defaultOrderBy);
   const [page, setPage] = React.useState(0);
@@ -68,6 +79,19 @@ export const useTable = (defaultOrderBy = '') => {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+  };
+
+  const {
+    filterValues
+  } = useFiltersQueries(FILTERS_MAP);
+
+  const handleChangePage2 = (event, newPage) => {
+    event.preventDefault();
+    setPage(newPage);
+    dispatch(onFetchReports({
+      ...filterValues,
+      page: newPage + 1
+    }));
   };
 
   const handleChangeRowsPerPage = event => {
@@ -87,6 +111,7 @@ export const useTable = (defaultOrderBy = '') => {
     getEmptyRows,
     handleRequestSort,
     handleChangePage,
+    handleChangePage2,
     handleChangeRowsPerPage
   };
 };
