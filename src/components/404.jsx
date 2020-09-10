@@ -13,43 +13,25 @@ export default function NotFound() {
   const noRoles = !profile.roles.length;
 
   return (
-    noRoles && !isUnicefUser ?
-      (<Grid container justify="center" align="center">
-        <Grid item xs={4}>
-          <Card>
-            <CardContent>
-              <Typography variant="h5" gutterBottom>
-                404
-            </Typography>
-              <Typography variant="h5" component="h2" />
-              <Typography>You have not been granted a role. Please contact your administrator to assign you a role.</Typography>
-            </CardContent>
-            <CardActions>
-              <Button onClick={goHome} size="small">
-                Back
-            </Button>
-            </CardActions>
-          </Card>
-        </Grid>
-      </Grid >)
-      :
-      (<Grid container justify="center" align="center">
-        <Grid item xs={4}>
-          <Card>
-            <CardContent>
-              <Typography variant="h5" gutterBottom>
-                404
-                  </Typography>
-              <Typography variant="h5" component="h2" />
-              <Typography>Page not found.</Typography>
-            </CardContent>
-            <CardActions>
-              <Button onClick={goHome} size="small">
-                Back
-                </Button>
-            </CardActions>
-          </Card>
-        </Grid>
-      </Grid>)
+    <Grid container justify="center" align="center">
+      <Grid item xs={4}>
+        <Card>
+          <CardContent>
+            <Typography variant="h5" gutterBottom>
+              404
+          </Typography>
+            <Typography variant="h5" component="h2" />
+            {noRoles && !isUnicefUser ?
+              <Typography>You have not been granted a role. Please contact your administrator to assign you a role.</Typography> :
+              <Typography>Page not found.</Typography>}
+          </CardContent>
+          <CardActions>
+            <Button onClick={goHome} size="small">
+              Back
+          </Button>
+          </CardActions>
+        </Card>
+      </Grid>
+    </Grid >
   );
 }
