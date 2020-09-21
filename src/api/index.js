@@ -4,10 +4,11 @@ import {
 } from './helpers';
 import Qs from 'qs';
 
-// const currentDate = () => {
-//   let date = new Date();
-//   return date.getFullYear();
-// };
+// remove with SearchAPI
+const currentDate = () => {
+  let date = new Date();
+  return date.getFullYear();
+};
 
 const backendPath = '/api';
 
@@ -24,12 +25,13 @@ const getBaseOptions = () => ({
   }
 });
 
-// const setTenantName = () => {
-//   if (window.location.href.includes('tst') || window.location.href.includes('localhost')) {
-//     return 'unitst';
-//   }
-//   return 'unicef';
-// }
+// remove with SearchAPI
+const setTenantName = () => {
+  if (window.location.href.includes('tst') || window.location.href.includes('localhost')) {
+    return 'unitst';
+  }
+  return 'unicef';
+}
 
 export async function get(uri, params = {}, options = getBaseOptions()) {
   const opt = {
@@ -135,6 +137,26 @@ export function getOffices() {
   return get(process.env.REACT_APP_BUSINESS_AREA_ENDPOINT);
 }
 
+// remove with SearchAPI
+export async function getReportsOld(params, year = currentDate()) {
+  params = {
+    ...params,
+    retracted__not: 'yes'
+  }
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT_OLD.replace('<envvar>', setTenantName()).replace('<folder>', `${year}`);
+  return get(computedUrl, params);
+}
+
+// remove with SearchAPI
+export async function getUsGovReports(params, year = currentDate()) {
+  params = {
+    ...params,
+    retracted__not: 'yes'
+  }
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT_OLD.replace('<envvar>', setTenantName()).replace('<folder>', `${year} US Gov Certified Reports`);
+  return get(computedUrl, params);
+}
+
 export async function getReports(params) {
   params = {
     ...params,
@@ -144,12 +166,22 @@ export async function getReports(params) {
   return get(computedUrl, params);
 }
 
+// remove with SearchAPI
 export async function getThematicReports(params) {
   params = {
     ...params,
     retracted__not: 'yes'
   }
-  // const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT.replace('<envvar>', setTenantName()).replace('<folder>', `Thematic%20Reports`);
-  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT;
+  const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT_OLD.replace('<envvar>', setTenantName()).replace('<folder>', `Thematic Reports`);
   return get(computedUrl, params);
 }
+
+// restore with SearchAPI
+// export async function getThematicReports(params) {
+//   params = {
+//     ...params,
+//     retracted__not: 'yes'
+//   }
+//   const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT;
+//   return get(computedUrl, params);
+// }

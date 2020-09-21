@@ -15,8 +15,8 @@ import {
 } from '../user-row-item';
 import {
   getRecipientOfficeStr
-} from '../reports-table';
-import useFiltersQueries from 'lib/use-filters-queries';
+} from '../reports-table-old';
+import useFiltersQueriesOld from 'lib/use-filters-queries-old';
 import {
   FILTERS_MAP
 } from '../../../pages/reports/lib/filters-map';
@@ -77,21 +77,19 @@ export const useTable = (defaultOrderBy = '') => {
     setOrderBy(property);
   };
 
-  // remove with SearchAPI
   const handleChangePageOld = (event, newPage) => {
     setPage(newPage);
   };
 
   const {
-    filterValues
-  } = useFiltersQueries(FILTERS_MAP);
+    filterValuesOld
+  } = useFiltersQueriesOld(FILTERS_MAP);
 
   const handleChangePage = (event, newPage) => {
     event.preventDefault();
     setPage(newPage);
-    console.log(filterValues)
     dispatch(onFetchReports({
-      ...filterValues,
+      ...filterValuesOld,
       page: newPage + 1
     }));
   };

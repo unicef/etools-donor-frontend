@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 
 import ReportsFilter from 'pages/reports/components/reports-filters-root';
+import ReportsFilterOld from 'pages/reports/components/reports-filters-root-old';
 import ReportsTable from 'components/table/reports-table';
+import ReportsTableOld from 'components/table/reports-table-old';
 import { selectPageName } from 'selectors/ui-flags';
 import { initCertifiedReportsPage, initThematicReportsPage } from 'actions';
-import { THEMATIC_REPORTS, REPORTS } from 'lib/constants';
+import { THEMATIC_REPORTS, REPORTS, SEARCH_API } from 'lib/constants';
 import { onReceiveReports } from 'slices/reports';
 
 function useInitThematicReports(dispatch) {
@@ -36,6 +38,8 @@ const useInitPage = pageName => {
       return useInitThematicReports(dispatch);
     case REPORTS:
       return useInitiCertifiedReports(dispatch, donorId);
+    case SEARCH_API:
+      return useInitiCertifiedReports(dispatch, donorId);
     default:
       return useDefaultHook;
   }
@@ -53,8 +57,8 @@ export default function ReportsPage() {
 
   return (
     <>
-      <ReportsFilter />
-      <ReportsTable />
+      {pageName === REPORTS ? <ReportsFilterOld /> : <ReportsFilter />}
+      {pageName === REPORTS ? <ReportsTableOld /> : <ReportsTable />}
     </>
   );
 }

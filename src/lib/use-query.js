@@ -37,14 +37,16 @@ export default function useQuery([defaultQuery, setValue], method = 'replace') {
     hash
   } = useLocation();
   const hasParams = search.indexOf('=') > -1;
+  console.log(useLocation())
 
   const setValueWithQuery = newQuery => {
     const nonEmpties = pickBy(hasValue, newQuery);
     const search = stringifyQuery(nonEmpties);
+    console.log(hasParams)
     setValue(newQuery);
     history[method](pathname + '?' + search + hash);
   };
-
+  console.log(defaultQuery, setValue)
   return [hasParams ? {
     ...defaultQuery,
     ...parseQuery(search)

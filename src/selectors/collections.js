@@ -25,6 +25,11 @@ export const selectPreviousLink = createSelector(
   reports => reports.previous
 );
 
+export const selectTotalRows = createSelector(
+  selectReports,
+  reports => reports.total_rows
+)
+
 export const selectYears = createSelector(
   selectStaticAssets,
   assets => assets.report_years
