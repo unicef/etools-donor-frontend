@@ -45,7 +45,6 @@ export default function ConnectedDrawer() {
   const { isDonorAdmin, isSuperUser } = usePermissions();
   const hasAccessUserManagement = isDonorAdmin || isSuperUser;
   const isAssignedRole = useSelector(selectAssignedRole);
-  console.log(isAssignedRole)
 
   useEffect(() => {
     dispatch(menuItemSelected(REPORTS));

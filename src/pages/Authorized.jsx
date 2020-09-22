@@ -22,7 +22,7 @@ export function UnassignedDonor({ children, ...rest }) {
   dispatch(setAssignedRole({ assignedRole: !hasNoAssignedRole }));
 
   return (
-    <Route {...rest} render={() => noRoles && !isUnicefUser && !isSuperUser ? <Redirect to="/no-role" /> : children} />
+    <Route {...rest} render={() => hasNoAssignedRole ? <Redirect to="/no-role" /> : children} />
   )
 }
 
