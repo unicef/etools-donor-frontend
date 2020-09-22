@@ -192,7 +192,6 @@ function* getCertifiedReports(params) {
 }
 
 function* getCertifiedReportsOld(params) {
-  console.log(getInitialReportsFilterDatesOld())
   const currentlyLoadedDonor = yield select(selectCurrentlyLoadedDonor);
 
   // this is default / initial load only

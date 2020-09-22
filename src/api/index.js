@@ -137,7 +137,6 @@ export async function getReportsOld(params, year) {
     ...params,
     retracted__not: 'yes'
   }
-  console.log(params, year)
   const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT_OLD.replace('<envvar>', setTenantName()).replace('<folder>', `${year}`);
   return get(computedUrl, params);
 }
