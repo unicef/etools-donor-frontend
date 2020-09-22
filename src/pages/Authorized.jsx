@@ -50,8 +50,8 @@ export function ProtectedRouteUserManagement({ ...rest }) {
         ) : isDonorAdmin || (donorId && isSuperUser) ? (
           <UsersManagement />
         ) : (
-          <Redirect to="/not-found" />
-        );
+              <Redirect to="/not-found" />
+            );
       }}
     />
   );
@@ -64,5 +64,5 @@ const ProtectedRouteProps = {
 ProtectedRouteDonorsList.propTypes = ProtectedRouteProps;
 ProtectedRouteReportPage.propTypes = ProtectedRouteProps;
 ProtectedRouteUserManagement.propTypes = {
-  rest: function() {}
+  rest: function () { }
 };

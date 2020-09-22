@@ -15,8 +15,8 @@ import {
 } from '../user-row-item';
 import {
   getRecipientOfficeStr
-} from '../reports-table';
-import useFiltersQueries from 'lib/use-filters-queries';
+} from '../reports-table-old';
+import useFiltersQueriesOld from 'lib/use-filters-queries-old';
 import {
   FILTERS_MAP
 } from '../../../pages/reports/lib/filters-map';
@@ -67,7 +67,7 @@ export const useTable = (defaultOrderBy = '') => {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState(defaultOrderBy);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const getEmptyRows = rows =>
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
@@ -77,20 +77,19 @@ export const useTable = (defaultOrderBy = '') => {
     setOrderBy(property);
   };
 
-  // remove with SearchAPI
   const handleChangePageOld = (event, newPage) => {
     setPage(newPage);
   };
 
   const {
-    filterValues
-  } = useFiltersQueries(FILTERS_MAP);
+    filterValuesOld
+  } = useFiltersQueriesOld(FILTERS_MAP);
 
   const handleChangePage = (event, newPage) => {
     event.preventDefault();
     setPage(newPage);
     dispatch(onFetchReports({
-      ...filterValues,
+      ...filterValuesOld,
       page: newPage + 1
     }));
   };

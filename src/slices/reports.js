@@ -1,7 +1,9 @@
-import { createSlice } from 'redux-starter-kit';
+import {
+  createSlice
+} from 'redux-starter-kit';
 
 const reportsSlice = createSlice({
-  initialState: [],
+  initialState: {},
   reducers: {
     onReceiveReports(state, action) {
       return action.payload;
@@ -9,5 +11,9 @@ const reportsSlice = createSlice({
   }
 });
 
-export const { reducer: reports } = reportsSlice;
-export const { onReceiveReports } = reportsSlice.actions;
+export const {
+  reducer: reports
+} = reportsSlice;
+export const {
+  onReceiveReports
+} = reportsSlice.actions;

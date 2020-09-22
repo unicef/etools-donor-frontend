@@ -8,12 +8,16 @@ import {
 import {
   format,
   subYears,
+  // remove with SearchAPI
   startOfYear,
+  // remove with SearchAPI
   endOfYear,
+  // remove with SearchAPI
   getYear
 } from 'date-fns';
 import {
   selectDonorCode,
+  // remove with SearchAPI
   selectIsUsGov,
   selectMenuBarPage,
   selectError,
@@ -26,12 +30,15 @@ import {
   removeEmpties
 } from 'lib/helpers';
 import {
+  // remove with SearchAPI
   getUsGovReports,
   getThematicReports,
-  getReports
+  getReports,
+  getReportsOld
 } from 'api';
 import {
   waitFor,
+  // remove with SearchAPI
   waitForBoolean
 } from './helpers';
 import {
@@ -51,17 +58,20 @@ import {
 import {
   REPORT_END_DATE_BEFORE_FIELD,
   REPORT_END_DATE_AFTER_FIELD,
+  // remove with SearchAPI
   EARLIEST_REPORTS_YEAR,
   DATE_FORMAT
 } from 'pages/reports/constants';
 import {
   THEMATIC_REPORTS,
-  REPORTS
+  REPORTS,
+  SEARCH_API
 } from 'lib/constants';
+// remove with SearchAPI
 import {
   isEmpty
 } from 'ramda';
-
+// remove with SearchAPI
 const currentDate = () => {
   let date = new Date();
   return date.getFullYear();
@@ -71,7 +81,9 @@ const currentDate = () => {
 // the Certified Reports api since its an endpoint called by year.
 // We must construct before and after dates from a year ago to end of last year and
 // from beginning of this year to today.
-function getInitialReportsFilterDates() {
+
+// remove with SearchAPI, keep only else
+function getInitialReportsFilterDatesOld() {
   const today = new Date();
 
   const lastYearAfterDate = subYears(today, 1);
@@ -96,7 +108,16 @@ function getInitialReportsFilterDates() {
   };
 }
 
-function* getInitialReports(params, filtersGetter) {
+function getInitialReportsFilterDates() {
+  const today = new Date();
+  const lastYearAfterDate = subYears(today, 1);
+  return {
+    [REPORT_END_DATE_AFTER_FIELD]: format(lastYearAfterDate, DATE_FORMAT),
+    [REPORT_END_DATE_BEFORE_FIELD]: format(today, DATE_FORMAT)
+  }
+}
+
+function* getInitialReportsOld(params, filtersGetter) {
   const defaultFilters = filtersGetter();
   let result = [];
 
@@ -109,7 +130,7 @@ function* getInitialReports(params, filtersGetter) {
 
     if (year >= EARLIEST_REPORTS_YEAR) {
       const lastYearsReports = yield call(
-        getReports, {
+        getReportsOld, {
           ...params,
           ...defaultParams
         },
@@ -127,13 +148,29 @@ function* getInitialReports(params, filtersGetter) {
       ...defaultParams
     } = defaultFilters.thisYear;
     const thisYearsReports = yield call(
-      getReports, {
+      getReportsOld, {
         ...params,
         ...defaultParams
       },
       year + ' Certified Reports'
     );
     result = [...result, ...thisYearsReports];
+  } catch (err) {
+    yield put(setError(err));
+  }
+  return result;
+}
+
+function* getInitialReports(params, filtersGetter) {
+  const defaultFilters = filtersGetter();
+  let result = [];
+  try {
+    result = yield call(
+      getReports, {
+        ...params,
+        ...defaultFilters
+      }
+    )
   } catch (err) {
     yield put(setError(err));
   }
@@ -154,8 +191,20 @@ function* getCertifiedReports(params) {
   return reports;
 }
 
-// Tricky business requirement to call different endpoint based on donor property us_gov first,
-// then whether theme or year were selected at report page
+function* getCertifiedReportsOld(params) {
+  const currentlyLoadedDonor = yield select(selectCurrentlyLoadedDonor);
+
+  // this is default / initial load only
+  if (!currentlyLoadedDonor || currentlyLoadedDonor != params.donor_code) {
+    yield put(setCurrentlyLoadedDonor(params.donor_code))
+    const reports = yield call(getInitialReportsOld, params, getInitialReportsFilterDatesOld);
+    return reports;
+  }
+  const reportYear = yield select(selectReportYear);
+  const reports = yield call(getReportsOld, params, reportYear);
+  return reports;
+}
+
 function* getCallerFunc(payload) {
   const reportPageName = yield select(selectMenuBarPage);
 
@@ -181,10 +230,17 @@ function* getCallerFunc(payload) {
         result.params.donor_code = donorCode;
         break;
       } else {
-        result.caller = getCertifiedReports;
+        result.caller = getCertifiedReportsOld;
         result.params.donor_code = donorCode;
         break;
       }
+    }
+    case SEARCH_API: {
+      yield call(waitFor, selectDonorCode);
+      const donorCode = yield select(selectDonorCode);
+      result.caller = getCertifiedReports;
+      result.params.donor_code = donorCode;
+      break;
     }
   }
   return result;
