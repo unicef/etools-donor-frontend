@@ -71,6 +71,9 @@ import {
 import {
   isEmpty
 } from 'ramda';
+import {
+  selectStaticAssets
+} from 'selectors/collections';
 // remove with SearchAPI
 const currentDate = () => {
   let date = new Date();
@@ -178,7 +181,17 @@ function* getInitialReports(params, filtersGetter) {
 }
 
 function* getCertifiedReports(params) {
+  const staticAssets = yield select(selectStaticAssets)
   const currentlyLoadedDonor = yield select(selectCurrentlyLoadedDonor);
+
+  const sourceIds = staticAssets['source_id '];
+  if (sourceIds.internal || sourceIds.external) {
+    const sourceId = sourceIds.internal ? sourceIds.internal : sourceIds.external;
+    params = {
+      ...params,
+      source_id: sourceId
+    };
+  }
 
   // this is default / initial load only
   if (!currentlyLoadedDonor || currentlyLoadedDonor != params.donor_code) {
