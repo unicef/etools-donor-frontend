@@ -21,7 +21,8 @@ import {
   selectIsUsGov,
   selectMenuBarPage,
   selectError,
-  selectCurrentlyLoadedDonor
+  selectCurrentlyLoadedDonor,
+  selectUserGroup
 } from 'selectors/ui-flags';
 import {
   selectReportYear
@@ -65,7 +66,8 @@ import {
 import {
   THEMATIC_REPORTS,
   REPORTS,
-  SEARCH_API
+  SEARCH_API,
+  UNICEF_USER_ROLE
 } from 'lib/constants';
 // remove with SearchAPI
 import {
@@ -74,6 +76,7 @@ import {
 import {
   selectStaticAssets
 } from 'selectors/collections';
+
 // remove with SearchAPI
 const currentDate = () => {
   let date = new Date();
@@ -183,10 +186,13 @@ function* getInitialReports(params, filtersGetter) {
 function* getCertifiedReports(params) {
   const staticAssets = yield select(selectStaticAssets)
   const currentlyLoadedDonor = yield select(selectCurrentlyLoadedDonor);
+  const userGroup = yield select(selectUserGroup);
+  const isUnicefUser = userGroup === UNICEF_USER_ROLE;
+  const sourceIds = staticAssets.source_id;
 
-  const sourceIds = staticAssets['source_id '];
+  // add source_id params to search api call based on userGroup
   if (sourceIds.internal || sourceIds.external) {
-    const sourceId = sourceIds.internal ? sourceIds.internal : sourceIds.external;
+    const sourceId = isUnicefUser ? sourceIds.internal : sourceIds.external;
     params = {
       ...params,
       source_id: sourceId
