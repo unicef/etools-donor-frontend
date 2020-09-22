@@ -11,11 +11,13 @@ import ReportsPage from 'pages/reports';
 import {
   ProtectedRouteDonorsList,
   ProtectedRouteReportPage,
-  ProtectedRouteUserManagement
+  ProtectedRouteUserManagement,
+  UnassignedDonor
 } from '../pages/Authorized';
 
 import PermissionRedirect from './PermissionRedirect';
 import NotFound from './404';
+import NoRole from './No-Role';
 
 export const useMainStyles = makeStyles(theme =>
   createStyles({
@@ -76,22 +78,26 @@ export default function MainAppBar() {
         <div className={classes.contentWrapper}>
           <Box flexDirection="column">
             <Switch>
-              <Route exact path="/" component={PermissionRedirect} />
+              <UnassignedDonor path="*">
+                <Route exact path="/" component={PermissionRedirect} />
 
-              <ProtectedRouteDonorsList exact path="/donors">
-                <DonorsList />
-              </ProtectedRouteDonorsList>
+                <ProtectedRouteDonorsList exact path="/donors">
+                  <DonorsList />
+                </ProtectedRouteDonorsList>
 
-              <ProtectedRouteReportPage exact path={`/${REPORTS}/:donorId?`}>
-                <ReportsPage />
-              </ProtectedRouteReportPage>
+                <ProtectedRouteReportPage exact path={`/${REPORTS}/:donorId?`}>
+                  <ReportsPage />
+                </ProtectedRouteReportPage>
 
-              <ProtectedRouteReportPage exact path={`/${THEMATIC_REPORTS}`}>
-                <ReportsPage />
-              </ProtectedRouteReportPage>
-              {/* Optional donorId param here since donor list is not aware of what page
+                <ProtectedRouteReportPage exact path={`/${THEMATIC_REPORTS}`}>
+                  <ReportsPage />
+                </ProtectedRouteReportPage>
+                {/* Optional donorId param here since donor list is not aware of what page
               to link to per donor and only super users can choose donor for user management */}
-              <ProtectedRouteUserManagement path={`${USERS_PORTAL_PATH}/:donorId?`} />
+                <ProtectedRouteUserManagement path={`${USERS_PORTAL_PATH}/:donorId?`} />
+
+              </UnassignedDonor>
+              <Route exact path="/no-role" component={NoRole} />
 
               <Route path="*" component={NotFound} />
             </Switch>

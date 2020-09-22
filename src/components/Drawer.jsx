@@ -14,7 +14,7 @@ import {
 import DescriptionIcon from '@material-ui/icons/Description';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { REPORTS, THEMATIC_REPORTS, USERS_PORTAL } from '../lib/constants';
-import { selectMenuBarPage } from 'selectors/ui-flags';
+import { selectMenuBarPage, selectAssignedRole } from 'selectors/ui-flags';
 import { menuItemSelected } from 'slices/ui';
 import { usePermissions } from './PermissionRedirect';
 
@@ -44,6 +44,8 @@ export default function ConnectedDrawer() {
 
   const { isDonorAdmin, isSuperUser } = usePermissions();
   const hasAccessUserManagement = isDonorAdmin || isSuperUser;
+  const isAssignedRole = useSelector(selectAssignedRole);
+  console.log(isAssignedRole)
 
   useEffect(() => {
     dispatch(menuItemSelected(REPORTS));
@@ -53,7 +55,7 @@ export default function ConnectedDrawer() {
   return (
     <Drawer
       className={classes.drawer}
-      variant="permanent"
+      variant={isAssignedRole ? "permanent" : "temporary"}
       classes={{
         paper: classes.drawerPaper
       }}

@@ -93,3 +93,8 @@ export const selectMenuBarPage = createSelector(
   [selectUi],
   ui => ui.menuBarPage
 );
+
+export const selectAssignedRole = createSelector(
+  selectUi,
+  ui => ui.assignedRole
+)
