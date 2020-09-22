@@ -13,8 +13,8 @@ import {
 
 import DescriptionIcon from '@material-ui/icons/Description';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { REPORTS, THEMATIC_REPORTS, USERS_PORTAL } from '../lib/constants';
-import { selectMenuBarPage, selectAssignedRole } from 'selectors/ui-flags';
+import { REPORTS, SEARCH_API, THEMATIC_REPORTS, USERS_PORTAL } from '../lib/constants';
+import { selectMenuBarPage } from 'selectors/ui-flags';
 import { menuItemSelected } from 'slices/ui';
 import { usePermissions } from './PermissionRedirect';
 
@@ -78,6 +78,17 @@ export default function ConnectedDrawer() {
             <DescriptionIcon />
           </ListItemIcon>
           <ListItemText primary="Thematic Reports" />
+        </ListItem>
+
+        <ListItem
+          selected={navSelected(SEARCH_API)}
+          onClick={handleNav(SEARCH_API)}
+          button
+        >
+          <ListItemIcon>
+            <DescriptionIcon />
+          </ListItemIcon>
+          <ListItemText primary="Search" />
         </ListItem>
 
         {hasAccessUserManagement && (

@@ -15,6 +15,16 @@ export const selectReportYear = createSelector(
   filter => filter.reportYear
 );
 
+export const selectReportsStartDate = createSelector(
+  selectReportFilter,
+  filter => filter.reportsStartDate
+);
+
+export const selectReportsEndDate = createSelector(
+  selectReportFilter,
+  filter => filter.reportsEndDate
+);
+
 export const selectTheme = createSelector(
   selectReportFilter,
   filter => filter.theme
