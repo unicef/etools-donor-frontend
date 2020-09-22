@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router';
 import { Route } from 'react-router-dom';
 
@@ -9,6 +9,22 @@ import { usePermissions } from 'components/PermissionRedirect';
 import { THEMATIC_REPORTS_PATH } from 'lib/constants';
 import DonorsList from './donors-list';
 import UsersManagement from './users-portal';
+import { setAssignedRole } from '../slices/ui'
+
+import { selectUserProfile } from 'selectors/ui-flags';
+
+export function UnassignedDonor({ children, ...rest }) {
+  const { isSuperUser, isUnicefUser } = usePermissions();
+  const profile = useSelector(selectUserProfile);
+  const noRoles = !profile.roles.length;
+  const hasNoAssignedRole = noRoles && !isUnicefUser && !isSuperUser;
+  const dispatch = useDispatch();
+  dispatch(setAssignedRole({ assignedRole: !hasNoAssignedRole }));
+
+  return (
+    <Route {...rest} render={() => hasNoAssignedRole ? <Redirect to="/no-role" /> : children} />
+  )
+}
 
 export function ProtectedRouteDonorsList({ children, ...rest }) {
   const { canViewDonors } = usePermissions();
@@ -61,6 +77,7 @@ const ProtectedRouteProps = {
   children: PropTypes.node.isRequired
 };
 
+UnassignedDonor.propTypes = ProtectedRouteProps;
 ProtectedRouteDonorsList.propTypes = ProtectedRouteProps;
 ProtectedRouteReportPage.propTypes = ProtectedRouteProps;
 ProtectedRouteUserManagement.propTypes = {

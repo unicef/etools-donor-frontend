@@ -44,6 +44,7 @@ export default function ConnectedDrawer() {
 
   const { isDonorAdmin, isSuperUser } = usePermissions();
   const hasAccessUserManagement = isDonorAdmin || isSuperUser;
+  const isAssignedRole = useSelector(selectAssignedRole);
 
   useEffect(() => {
     dispatch(menuItemSelected(REPORTS));
@@ -53,7 +54,7 @@ export default function ConnectedDrawer() {
   return (
     <Drawer
       className={classes.drawer}
-      variant="permanent"
+      variant={isAssignedRole ? "permanent" : "temporary"}
       classes={{
         paper: classes.drawerPaper
       }}

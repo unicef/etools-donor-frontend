@@ -11,11 +11,13 @@ import ReportsPage from 'pages/reports';
 import {
   ProtectedRouteDonorsList,
   ProtectedRouteReportPage,
-  ProtectedRouteUserManagement
+  ProtectedRouteUserManagement,
+  UnassignedDonor
 } from '../pages/Authorized';
 
 import PermissionRedirect from './PermissionRedirect';
 import NotFound from './404';
+import NoRole from './No-Role';
 
 export const useMainStyles = makeStyles(theme =>
   createStyles({
@@ -76,30 +78,33 @@ export default function MainAppBar() {
         <div className={classes.contentWrapper}>
           <Box flexDirection="column">
             <Switch>
-              <Route exact path="/" component={PermissionRedirect} />
-              {/* remove with SearchAPI */}
-              <Route exact path={`/${SEARCH_API}`} component={PermissionRedirect} />
+              <Route exact path="/no-role" component={NoRole} />
+              <UnassignedDonor path="*">
+                <Switch>
+                  <Route exact path="/" component={PermissionRedirect} />
 
-              <ProtectedRouteDonorsList exact path="/donors">
-                <DonorsList />
-              </ProtectedRouteDonorsList>
-              {/* remove with SearchAPI */}
-              <ProtectedRouteReportPage exact path={`/${REPORTS}/:donorId?`}>
-                <ReportsPage />
-              </ProtectedRouteReportPage>
+                  <ProtectedRouteDonorsList exact path="/donors">
+                    <DonorsList />
+                  </ProtectedRouteDonorsList>
 
-              <ProtectedRouteReportPage exact path={`/${THEMATIC_REPORTS}`}>
-                <ReportsPage />
-              </ProtectedRouteReportPage>
+                  <ProtectedRouteReportPage exact path={`/${REPORTS}/:donorId?`}>
+                    <ReportsPage />
+                  </ProtectedRouteReportPage>
 
-              <ProtectedRouteReportPage exact path={`/${SEARCH_API}/:donorId?`}>
-                <ReportsPage />
-              </ProtectedRouteReportPage>
-              {/* Optional donorId param here since donor list is not aware of what page
-              to link to per donor and only super users can choose donor for user management */}
-              <ProtectedRouteUserManagement path={`${USERS_PORTAL_PATH}/:donorId?`} />
+                  <ProtectedRouteReportPage exact path={`/${THEMATIC_REPORTS}`}>
+                    <ReportsPage />
+                  </ProtectedRouteReportPage>
+                  
+                  <ProtectedRouteReportPage exact path={`/${SEARCH_API}/:donorId?`}>
+                    <ReportsPage />
+                  </ProtectedRouteReportPage>
+                  {/* Optional donorId param here since donor list is not aware of what page
+                  to link to per donor and only super users can choose donor for user management */}
+                  <ProtectedRouteUserManagement path={`${USERS_PORTAL_PATH}/:donorId?`} />
 
-              <Route path="*" component={NotFound} />
+                  <Route path="*" component={NotFound} />
+                </Switch>
+              </UnassignedDonor>
             </Switch>
           </Box>
         </div>
