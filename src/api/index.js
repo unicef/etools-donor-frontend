@@ -4,12 +4,6 @@ import {
 } from './helpers';
 import Qs from 'qs';
 
-// remove with SearchAPI
-const currentDate = () => {
-  let date = new Date();
-  return date.getFullYear();
-};
-
 const backendPath = '/api';
 
 const getBaseOptions = () => ({
@@ -138,17 +132,18 @@ export function getOffices() {
 }
 
 // remove with SearchAPI
-export async function getReportsOld(params, year = currentDate()) {
+export async function getReportsOld(params, year) {
   params = {
     ...params,
     retracted__not: 'yes'
   }
+  console.log(params, year)
   const computedUrl = process.env.REACT_APP_REPORTS_ENDPOINT_OLD.replace('<envvar>', setTenantName()).replace('<folder>', `${year}`);
   return get(computedUrl, params);
 }
 
 // remove with SearchAPI
-export async function getUsGovReports(params, year = currentDate()) {
+export async function getUsGovReports(params, year) {
   params = {
     ...params,
     retracted__not: 'yes'

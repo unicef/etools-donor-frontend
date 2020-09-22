@@ -85,11 +85,15 @@ const currentDate = () => {
 // remove with SearchAPI, keep only else
 function getInitialReportsFilterDatesOld() {
   const today = new Date();
+
   const lastYearAfterDate = subYears(today, 1);
+
   const lastYearBeforeDate = endOfYear(lastYearAfterDate);
+
   const lastYear = getYear(lastYearAfterDate);
   const thisYear = getYear(today);
   const thisYearAfterDate = startOfYear(today);
+
   return {
     lastYear: {
       year: lastYear,
@@ -101,7 +105,7 @@ function getInitialReportsFilterDatesOld() {
       [REPORT_END_DATE_BEFORE_FIELD]: format(today, DATE_FORMAT),
       [REPORT_END_DATE_AFTER_FIELD]: format(thisYearAfterDate, DATE_FORMAT)
     }
-  }
+  };
 }
 
 function getInitialReportsFilterDates() {
@@ -116,6 +120,8 @@ function getInitialReportsFilterDates() {
 function* getInitialReportsOld(params, filtersGetter) {
   const defaultFilters = filtersGetter();
   let result = [];
+
+  // call sequentially and keep successful calls
   try {
     const {
       year,
@@ -135,6 +141,7 @@ function* getInitialReportsOld(params, filtersGetter) {
   } catch (err) {
     yield put(setError(err));
   }
+
   try {
     const {
       year,
@@ -185,8 +192,8 @@ function* getCertifiedReports(params) {
 }
 
 function* getCertifiedReportsOld(params) {
+  console.log(getInitialReportsFilterDatesOld())
   const currentlyLoadedDonor = yield select(selectCurrentlyLoadedDonor);
-  console.log(params)
 
   // this is default / initial load only
   if (!currentlyLoadedDonor || currentlyLoadedDonor != params.donor_code) {
@@ -251,7 +258,6 @@ function* handleFetchReports({
       params,
       arg
     } = yield call(getCallerFunc, payload);
-    console.log(payload)
 
     const reports = yield call(caller, params, arg);
     yield put(onReceiveReports(reports));

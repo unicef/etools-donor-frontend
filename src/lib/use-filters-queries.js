@@ -37,8 +37,6 @@ const useFiltersQueries = FILTERS_MAP => {
   let initialFilterValues = mapObjIndexed(always(''), FILTERS_MAP); // set default filter values
   const today = new Date();
   const lastYearAfterDate = subYears(today, 1);
-  initialFiltersActiveState[REPORT_END_DATE_BEFORE_FIELD] = true;
-  initialFiltersActiveState[REPORT_END_DATE_AFTER_FIELD] = true;
   initialFilterValues[REPORT_END_DATE_BEFORE_FIELD] = format(today, DATE_FORMAT)
   initialFilterValues[REPORT_END_DATE_AFTER_FIELD] = format(lastYearAfterDate, DATE_FORMAT)
 
@@ -46,7 +44,7 @@ const useFiltersQueries = FILTERS_MAP => {
   const [filtersActiveState, setFiltersActiveState] = useState(initialFiltersActiveState);
 
   // names(keys) of selected filters for easy iteration on render
-  const [selectedFilters, setSelectedFilters] = useState([REPORT_END_DATE_BEFORE_FIELD, REPORT_END_DATE_AFTER_FIELD]);
+  const [selectedFilters, setSelectedFilters] = useState([]);
 
   const [filterValues, setFilterValues] = useQuery(useState(initialFilterValues));
 

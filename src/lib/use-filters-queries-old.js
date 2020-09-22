@@ -32,8 +32,6 @@ const useFiltersQueriesOld = FILTERS_MAP => {
   const [selectedFiltersOld, setSelectedFiltersOld] = useState([]);
 
   const [filterValuesOld, setFilterValuesOld] = useQuery(useState(initialFilterValuesOld));
-  console.log(initialFilterValuesOld)
-  console.log(filterValuesOld)
 
   // On intiial render grab filter values from url params if any and
   // update the active filters object
@@ -44,7 +42,6 @@ const useFiltersQueriesOld = FILTERS_MAP => {
       ...filtersActiveStateOld,
       ...activatedFilters
     };
-    console.log(filtersFromUrl, activatedFilters)
     setFiltersActiveStateOld(nedActiveState);
   }, []);
 

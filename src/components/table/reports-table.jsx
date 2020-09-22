@@ -66,8 +66,8 @@ export default function ReportsTable() {
   const classes = useTableStyles();
 
   const { isUnicefUser } = usePermissions();
-  const reportsData = useSelector(selectReportsArray);
-  const totalRows = useSelector(selectTotalRows);
+  const reportsData = useSelector(selectReportsArray) || [];
+  const totalRows = useSelector(selectTotalRows) || 0;
   const pageName = useSelector(selectMenuBarPage);
   const certifiedReports = pageName === SEARCH_API;
   const headCells =
@@ -96,10 +96,10 @@ export default function ReportsTable() {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={reportsData ? reportsData.length : 0}
+              rowCount={reportsData.length}
             />
             <TableBody>
-              {stableSort(reportsData || [], getSorting(order, orderBy))
+              {stableSort(reportsData, getSorting(order, orderBy))
                 .map((row, index) => {
                   const labelId = `enhanced-table-checkbox-${index}`;
 
