@@ -4,15 +4,13 @@ import {
 import {
   USERS_PORTAL_PATH,
   REPORTS_PATH,
-  THEMATIC_REPORTS_PATH,
-  SEARCH_API_PATH
+  THEMATIC_REPORTS_PATH
 } from './constants';
 
 export const PAGE_TITLES_MAP = {
   [USERS_PORTAL_PATH]: 'User Management',
   [REPORTS_PATH]: 'Reports',
-  [THEMATIC_REPORTS_PATH]: 'Thematic Reports',
-  [SEARCH_API_PATH]: 'Search'
+  [THEMATIC_REPORTS_PATH]: 'Thematic Reports'
 };
 
 export function getSubheadingFromParams(pathname, donorName = '') {

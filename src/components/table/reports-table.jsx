@@ -14,7 +14,7 @@ import FiberNewIcon from '@material-ui/icons/FiberNew';
 import { useTableStyles } from 'styles/table-styles';
 import EnhancedTableToolbar from './table-toolbar';
 import EnhancedTableHead from './table-head';
-import { selectReportsArray, selectTotalRows } from 'selectors/collections';
+import { selectReports } from 'selectors/collections';
 import { usePermissions } from 'components/PermissionRedirect';
 import { useTable, getDisplayDate, stableSort, getSorting } from './lib';
 import clsx from 'clsx';
@@ -24,7 +24,7 @@ import {
   EXTERNAL_REF_GRANT_FIELD
 } from '../../pages/reports/constants';
 import { selectMenuBarPage } from 'selectors/ui-flags';
-import { THEMATIC_REPORTS, SEARCH_API } from 'lib/constants';
+import { THEMATIC_REPORTS, REPORTS } from 'lib/constants';
 
 export function getRecipientOfficeStr(report) {
   const recipientOffices = report.recipient_office || [];
@@ -66,10 +66,10 @@ export default function ReportsTable() {
   const classes = useTableStyles();
 
   const { isUnicefUser } = usePermissions();
-  const reportsData = useSelector(selectReportsArray) || [];
-  const totalRows = useSelector(selectTotalRows) || 0;
+
+  const rows = useSelector(selectReports);
   const pageName = useSelector(selectMenuBarPage);
-  const certifiedReports = pageName === SEARCH_API;
+  const certifiedReports = pageName === REPORTS;
   const headCells =
     pageName === THEMATIC_REPORTS
       ? thematicReportsTableHeadings
@@ -80,10 +80,13 @@ export default function ReportsTable() {
     order,
     page,
     rowsPerPage,
+    getEmptyRows,
     handleRequestSort,
+    handleChangeRowsPerPage,
     handleChangePage
   } = useTable(BACKEND_REPORTS_FIELDS['recipientOffice']);
   const shouldShowExternalGrants = certifiedReports && !isUnicefUser;
+  const emptyRows = getEmptyRows(rows);
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -96,15 +99,16 @@ export default function ReportsTable() {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={reportsData.length}
+              rowCount={rows.length}
             />
             <TableBody>
-              {stableSort(reportsData, getSorting(order, orderBy))
+              {stableSort(rows, getSorting(order, orderBy))
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                       <TableCell
                         className={clsx(classes.cell, classes.titleCell)}
                         component="th"
@@ -164,15 +168,15 @@ export default function ReportsTable() {
                     </TableRow>
                   );
                 })}
-              {/* {emptyRows > 0 && (
+              {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
-              )} */}
+              )}
             </TableBody>
           </Table>
         </TableContainer>
-        {/* <TablePagination
+        <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={rows.length}
@@ -186,24 +190,9 @@ export default function ReportsTable() {
           }}
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
-        /> */}
-        <TablePagination
-          component="div"
-          rowsPerPageOptions={[5, 10, 25]}
-          count={totalRows}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          backIconButtonProps={{
-            'aria-label': 'previous page'
-          }}
-          nextIconButtonProps={{
-            'aria-label': 'next page'
-          }}
-          onChangePage={handleChangePage}
-        // onChangeRowsPerPage={handleChangeRowsPerPage}
         />
         {/* <DocViewer fileType={docFileType} filePath={doc} /> */}
-      </Paper>
-    </div>
+      </Paper >
+    </div >
   );
 }

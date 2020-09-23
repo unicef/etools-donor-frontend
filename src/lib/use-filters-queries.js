@@ -4,17 +4,6 @@ import {
 } from 'react';
 
 import {
-  REPORT_END_DATE_BEFORE_FIELD,
-  REPORT_END_DATE_AFTER_FIELD,
-  DATE_FORMAT
-} from 'pages/reports/constants';
-
-import {
-  format,
-  subYears
-} from 'date-fns';
-
-import {
   mapObjIndexed,
   keys,
   pickBy,
@@ -34,11 +23,7 @@ import {
 */
 const useFiltersQueries = FILTERS_MAP => {
   const initialFiltersActiveState = mapObjIndexed(always(false), FILTERS_MAP); // set which filters are active on load
-  let initialFilterValues = mapObjIndexed(always(''), FILTERS_MAP); // set default filter values
-  const today = new Date();
-  const lastYearAfterDate = subYears(today, 1);
-  initialFilterValues[REPORT_END_DATE_BEFORE_FIELD] = format(today, DATE_FORMAT)
-  initialFilterValues[REPORT_END_DATE_AFTER_FIELD] = format(lastYearAfterDate, DATE_FORMAT)
+  const initialFilterValues = mapObjIndexed(always(''), FILTERS_MAP); // set default filter values
 
   // filtersActiveState is object in form of {[filterName]: bool} indicating if filter has been selected
   const [filtersActiveState, setFiltersActiveState] = useState(initialFiltersActiveState);
