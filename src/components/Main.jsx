@@ -78,7 +78,6 @@ export default function MainAppBar() {
         <div className={classes.contentWrapper}>
           <Box flexDirection="column">
             <Switch>
-<<<<<<< HEAD
               <Route exact path="/no-role" component={NoRole} />
               <UnassignedDonor path="*">
                 <Switch>
@@ -95,31 +94,10 @@ export default function MainAppBar() {
                   <ProtectedRouteReportPage exact path={`/${THEMATIC_REPORTS}`}>
                     <ReportsPage />
                   </ProtectedRouteReportPage>
-                  
-                  <ProtectedRouteReportPage exact path={`/${SEARCH_API}/:donorId?`}>
-                    <ReportsPage />
-                  </ProtectedRouteReportPage>
+
                   {/* Optional donorId param here since donor list is not aware of what page
                   to link to per donor and only super users can choose donor for user management */}
                   <ProtectedRouteUserManagement path={`${USERS_PORTAL_PATH}/:donorId?`} />
-=======
-              <Route exact path="/" component={PermissionRedirect} />
-
-              <ProtectedRouteDonorsList exact path="/donors">
-                <DonorsList />
-              </ProtectedRouteDonorsList>
-
-              <ProtectedRouteReportPage exact path={`/${REPORTS}/:donorId?`}>
-                <ReportsPage />
-              </ProtectedRouteReportPage>
-
-              <ProtectedRouteReportPage exact path={`/${THEMATIC_REPORTS}`}>
-                <ReportsPage />
-              </ProtectedRouteReportPage>
-              {/* Optional donorId param here since donor list is not aware of what page
-              to link to per donor and only super users can choose donor for user management */}
-              <ProtectedRouteUserManagement path={`${USERS_PORTAL_PATH}/:donorId?`} />
->>>>>>> parent of dbab6e4... Merge pull request #113 from unicef/old-new-api
 
                   <Route path="*" component={NotFound} />
                 </Switch>

@@ -14,7 +14,7 @@ import {
 import DescriptionIcon from '@material-ui/icons/Description';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { REPORTS, THEMATIC_REPORTS, USERS_PORTAL } from '../lib/constants';
-import { selectMenuBarPage } from 'selectors/ui-flags';
+import { selectMenuBarPage, selectAssignedRole } from 'selectors/ui-flags';
 import { menuItemSelected } from 'slices/ui';
 import { usePermissions } from './PermissionRedirect';
 
