@@ -13,7 +13,7 @@ import {
 
 import DescriptionIcon from '@material-ui/icons/Description';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { REPORTS, THEMATIC_REPORTS, USERS_PORTAL } from '../lib/constants';
+import { REPORTS, SEARCH_REPORTS, THEMATIC_REPORTS, USERS_PORTAL } from '../lib/constants';
 import { selectMenuBarPage } from 'selectors/ui-flags';
 import { menuItemSelected } from 'slices/ui';
 import { usePermissions } from './PermissionRedirect';
@@ -24,7 +24,7 @@ export const useNav = () => {
 
   const handleNav = page => () => {
     dispatch(menuItemSelected(page));
-    if (page === REPORTS) {
+    if (page === REPORTS || page === SEARCH_REPORTS) {
       history.push('/');
     } else {
       history.push(`/${page}`);
@@ -47,6 +47,10 @@ export default function ConnectedDrawer() {
 
   useEffect(() => {
     dispatch(menuItemSelected(REPORTS));
+  }, []);
+
+  useEffect(() => {
+    dispatch(menuItemSelected(SEARCH_REPORTS));
   }, []);
 
   const { handleNav, navSelected } = useNav();
@@ -77,6 +81,17 @@ export default function ConnectedDrawer() {
             <DescriptionIcon />
           </ListItemIcon>
           <ListItemText primary="Thematic Reports" />
+        </ListItem>
+
+        <ListItem
+          selected={navSelected(SEARCH_REPORTS)}
+          onClick={handleNav(SEARCH_REPORTS)}
+          button
+        >
+          <ListItemIcon>
+            <DescriptionIcon />
+          </ListItemIcon>
+          <ListItemText primary="Search Reports" />
         </ListItem>
 
         {hasAccessUserManagement && (

@@ -1,4 +1,6 @@
-import { createSelector } from 'reselect';
+import {
+  createSelector
+} from 'reselect';
 export const selectGrants = state => state.grants;
 export const selectExternalGrants = state => state.externalGrants;
 export const selectThemeCollection = state => state.themes;
@@ -6,7 +8,12 @@ export const selectDonors = state => state.donors;
 export const selectStaticAssets = state => state.staticAssets;
 export const selectReports = state => state.reports;
 export const selectOffices = state => state.offices;
+export const selectSearchReports = state => state.searchReports;
 
+export const selectSearchReportsData = createSelector(
+  selectSearchReports,
+  reports => reports.items
+);
 export const selectYears = createSelector(
   selectStaticAssets,
   assets => assets.report_years

@@ -19,7 +19,7 @@ function useDefaultHook() {
   return () => { };
 }
 
-function useInitiCertifiedReports(dispatch, donorId) {
+function useInitCertifiedReports(dispatch, donorId) {
   return () => {
     dispatch(initCertifiedReportsPage(donorId));
   };
@@ -35,7 +35,7 @@ const useInitPage = pageName => {
     case THEMATIC_REPORTS:
       return useInitThematicReports(dispatch);
     case REPORTS:
-      return useInitiCertifiedReports(dispatch, donorId);
+      return useInitCertifiedReports(dispatch, donorId);
     default:
       return useDefaultHook;
   }

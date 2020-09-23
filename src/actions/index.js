@@ -1,4 +1,6 @@
-import { createAction } from 'redux-starter-kit';
+import {
+  createAction
+} from 'redux-starter-kit';
 
 export const initDonorsList = createAction('initDonorsList');
 export const onFetchUserRoles = createAction('onFetchUserRoles');
@@ -15,4 +17,6 @@ export const redirectToLogin = createAction('redirectToLogin');
 export const onFetchReports = createAction('onFetchReports');
 export const initCertifiedReportsPage = createAction('initCertifiedReportsPage');
 export const initThematicReportsPage = createAction('initThematicReportsPage');
+export const initSearchReportsPage = createAction('initSearchReportsPage');
 export const deleteUserRole = createAction('deleteUserRole');
+export const onFetchSearchReports = createAction('onFetchSearchReports');
