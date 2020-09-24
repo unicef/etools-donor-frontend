@@ -7,6 +7,7 @@ import SearchReportsTable from 'components/table/search-reports-table';
 import { selectPageName } from 'selectors/ui-flags';
 import { initSearchReportsPage } from 'actions';
 import { onReceiveSearchReports } from 'slices/search-reports';
+import { SEARCH_REPORTS } from 'lib/constants';
 
 function useInitSearchReports(dispatch, donorId) {
   return () => {
@@ -14,22 +15,27 @@ function useInitSearchReports(dispatch, donorId) {
   };
 }
 
-// use this hook to customize which api calls are made
-// for the selected page as we render the reports table
-// const useInitPage = () => {
-//   const dispatch = useDispatch();
-//   const { donorId } = useParams();
-//   useInitSearchReports(dispatch, donorId)
-// };
+function useDefaultHook() {
+  return () => { };
+}
 
-export default function SearchPage() {
-  // debugger
-  const pageName = useSelector(selectPageName);
+const useInitPage = pageName => {
   const dispatch = useDispatch();
   const { donorId } = useParams();
-  useInitSearchReports(dispatch, donorId)
-  // const effect = useInitPage();
-  // useEffect(effect, [pageName]);
+
+  switch (pageName) {
+    case SEARCH_REPORTS:
+      return useInitSearchReports(dispatch, donorId);
+    default:
+      return useDefaultHook;
+  }
+}
+
+export default function SearchPage() {
+  const pageName = useSelector(selectPageName);
+  const dispatch = useDispatch();
+  const effect = useInitPage(pageName);
+  useEffect(effect, [pageName]);
 
   useEffect(() => {
     dispatch(onReceiveSearchReports([]));

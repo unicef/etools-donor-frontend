@@ -16,16 +16,16 @@ import {
 import {
   getRecipientOfficeStr
 } from '../search-reports-table';
-import useFiltersQueries from 'lib/use-filters-queries';
 import {
-  FILTERS_MAP
-} from '../../../pages/reports/lib/filters-map';
-import {
-  useDispatch
+  useDispatch,
+  useSelector
 } from 'react-redux';
 import {
   onFetchSearchReports
 } from 'actions';
+import {
+  selectSearchReports
+} from 'selectors/collections';
 
 export function desc(a, b, func) {
   if (func(b) < func(a)) {
@@ -63,6 +63,7 @@ export function getSorting(order, orderBy) {
 }
 
 export const useTable = (defaultOrderBy = '') => {
+  const reportsData = useSelector(selectSearchReports);
   const dispatch = useDispatch();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState(defaultOrderBy);
@@ -77,22 +78,21 @@ export const useTable = (defaultOrderBy = '') => {
     setOrderBy(property);
   };
 
-  // remove with SearchAPI
-  const handleChangePageOld = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const {
-    filterValues
-  } = useFiltersQueries(FILTERS_MAP);
+  const getParamsObj = (params) => {
+    const paramsString = params.split('?')[1];
+    return JSON.parse('{"' + paramsString.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function (key, value) {
+      return key === "" ? value : decodeURIComponent(value)
+    })
+  }
 
   const handleChangePage = (event, newPage) => {
     event.preventDefault();
-    setPage(newPage);
-    dispatch(onFetchSearchReports({
-      ...filterValues,
-      page: newPage + 1
-    }));
+    const next = reportsData['next:'];
+    const prev = reportsData.previous;
+    const paramsObjNext = getParamsObj(next);
+    const paramsObjPrev = prev ? getParamsObj(prev) : '';
+    (newPage + 1) > page ? dispatch(onFetchSearchReports(paramsObjNext)) : dispatch(onFetchSearchReports(paramsObjPrev))
+    setPage(newPage + 1)
   };
 
   const handleChangeRowsPerPage = event => {
@@ -111,8 +111,6 @@ export const useTable = (defaultOrderBy = '') => {
     setRowsPerPage,
     getEmptyRows,
     handleRequestSort,
-    // remove with SearchAPI
-    handleChangePageOld,
     handleChangePage,
     handleChangeRowsPerPage
   };

@@ -63,9 +63,7 @@ export default function ReportsTable() {
     orderBy,
     order,
     page,
-    // getEmptyRows,
     handleRequestSort,
-    // handleChangeRowsPerPage,
     handleChangePage
   } = useTable(BACKEND_REPORTS_FIELDS['recipientOffice']);
   const shouldShowExternalGrants = !isUnicefUser;
@@ -160,6 +158,7 @@ export default function ReportsTable() {
           nextIconButtonProps={{
             'aria-label': 'next page'
           }}
+
           onChangePage={handleChangePage}
         // onChangeRowsPerPage={handleChangeRowsPerPage}
         />

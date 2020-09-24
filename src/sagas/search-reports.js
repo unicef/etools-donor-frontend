@@ -31,6 +31,9 @@ import {
   setCurrentlyLoadedDonor
 } from 'slices/ui';
 import {
+  selectUserGroup
+} from '../selectors/ui-flags'
+import {
   onReceiveSearchReports
 } from 'slices/search-reports';
 import {
@@ -39,12 +42,17 @@ import {
 import {
   onFetchSearchReports
 } from 'actions';
-
+import {
+  selectStaticAssets
+} from 'selectors/collections';
+import {
+  UNICEF_USER_ROLE
+} from '../lib/constants'
 import {
   REPORT_END_DATE_BEFORE_FIELD,
   REPORT_END_DATE_AFTER_FIELD,
   DATE_FORMAT
-} from 'pages/reports/constants';
+} from 'pages/reports/search-constants';
 
 function getInitialSearchReportsFilterDates() {
   const today = new Date();
@@ -72,7 +80,18 @@ function* getInitialSearchReports(params, filtersGetter) {
 }
 
 function* getSearchReports(params) {
+  const staticAssets = yield select(selectStaticAssets)
   const currentlyLoadedDonor = yield select(selectCurrentlyLoadedDonor);
+  const userGroup = yield select(selectUserGroup);
+  const isUnicefUser = userGroup === UNICEF_USER_ROLE;
+  const sourceIds = staticAssets.source_id;
+
+  // add source_id params to search api call based on userGroup
+  const sourceId = isUnicefUser ? sourceIds.internal : sourceIds.external;
+  params = {
+    ...params,
+    source_id: sourceId
+  };
 
   // this is default / initial load only
   if (!currentlyLoadedDonor || currentlyLoadedDonor != params.donor_code) {

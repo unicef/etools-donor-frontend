@@ -14,7 +14,7 @@ import {
   REPORT_GROUP_FIELD,
   REPORT_GENERATED_FIELD,
   THEME_FIELD
-} from '../constants';
+} from '../search-constants';
 
 import {
   filter,
@@ -51,8 +51,6 @@ import {
 import {
   selectIsSuperUser
 } from 'selectors/ui-flags';
-
-
 
 export const FILTERS_MAP = {
   [GRANT_FIELD]: {
