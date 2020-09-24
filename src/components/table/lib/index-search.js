@@ -68,7 +68,7 @@ export const useTable = (defaultOrderBy = '') => {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState(defaultOrderBy);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const getEmptyRows = rows =>
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 

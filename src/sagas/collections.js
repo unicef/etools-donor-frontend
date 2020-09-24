@@ -162,6 +162,7 @@ function* handleCurrentDonor({
 
 export function* donorsSaga() {
   yield takeLatest(initDonorsList.type, handleFetchDonors);
+  yield all([call(handleFetchStatic)])
 }
 
 export function* currentDonorSaga() {
@@ -172,7 +173,6 @@ function* fetchReportFilterCollections(action) {
   yield all([
     call(handleFetchGrants, action),
     call(handleFetchExternalGrants, action),
-    call(handleFetchStatic),
     call(maybeFetch, handleFetchOffices, selectOffices)
   ]);
 }
@@ -180,7 +180,6 @@ function* fetchReportFilterCollections(action) {
 function* fetchThematicFilterCollections() {
   yield all([
     call(maybeFetch, handleFetchThemes, selectThemeCollection),
-    call(handleFetchStatic),
     call(maybeFetch, handleFetchOffices, selectOffices)
   ]);
 }
@@ -189,7 +188,6 @@ function* fetchSearchReportFilterCollections(action) {
   yield all([
     call(handleFetchGrants, action),
     call(handleFetchExternalGrants, action),
-    call(handleFetchStatic),
     call(maybeFetch, handleFetchOffices, selectOffices)
   ]);
 }
