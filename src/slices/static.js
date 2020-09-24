@@ -1,4 +1,6 @@
-import { createSlice } from 'redux-starter-kit';
+import {
+  createSlice
+} from 'redux-starter-kit';
 
 export const staticAssetsInitialState = {
   years: [],
@@ -7,7 +9,8 @@ export const staticAssetsInitialState = {
   regenerated: [],
   rp_status: [],
   donor_document: [],
-  donor_reporting_category: []
+  donor_reporting_category: [],
+  source_id: []
 };
 
 const staticAssetsSlice = createSlice({
@@ -19,5 +22,9 @@ const staticAssetsSlice = createSlice({
   }
 });
 
-export const { reducer: staticAssets } = staticAssetsSlice;
-export const { onReceiveStaticAssets } = staticAssetsSlice.actions;
+export const {
+  reducer: staticAssets
+} = staticAssetsSlice;
+export const {
+  onReceiveStaticAssets
+} = staticAssetsSlice.actions;
