@@ -52,13 +52,13 @@ export const FORM_CONFIG = {
 
 export const USERS_PORTAL = 'users-portal';
 export const REPORTS = 'reports';
+export const SEARCH_REPORTS = 'search-reports';
 export const THEMATIC_REPORTS = 'thematic-reports';
-export const SEARCH_API = 'search-api';
 export const USERS_PORTAL_PATH = `/${USERS_PORTAL}`;
 export const REPORTS_PATH = `/${REPORTS}`;
-export const SEARCH_API_PATH = `/${SEARCH_API}`
+export const SEARCH_REPORTS_PATH = `/${SEARCH_REPORTS}`;
 
-export const TABLE_PAGES = [REPORTS, THEMATIC_REPORTS, SEARCH_API, USERS_PORTAL];
+export const TABLE_PAGES = [REPORTS, THEMATIC_REPORTS, USERS_PORTAL];
 export const THEMATIC_REPORTS_PATH = `/${THEMATIC_REPORTS}`;
 export const BACKEND_PROPERTIES_USER_LAST_LOGIN = 'user_last_login';
 export const BACKEND_PROPERTIES_USER_FIRST_NAME = 'user_first_name';
@@ -71,7 +71,8 @@ export const UNICEF_USER_ROLE = 'UNICEF User';
 
 export const PAGE_TITLE_MAP = {
   [REPORTS]: 'Reports',
-  [THEMATIC_REPORTS]: 'Thematic Reports'
+  [THEMATIC_REPORTS]: 'Thematic Reports',
+  [SEARCH_REPORTS]: 'Search Reports'
 };
 
 export const PAGE_DROPDOWN_NAME_MAP = {

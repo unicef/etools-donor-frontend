@@ -16,16 +16,6 @@ import {
 import {
   getRecipientOfficeStr
 } from '../reports-table';
-import useFiltersQueries from 'lib/use-filters-queries';
-import {
-  FILTERS_MAP
-} from '../../../pages/reports/lib/filters-map';
-import {
-  useDispatch
-} from 'react-redux';
-import {
-  onFetchReports
-} from 'actions';
 
 export function desc(a, b, func) {
   if (func(b) < func(a)) {
@@ -63,11 +53,10 @@ export function getSorting(order, orderBy) {
 }
 
 export const useTable = (defaultOrderBy = '') => {
-  const dispatch = useDispatch();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState(defaultOrderBy);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const getEmptyRows = rows =>
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
@@ -77,22 +66,8 @@ export const useTable = (defaultOrderBy = '') => {
     setOrderBy(property);
   };
 
-  // remove with SearchAPI
-  const handleChangePageOld = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const {
-    filterValues
-  } = useFiltersQueries(FILTERS_MAP);
-
   const handleChangePage = (event, newPage) => {
-    event.preventDefault();
     setPage(newPage);
-    dispatch(onFetchReports({
-      ...filterValues,
-      page: newPage + 1
-    }));
   };
 
   const handleChangeRowsPerPage = event => {
@@ -111,8 +86,6 @@ export const useTable = (defaultOrderBy = '') => {
     setRowsPerPage,
     getEmptyRows,
     handleRequestSort,
-    // remove with SearchAPI
-    handleChangePageOld,
     handleChangePage,
     handleChangeRowsPerPage
   };

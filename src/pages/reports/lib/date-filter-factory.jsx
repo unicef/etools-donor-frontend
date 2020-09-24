@@ -41,7 +41,7 @@ export default function DateFilterFactory(label) {
               clearable
               // variant="inline"
               margin="none"
-              id={label}
+              id="grant-from"
               format={DISPLAY_FORMAT}
               label={label}
               value={date}

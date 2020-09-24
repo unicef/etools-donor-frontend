@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 if (process.env.NODE_ENV !== 'production') {
   const whyDidYouRender = require('@welldone-software/why-did-you-render');
@@ -10,16 +10,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Grid, Box, Button, Paper } from '@material-ui/core';
 
 import useFilterStyles from 'styles/filter-styles';
-import { onFetchReports } from 'actions';
-import FilterMenuButton from './filter-menu-button';
+import { onFetchSearchReports } from 'actions';
+import SearchFilterMenuButton from './search-filter-menu-button';
 
-import useFiltersQueriesOld from 'lib/use-filters-queries-old';
+import useFiltersQueries from 'lib/use-filters-queries';
 import { FORM_CONFIG } from 'lib/constants';
-import { FILTERS_MAP } from '../lib/filters-map';
-import MandatoryFilters from './mandatory-filters';
+import { FILTERS_MAP } from '../lib/search-filters-map';
 import { selectMenuBarPage } from 'selectors/ui-flags';
-import { REPORTS } from 'lib/constants';
-import { selectReportYear } from 'selectors/filter';
 import { reportYearChanged } from 'slices/report-filter';
 
 function usePrevious(value) {
@@ -30,48 +27,35 @@ function usePrevious(value) {
   return ref.current;
 }
 
-export default function ReportsFilterOld() {
+export default function SearchReportsFilter() {
   const dispatch = useDispatch();
   const classes = useFilterStyles();
   const pageName = useSelector(selectMenuBarPage);
-  const reportPageName = useSelector(selectMenuBarPage);
-  const reportYear = useSelector(selectReportYear);
-  const [showValidation, setShowValidation] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!reportYear && reportPageName === REPORTS) {
-      setShowValidation(true);
-      return;
-    }
-    dispatch(onFetchReports(filterValuesOld));
+    dispatch(onFetchSearchReports(filterValues));
   }
 
   function handleClear() {
     clearFilters();
     const year = new Date().getFullYear();
     dispatch(reportYearChanged(year));
-    dispatch(onFetchReports({}));
+    dispatch(onFetchSearchReports({}));
   }
 
   const {
     handleSelectFilter,
     handleChangeFilterValue,
-    filtersActiveStateOld,
-    filterValuesOld,
-    selectedFiltersOld,
+    filtersActiveState,
+    filterValues,
+    selectedFilters,
     clearFilters
-  } = useFiltersQueriesOld(FILTERS_MAP);
-
-  useEffect(() => {
-    if (reportYear) {
-      setShowValidation(false);
-    }
-  }, [reportYear])
+  } = useFiltersQueries(FILTERS_MAP);
 
   useEffect(() => {
     if (pageName) {
-      dispatch(onFetchReports(filterValuesOld));
+      dispatch(onFetchSearchReports(filterValues));
     }
   }, [pageName]);
 
@@ -80,7 +64,7 @@ export default function ReportsFilterOld() {
   useEffect(() => {
     if (prop('length', prevPageName)) {
       clearFilters();
-      dispatch(onFetchReports({}));
+      dispatch(onFetchSearchReports({}));
     }
   }, [pageName]);
 
@@ -88,19 +72,13 @@ export default function ReportsFilterOld() {
     <>
       <Paper className={classes.filterPaper}>
         <form onSubmit={handleSubmit}>
-          {showValidation && (
-            <Grid container alignContent="flex-start">
-              <span className={classes.validationWarning}>You must select a Report Year in order to submit.</span>
-            </Grid>
-          )}
           <Grid
             container
             spacing={0}
             alignItems="flex-end"
             direction="row"
           >
-            <Grid item style={{ width: '240px' }}><MandatoryFilters className={classes.yearFilter} /></Grid>
-            <Grid item><FilterMenuButton onSelectFilter={handleSelectFilter} selected={filtersActiveStateOld} /></Grid>
+            <Grid item><SearchFilterMenuButton onSelectFilter={handleSelectFilter} selected={filtersActiveState} /></Grid>
           </Grid>
           <Box display="flex" flex="1 1 auto" alignItems="flex-start" flexWrap="wrap">
             <Grid
@@ -110,7 +88,7 @@ export default function ReportsFilterOld() {
               flex="1 1 auto"
               spacing={2}
             >
-              {selectedFiltersOld.map((filter, idx) => {
+              {selectedFilters.map((filter, idx) => {
                 const { Component: FilterComponent } = FILTERS_MAP[filter];
 
                 return (
@@ -122,7 +100,7 @@ export default function ReportsFilterOld() {
                   >
                     <FilterComponent
                       onChange={handleChangeFilterValue(filter)}
-                      value={filterValuesOld[filter]}
+                      value={filterValues[filter]}
                     />
                   </Grid>
                 );

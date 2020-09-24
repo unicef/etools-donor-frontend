@@ -1,4 +1,3 @@
-// remove file with SearchAPI
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import YearFilter from './report-year-filter';

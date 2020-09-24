@@ -1,4 +1,3 @@
-// remove FILE with SearchAPI
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -15,17 +14,14 @@ import FiberNewIcon from '@material-ui/icons/FiberNew';
 import { useTableStyles } from 'styles/table-styles';
 import EnhancedTableToolbar from './table-toolbar';
 import EnhancedTableHead from './table-head';
-import { selectReports } from 'selectors/collections';
+import { selectSearchReports } from 'selectors/collections';
 import { usePermissions } from 'components/PermissionRedirect';
-import { useTable, getDisplayDate, stableSort, getSorting } from './lib/index-old';
+import { useTable, getDisplayDate, stableSort, getSorting } from './lib/index-search';
 import clsx from 'clsx';
 import {
   BACKEND_REPORTS_FIELDS,
-  BACKEND_THEMATIC_FIELDS,
   EXTERNAL_REF_GRANT_FIELD
 } from '../../pages/reports/constants';
-import { selectMenuBarPage } from 'selectors/ui-flags';
-import { THEMATIC_REPORTS, REPORTS } from 'lib/constants';
 
 export function getRecipientOfficeStr(report) {
   const recipientOffices = report.recipient_office || [];
@@ -39,14 +35,6 @@ const certifiedReportsTableHeadings = [
   { id: BACKEND_REPORTS_FIELDS['reportEndDate'], label: 'Report End Date', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['grant'], label: 'Grant', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['grantExpiryDate'], label: 'Grant Expiry', sortable: true }
-];
-
-const thematicReportsTableHeadings = [
-  { id: BACKEND_THEMATIC_FIELDS['title'], label: 'Filename', sortable: true },
-  { id: BACKEND_THEMATIC_FIELDS['theme'], label: 'Theme', sortable: true },
-  { id: BACKEND_THEMATIC_FIELDS['recipientOffice'], label: 'Recipient Office', sortable: true },
-  { id: BACKEND_THEMATIC_FIELDS['reportType'], label: 'Report Type', sortable: true },
-  { id: BACKEND_THEMATIC_FIELDS['reportEndDate'], label: 'Report End Date', sortable: true }
 ];
 
 const externalRefCell = {
@@ -63,31 +51,22 @@ const getHeadCells = (isUnicefUser, cells) => {
   return cells;
 };
 
-export default function ReportsTableOld() {
+export default function ReportsTable() {
   const classes = useTableStyles();
 
   const { isUnicefUser } = usePermissions();
-
-  const rows = useSelector(selectReports);
-  const pageName = useSelector(selectMenuBarPage);
-  const certifiedReports = pageName === REPORTS;
-  const headCells =
-    pageName === THEMATIC_REPORTS
-      ? thematicReportsTableHeadings
-      : getHeadCells(isUnicefUser, certifiedReportsTableHeadings);
+  const data = useSelector(selectSearchReports);
+  const rows = data.items || [];
+  const headCells = getHeadCells(isUnicefUser, certifiedReportsTableHeadings);
 
   const {
     orderBy,
     order,
     page,
-    rowsPerPage,
-    getEmptyRows,
     handleRequestSort,
-    handleChangeRowsPerPage,
-    handleChangePageOld
+    handleChangePage
   } = useTable(BACKEND_REPORTS_FIELDS['recipientOffice']);
-  const shouldShowExternalGrants = certifiedReports && !isUnicefUser;
-  const emptyRows = getEmptyRows(rows);
+  const shouldShowExternalGrants = !isUnicefUser;
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -104,12 +83,11 @@ export default function ReportsTableOld() {
             />
             <TableBody>
               {stableSort(rows, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                       <TableCell
                         className={clsx(classes.cell, classes.titleCell)}
                         component="th"
@@ -152,36 +130,27 @@ export default function ReportsTableOld() {
                           {getDisplayDate(row.report_end_date)}
                         </TableCell>
                       </Tooltip>
-                      {certifiedReports && (
-                        <Tooltip title={row.grant_number ? row.grant_number : ''}>
-                          <TableCell className={classes.cell} align="left">
-                            {row.grant_number}
-                          </TableCell>
-                        </Tooltip>
-                      )}
-                      {certifiedReports && (
-                        <Tooltip title={row.grant_expiry_date ? getDisplayDate(row.grant_expiry_date) : ''}>
-                          <TableCell className={clsx(classes.cell, classes.dateCell)} align="left">
-                            {getDisplayDate(row.grant_expiry_date)}
-                          </TableCell>
-                        </Tooltip>
-                      )}
+                      <Tooltip title={row.grant_number ? row.grant_number : ''}>
+                        <TableCell className={classes.cell} align="left">
+                          {row.grant_number}
+                        </TableCell>
+                      </Tooltip>
+                      <Tooltip title={row.grant_expiry_date ? getDisplayDate(row.grant_expiry_date) : ''}>
+                        <TableCell className={clsx(classes.cell, classes.dateCell)} align="left">
+                          {getDisplayDate(row.grant_expiry_date)}
+                        </TableCell>
+                      </Tooltip>
                     </TableRow>
                   );
                 })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
             </TableBody>
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[10]}
           component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
+          count={data.total_rows || 0}
+          rowsPerPage={10}
           page={page}
           backIconButtonProps={{
             'aria-label': 'previous page'
@@ -189,8 +158,9 @@ export default function ReportsTableOld() {
           nextIconButtonProps={{
             'aria-label': 'next page'
           }}
-          onChangePage={handleChangePageOld}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
+
+          onChangePage={handleChangePage}
+        // onChangeRowsPerPage={handleChangeRowsPerPage}
         />
         {/* <DocViewer fileType={docFileType} filePath={doc} /> */}
       </Paper >

@@ -4,10 +4,11 @@ import { Route } from 'react-router-dom';
 import { makeStyles, createStyles, Box } from '@material-ui/core';
 import ConnectedDrawer from './Drawer';
 import AppToolbar from './App-Bar';
-import { DRAWER_WIDTH, USERS_PORTAL_PATH, REPORTS, THEMATIC_REPORTS, SEARCH_API } from '../lib/constants';
+import { DRAWER_WIDTH, USERS_PORTAL_PATH, REPORTS, THEMATIC_REPORTS, SEARCH_REPORTS } from '../lib/constants';
 import DonorsList from 'pages/donors-list';
 import ContentHeader from './Content-Header';
 import ReportsPage from 'pages/reports';
+import SearchPage from 'pages/reports/search';
 import {
   ProtectedRouteDonorsList,
   ProtectedRouteReportPage,
@@ -94,10 +95,14 @@ export default function MainAppBar() {
                   <ProtectedRouteReportPage exact path={`/${THEMATIC_REPORTS}`}>
                     <ReportsPage />
                   </ProtectedRouteReportPage>
-                  
-                  <ProtectedRouteReportPage exact path={`/${SEARCH_API}/:donorId?`}>
-                    <ReportsPage />
+
+                  <ProtectedRouteReportPage exact path={`/${SEARCH_REPORTS}/:donorId?`}>
+                    <SearchPage />
                   </ProtectedRouteReportPage>
+                  {/* Optional donorId param here since donor list is not aware of what page
+              to link to per donor and only super users can choose donor for user management */}
+                  <ProtectedRouteUserManagement path={`${USERS_PORTAL_PATH}/:donorId?`} />
+
                   {/* Optional donorId param here since donor list is not aware of what page
                   to link to per donor and only super users can choose donor for user management */}
                   <ProtectedRouteUserManagement path={`${USERS_PORTAL_PATH}/:donorId?`} />

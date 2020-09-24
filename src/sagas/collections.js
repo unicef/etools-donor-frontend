@@ -185,7 +185,7 @@ function* fetchThematicFilterCollections() {
   ]);
 }
 
-function* fetchSearchFilterCollections(action) {
+function* fetchSearchReportFilterCollections(action) {
   yield all([
     call(handleFetchGrants, action),
     call(handleFetchExternalGrants, action),
@@ -197,7 +197,7 @@ function* fetchSearchFilterCollections(action) {
 export function* filtersSaga() {
   yield takeLatest(initCertifiedReportsPage.type, fetchReportFilterCollections);
   yield takeLatest(initThematicReportsPage.type, fetchThematicFilterCollections);
-  yield takeLatest(initSearchReportsPage.type, fetchSearchFilterCollections);
+  yield takeLatest(initSearchReportsPage.type, fetchSearchReportFilterCollections);
 }
 
 export default function* () {
