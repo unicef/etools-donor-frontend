@@ -32,9 +32,6 @@ export async function get(uri, params = {}, options = getBaseOptions()) {
 }
 
 export async function fetchSearchReports(params) {
-  params = {
-    ...params
-  }
   const computedUrl = process.env.REACT_APP_SEARCH_API;
   return get(computedUrl, params);
 }

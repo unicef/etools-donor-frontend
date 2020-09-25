@@ -68,7 +68,7 @@ export const useTable = (defaultOrderBy = '') => {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState(defaultOrderBy);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const getEmptyRows = rows =>
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
@@ -92,7 +92,7 @@ export const useTable = (defaultOrderBy = '') => {
     const paramsObjNext = getParamsObj(next);
     const paramsObjPrev = prev ? getParamsObj(prev) : '';
     (newPage + 1) > page ? dispatch(onFetchSearchReports(paramsObjNext)) : dispatch(onFetchSearchReports(paramsObjPrev))
-    setPage(newPage + 1)
+    setPage(newPage)
   };
 
   const handleChangeRowsPerPage = event => {
