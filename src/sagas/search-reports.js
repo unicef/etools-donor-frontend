@@ -6,10 +6,6 @@ import {
   select
 } from 'redux-saga/effects';
 import {
-  format,
-  subYears
-} from 'date-fns';
-import {
   selectDonorCode,
   selectError,
   selectCurrentlyLoadedDonor
@@ -48,30 +44,12 @@ import {
 import {
   UNICEF_USER_ROLE
 } from '../lib/constants'
-import {
-  REPORT_END_DATE_BEFORE_FIELD,
-  REPORT_END_DATE_AFTER_FIELD,
-  DATE_FORMAT
-} from 'pages/reports/search-constants';
 
-function getInitialSearchReportsFilterDates() {
-  const today = new Date();
-  const lastYearAfterDate = subYears(today, 1);
-  return {
-    [REPORT_END_DATE_AFTER_FIELD]: format(lastYearAfterDate, DATE_FORMAT),
-    [REPORT_END_DATE_BEFORE_FIELD]: format(today, DATE_FORMAT)
-  }
-}
-
-function* getInitialSearchReports(params, filtersGetter) {
-  const defaultFilters = filtersGetter();
+function* getInitialSearchReports(params) {
   let result = {};
   try {
     result = yield call(
-      fetchSearchReports, {
-        ...params,
-        ...defaultFilters
-      }
+      fetchSearchReports, params
     )
   } catch (err) {
     yield put(setError(err));
@@ -96,7 +74,7 @@ function* getSearchReports(params) {
   // this is default / initial load only
   if (!currentlyLoadedDonor || currentlyLoadedDonor != params.donor_code) {
     yield put(setCurrentlyLoadedDonor(params.donor_code))
-    const searchReports = yield call(getInitialSearchReports, params, getInitialSearchReportsFilterDates);
+    const searchReports = yield call(getInitialSearchReports, params);
     return searchReports;
   }
   const reportYear = yield select(selectReportYear);

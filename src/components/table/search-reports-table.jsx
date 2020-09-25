@@ -22,6 +22,7 @@ import {
   BACKEND_REPORTS_FIELDS,
   EXTERNAL_REF_GRANT_FIELD
 } from '../../pages/reports/constants';
+import TablePaginationActions from './table-pagination-actions';
 
 export function getRecipientOfficeStr(report) {
   const recipientOffices = report.recipient_office || [];
@@ -160,6 +161,7 @@ export default function ReportsTable() {
           }}
 
           onChangePage={handleChangePage}
+          ActionsComponent={TablePaginationActions}
         // onChangeRowsPerPage={handleChangeRowsPerPage}
         />
         {/* <DocViewer fileType={docFileType} filePath={doc} /> */}

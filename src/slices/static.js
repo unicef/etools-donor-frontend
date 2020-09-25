@@ -10,7 +10,7 @@ export const staticAssetsInitialState = {
   rp_status: [],
   donor_document: [],
   donor_reporting_category: [],
-  source_id: []
+  source_id: {}
 };
 
 const staticAssetsSlice = createSlice({
