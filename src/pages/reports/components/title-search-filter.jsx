@@ -9,11 +9,12 @@ export default function TitleSearchFilter({ value = '', onChange, ...props }) {
   return (
     <FormControl className={classes.formControl} {...props}>
       <TextField
-        placeholder="Search title"
+        placeholder="Search Filename"
         className={classes.input}
         inputProps={{
           'aria-label': 'description'
         }}
+        label="Filename"
         onChange={onChange}
         value={value}
       />

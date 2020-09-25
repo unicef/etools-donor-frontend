@@ -42,7 +42,7 @@ export default function SearchableDropdownFilterFactory(selector, label, getValu
             onChange(getValueFromObj(newValue));
           }}
           classes={classes2}
-          renderInput={params => <TextField {...params} label={label} margin="normal" fullWidth />}
+          renderInput={params => <TextField className={classes.input} {...params} label={label} margin="normal" fullWidth />}
           {...props}
         />
       </FormControl>

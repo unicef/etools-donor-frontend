@@ -68,7 +68,7 @@ const useFilterStyles = makeStyles(theme =>
     },
     formControl: {
       width: '100%',
-      marginTop: `-${theme.spacing(2)}px`
+      // marginTop: `-${theme.spacing(2)}px`
     },
     formControlLabel: {
       left: theme.spacing(1)

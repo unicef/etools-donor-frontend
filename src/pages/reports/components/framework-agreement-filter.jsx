@@ -15,6 +15,7 @@ export default function FrameworkAgreementFilter({ value = '', onChange, ...prop
           'aria-label': 'framework'
         }}
         onChange={onChange}
+        label="Search framework agreement"
         value={value}
       />
     </FormControl>
