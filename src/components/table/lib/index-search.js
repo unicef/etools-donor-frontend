@@ -92,7 +92,7 @@ export const useTable = (defaultOrderBy = '') => {
     const paramsObjNext = getParamsObj(next);
     const paramsObjPrev = prev ? getParamsObj(prev) : '';
     (newPage + 1) > page ? dispatch(onFetchSearchReports(paramsObjNext)) : dispatch(onFetchSearchReports(paramsObjPrev))
-    setPage(newPage + 1)
+    setPage(newPage)
   };
 
   const handleChangeRowsPerPage = event => {
