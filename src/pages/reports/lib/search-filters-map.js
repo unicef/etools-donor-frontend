@@ -53,6 +53,12 @@ import {
 } from 'selectors/ui-flags';
 
 export const FILTERS_MAP = {
+  [FRAMEWORK_FIELD]: {
+    label: 'Framework Agreement',
+    Component: FrameworkAgreementFilter,
+    gridSize: 2
+  },
+
   [GRANT_FIELD]: {
     label: 'Grant',
     Component: GrantsFilter,
@@ -65,15 +71,31 @@ export const FILTERS_MAP = {
     pageName: SEARCH_REPORTS
   },
 
+  [REPORT_CATEGORY_FIELD]: {
+    label: 'Report Category',
+    Component: ReportCategoryFilter
+  },
+
+  [REPORT_GROUP_FIELD]: {
+    label: 'Report Group',
+    Component: reportingGroupFilter,
+    permissionGroup: UNICEF_USER_ROLE,
+    pageName: SEARCH_REPORTS
+  },
+
+  [REPORT_TYPE_FIELD]: {
+    label: 'Report Type',
+    Component: ReportTypeFilter
+  },
+
+  [RECIPIENT_OFFICE_FIELD]: {
+    label: 'Recipient Office',
+    Component: RecipientOfficeFilter
+  },
+
   [TITLE_FIELD]: {
     label: 'Title',
     Component: TitleSearchFilter,
-    gridSize: 2
-  },
-
-  [FRAMEWORK_FIELD]: {
-    label: 'Framework Agreement',
-    Component: FrameworkAgreementFilter,
     gridSize: 2
   },
 
@@ -96,21 +118,6 @@ export const FILTERS_MAP = {
     gridSize: 2
   },
 
-  [REPORT_TYPE_FIELD]: {
-    label: 'Report Type',
-    Component: ReportTypeFilter
-  },
-
-  [REPORT_CATEGORY_FIELD]: {
-    label: 'Report Category',
-    Component: ReportCategoryFilter
-  },
-
-  [RECIPIENT_OFFICE_FIELD]: {
-    label: 'Recipient Office',
-    Component: RecipientOfficeFilter
-  },
-
   [REPORT_END_DATE_BEFORE_FIELD]: {
     label: 'Report End Before Date',
     Component: ReportEndDateBeforeFilter
@@ -119,13 +126,6 @@ export const FILTERS_MAP = {
   [REPORT_END_DATE_AFTER_FIELD]: {
     label: 'Report End After Date',
     Component: ReportEndDateAfterFilter
-  },
-
-  [REPORT_GROUP_FIELD]: {
-    label: 'Report Group',
-    Component: reportingGroupFilter,
-    permissionGroup: UNICEF_USER_ROLE,
-    pageName: SEARCH_REPORTS
   },
 
   [REPORT_GENERATED_FIELD]: {
