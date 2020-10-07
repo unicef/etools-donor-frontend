@@ -1,10 +1,10 @@
 export const BACKEND_REPORTS_FIELDS = {
   title: 'title',
-  recipientOffice: 'recipient_office',
   grant: 'grant_number',
+  donorReportCategory: 'donor_report_category',
+  reportGroup: 'report_group',
   reportType: 'report_type',
-  reportEndDate: 'report_end_date',
-  grantExpiryDate: 'grant_expiry_date'
+  recipientOffice: 'recipient_office',
 };
 
 export const BACKEND_THEMATIC_FIELDS = {
