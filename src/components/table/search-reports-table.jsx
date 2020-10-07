@@ -16,7 +16,7 @@ import EnhancedTableToolbar from './table-toolbar';
 import EnhancedTableHead from './table-head';
 import { selectSearchReports } from 'selectors/collections';
 import { usePermissions } from 'components/PermissionRedirect';
-import { useTable, getDisplayDate, stableSort, getSorting } from './lib/index-search';
+import { useTable, stableSort, getSorting } from './lib/index-search';
 import clsx from 'clsx';
 import {
   BACKEND_REPORTS_FIELDS,
