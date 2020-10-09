@@ -11,7 +11,7 @@ import {
   TITLE_FIELD,
   FRAMEWORK_FIELD,
   EXTERNAL_REF_GRANT_FIELD,
-  REPORT_GROUP_FIELD,
+  DONOR_DOCUMENT_FIELD,
   REPORT_GENERATED_FIELD,
   THEME_FIELD
 } from '../search-constants';
@@ -37,7 +37,7 @@ import GrantsFilter from '../components/grants-filter';
 import ExternalGrantsFilter from '../components/external-grants-filter';
 import TitleSearchFilter from '../components/title-search-filter';
 import FrameworkAgreementFilter from '../components/framework-agreement-filter';
-import reportingGroupFilter from '../components/reporting-group-filter';
+import donorDocumentFilter from '../components/donor-document-filter';
 import {
   UNICEF_USER_ROLE,
   THEMATIC_REPORTS,
@@ -76,9 +76,9 @@ export const FILTERS_MAP = {
     Component: ReportCategoryFilter
   },
 
-  [REPORT_GROUP_FIELD]: {
+  [DONOR_DOCUMENT_FIELD]: {
     label: 'Document Type',
-    Component: reportingGroupFilter,
+    Component: donorDocumentFilter,
     permissionGroup: UNICEF_USER_ROLE,
     pageName: SEARCH_REPORTS
   },

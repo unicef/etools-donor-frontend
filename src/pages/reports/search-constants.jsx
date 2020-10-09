@@ -3,6 +3,7 @@ export const BACKEND_REPORTS_FIELDS = {
   recipientOffice: 'recipient_office',
   grant: 'grant_number',
   reportType: 'report_type',
+  donorDocument: 'donor_document',
   reportEndDate: 'report_end_date',
   grantExpiryDate: 'grant_expiry_date'
 };
