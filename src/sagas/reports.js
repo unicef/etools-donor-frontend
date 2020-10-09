@@ -55,7 +55,7 @@ import {
   DATE_FORMAT
 } from 'pages/reports/constants';
 import {
-  THEMATIC_REPORTS,
+  THEMATIC_GRANTS,
   REPORTS
 } from 'lib/constants';
 import {
@@ -166,7 +166,7 @@ function* getCallerFunc(payload) {
   };
 
   switch (reportPageName) {
-    case THEMATIC_REPORTS:
+    case THEMATIC_GRANTS:
       result.caller = getThematicReports;
       break;
     case REPORTS: {

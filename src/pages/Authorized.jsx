@@ -6,7 +6,7 @@ import { Route } from 'react-router-dom';
 
 import { selectUserProfileDonorId } from 'selectors/ui-flags';
 import { usePermissions } from 'components/PermissionRedirect';
-import { THEMATIC_REPORTS_PATH } from 'lib/constants';
+import { THEMATIC_GRANTS_PATH } from 'lib/constants';
 import DonorsList from './donors-list';
 import UsersManagement from './users-portal';
 import { setAssignedRole } from '../slices/ui'
@@ -43,7 +43,7 @@ export function ProtectedRouteReportPage({ children, ...rest }) {
       render={({ match }) => {
         const { donorId } = match.params;
         const { path } = match;
-        const thematicPath = path === THEMATIC_REPORTS_PATH;
+        const thematicPath = path === THEMATIC_GRANTS_PATH;
         const unassignedDonorAttempt = usersDonor ? Boolean(
           usersDonor !== Number(donorId) && !canViewDonors && !thematicPath
         ) : Boolean(!canViewDonors);
@@ -66,8 +66,8 @@ export function ProtectedRouteUserManagement({ ...rest }) {
         ) : isDonorAdmin || (donorId && isSuperUser) ? (
           <UsersManagement />
         ) : (
-          <Redirect to="/not-found" />
-        );
+              <Redirect to="/not-found" />
+            );
       }}
     />
   );
@@ -81,5 +81,5 @@ UnassignedDonor.propTypes = ProtectedRouteProps;
 ProtectedRouteDonorsList.propTypes = ProtectedRouteProps;
 ProtectedRouteReportPage.propTypes = ProtectedRouteProps;
 ProtectedRouteUserManagement.propTypes = {
-  rest: function() {}
+  rest: function () { }
 };

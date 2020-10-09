@@ -40,7 +40,7 @@ import FrameworkAgreementFilter from '../components/framework-agreement-filter';
 import reportingGroupFilter from '../components/reporting-group-filter';
 import {
   UNICEF_USER_ROLE,
-  THEMATIC_REPORTS,
+  THEMATIC_GRANTS,
   SEARCH_REPORTS
 } from 'lib/constants';
 import ReportGeneratedFilter from '../components/report-generated-filter';
@@ -138,7 +138,7 @@ export const FILTERS_MAP = {
   [THEME_FIELD]: {
     label: 'Theme',
     Component: ThemeFilter,
-    pageName: THEMATIC_REPORTS
+    pageName: THEMATIC_GRANTS
   }
 };
 

@@ -6,7 +6,7 @@ import ReportsFilter from 'pages/reports/components/reports-filters-root';
 import ReportsTable from 'components/table/reports-table';
 import { selectPageName } from 'selectors/ui-flags';
 import { initCertifiedReportsPage, initThematicReportsPage } from 'actions';
-import { THEMATIC_REPORTS, REPORTS } from 'lib/constants';
+import { THEMATIC_GRANTS, REPORTS } from 'lib/constants';
 import { onReceiveReports } from 'slices/reports';
 
 function useInitThematicReports(dispatch) {
@@ -32,7 +32,7 @@ const useInitPage = pageName => {
   const { donorId } = useParams();
 
   switch (pageName) {
-    case THEMATIC_REPORTS:
+    case THEMATIC_GRANTS:
       return useInitThematicReports(dispatch);
     case REPORTS:
       return useInitCertifiedReports(dispatch, donorId);

@@ -41,7 +41,7 @@ import reportingGroupFilter from '../components/reporting-group-filter';
 import {
   UNICEF_USER_ROLE,
   REPORTS,
-  THEMATIC_REPORTS
+  THEMATIC_GRANTS
 } from 'lib/constants';
 import ReportGeneratedFilter from '../components/report-generated-filter';
 import ThemeFilter from '../components/theme-filter';
@@ -140,7 +140,7 @@ export const FILTERS_MAP = {
   [THEME_FIELD]: {
     label: 'Theme',
     Component: ThemeFilter,
-    pageName: THEMATIC_REPORTS
+    pageName: THEMATIC_GRANTS
   }
 };
 

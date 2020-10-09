@@ -13,7 +13,7 @@ import {
 
 import DescriptionIcon from '@material-ui/icons/Description';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { REPORTS, SEARCH_REPORTS, THEMATIC_REPORTS, USERS_PORTAL } from '../lib/constants';
+import { SEARCH_REPORTS, POOLED_GRANTS, THEMATIC_GRANTS, USERS_PORTAL } from '../lib/constants';
 import { selectMenuBarPage, selectAssignedRole } from 'selectors/ui-flags';
 import { menuItemSelected } from 'slices/ui';
 import { usePermissions } from './PermissionRedirect';
@@ -24,7 +24,7 @@ export const useNav = () => {
 
   const handleNav = page => () => {
     dispatch(menuItemSelected(page));
-    if (page === REPORTS || page === SEARCH_REPORTS) {
+    if (page === SEARCH_REPORTS) {
       history.push('/');
     } else {
       history.push(`/${page}`);
@@ -47,10 +47,6 @@ export default function ConnectedDrawer() {
   const isAssignedRole = useSelector(selectAssignedRole);
 
   useEffect(() => {
-    dispatch(menuItemSelected(REPORTS));
-  }, []);
-
-  useEffect(() => {
     dispatch(menuItemSelected(SEARCH_REPORTS));
   }, []);
 
@@ -66,23 +62,12 @@ export default function ConnectedDrawer() {
     >
       <Box className={classes.toolbar} />
       <List>
-        <ListItem selected={navSelected(REPORTS)} onClick={handleNav(REPORTS)} button>
+        {/* <ListItem selected={navSelected(REPORTS)} onClick={handleNav(REPORTS)} button>
           <ListItemIcon>
             <DescriptionIcon />
           </ListItemIcon>
           <ListItemText primary="Reports" />
-        </ListItem>
-
-        <ListItem
-          selected={navSelected(THEMATIC_REPORTS)}
-          onClick={handleNav(THEMATIC_REPORTS)}
-          button
-        >
-          <ListItemIcon>
-            <DescriptionIcon />
-          </ListItemIcon>
-          <ListItemText primary="Thematic Reports" />
-        </ListItem>
+        </ListItem> */}
 
         <ListItem
           selected={navSelected(SEARCH_REPORTS)}
@@ -92,7 +77,29 @@ export default function ConnectedDrawer() {
           <ListItemIcon>
             <DescriptionIcon />
           </ListItemIcon>
-          <ListItemText primary="Search Reports" />
+          <ListItemText primary="Reports" />
+        </ListItem>
+
+        <ListItem
+          selected={navSelected(POOLED_GRANTS)}
+          onClick={handleNav(POOLED_GRANTS)}
+          button
+        >
+          <ListItemIcon>
+            <DescriptionIcon />
+          </ListItemIcon>
+          <ListItemText primary="Pooled Grants" />
+        </ListItem>
+
+        <ListItem
+          selected={navSelected(THEMATIC_GRANTS)}
+          onClick={handleNav(THEMATIC_GRANTS)}
+          button
+        >
+          <ListItemIcon>
+            <DescriptionIcon />
+          </ListItemIcon>
+          <ListItemText primary="Thematic Grants" />
         </ListItem>
 
         {hasAccessUserManagement && (
