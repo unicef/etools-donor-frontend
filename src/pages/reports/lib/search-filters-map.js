@@ -77,7 +77,7 @@ export const FILTERS_MAP = {
   },
 
   [REPORT_GROUP_FIELD]: {
-    label: 'Report Group',
+    label: 'Document Type',
     Component: reportingGroupFilter,
     permissionGroup: UNICEF_USER_ROLE,
     pageName: SEARCH_REPORTS

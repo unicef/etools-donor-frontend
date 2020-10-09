@@ -33,7 +33,7 @@ const certifiedReportsTableHeadings = [
   { id: BACKEND_REPORTS_FIELDS['title'], label: 'Filename', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['grant'], label: 'Grant', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['donorReportCategory'], label: 'Report Category', sortable: true },
-  { id: BACKEND_REPORTS_FIELDS['reportGroup'], label: 'Report Group', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['reportGroup'], label: 'Document Type', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['reportType'], label: 'Report Type', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['recipientOffice'], label: 'Recipient Office', sortable: true },
 ];
