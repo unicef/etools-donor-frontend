@@ -151,7 +151,7 @@ export default function ReportsTable() {
           rowsPerPageOptions={[10]}
           component="div"
           count={data.total_rows || 0}
-          rowsPerPage={10}
+          rowsPerPage={25}
           page={page}
           backIconButtonProps={{
             'aria-label': 'previous page'
