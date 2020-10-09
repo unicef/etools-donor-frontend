@@ -33,7 +33,7 @@ const certifiedReportsTableHeadings = [
   { id: BACKEND_REPORTS_FIELDS['title'], label: 'Filename', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['grant'], label: 'Grant', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['donorReportCategory'], label: 'Report Category', sortable: true },
-  { id: BACKEND_REPORTS_FIELDS['reportGroup'], label: 'Report Group', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['reportGroup'], label: 'Document Type', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['reportType'], label: 'Report Type', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['recipientOffice'], label: 'Recipient Office', sortable: true },
 ];
@@ -151,7 +151,7 @@ export default function ReportsTable() {
           rowsPerPageOptions={[10]}
           component="div"
           count={data.total_rows || 0}
-          rowsPerPage={10}
+          rowsPerPage={25}
           page={page}
           backIconButtonProps={{
             'aria-label': 'previous page'
