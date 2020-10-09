@@ -5,7 +5,6 @@ import {
 export const staticAssetsInitialState = {
   years: [],
   report_type: [],
-  reporting_group: [],
   regenerated: [],
   rp_status: [],
   donor_document: [],
