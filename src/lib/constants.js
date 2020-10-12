@@ -43,7 +43,7 @@ export const FORM_CONFIG = {
     label: 'Recertified'
   },
   donorDocument: {
-    label: 'Donor Document'
+    label: 'Document Type'
   },
   offices: {
     label: 'Recipient Office'

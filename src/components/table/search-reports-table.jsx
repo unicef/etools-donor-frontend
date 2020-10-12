@@ -33,7 +33,7 @@ const certifiedReportsTableHeadings = [
   { id: BACKEND_REPORTS_FIELDS['title'], label: 'Filename', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['grant'], label: 'Grant', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['donorReportCategory'], label: 'Report Category', sortable: true },
-  { id: BACKEND_REPORTS_FIELDS['reportGroup'], label: 'Document Type', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['donorDocument'], label: 'Document Type', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['reportType'], label: 'Report Type', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['recipientOffice'], label: 'Recipient Office', sortable: true },
 ];
@@ -126,9 +126,9 @@ export default function ReportsTable() {
                           {row.donor_report_category}
                         </TableCell>
                       </Tooltip>
-                      <Tooltip title={row.report_group ? row.report_group : ''}>
+                      <Tooltip title={row.donor_document ? row.donor_document : ''}>
                         <TableCell className={classes.cell} align="left">
-                          {row.report_group}
+                          {row.donor_document}
                         </TableCell>
                       </Tooltip>
                       <Tooltip title={row.report_type ? row.report_type : ''}>
