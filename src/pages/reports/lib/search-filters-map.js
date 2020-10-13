@@ -66,7 +66,7 @@ export const FILTERS_MAP = {
   },
 
   [EXTERNAL_REF_GRANT_FIELD]: {
-    label: 'External Reference Grant',
+    label: 'External Reference No',
     Component: ExternalGrantsFilter,
     pageName: SEARCH_REPORTS
   },

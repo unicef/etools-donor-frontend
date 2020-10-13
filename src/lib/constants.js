@@ -4,7 +4,7 @@ export const FORM_CONFIG = {
     label: 'Grant'
   },
   externalGrant: {
-    label: 'External Reference Grants'
+    label: 'External Reference No'
   },
   theme: {
     label: 'Theme'
