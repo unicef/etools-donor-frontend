@@ -4,7 +4,7 @@ export const FORM_CONFIG = {
     label: 'Grant'
   },
   externalGrant: {
-    label: 'External Reference Grants'
+    label: 'External Reference No'
   },
   theme: {
     label: 'Theme'
@@ -52,14 +52,17 @@ export const FORM_CONFIG = {
 
 export const USERS_PORTAL = 'users-portal';
 export const REPORTS = 'reports';
-export const SEARCH_REPORTS = 'search-reports';
-export const THEMATIC_REPORTS = 'thematic-reports';
+export const SEARCH_REPORTS = 'reports';
+export const THEMATIC_GRANTS = 'thematic-grants';
+export const POOLED_GRANTS = 'pooled-grants';
 export const USERS_PORTAL_PATH = `/${USERS_PORTAL}`;
 export const REPORTS_PATH = `/${REPORTS}`;
 export const SEARCH_REPORTS_PATH = `/${SEARCH_REPORTS}`;
 
-export const TABLE_PAGES = [REPORTS, THEMATIC_REPORTS, USERS_PORTAL];
-export const THEMATIC_REPORTS_PATH = `/${THEMATIC_REPORTS}`;
+// export const TABLE_PAGES = [REPORTS, THEMATIC_GRANTS, USERS_PORTAL];
+export const TABLE_PAGES = [SEARCH_REPORTS, POOLED_GRANTS, THEMATIC_GRANTS, USERS_PORTAL];
+export const THEMATIC_GRANTS_PATH = `/${THEMATIC_GRANTS}`;
+export const POOLED_GRANTS_PATH = `/${POOLED_GRANTS}`;
 export const BACKEND_PROPERTIES_USER_LAST_LOGIN = 'user_last_login';
 export const BACKEND_PROPERTIES_USER_FIRST_NAME = 'user_first_name';
 export const BACKEND_PROPERTIES_USER_LAST_NAME = 'user_last_name';
@@ -71,13 +74,14 @@ export const UNICEF_USER_ROLE = 'UNICEF User';
 
 export const PAGE_TITLE_MAP = {
   [REPORTS]: 'Reports',
-  [THEMATIC_REPORTS]: 'Thematic Reports',
-  [SEARCH_REPORTS]: 'Search Reports'
+  [SEARCH_REPORTS]: 'Reports',
+  [THEMATIC_GRANTS]: 'Thematic Grants',
+  [POOLED_GRANTS]: 'Pooled Grants'
 };
 
 export const PAGE_DROPDOWN_NAME_MAP = {
-  [REPORTS]: 'year',
-  [THEMATIC_REPORTS]: 'theme'
+  [SEARCH_REPORTS]: 'year',
+  [THEMATIC_GRANTS]: 'theme'
 };
 
 export const USER_ROLE_PATCH_SUCCESS_MESSAGE = 'User role successfully changed.';

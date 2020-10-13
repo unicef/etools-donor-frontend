@@ -29,7 +29,7 @@ import {
 import {
   initDonorsList,
   initCertifiedReportsPage,
-  initThematicReportsPage,
+  initThematicGrantsPage,
   initSearchReportsPage
 } from 'actions';
 import {
@@ -194,7 +194,7 @@ function* fetchSearchReportFilterCollections(action) {
 
 export function* filtersSaga() {
   yield takeLatest(initCertifiedReportsPage.type, fetchReportFilterCollections);
-  yield takeLatest(initThematicReportsPage.type, fetchThematicFilterCollections);
+  yield takeLatest(initThematicGrantsPage.type, fetchThematicFilterCollections);
   yield takeLatest(initSearchReportsPage.type, fetchSearchReportFilterCollections);
 }
 
