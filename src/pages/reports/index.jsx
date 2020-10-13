@@ -5,13 +5,13 @@ import { useParams } from 'react-router';
 import ReportsFilter from 'pages/reports/components/reports-filters-root';
 import ReportsTable from 'components/table/reports-table';
 import { selectPageName } from 'selectors/ui-flags';
-import { initCertifiedReportsPage, initThematicReportsPage } from 'actions';
+import { initCertifiedReportsPage, initThematicGrantsPage } from 'actions';
 import { THEMATIC_GRANTS, REPORTS } from 'lib/constants';
 import { onReceiveReports } from 'slices/reports';
 
-function useInitThematicReports(dispatch) {
+function useInitThematicGrants(dispatch) {
   return () => {
-    dispatch(initThematicReportsPage());
+    dispatch(initThematicGrantsPage());
   };
 }
 
@@ -33,7 +33,7 @@ const useInitPage = pageName => {
 
   switch (pageName) {
     case THEMATIC_GRANTS:
-      return useInitThematicReports(dispatch);
+      return useInitThematicGrants(dispatch);
     case REPORTS:
       return useInitCertifiedReports(dispatch, donorId);
     default:

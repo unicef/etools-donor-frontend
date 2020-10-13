@@ -7,7 +7,6 @@ import AppToolbar from './App-Bar';
 import { DRAWER_WIDTH, USERS_PORTAL_PATH, THEMATIC_GRANTS, POOLED_GRANTS, SEARCH_REPORTS } from '../lib/constants';
 import DonorsList from 'pages/donors-list';
 import ContentHeader from './Content-Header';
-import ReportsPage from 'pages/reports';
 import SearchPage from 'pages/reports/search';
 import {
   ProtectedRouteDonorsList,
@@ -97,11 +96,11 @@ export default function MainAppBar() {
                   </ProtectedRouteReportPage>
 
                   <ProtectedRouteReportPage exact path={`/${POOLED_GRANTS}`}>
-                    <ReportsPage />
+                    <SearchPage />
                   </ProtectedRouteReportPage>
 
                   <ProtectedRouteReportPage exact path={`/${THEMATIC_GRANTS}`}>
-                    <ReportsPage />
+                    <SearchPage />
                   </ProtectedRouteReportPage>
 
                   {/* Optional donorId param here since donor list is not aware of what page

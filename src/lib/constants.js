@@ -52,7 +52,7 @@ export const FORM_CONFIG = {
 
 export const USERS_PORTAL = 'users-portal';
 export const REPORTS = 'reports';
-export const SEARCH_REPORTS = 'search-reports';
+export const SEARCH_REPORTS = 'reports';
 export const THEMATIC_GRANTS = 'thematic-grants';
 export const POOLED_GRANTS = 'pooled-grants';
 export const USERS_PORTAL_PATH = `/${USERS_PORTAL}`;

@@ -2,7 +2,7 @@ export const BACKEND_REPORTS_FIELDS = {
   title: 'title',
   grant: 'grant_number',
   donorReportCategory: 'donor_report_category',
-  reportGroup: 'report_group',
+  donorDocument: 'donor_document',
   reportType: 'report_type',
   recipientOffice: 'recipient_office',
 };
