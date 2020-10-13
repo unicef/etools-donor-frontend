@@ -1,4 +1,6 @@
-import { configureStore } from 'redux-starter-kit';
+import {
+  configureStore
+} from 'redux-starter-kit';
 import createSagaMiddleware from 'redux-saga';
 import rootReducer from './slices';
 import rootSaga from './sagas';
@@ -11,7 +13,10 @@ const middleware = [sagas];
 //   middleware.push(logger);
 // }
 
-const store = configureStore({ reducer: rootReducer, middleware });
+const store = configureStore({
+  reducer: rootReducer,
+  middleware
+});
 sagas.run(rootSaga);
 
 export default store;
