@@ -30,6 +30,7 @@ import {
   initDonorsList,
   initCertifiedReportsPage,
   initThematicGrantsPage,
+  initPooledGrantsPage,
   initSearchReportsPage
 } from 'actions';
 import {
@@ -192,9 +193,18 @@ function* fetchSearchReportFilterCollections(action) {
   ]);
 }
 
+function* fetchPooledFilterCollections(action) {
+  yield all([
+    call(handleFetchGrants, action),
+    call(handleFetchExternalGrants, action),
+    call(maybeFetch, handleFetchOffices, selectOffices)
+  ]);
+}
+
 export function* filtersSaga() {
   yield takeLatest(initCertifiedReportsPage.type, fetchReportFilterCollections);
   yield takeLatest(initThematicGrantsPage.type, fetchThematicFilterCollections);
+  yield takeLatest(initPooledGrantsPage.type, fetchPooledFilterCollections);
   yield takeLatest(initSearchReportsPage.type, fetchSearchReportFilterCollections);
 }
 

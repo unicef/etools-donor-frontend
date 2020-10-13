@@ -24,7 +24,7 @@ export const useNav = () => {
 
   const handleNav = page => () => {
     dispatch(menuItemSelected(page));
-    if (page === SEARCH_REPORTS) {
+    if (page === SEARCH_REPORTS || page === POOLED_GRANTS) {
       history.push('/');
     } else {
       history.push(`/${page}`);
