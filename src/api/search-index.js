@@ -3,6 +3,9 @@ import {
   getCookie
 } from './helpers';
 import Qs from 'qs';
+import {
+  REACT_APP_SEARCH_API
+} from './endpoints';
 
 const backendPath = '/api';
 
@@ -32,6 +35,6 @@ export async function get(uri, params = {}, options = getBaseOptions()) {
 }
 
 export async function fetchSearchReports(params) {
-  const computedUrl = process.env.REACT_APP_SEARCH_API;
+  const computedUrl = REACT_APP_SEARCH_API;
   return get(computedUrl, params);
 }
