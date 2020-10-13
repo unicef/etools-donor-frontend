@@ -8,7 +8,8 @@ import {
 import {
   selectDonorCode,
   selectError,
-  selectCurrentlyLoadedDonor
+  selectCurrentlyLoadedDonor,
+  selectMenuBarPage
 } from 'selectors/ui-flags';
 import {
   selectReportYear
@@ -17,7 +18,9 @@ import {
   removeEmpties
 } from 'lib/helpers';
 import {
-  fetchSearchReports
+  fetchSearchReports,
+  // fetchThematicGrants,
+  // fetchPooledGrants
 } from 'api/search-index';
 import {
   waitFor
@@ -42,6 +45,9 @@ import {
   selectStaticAssets
 } from 'selectors/collections';
 import {
+  SEARCH_REPORTS,
+  THEMATIC_GRANTS,
+  POOLED_GRANTS,
   UNICEF_USER_ROLE
 } from '../lib/constants'
 
@@ -58,41 +64,72 @@ function* getInitialSearchReports(params) {
 }
 
 function* getSearchReports(params) {
-  const staticAssets = yield select(selectStaticAssets)
+  const reportPageName = yield select(selectMenuBarPage);
   const currentlyLoadedDonor = yield select(selectCurrentlyLoadedDonor);
-  const userGroup = yield select(selectUserGroup);
-  const isUnicefUser = userGroup === UNICEF_USER_ROLE;
-  const sourceIds = staticAssets.source_id;
 
-  // add source_id params to search api call based on userGroup
-  const sourceId = isUnicefUser ? sourceIds.internal : sourceIds.external;
-  params = {
-    ...params,
-    source_id: sourceId
-  };
+  let searchReports = {};
 
-  // this is default / initial load only
-  if (!currentlyLoadedDonor || currentlyLoadedDonor != params.donor_code) {
-    yield put(setCurrentlyLoadedDonor(params.donor_code))
-    const searchReports = yield call(getInitialSearchReports, params);
-    return searchReports;
+  if (reportPageName == 'reports') {
+    // this is default / initial load only
+    if (!currentlyLoadedDonor || currentlyLoadedDonor != params.donor_code) {
+      yield put(setCurrentlyLoadedDonor(params.donor_code))
+      searchReports = yield call(getInitialSearchReports, params);
+      return searchReports;
+    }
+    const reportYear = yield select(selectReportYear);
+    searchReports = yield call(fetchSearchReports, params, reportYear);
+  } else {
+    searchReports = yield call(fetchSearchReports, params);
   }
-  const reportYear = yield select(selectReportYear);
-  const searchReports = yield call(fetchSearchReports, params, reportYear);
   return searchReports;
 }
 
+function* getSourceId() {
+  yield call(waitFor, selectStaticAssets)
+  const staticAssets = yield select(selectStaticAssets)
+  return staticAssets.source_id;
+}
+
 function* getSearchCallerFunc(payload) {
+  const reportPageName = yield select(selectMenuBarPage);
+  const userGroup = yield select(selectUserGroup);
+  const isUnicefUser = userGroup === UNICEF_USER_ROLE;
   let result = {
     params: {
       ...removeEmpties(payload)
     }
   };
 
-  yield call(waitFor, selectDonorCode);
-  const donorCode = yield select(selectDonorCode);
+  yield call(waitFor, getSourceId)
+  const sourceIds = yield getSourceId(reportPageName);
   result.caller = getSearchReports;
-  result.params.donor_code = donorCode;
+
+  switch (reportPageName) {
+    case THEMATIC_GRANTS: {
+      result.params.source_id = isUnicefUser ? sourceIds.thematic_internal : sourceIds.thematic_external;
+      if (process.env.NODE_ENV === 'development') {
+        result.params.source_id = isUnicefUser ? process.env.REACT_APP_DRP_SOURCE_ID_THEMATIC_EXTERNAL : process.env.REACT_APP_DRP_SOURCE_ID_THEMATIC_INTERNAL;
+      }
+      break;
+    }
+    case POOLED_GRANTS: {
+      result.params.source_id = isUnicefUser ? sourceIds.pooled_internal : sourceIds.pooled_external;
+      if (process.env.NODE_ENV === 'development') {
+        result.params.source_id = isUnicefUser ? process.env.REACT_APP_DRP_SOURCE_ID_POOL_EXTERNAL : process.env.REACT_APP_DRP_SOURCE_ID_POOL_INTERNAL;
+      }
+      break;
+    }
+    case SEARCH_REPORTS: {
+      yield call(waitFor, selectDonorCode);
+      const donorCode = yield select(selectDonorCode);
+      result.params.donor_code = donorCode;
+      result.params.source_id = isUnicefUser ? sourceIds.internal : sourceIds.external;
+      if (process.env.NODE_ENV === 'development') {
+        result.params.source_id = isUnicefUser ? process.env.REACT_APP_DRP_SOURCE_ID_EXTERNAL : process.env.REACT_APP_DRP_SOURCE_ID_INTERNAL;
+      }
+      break
+    }
+  }
   return result;
 }
 

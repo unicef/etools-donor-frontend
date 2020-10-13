@@ -24,7 +24,7 @@ import {
   EXTERNAL_REF_GRANT_FIELD
 } from '../../pages/reports/constants';
 import { selectMenuBarPage } from 'selectors/ui-flags';
-import { THEMATIC_REPORTS, REPORTS } from 'lib/constants';
+import { THEMATIC_GRANTS, REPORTS } from 'lib/constants';
 
 export function getRecipientOfficeStr(report) {
   const recipientOffices = report.recipient_office || [];
@@ -71,7 +71,7 @@ export default function ReportsTable() {
   const pageName = useSelector(selectMenuBarPage);
   const certifiedReports = pageName === REPORTS;
   const headCells =
-    pageName === THEMATIC_REPORTS
+    pageName === THEMATIC_GRANTS
       ? thematicReportsTableHeadings
       : getHeadCells(isUnicefUser, certifiedReportsTableHeadings);
 

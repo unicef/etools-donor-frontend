@@ -5,7 +5,7 @@ import {
   selectMenuBarPage
 } from './ui-flags';
 import {
-  THEMATIC_REPORTS
+  THEMATIC_GRANTS
 } from 'lib/constants';
 
 export const selectReportFilter = state => state.reportFilter;
@@ -23,7 +23,7 @@ export const selectTheme = createSelector(
 export const selectMandatoryFilterSelected = createSelector(
   [selectReportFilter, selectMenuBarPage],
   (filter, pageName) => {
-    if (pageName === THEMATIC_REPORTS) {
+    if (pageName === THEMATIC_GRANTS) {
       return Boolean(filter.theme);
     }
     return Boolean(filter.reportYear);

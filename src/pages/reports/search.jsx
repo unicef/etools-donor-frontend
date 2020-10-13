@@ -5,13 +5,19 @@ import { useParams } from 'react-router';
 import SearchReportsFilter from 'pages/reports/components/search-reports-filters-root';
 import SearchReportsTable from 'components/table/search-reports-table';
 import { selectPageName } from 'selectors/ui-flags';
-import { initSearchReportsPage } from 'actions';
+import { initSearchReportsPage, initThematicGrantsPage } from 'actions';
 import { onReceiveSearchReports } from 'slices/search-reports';
-import { SEARCH_REPORTS } from 'lib/constants';
+import { SEARCH_REPORTS, THEMATIC_GRANTS } from 'lib/constants';
 
 function useInitSearchReports(dispatch, donorId) {
   return () => {
     dispatch(initSearchReportsPage(donorId));
+  };
+}
+
+function useInitThematicReports(dispatch) {
+  return () => {
+    dispatch(initThematicGrantsPage());
   };
 }
 
@@ -26,6 +32,8 @@ const useInitPage = pageName => {
   switch (pageName) {
     case SEARCH_REPORTS:
       return useInitSearchReports(dispatch, donorId);
+    case THEMATIC_GRANTS:
+      return useInitThematicReports(dispatch);
     default:
       return useDefaultHook;
   }

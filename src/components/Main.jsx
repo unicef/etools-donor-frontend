@@ -4,10 +4,9 @@ import { Route } from 'react-router-dom';
 import { makeStyles, createStyles, Box } from '@material-ui/core';
 import ConnectedDrawer from './Drawer';
 import AppToolbar from './App-Bar';
-import { DRAWER_WIDTH, USERS_PORTAL_PATH, REPORTS, THEMATIC_REPORTS, SEARCH_REPORTS } from '../lib/constants';
+import { DRAWER_WIDTH, USERS_PORTAL_PATH, THEMATIC_GRANTS, POOLED_GRANTS, SEARCH_REPORTS } from '../lib/constants';
 import DonorsList from 'pages/donors-list';
 import ContentHeader from './Content-Header';
-import ReportsPage from 'pages/reports';
 import SearchPage from 'pages/reports/search';
 import {
   ProtectedRouteDonorsList,
@@ -88,17 +87,22 @@ export default function MainAppBar() {
                     <DonorsList />
                   </ProtectedRouteDonorsList>
 
-                  <ProtectedRouteReportPage exact path={`/${REPORTS}/:donorId?`}>
+                  {/* <ProtectedRouteReportPage exact path={`/${REPORTS}/:donorId?`}>
                     <ReportsPage />
-                  </ProtectedRouteReportPage>
-
-                  <ProtectedRouteReportPage exact path={`/${THEMATIC_REPORTS}`}>
-                    <ReportsPage />
-                  </ProtectedRouteReportPage>
+                  </ProtectedRouteReportPage> */}
 
                   <ProtectedRouteReportPage exact path={`/${SEARCH_REPORTS}/:donorId?`}>
                     <SearchPage />
                   </ProtectedRouteReportPage>
+
+                  <ProtectedRouteReportPage exact path={`/${POOLED_GRANTS}`}>
+                    <SearchPage />
+                  </ProtectedRouteReportPage>
+
+                  <ProtectedRouteReportPage exact path={`/${THEMATIC_GRANTS}`}>
+                    <SearchPage />
+                  </ProtectedRouteReportPage>
+
                   {/* Optional donorId param here since donor list is not aware of what page
               to link to per donor and only super users can choose donor for user management */}
                   <ProtectedRouteUserManagement path={`${USERS_PORTAL_PATH}/:donorId?`} />
