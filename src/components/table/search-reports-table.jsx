@@ -26,7 +26,7 @@ import {
 } from '../../pages/reports/constants';
 import TablePaginationActions from './table-pagination-actions';
 import { selectMenuBarPage } from 'selectors/ui-flags';
-import { THEMATIC_GRANTS } from 'lib/constants';
+import { POOLED_GRANTS, THEMATIC_GRANTS } from 'lib/constants';
 
 export function getRecipientOfficeStr(report) {
   const recipientOffices = report.recipient_office || [];
@@ -63,8 +63,18 @@ const internalExternalCell = {
   sortable: true
 }
 
+const donorCell = {
+  id: 'donor_code',
+  label: 'Donor',
+  sortable: true
+}
+
 // inserts extra column for non-unicef users as per requirements
-const getHeadCells = (isUnicefUser, cells) => {
+const getHeadCells = (isUnicefUser, cells, pooledGrants) => {
+
+  if (pooledGrants) {
+    cells = [...cells.slice(0, 2), donorCell, ...cells.slice(2)]
+  }
   if (!isUnicefUser) {
     return [...cells.slice(0, 2), externalRefCell, ...cells.slice(2)];
   } else if (isUnicefUser) {
@@ -81,9 +91,10 @@ export default function ReportsTable() {
   const pageName = useSelector(selectMenuBarPage);
   const rows = data.items || [];
   const certifiedReports = pageName !== THEMATIC_GRANTS;
+  const pooledGrants = pageName === POOLED_GRANTS;
   const headCells = pageName === THEMATIC_GRANTS
-    ? getHeadCells(isUnicefUser, thematicReportsTableHeadings)
-    : getHeadCells(isUnicefUser, certifiedReportsTableHeadings);
+    ? getHeadCells(isUnicefUser, thematicReportsTableHeadings, pooledGrants)
+    : getHeadCells(isUnicefUser, certifiedReportsTableHeadings, pooledGrants);
 
   const {
     orderBy,
@@ -141,6 +152,11 @@ export default function ReportsTable() {
                           {row.grant_number}
                         </TableCell>
                       </Tooltip>
+                      {pooledGrants && (
+                        <Tooltip title={row.donor ? row.donor : ''}>
+                          <TableCell className={classes.cell} align="left">{row.donor}</TableCell>
+                        </Tooltip>
+                      )}
                       {shouldShowExternalGrants && (
                         <Tooltip title={row.external_reference ? row.external_reference : ''}>
                           <TableCell className={classes.cell} align="left">{row.external_reference}</TableCell>
