@@ -60,7 +60,7 @@ export const FILTERS_MAP = {
   },
 
   [EXTERNAL_REF_GRANT_FIELD]: {
-    label: 'External Reference No',
+    label: 'Partner Reference No',
     Component: ExternalGrantsFilter
   },
 
@@ -102,7 +102,8 @@ export const FILTERS_MAP = {
     label: 'Filename',
     Component: TitleSearchFilter,
     gridSize: 2,
-    pageName: SEARCH_REPORTS
+    pageName: SEARCH_REPORTS,
+    permissionGroup: UNICEF_USER_ROLE
   },
 
   [GRANT_EXPIRY_BEFORE_FIELD]: {
@@ -134,7 +135,8 @@ export const FILTERS_MAP = {
   [GRANT_ISSUE_YEAR]: {
     label: 'Grant Issue Year',
     Component: GrantIssueYearFilter,
-    gridSize: 2
+    gridSize: 2,
+    permissionGroup: UNICEF_USER_ROLE
   },
 
   [REPORT_GENERATED_FIELD]: {
