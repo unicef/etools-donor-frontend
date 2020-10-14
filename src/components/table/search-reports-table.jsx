@@ -21,11 +21,12 @@ import clsx from 'clsx';
 import {
   BACKEND_REPORTS_FIELDS,
   BACKEND_THEMATIC_FIELDS,
-  EXTERNAL_REF_GRANT_FIELD
+  EXTERNAL_REF_GRANT_FIELD,
+  REPORT_GROUP_FIELD
 } from '../../pages/reports/constants';
 import TablePaginationActions from './table-pagination-actions';
 import { selectMenuBarPage } from 'selectors/ui-flags';
-import { THEMATIC_GRANTS } from 'lib/constants';
+import { POOLED_GRANTS, THEMATIC_GRANTS } from 'lib/constants';
 
 export function getRecipientOfficeStr(report) {
   const recipientOffices = report.recipient_office || [];
@@ -44,21 +45,40 @@ const certifiedReportsTableHeadings = [
 const thematicReportsTableHeadings = [
   { id: BACKEND_THEMATIC_FIELDS['title'], label: 'Filename', sortable: true },
   { id: BACKEND_THEMATIC_FIELDS['theme'], label: 'Theme', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['grant'], label: 'Grant', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['donorDocument'], label: 'Document Type', sortable: true },
   { id: BACKEND_THEMATIC_FIELDS['reportType'], label: 'Report Type', sortable: true },
-  { id: BACKEND_THEMATIC_FIELDS['reportEndDate'], label: 'Report End Date', sortable: true },
-  { id: BACKEND_THEMATIC_FIELDS['recipientOffice'], label: 'Recipient Office', sortable: true }
+  { id: BACKEND_THEMATIC_FIELDS['reportEndDate'], label: 'Report End Date', sortable: true }
 ];
 
 const externalRefCell = {
   id: EXTERNAL_REF_GRANT_FIELD,
-  label: 'External Ref No',
+  label: 'Partner Ref No',
   sortable: true
 };
 
+const internalExternalCell = {
+  id: REPORT_GROUP_FIELD,
+  label: 'Internal / External',
+  sortable: true
+}
+
+const donorCell = {
+  id: 'donor_code',
+  label: 'Donor',
+  sortable: true
+}
+
 // inserts extra column for non-unicef users as per requirements
-const getHeadCells = (isUnicefUser, cells) => {
+const getHeadCells = (isUnicefUser, cells, pooledGrants) => {
+
+  if (pooledGrants) {
+    cells = [...cells.slice(0, 2), donorCell, ...cells.slice(2)]
+  }
   if (!isUnicefUser) {
     return [...cells.slice(0, 2), externalRefCell, ...cells.slice(2)];
+  } else if (isUnicefUser) {
+    return [...cells, internalExternalCell]
   }
   return cells;
 };
@@ -71,9 +91,10 @@ export default function ReportsTable() {
   const pageName = useSelector(selectMenuBarPage);
   const rows = data.items || [];
   const certifiedReports = pageName !== THEMATIC_GRANTS;
+  const pooledGrants = pageName === POOLED_GRANTS;
   const headCells = pageName === THEMATIC_GRANTS
-    ? thematicReportsTableHeadings
-    : getHeadCells(isUnicefUser, certifiedReportsTableHeadings);
+    ? getHeadCells(isUnicefUser, thematicReportsTableHeadings, pooledGrants)
+    : getHeadCells(isUnicefUser, certifiedReportsTableHeadings, pooledGrants);
 
   const {
     orderBy,
@@ -126,11 +147,14 @@ export default function ReportsTable() {
                           </TableCell>
                         </Tooltip>
                       )}
-                      {certifiedReports && (
-                        <Tooltip title={row.grant_number ? row.grant_number : ''}>
-                          <TableCell className={classes.cell} align="left">
-                            {row.grant_number}
-                          </TableCell>
+                      <Tooltip title={row.grant_number ? row.grant_number : ''}>
+                        <TableCell className={classes.cell} align="left">
+                          {row.grant_number}
+                        </TableCell>
+                      </Tooltip>
+                      {pooledGrants && (
+                        <Tooltip title={row.donor ? row.donor : ''}>
+                          <TableCell className={classes.cell} align="left">{row.donor}</TableCell>
                         </Tooltip>
                       )}
                       {shouldShowExternalGrants && (
@@ -145,13 +169,11 @@ export default function ReportsTable() {
                           </TableCell>
                         </Tooltip>
                       )}
-                      {certifiedReports && (
-                        <Tooltip title={row.donor_document ? row.donor_document : ''}>
-                          <TableCell className={classes.cell} align="left">
-                            {row.donor_document}
-                          </TableCell>
-                        </Tooltip>
-                      )}
+                      <Tooltip title={row.donor_document ? row.donor_document : ''}>
+                        <TableCell className={classes.cell} align="left">
+                          {row.donor_document}
+                        </TableCell>
+                      </Tooltip>
                       <Tooltip title={row.report_type ? row.report_type : ''}>
                         <TableCell className={classes.cell} align="left">
                           {row.report_type}
@@ -164,11 +186,20 @@ export default function ReportsTable() {
                           </TableCell>
                         </Tooltip>
                       )}
-                      <Tooltip title={row.recipientOffice ? row.recipientOffice : ''}>
-                        <TableCell className={classes.cell} align="left">
-                          {row.recipient_office ? row.recipient_office.join(', ') : row.recipientOffice}
-                        </TableCell>
-                      </Tooltip>
+                      {certifiedReports && (
+                        <Tooltip title={row.recipientOffice ? row.recipientOffice : ''}>
+                          <TableCell className={classes.cell} align="left">
+                            {row.recipient_office ? row.recipient_office.join(', ') : row.recipientOffice}
+                          </TableCell>
+                        </Tooltip>
+                      )}
+                      {isUnicefUser && (
+                        <Tooltip title={row.report_group ? row.report_group : ''}>
+                          <TableCell className={classes.cell} align="left">
+                            {row.report_group}
+                          </TableCell>
+                        </Tooltip>
+                      )}
                     </TableRow>
                   );
                 })}

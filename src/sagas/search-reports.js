@@ -113,6 +113,9 @@ function* getSearchCallerFunc(payload) {
       break;
     }
     case POOLED_GRANTS: {
+      yield call(waitFor, selectDonorCode);
+      const donorCode = yield select(selectDonorCode);
+      result.params.donor_code = donorCode;
       result.params.source_id = isUnicefUser ? sourceIds.pool_internal : sourceIds.pool_external;
       if (process.env.NODE_ENV === 'development') {
         result.params.source_id = isUnicefUser ? process.env.REACT_APP_DRP_SOURCE_ID_POOL_EXTERNAL : process.env.REACT_APP_DRP_SOURCE_ID_POOL_INTERNAL;

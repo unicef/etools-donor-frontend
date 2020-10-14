@@ -95,17 +95,13 @@ export default function MainAppBar() {
                     <SearchPage />
                   </ProtectedRouteReportPage>
 
-                  <ProtectedRouteReportPage exact path={`/${POOLED_GRANTS}`}>
+                  <ProtectedRouteReportPage exact path={`/${POOLED_GRANTS}/:donorId?`}>
                     <SearchPage />
                   </ProtectedRouteReportPage>
 
                   <ProtectedRouteReportPage exact path={`/${THEMATIC_GRANTS}`}>
                     <SearchPage />
                   </ProtectedRouteReportPage>
-
-                  {/* Optional donorId param here since donor list is not aware of what page
-              to link to per donor and only super users can choose donor for user management */}
-                  <ProtectedRouteUserManagement path={`${USERS_PORTAL_PATH}/:donorId?`} />
 
                   {/* Optional donorId param here since donor list is not aware of what page
                   to link to per donor and only super users can choose donor for user management */}
