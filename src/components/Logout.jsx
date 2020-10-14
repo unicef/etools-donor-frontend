@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import { Paper, Box, makeStyles, createStyles } from '@material-ui/core';
+import { Paper, makeStyles, createStyles } from '@material-ui/core';
 import IconTextButton from './IconTextButton';
 import { Person, PowerSettingsNew as SignOut } from '@material-ui/icons';
 
@@ -33,30 +33,30 @@ export default function Logout({ onClose, logout }) {
   return viewProfile ? (
     <Redirect push to="/user" />
   ) : (
-    <Paper>
-      <div className={classes.root}>
-        <IconTextButton
-          icon={<Person />}
-          text={messages.profile}
-          onClick={openProfilePage}
-          textProps={{
-            type: 'body2'
-          }}
-        />
-      </div>
-      <div className={classes.root}>
-        <IconTextButton
-          className={classes.root}
-          icon={<SignOut />}
-          text={messages.signOut}
-          onClick={logout}
-          textProps={{
-            type: 'body2'
-          }}
-        />
-      </div>
-    </Paper>
-  );
+      <Paper>
+        <div className={classes.root}>
+          <IconTextButton
+            icon={<Person />}
+            text={messages.profile}
+            onClick={openProfilePage}
+            textProps={{
+              type: 'body2'
+            }}
+          />
+        </div>
+        <div className={classes.root}>
+          <IconTextButton
+            className={classes.root}
+            icon={<SignOut />}
+            text={messages.signOut}
+            onClick={logout}
+            textProps={{
+              type: 'body2'
+            }}
+          />
+        </div>
+      </Paper>
+    );
 }
 
 Logout.propTypes = {

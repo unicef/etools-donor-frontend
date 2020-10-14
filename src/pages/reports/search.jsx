@@ -5,9 +5,9 @@ import { useParams } from 'react-router';
 import SearchReportsFilter from 'pages/reports/components/search-reports-filters-root';
 import SearchReportsTable from 'components/table/search-reports-table';
 import { selectPageName } from 'selectors/ui-flags';
-import { initSearchReportsPage, initThematicGrantsPage } from 'actions';
+import { initSearchReportsPage, initPooledGrantsPage, initThematicGrantsPage } from 'actions';
 import { onReceiveSearchReports } from 'slices/search-reports';
-import { SEARCH_REPORTS, THEMATIC_GRANTS } from 'lib/constants';
+import { POOLED_GRANTS, SEARCH_REPORTS, THEMATIC_GRANTS } from 'lib/constants';
 
 function useInitSearchReports(dispatch, donorId) {
   return () => {
@@ -15,7 +15,13 @@ function useInitSearchReports(dispatch, donorId) {
   };
 }
 
-function useInitThematicReports(dispatch) {
+function useInitPooledGrants(dispatch, donorId) {
+  return () => {
+    dispatch(initPooledGrantsPage(donorId));
+  };
+}
+
+function useInitThematicGrants(dispatch) {
   return () => {
     dispatch(initThematicGrantsPage());
   };
@@ -32,8 +38,10 @@ const useInitPage = pageName => {
   switch (pageName) {
     case SEARCH_REPORTS:
       return useInitSearchReports(dispatch, donorId);
+    case POOLED_GRANTS:
+      return useInitPooledGrants(dispatch, donorId);
     case THEMATIC_GRANTS:
-      return useInitThematicReports(dispatch);
+      return useInitThematicGrants(dispatch);
     default:
       return useDefaultHook;
   }

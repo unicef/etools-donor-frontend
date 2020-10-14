@@ -6,7 +6,7 @@ import { Route } from 'react-router-dom';
 
 import { selectUserProfileDonorId } from 'selectors/ui-flags';
 import { usePermissions } from 'components/PermissionRedirect';
-import { THEMATIC_GRANTS_PATH, POOLED_GRANTS_PATH } from 'lib/constants';
+import { THEMATIC_GRANTS_PATH } from 'lib/constants';
 import DonorsList from './donors-list';
 import UsersManagement from './users-portal';
 import { setAssignedRole } from '../slices/ui'
@@ -44,9 +44,8 @@ export function ProtectedRouteReportPage({ children, ...rest }) {
         const { donorId } = match.params;
         const { path } = match;
         const thematicPath = path === THEMATIC_GRANTS_PATH;
-        const pooledPath = path === POOLED_GRANTS_PATH;
         const unassignedDonorAttempt = usersDonor ? Boolean(
-          usersDonor !== Number(donorId) && !canViewDonors && !thematicPath && !pooledPath
+          usersDonor !== Number(donorId) && !canViewDonors && !thematicPath
         ) : Boolean(!canViewDonors);
         return unassignedDonorAttempt ? <Redirect to="/not-found" /> : children;
       }}
