@@ -61,8 +61,7 @@ export const FILTERS_MAP = {
 
   [GRANT_FIELD]: {
     label: 'Grant',
-    Component: GrantsFilter,
-    pageName: SEARCH_REPORTS
+    Component: GrantsFilter
   },
 
   [EXTERNAL_REF_GRANT_FIELD]: {
@@ -79,8 +78,7 @@ export const FILTERS_MAP = {
   [DONOR_DOCUMENT_FIELD]: {
     label: 'Document Type',
     Component: donorDocumentFilter,
-    permissionGroup: UNICEF_USER_ROLE,
-    pageName: SEARCH_REPORTS
+    permissionGroup: UNICEF_USER_ROLE
   },
 
   [REPORT_TYPE_FIELD]: {
@@ -94,7 +92,7 @@ export const FILTERS_MAP = {
   },
 
   [TITLE_FIELD]: {
-    label: 'Title',
+    label: 'Filename',
     Component: TitleSearchFilter,
     gridSize: 2,
     permissionGroup: UNICEF_USER_ROLE

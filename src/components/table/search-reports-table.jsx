@@ -44,9 +44,10 @@ const certifiedReportsTableHeadings = [
 const thematicReportsTableHeadings = [
   { id: BACKEND_THEMATIC_FIELDS['title'], label: 'Filename', sortable: true },
   { id: BACKEND_THEMATIC_FIELDS['theme'], label: 'Theme', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['grant'], label: 'Grant', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['donorDocument'], label: 'Document Type', sortable: true },
   { id: BACKEND_THEMATIC_FIELDS['reportType'], label: 'Report Type', sortable: true },
-  { id: BACKEND_THEMATIC_FIELDS['reportEndDate'], label: 'Report End Date', sortable: true },
-  { id: BACKEND_THEMATIC_FIELDS['recipientOffice'], label: 'Recipient Office', sortable: true }
+  { id: BACKEND_THEMATIC_FIELDS['reportEndDate'], label: 'Report End Date', sortable: true }
 ];
 
 const externalRefCell = {
@@ -126,13 +127,11 @@ export default function ReportsTable() {
                           </TableCell>
                         </Tooltip>
                       )}
-                      {certifiedReports && (
-                        <Tooltip title={row.grant_number ? row.grant_number : ''}>
-                          <TableCell className={classes.cell} align="left">
-                            {row.grant_number}
-                          </TableCell>
-                        </Tooltip>
-                      )}
+                      <Tooltip title={row.grant_number ? row.grant_number : ''}>
+                        <TableCell className={classes.cell} align="left">
+                          {row.grant_number}
+                        </TableCell>
+                      </Tooltip>
                       {shouldShowExternalGrants && (
                         <Tooltip title={row.external_reference ? row.external_reference : ''}>
                           <TableCell className={classes.cell} align="left">{row.external_reference}</TableCell>
@@ -145,13 +144,11 @@ export default function ReportsTable() {
                           </TableCell>
                         </Tooltip>
                       )}
-                      {certifiedReports && (
-                        <Tooltip title={row.donor_document ? row.donor_document : ''}>
-                          <TableCell className={classes.cell} align="left">
-                            {row.donor_document}
-                          </TableCell>
-                        </Tooltip>
-                      )}
+                      <Tooltip title={row.donor_document ? row.donor_document : ''}>
+                        <TableCell className={classes.cell} align="left">
+                          {row.donor_document}
+                        </TableCell>
+                      </Tooltip>
                       <Tooltip title={row.report_type ? row.report_type : ''}>
                         <TableCell className={classes.cell} align="left">
                           {row.report_type}
@@ -164,11 +161,13 @@ export default function ReportsTable() {
                           </TableCell>
                         </Tooltip>
                       )}
-                      <Tooltip title={row.recipientOffice ? row.recipientOffice : ''}>
-                        <TableCell className={classes.cell} align="left">
-                          {row.recipient_office ? row.recipient_office.join(', ') : row.recipientOffice}
-                        </TableCell>
-                      </Tooltip>
+                      {certifiedReports && (
+                        <Tooltip title={row.recipientOffice ? row.recipientOffice : ''}>
+                          <TableCell className={classes.cell} align="left">
+                            {row.recipient_office ? row.recipient_office.join(', ') : row.recipientOffice}
+                          </TableCell>
+                        </Tooltip>
+                      )}
                     </TableRow>
                   );
                 })}
