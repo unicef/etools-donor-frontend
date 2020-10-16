@@ -194,9 +194,9 @@ export default function ReportsTable() {
                         </Tooltip>
                       )}
                       {isUnicefUser && (
-                        <Tooltip title={row.report_group === 'Grant Internal' ? row.report_group : ''}>
+                        <Tooltip title={row.report_group === 'Grant Internal' ? "Internal" : ''}>
                           <TableCell className={classes.cell} align="left">
-                            {row.report_group === 'Grant Internal' ? row.report_group : ''}
+                            {row.report_group === 'Grant Internal' ? "Internal" : ''}
                           </TableCell>
                         </Tooltip>
                       )}
