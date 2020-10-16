@@ -89,8 +89,7 @@ export const FILTERS_MAP = {
 
   [DONOR_DOCUMENT_FIELD]: {
     label: 'Document Type',
-    Component: donorDocumentFilter,
-    pageName: [SEARCH_REPORTS, POOLED_GRANTS]
+    Component: donorDocumentFilter
   },
 
   [RECIPIENT_OFFICE_FIELD]: {
