@@ -92,6 +92,7 @@ export default function ReportsTable() {
   const rows = data.items || [];
   const certifiedReports = pageName !== THEMATIC_GRANTS;
   const pooledGrants = pageName === POOLED_GRANTS;
+  const thematicGrants = pageName === THEMATIC_GRANTS;
   const headCells = pageName === THEMATIC_GRANTS
     ? getHeadCells(isUnicefUser, thematicReportsTableHeadings, pooledGrants)
     : getHeadCells(isUnicefUser, certifiedReportsTableHeadings, pooledGrants);
@@ -140,7 +141,7 @@ export default function ReportsTable() {
                           </Typography>
                         </Tooltip>
                       </TableCell>
-                      {row.theme && (
+                      {thematicGrants && (
                         <Tooltip title={row.theme ? row.theme : ''}>
                           <TableCell className={classes.cell} align="left">
                             {row.theme}
@@ -179,7 +180,7 @@ export default function ReportsTable() {
                           {row.report_type}
                         </TableCell>
                       </Tooltip>
-                      {row.theme && (
+                      {thematicGrants && (
                         <Tooltip title={row.report_end_date ? getDisplayDate(row.report_end_date) : ''}>
                           <TableCell className={classes.cell} align="left">
                             {getDisplayDate(row.report_end_date)}
