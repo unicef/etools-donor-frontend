@@ -14,7 +14,8 @@ import {
   REACT_APP_USER_STATIC_ENDPOINT,
   REACT_APP_PROFILE_ENDPOINT,
   REACT_APP_BUSINESS_AREA_ENDPOINT,
-  REACT_APP_REPORTS_ENDPOINT
+  REACT_APP_REPORTS_ENDPOINT,
+  REACT_APP_CONFIG_ENDPOINT
 } from './endpoints';
 
 const currentDate = () => {
@@ -138,6 +139,10 @@ export function getThemes() {
 
 export function getStaticAssets() {
   return get(REACT_APP_USER_STATIC_ENDPOINT);
+}
+
+export function getConfig() {
+  return get(REACT_APP_CONFIG_ENDPOINT);
 }
 
 export function getUserProfile() {
