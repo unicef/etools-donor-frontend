@@ -12,7 +12,8 @@ import {
   getExternalGrants,
   getThemes,
   getStaticAssets,
-  getOffices
+  getOffices,
+  getConfig
 } from 'api';
 
 import {
@@ -65,7 +66,8 @@ import {
   selectDonors,
   selectStaticAssets,
   selectThemeCollection,
-  selectOffices
+  selectOffices,
+  selectConfig
 } from 'selectors/collections';
 import {
   currentDonorSelected
@@ -73,6 +75,10 @@ import {
 import {
   UNICEF_USER_ROLE
 } from 'lib/constants';
+import {
+  configInitialState,
+  onReceiveConfig
+} from 'slices/config';
 
 function* handleFetchDonors() {
   try {
@@ -141,6 +147,21 @@ function* handleFetchStatic() {
   }
 }
 
+function* handleFetchConfig() {
+  const config = yield select(selectConfig);
+
+  if (!equals(config, configInitialState)) {
+    return;
+  }
+
+  try {
+    const configAssets = yield call(getConfig);
+    yield put(onReceiveConfig(configAssets));
+  } catch (err) {
+    yield put(setError(err));
+  }
+}
+
 // Encapsulate logic for grabbing the current donor and persisting to state
 // for easier access. Only UNICEF user or SuperUser can operate on any donor.
 function* handleCurrentDonor({
@@ -163,7 +184,7 @@ function* handleCurrentDonor({
 
 export function* donorsSaga() {
   yield takeLatest(initDonorsList.type, handleFetchDonors);
-  yield all([call(handleFetchStatic)])
+  yield all([call(handleFetchStatic), call(handleFetchConfig)])
 }
 
 export function* currentDonorSaga() {
