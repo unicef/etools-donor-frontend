@@ -59,7 +59,7 @@ const externalRefCell = {
 
 const internalExternalCell = {
   id: REPORT_GROUP_FIELD,
-  label: 'Internal / External',
+  label: 'Internal',
   sortable: true
 }
 
@@ -194,9 +194,9 @@ export default function ReportsTable() {
                         </Tooltip>
                       )}
                       {isUnicefUser && (
-                        <Tooltip title={row.report_group ? row.report_group : ''}>
+                        <Tooltip title={row.report_group === 'Grant Internal' ? row.report_group : ''}>
                           <TableCell className={classes.cell} align="left">
-                            {row.report_group}
+                            {row.report_group === 'Grant Internal' ? row.report_group : ''}
                           </TableCell>
                         </Tooltip>
                       )}
