@@ -12,3 +12,4 @@ export const REACT_APP_USER_STATIC_ENDPOINT = '/metadata/static/';
 export const REACT_APP_BUSINESS_AREA_ENDPOINT = '/roles/business-area/';
 export const REACT_APP_REPORTS_ENDPOINT = '/sharepoint/<envvar>/GLB-DRP/<folder>/caml/';
 export const REACT_APP_SEARCH_API = '/sharepoint/search/';
+export const REACT_APP_CONFIG_ENDPOINT = '/config/';

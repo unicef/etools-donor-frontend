@@ -19,12 +19,16 @@ import {
 import {
   searchReports
 } from './search-reports';
+import {
+  config
+} from './config';
 
 export const collectionsReducers = {
   themes,
   grants,
   externalGrants,
   staticAssets,
+  config,
   offices,
   reports,
   searchReports

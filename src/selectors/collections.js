@@ -9,6 +9,7 @@ export const selectStaticAssets = state => state.staticAssets;
 export const selectReports = state => state.reports;
 export const selectOffices = state => state.offices;
 export const selectSearchReports = state => state.searchReports;
+export const selectConfig = state => state.config;
 
 export const selectSearchReportsData = createSelector(
   selectSearchReports,

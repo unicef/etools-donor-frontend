@@ -42,7 +42,7 @@ import {
   onFetchSearchReports
 } from 'actions';
 import {
-  selectStaticAssets
+  selectConfig
 } from 'selectors/collections';
 import {
   SEARCH_REPORTS,
@@ -85,9 +85,9 @@ function* getSearchReports(params) {
 }
 
 function* getSourceId() {
-  yield call(waitFor, selectStaticAssets)
-  const staticAssets = yield select(selectStaticAssets)
-  return staticAssets.source_id;
+  yield call(waitFor, selectConfig)
+  const config = yield select(selectConfig)
+  return config.source_id;
 }
 
 function* getSearchCallerFunc(payload) {

@@ -8,8 +8,7 @@ export const staticAssetsInitialState = {
   regenerated: [],
   rp_status: [],
   donor_document: [],
-  donor_reporting_category: [],
-  source_id: {}
+  donor_reporting_category: []
 };
 
 const staticAssetsSlice = createSlice({
