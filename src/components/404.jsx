@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid, Card, CardContent, Typography, CardActions, Button } from '@material-ui/core';
 import { useNav } from './Drawer';
+import { useMatomo } from '@datapunt/matomo-tracker-react';
 
 export default function NotFound() {
+  const { trackPageView } = useMatomo();
   const { goHome } = useNav();
+
+  useEffect(() => {
+    trackPageView()
+  }, []);
 
   return (
     <Grid container justify="center" align="center">

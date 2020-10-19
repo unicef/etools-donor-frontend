@@ -18,6 +18,10 @@ import {
 import PermissionRedirect from './PermissionRedirect';
 import NotFound from './404';
 import NoRole from './No-Role';
+import { MatomoProvider, createInstance } from '@datapunt/matomo-tracker-react'
+import { selectConfig } from 'selectors/collections';
+import { useSelector } from 'react-redux';
+import { selectUserProfile } from 'selectors/ui-flags';
 
 export const useMainStyles = makeStyles(theme =>
   createStyles({
@@ -66,54 +70,70 @@ export const useMainStyles = makeStyles(theme =>
 
 export default function MainAppBar() {
   const classes = useMainStyles();
+  const config = useSelector(selectConfig);
+  const profile = useSelector(selectUserProfile);
+  const unicefUserProfile = profile.email.indexOf('unicef.org') > 1 ? profile.email : undefined;
+  const instance = createInstance({
+    urlBase: config.tracker.site_tracker,
+    siteId: config.tracker.site_id || 6,
+    userId: unicefUserProfile,
+    disabled: false, // optional, false by default. Makes all tracking calls no-ops if set to true.
+    heartBeat: { // optional, enabled by default
+      active: true, // optional, default value: true
+      seconds: 10 // optional, default value: `15
+    },
+    linkTracking: true
+  })
 
   return (
-    <div className={classes.root}>
-      <AppToolbar />
-      <ConnectedDrawer />
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <ContentHeader />
+    <MatomoProvider value={instance}>
+      <div className={classes.root}>
+        <AppToolbar />
+        <ConnectedDrawer />
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <ContentHeader />
 
-        <div className={classes.contentWrapper}>
-          <Box flexDirection="column">
-            <Switch>
-              <Route exact path="/no-role" component={NoRole} />
-              <UnassignedDonor path="*">
-                <Switch>
-                  <Route exact path="/" component={PermissionRedirect} />
+          <div className={classes.contentWrapper}>
+            <Box flexDirection="column">
+              <Switch>
+                <Route exact path="/no-role" component={NoRole} />
+                <UnassignedDonor path="*">
+                  <Switch>
+                    <Route exact path="/" component={PermissionRedirect} />
 
-                  <ProtectedRouteDonorsList exact path="/donors">
-                    <DonorsList />
-                  </ProtectedRouteDonorsList>
+                    <ProtectedRouteDonorsList exact path="/donors">
+                      <DonorsList />
+                    </ProtectedRouteDonorsList>
 
-                  {/* <ProtectedRouteReportPage exact path={`/${REPORTS}/:donorId?`}>
+                    {/* <ProtectedRouteReportPage exact path={`/${REPORTS}/:donorId?`}>
                     <ReportsPage />
                   </ProtectedRouteReportPage> */}
 
-                  <ProtectedRouteReportPage exact path={`/${SEARCH_REPORTS}/:donorId?`}>
-                    <SearchPage />
-                  </ProtectedRouteReportPage>
+                    <ProtectedRouteReportPage exact path={`/${SEARCH_REPORTS}/:donorId?`}>
+                      <SearchPage />
+                    </ProtectedRouteReportPage>
 
-                  <ProtectedRouteReportPage exact path={`/${POOLED_GRANTS}/:donorId?`}>
-                    <SearchPage />
-                  </ProtectedRouteReportPage>
+                    <ProtectedRouteReportPage exact path={`/${POOLED_GRANTS}/:donorId?`}>
+                      <SearchPage />
+                    </ProtectedRouteReportPage>
 
-                  <ProtectedRouteReportPage exact path={`/${THEMATIC_GRANTS}`}>
-                    <SearchPage />
-                  </ProtectedRouteReportPage>
+                    <ProtectedRouteReportPage exact path={`/${THEMATIC_GRANTS}`}>
+                      <SearchPage />
+                    </ProtectedRouteReportPage>
 
-                  {/* Optional donorId param here since donor list is not aware of what page
+                    {/* Optional donorId param here since donor list is not aware of what page
                   to link to per donor and only super users can choose donor for user management */}
-                  <ProtectedRouteUserManagement path={`${USERS_PORTAL_PATH}/:donorId?`} />
+                    <ProtectedRouteUserManagement path={`${USERS_PORTAL_PATH}/:donorId?`} />
 
-                  <Route path="*" component={NotFound} />
-                </Switch>
-              </UnassignedDonor>
-            </Switch>
-          </Box>
-        </div>
-      </main>
-    </div>
+                    <Route path="*" component={NotFound} />
+                  </Switch>
+                </UnassignedDonor>
+              </Switch>
+            </Box>
+          </div>
+        </main>
+      </div>
+    </MatomoProvider>
   );
 }
