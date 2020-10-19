@@ -13,7 +13,7 @@ import {
 
 import DescriptionIcon from '@material-ui/icons/Description';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { SEARCH_REPORTS, POOLED_GRANTS, THEMATIC_GRANTS, USERS_PORTAL } from '../lib/constants';
+import { SEARCH_REPORTS, POOLED_GRANTS, THEMATIC_GRANTS, USERS_PORTAL, TRAINING_LINK } from '../lib/constants';
 import { selectMenuBarPage, selectAssignedRole } from 'selectors/ui-flags';
 import { menuItemSelected } from 'slices/ui';
 import { usePermissions } from './PermissionRedirect';
@@ -23,6 +23,10 @@ export const useNav = () => {
   const dispatch = useDispatch();
 
   const handleNav = page => () => {
+    if (page === TRAINING_LINK) {
+      window.open(TRAINING_LINK, '_blank')
+      return;
+    }
     dispatch(menuItemSelected(page));
     if (page === SEARCH_REPORTS || page === POOLED_GRANTS) {
       history.push('/');
@@ -45,6 +49,7 @@ export default function ConnectedDrawer() {
   const { isDonorAdmin, isSuperUser } = usePermissions();
   const hasAccessUserManagement = isDonorAdmin || isSuperUser;
   const isAssignedRole = useSelector(selectAssignedRole);
+  const { isUnicefUser } = usePermissions();
 
   useEffect(() => {
     dispatch(menuItemSelected(SEARCH_REPORTS));
@@ -108,6 +113,15 @@ export default function ConnectedDrawer() {
               <SettingsIcon />
             </ListItemIcon>
             <ListItemText primary="User Management" />
+          </ListItem>
+        )}
+
+        {isUnicefUser && (
+          <ListItem onClick={handleNav(TRAINING_LINK)} button>
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Training Material" />
           </ListItem>
         )}
       </List>

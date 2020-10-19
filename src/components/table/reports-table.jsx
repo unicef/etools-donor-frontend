@@ -50,7 +50,7 @@ const thematicReportsTableHeadings = [
 
 const externalRefCell = {
   id: EXTERNAL_REF_GRANT_FIELD,
-  label: 'External Ref Grant',
+  label: 'Partner Ref Grant',
   sortable: true
 };
 

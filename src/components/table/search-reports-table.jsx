@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import Table from '@material-ui/core/Table';
@@ -27,6 +27,7 @@ import {
 import TablePaginationActions from './table-pagination-actions';
 import { selectMenuBarPage } from 'selectors/ui-flags';
 import { POOLED_GRANTS, THEMATIC_GRANTS } from 'lib/constants';
+import { useMatomo } from '@datapunt/matomo-tracker-react';
 
 export function getRecipientOfficeStr(report) {
   const recipientOffices = report.recipient_office || [];
@@ -70,12 +71,12 @@ const donorCell = {
 }
 
 // inserts extra column for non-unicef users as per requirements
-const getHeadCells = (isUnicefUser, cells, pooledGrants) => {
+const getHeadCells = (isUnicefUser, cells, pooledGrants, thematicGrants) => {
 
   if (pooledGrants) {
     cells = [...cells.slice(0, 2), donorCell, ...cells.slice(2)]
   }
-  if (!isUnicefUser) {
+  if (!isUnicefUser && !thematicGrants) {
     return [...cells.slice(0, 2), externalRefCell, ...cells.slice(2)];
   } else if (isUnicefUser) {
     return [...cells, internalExternalCell]
@@ -84,6 +85,7 @@ const getHeadCells = (isUnicefUser, cells, pooledGrants) => {
 };
 
 export default function ReportsTable() {
+  const { trackPageView } = useMatomo();
   const classes = useTableStyles();
 
   const { isUnicefUser } = usePermissions();
@@ -94,8 +96,8 @@ export default function ReportsTable() {
   const pooledGrants = pageName === POOLED_GRANTS;
   const thematicGrants = pageName === THEMATIC_GRANTS;
   const headCells = pageName === THEMATIC_GRANTS
-    ? getHeadCells(isUnicefUser, thematicReportsTableHeadings, pooledGrants)
-    : getHeadCells(isUnicefUser, certifiedReportsTableHeadings, pooledGrants);
+    ? getHeadCells(isUnicefUser, thematicReportsTableHeadings, pooledGrants, thematicGrants)
+    : getHeadCells(isUnicefUser, certifiedReportsTableHeadings, pooledGrants, thematicGrants);
 
   const {
     orderBy,
@@ -105,6 +107,11 @@ export default function ReportsTable() {
     handleChangePage
   } = useTable(BACKEND_REPORTS_FIELDS['recipientOffice']);
   const shouldShowExternalGrants = certifiedReports && !isUnicefUser;
+
+  useEffect(() => {
+    trackPageView()
+  }, [pageName]);
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
