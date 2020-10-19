@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid, Card, CardContent, Typography } from '@material-ui/core';
+import { useMatomo } from '@datapunt/matomo-tracker-react';
 
 export default function NoRole() {
+  const { trackPageView } = useMatomo();
+
+  useEffect(() => {
+    trackPageView()
+  }, []);
+
   return (
     <Grid container justify="center" align="center">
       <Grid item xs={4}>

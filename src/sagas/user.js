@@ -1,4 +1,9 @@
-import { takeLatest, call, put, select } from 'redux-saga/effects';
+import {
+  takeLatest,
+  call,
+  put,
+  select
+} from 'redux-saga/effects';
 import {
   getUserRoles,
   getUserGroups,
@@ -9,8 +14,12 @@ import {
   deleteRole,
   getUser
 } from 'api';
-import { setUserRoles } from 'slices/user-roles';
-import { setError } from 'slices/error';
+import {
+  setUserRoles
+} from 'slices/user-roles';
+import {
+  setError
+} from 'slices/error';
 import {
   onFetchUserRoles,
   onFetchUserGroups,
@@ -20,20 +29,46 @@ import {
   userRoleEdited,
   deleteUserRole
 } from 'actions';
-import { setGroups } from 'slices/user-groups';
-import { createRoleSuccess } from 'slices/created-role';
-import { onFormError } from 'slices/form-error';
-import { parseFormError, checkUserExists } from 'lib/error-parsers';
-import { setLoading } from 'slices/ui';
-import { onReceiveUserProfile } from 'slices/user-profile';
-import { selectDonorId, selectUserDonor, selectUserProfileDonorId } from 'selectors/ui-flags';
-import { USER_ROLE_PATCH_SUCCESS_MESSAGE, USER_ROLE_CREATED_MESSAGE } from 'lib/constants';
-import { actionSucceeded } from 'slices/success';
-import { waitFor } from './helpers';
+import {
+  setGroups
+} from 'slices/user-groups';
+import {
+  createRoleSuccess
+} from 'slices/created-role';
+import {
+  onFormError
+} from 'slices/form-error';
+import {
+  parseFormError,
+  checkUserExists
+} from 'lib/error-parsers';
+import {
+  setLoading
+} from 'slices/ui';
+import {
+  onReceiveUserProfile
+} from 'slices/user-profile';
+import {
+  selectDonorId,
+  selectUserDonor,
+  selectUserProfileDonorId
+} from 'selectors/ui-flags';
+import {
+  USER_ROLE_PATCH_SUCCESS_MESSAGE,
+  USER_ROLE_CREATED_MESSAGE
+} from 'lib/constants';
+import {
+  actionSucceeded
+} from 'slices/success';
+import {
+  waitFor
+} from './helpers';
 
 function* handleFetchUserRoles(action) {
   yield call(waitFor, selectUserDonor);
-  const { id: donor } = yield select(selectUserDonor);
+  const {
+    id: donor
+  } = yield select(selectUserDonor);
   yield put(setLoading(true));
   try {
     const userRoles = yield call(getUserRoles, {
@@ -70,7 +105,9 @@ function* handleCreateUser(payload) {
     const userExists = checkUserExists(formErrors);
 
     if (userExists) {
-      user = yield call(getUser, { username: payload.username });
+      user = yield call(getUser, {
+        username: payload.username
+      });
     } else {
       throw err;
     }
@@ -80,10 +117,14 @@ function* handleCreateUser(payload) {
   return user;
 }
 
-function* handleCreateUserRole({ payload }) {
+function* handleCreateUserRole({
+  payload
+}) {
   // if user selected donor, that id is used otherwise  the profile donor id is used
   const donorId = yield select(selectUserProfileDonorId);
-  const { id: selectedDonorId } = yield select(selectUserDonor);
+  const {
+    id: selectedDonorId
+  } = yield select(selectUserDonor);
 
   try {
     const user = yield call(handleCreateUser, payload.user);
@@ -105,7 +146,9 @@ function* handleCreateUserRole({ payload }) {
 function* handleCreatedRole() {
   const donor = yield select(selectDonorId);
   yield call(handleFetchUserRoles, {
-    payload: { donor }
+    payload: {
+      donor
+    }
   });
 }
 
@@ -121,7 +164,9 @@ function* handleFetchUserProfile() {
   }
 }
 
-function* handleUserRolePatch({ payload }) {
+function* handleUserRolePatch({
+  payload
+}) {
   yield put(setLoading(true));
   try {
     const role = yield call(patchRole, payload);
@@ -134,7 +179,9 @@ function* handleUserRolePatch({ payload }) {
   }
 }
 
-function* handleDeleteUserRole({ payload }) {
+function* handleDeleteUserRole({
+  payload
+}) {
   yield put(setLoading(true));
   try {
     const success = yield call(deleteRole, payload);
@@ -153,7 +200,7 @@ function* handleDeleteUserRole({ payload }) {
   }
 }
 
-export default function*() {
+export default function* () {
   yield takeLatest(onFetchUserRoles.type, handleFetchUserRoles);
   yield takeLatest(onFetchUserGroups.type, handleFetchUserGroups);
   yield takeLatest(onCreateUserRole.type, handleCreateUserRole);

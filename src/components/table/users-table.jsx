@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -20,6 +20,7 @@ import UserRowItem from './user-row-item';
 import DeleteUserDialog from 'components/DeleteUserDialog';
 import { deleteUserRole } from 'actions';
 import { useDispatch } from 'react-redux';
+import { useMatomo } from '@datapunt/matomo-tracker-react';
 
 const headCells = [
   { id: 'user_first_name', numeric: false, disablePadding: false, label: 'Name', sortable: true },
@@ -36,6 +37,7 @@ const headCells = [
 ];
 
 export default function UsersTable() {
+  const { trackPageView } = useMatomo();
   const classes = useTableStyles();
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
@@ -89,6 +91,10 @@ export default function UsersTable() {
     setOpen(false);
   }
 
+  useEffect(() => {
+    trackPageView()
+  }, []);
+
   const emptyRows =
     users.length === 0 ? 1 : rowsPerPage - Math.min(rowsPerPage, users.length - page * rowsPerPage);
   const loading = useSelector(selectLoading);
@@ -122,7 +128,7 @@ export default function UsersTable() {
               {stableSort(users, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((user, index) => (
-                  <UserRowItem user={user} key={index} onClickEdit={(user) => handleClickEdit(user)} onClickDelete = {(user) => handleClickDelete(user)}/>
+                  <UserRowItem user={user} key={index} onClickEdit={(user) => handleClickEdit(user)} onClickDelete={(user) => handleClickDelete(user)} />
                 ))}
 
               <TableRow>
