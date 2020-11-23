@@ -72,11 +72,10 @@ export default function MainAppBar() {
   const classes = useMainStyles();
   const config = useSelector(selectConfig);
   const profile = useSelector(selectUserProfile);
-  const unicefUserProfile = profile.email.indexOf('unicef.org') > 1 ? profile.email : undefined;
   const instance = createInstance({
     urlBase: config.tracker.site_tracker,
     siteId: config.tracker.site_id || 6,
-    userId: unicefUserProfile,
+    userId: profile.email,
     disabled: false, // optional, false by default. Makes all tracking calls no-ops if set to true.
     heartBeat: { // optional, enabled by default
       active: true, // optional, default value: true
