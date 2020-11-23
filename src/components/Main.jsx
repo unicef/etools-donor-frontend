@@ -8,6 +8,7 @@ import { DRAWER_WIDTH, USERS_PORTAL_PATH, THEMATIC_GRANTS, POOLED_GRANTS, SEARCH
 import DonorsList from 'pages/donors-list';
 import ContentHeader from './Content-Header';
 import SearchPage from 'pages/reports/search';
+import PrivacyPolicy from 'pages/privacy-policy';
 import {
   ProtectedRouteDonorsList,
   ProtectedRouteReportPage,
@@ -99,6 +100,8 @@ export default function MainAppBar() {
                 <Route exact path="/no-role" component={NoRole} />
                 <UnassignedDonor path="*">
                   <Switch>
+                    <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+
                     <Route exact path="/" component={PermissionRedirect} />
 
                     <ProtectedRouteDonorsList exact path="/donors">
