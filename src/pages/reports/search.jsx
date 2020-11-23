@@ -4,6 +4,7 @@ import { useParams } from 'react-router';
 
 import SearchReportsFilter from 'pages/reports/components/search-reports-filters-root';
 import SearchReportsTable from 'components/table/search-reports-table';
+import Footer from 'components/Footer';
 import { selectPageName } from 'selectors/ui-flags';
 import { initSearchReportsPage, initPooledGrantsPage, initThematicGrantsPage } from 'actions';
 import { onReceiveSearchReports } from 'slices/search-reports';
@@ -61,6 +62,7 @@ export default function SearchPage() {
     <>
       <SearchReportsFilter />
       <SearchReportsTable />
+      <Footer />
     </>
   );
 }

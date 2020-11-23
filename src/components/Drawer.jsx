@@ -14,7 +14,7 @@ import {
 import DescriptionIcon from '@material-ui/icons/Description';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { SEARCH_REPORTS, POOLED_GRANTS, THEMATIC_GRANTS, USERS_PORTAL, TRAINING_LINK } from '../lib/constants';
-import { selectMenuBarPage, selectAssignedRole } from 'selectors/ui-flags';
+import { selectMenuBarPage, selectAssignedRole, selectPageName } from 'selectors/ui-flags';
 import { menuItemSelected } from 'slices/ui';
 import { usePermissions } from './PermissionRedirect';
 
@@ -50,6 +50,8 @@ export default function ConnectedDrawer() {
   const hasAccessUserManagement = isDonorAdmin || isSuperUser;
   const isAssignedRole = useSelector(selectAssignedRole);
   const { isUnicefUser } = usePermissions();
+  const pageName = useSelector(selectPageName);
+  const showDrawer = isAssignedRole && pageName !== 'privacy-policy';
 
   useEffect(() => {
     dispatch(menuItemSelected(SEARCH_REPORTS));
@@ -59,7 +61,7 @@ export default function ConnectedDrawer() {
   return (
     <Drawer
       className={classes.drawer}
-      variant={isAssignedRole ? "permanent" : "temporary"}
+      variant={showDrawer ? "permanent" : "temporary"}
       classes={{
         paper: classes.drawerPaper
       }}
