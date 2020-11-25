@@ -7,8 +7,8 @@ app.use('/', (req, res, next) => {
   express.static(path.join(__dirname, 'build'))(req, res, next);
 });
 
-app.use(function(req, res) {
+app.use(function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.listen(port, () => console.log(`Etools manage listening on port ${port}!`));
+app.listen(port, () => console.log(`DRP listening on port ${port}!`));
