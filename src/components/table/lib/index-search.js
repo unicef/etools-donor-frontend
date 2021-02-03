@@ -87,7 +87,7 @@ export const useTable = (defaultOrderBy = '') => {
 
   const handleChangePage = (event, newPage) => {
     event.preventDefault();
-    const next = reportsData['next:'];
+    const next = reportsData.next;
     const prev = reportsData.previous;
     const paramsObjNext = next ? getParamsObj(next) : '';
     const paramsObjPrev = prev ? getParamsObj(prev) : '';
