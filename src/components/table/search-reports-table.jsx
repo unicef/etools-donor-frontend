@@ -40,6 +40,7 @@ const certifiedReportsTableHeadings = [
   { id: BACKEND_REPORTS_FIELDS['donorReportCategory'], label: 'Report Category', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['donorDocument'], label: 'Document Type', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['reportType'], label: 'Report Type', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['modified'], label: 'Modified', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['recipientOffice'], label: 'Recipient Office', sortable: true },
 ];
 
@@ -49,7 +50,8 @@ const thematicReportsTableHeadings = [
   { id: BACKEND_REPORTS_FIELDS['grant'], label: 'Grant', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['donorDocument'], label: 'Document Type', sortable: true },
   { id: BACKEND_THEMATIC_FIELDS['reportType'], label: 'Report Type', sortable: true },
-  { id: BACKEND_THEMATIC_FIELDS['reportEndDate'], label: 'Report End Date', sortable: true }
+  { id: BACKEND_REPORTS_FIELDS['modified'], label: 'Modified', sortable: true },
+  { id: BACKEND_THEMATIC_FIELDS['reportEndDate'], label: 'Report End Date', sortable: true },
 ];
 
 const externalRefCell = {
@@ -185,6 +187,11 @@ export default function ReportsTable() {
                       <Tooltip title={row.report_type ? row.report_type : ''}>
                         <TableCell className={classes.cell} align="left">
                           {row.report_type}
+                        </TableCell>
+                      </Tooltip>
+                      <Tooltip title={row.modified}>
+                        <TableCell className={classes.cell} align="left">
+                          {getDisplayDate(row.modified)}
                         </TableCell>
                       </Tooltip>
                       {thematicGrants && (
