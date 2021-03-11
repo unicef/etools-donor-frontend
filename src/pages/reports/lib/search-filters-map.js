@@ -13,7 +13,9 @@ import {
   EXTERNAL_REF_GRANT_FIELD,
   DONOR_DOCUMENT_FIELD,
   REPORT_GENERATED_FIELD,
-  THEME_FIELD
+  THEME_FIELD,
+  MODIFIED_BEFORE_FIELD,
+  MODIFIED_AFTER_FIELD
 } from '../search-constants';
 
 import {
@@ -25,6 +27,10 @@ import {
   ReportEndDateBeforeFilter,
   ReportEndDateAfterFilter
 } from '../components/report-end-date-filter';
+import {
+  ModifiedDateBeforeFilter,
+  ModifiedDateAfterFilter
+} from '../components/modified-date-filter.jsx';
 import {
   GrantExpiryBeforeFilter,
   GrantExpiryAfterFilter
@@ -145,6 +151,16 @@ export const FILTERS_MAP = {
     gridSize: 2,
     pageName: [SEARCH_REPORTS, POOLED_GRANTS],
     permissionGroup: UNICEF_USER_ROLE
+  },
+
+  [MODIFIED_BEFORE_FIELD]: {
+    label: 'Modified Before Date',
+    Component: ModifiedDateBeforeFilter
+  },
+
+  [MODIFIED_AFTER_FIELD]: {
+    label: 'Modified After Date',
+    Component: ModifiedDateAfterFilter
   }
 };
 
