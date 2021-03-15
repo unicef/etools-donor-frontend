@@ -38,6 +38,8 @@ export const REPORT_CATEGORY_FIELD = 'donor_report_category';
 export const DONOR_DOCUMENT_FIELD = 'donor_document';
 export const RECERTIFIED_FIELD = 'recertified';
 export const RECIPIENT_OFFICE_FIELD = 'recipient_office';
+export const MODIFIED_BEFORE_FIELD = 'modified__lte';
+export const MODIFIED_AFTER_FIELD = 'modified__gte';
 
 // PROPERTIES TO BE USED FOR QUERY
 export const QUERY_PROPERTY_GRANT = 'code';

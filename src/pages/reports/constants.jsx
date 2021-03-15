@@ -5,6 +5,7 @@ export const BACKEND_REPORTS_FIELDS = {
   donorDocument: 'donor_document',
   reportType: 'report_type',
   recipientOffice: 'recipient_office',
+  modified: 'modified'
 };
 
 export const BACKEND_THEMATIC_FIELDS = {
@@ -12,7 +13,8 @@ export const BACKEND_THEMATIC_FIELDS = {
   theme: 'theme',
   recipientOffice: 'recipient_office',
   reportType: 'report_type',
-  reportEndDate: 'report_end_date'
+  reportEndDate: 'report_end_date',
+  modified: 'modified'
 };
 
 // QUERY PARAM FIELD NAMES FOR BACKEND
