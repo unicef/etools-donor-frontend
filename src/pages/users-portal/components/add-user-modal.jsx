@@ -25,6 +25,7 @@ import {
 import { setValueFromEvent, oneIsEmpty } from 'lib/helpers';
 import { makeStyles } from '@material-ui/styles';
 import { FORM_CONFIG } from '../../../lib/constants';
+import { NOTIFICATION_PERIODS_MAP } from '../../../lib/constants';
 import { selectUserGroups } from 'selectors/user';
 import { selectCreatedRole, selectFormError } from 'selectors/ui-flags';
 import { onCreateUserRole } from 'actions';
@@ -75,6 +76,7 @@ export default function AddUserModal({ open, onClose, userProp = {} }) {
   const [role, setRole] = useState('');
   const [isEditMode, setEditMode] = useState(false);
   const [user, setUser] = useState({});
+  const [period, setPeriod] = useState('every_day');
 
   const createdRole = useSelector(selectCreatedRole);
   const groups = useSelector(selectUserGroups);
@@ -85,6 +87,7 @@ export default function AddUserModal({ open, onClose, userProp = {} }) {
     setFirstName('');
     setLastName('');
     setRole('');
+    setPeriod('every_day')
     setEditMode(false);
     setUser({});
   }
@@ -116,15 +119,20 @@ export default function AddUserModal({ open, onClose, userProp = {} }) {
       group: prop('id', groups.find(g => g.name === role))
     };
 
+    const periodPayload = {
+      notification_period: period
+    }
+
     setLoading(true);
-    dispatch(onCreateUserRole({ user, rolePayload }));
+    dispatch(onCreateUserRole({ user, rolePayload, periodPayload }));
   }
 
   async function onEditSubmit() {
     const roleId = prop('id', groups.find(g => g.name === role));
     const payload = {
       id: userProp.id,
-      group: roleId
+      group: roleId,
+      notification_period: period
     };
     dispatch(userRoleEdited(payload));
   }
@@ -159,6 +167,7 @@ export default function AddUserModal({ open, onClose, userProp = {} }) {
       setFirstName(user.user_first_name);
       setLastName(user.user_last_name);
       setRole(user.group_name);
+      setPeriod(user.notification_period);
     }
   }, [user])
 
@@ -284,6 +293,31 @@ export default function AddUserModal({ open, onClose, userProp = {} }) {
                   </Select>
                   {getErrorState(formError, 'group') && (
                     <FormHelperText className={classes.error}>{formError['group']}</FormHelperText>
+                  )}
+                </FormControl>
+              </Grid>
+              <Grid item xs={5}>
+                <form action="" />
+                <FormControl className={classes.formControl} required>
+                  <InputLabel htmlFor="periods">{FORM_CONFIG.periods.label}</InputLabel>
+                  <Select
+                    value={period}
+                    onBlur={handleErrorState('period', period)}
+                    error={getErrorState(formError, 'period')}
+                    onChange={setValueFromEvent(setPeriod)}
+                    inputProps={{
+                      name: 'select-period',
+                      id: 'period'
+                    }}
+                  >
+                    {NOTIFICATION_PERIODS_MAP.map(period => (
+                      <MenuItem key={period.id} value={period.name}>
+                        {period.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {getErrorState(formError, 'period') && (
+                    <FormHelperText className={classes.error}>{formError['period']}</FormHelperText>
                   )}
                 </FormControl>
               </Grid>

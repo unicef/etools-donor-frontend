@@ -11,7 +11,8 @@ import {
 import {
   BACKEND_PROPERTIES_USER_LAST_NAME,
   BACKEND_PROPERTIES_USER_FIRST_NAME,
-  BACKEND_PROPERTIES_USER_LAST_LOGIN
+  BACKEND_PROPERTIES_USER_LAST_LOGIN,
+  NOTIFICATION_PERIODS_MAP
 } from 'lib/constants';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -54,6 +55,7 @@ export default function UserRowItem({ user, onClickEdit, onClickDelete }) {
   const labelId = `user-${user.id}`;
   const classes = useStyles();
   const groups = useSelector(selectUserGroups);
+  const periods = NOTIFICATION_PERIODS_MAP;
 
   return (
     <TableRow hover tabIndex={-1}>
@@ -63,6 +65,9 @@ export default function UserRowItem({ user, onClickEdit, onClickDelete }) {
       <TableCell align="left">{user.user_email || '-'}</TableCell>
       <TableCell align="left">
         {prop('name', groups.find(group => group.id === user.group))}
+      </TableCell>
+      <TableCell align="left">
+        {prop('label', periods.find(period => period.name === user.notification_period))}
       </TableCell>
       <TableCell align="left">{getUserStatusStr(user)}</TableCell>
       <TableCell align="left">
