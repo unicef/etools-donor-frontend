@@ -5,6 +5,7 @@ import {
   GRANT_ISSUE_YEAR,
   REPORT_TYPE_FIELD,
   REPORT_CATEGORY_FIELD,
+  AWARD_TYPE_FIELD,
   REPORT_END_DATE_BEFORE_FIELD,
   REPORT_END_DATE_AFTER_FIELD,
   RECIPIENT_OFFICE_FIELD,
@@ -44,6 +45,7 @@ import ExternalGrantsFilter from '../components/external-grants-filter';
 import TitleSearchFilter from '../components/title-search-filter';
 import FrameworkAgreementFilter from '../components/framework-agreement-filter';
 import DonorDocumentFilter from '../components/donor-document-filter';
+import AwardTypeFilter from '../components/award-type-filter';
 import {
   UNICEF_USER_ROLE,
   THEMATIC_GRANTS,
@@ -79,6 +81,11 @@ export const FILTERS_MAP = {
   [REPORT_CATEGORY_FIELD]: {
     label: 'Report Category',
     Component: ReportCategoryFilter
+  },
+
+  [AWARD_TYPE_FIELD]: {
+    label: 'Award Type',
+    Component: AwardTypeFilter
   },
 
   [GRANT_FIELD]: {

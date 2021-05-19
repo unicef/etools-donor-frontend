@@ -72,7 +72,7 @@ export default function DropdownMultiFilterFactory(selector, description, filter
               value={option[filterProp]}
               selected={isSelected(option.code)}
             >
-              {option[filterProp]}
+              {option.description}
             </MenuItem>
           ))}
         </StyledSelect>

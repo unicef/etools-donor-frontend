@@ -24,6 +24,7 @@ export const GRANT_FIELD = 'grant_number';
 export const EXTERNAL_REF_GRANT_FIELD = 'external_reference';
 export const REPORT_TYPE_FIELD = 'report_type';
 export const REPORT_GROUP_FIELD = 'report_group';
+export const AWARD_TYPE_FIELD = 'award_type';
 export const REPORT_END_DATE_FIELD = 'report_end_date';
 export const REPORT_END_DATE_BEFORE_FIELD = 'report_end_date__lte';
 export const REPORT_END_DATE_AFTER_FIELD = 'report_end_date__gte';
