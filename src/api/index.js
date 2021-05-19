@@ -12,6 +12,7 @@ import {
   REACT_APP_EXTERNAL_GRANTS_ENDPOINT,
   REACT_APP_THEMES_ENDPOINT,
   REACT_APP_USER_STATIC_ENDPOINT,
+  REACT_APP_METADATA_ENDPOINT,
   REACT_APP_PROFILE_ENDPOINT,
   REACT_APP_BUSINESS_AREA_ENDPOINT,
   REACT_APP_REPORTS_ENDPOINT,
@@ -139,6 +140,10 @@ export function getThemes() {
 
 export function getStaticAssets() {
   return get(REACT_APP_USER_STATIC_ENDPOINT);
+}
+
+export function getMetadata() {
+  return get(REACT_APP_METADATA_ENDPOINT);
 }
 
 export function getConfig() {

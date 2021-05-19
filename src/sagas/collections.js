@@ -12,6 +12,7 @@ import {
   getExternalGrants,
   getThemes,
   getStaticAssets,
+  getMetadata,
   getOffices,
   getConfig
 } from 'api';
@@ -52,6 +53,10 @@ import {
   staticAssetsInitialState
 } from 'slices/static';
 import {
+  onReceiveMetadata,
+  metadataInitialState
+} from 'slices/metadata';
+import {
   onReceiveOffices
 } from 'slices/offices';
 import {
@@ -65,6 +70,7 @@ import {
 import {
   selectDonors,
   selectStaticAssets,
+  selectMetadata,
   selectThemeCollection,
   selectOffices,
   selectConfig
@@ -147,6 +153,21 @@ function* handleFetchStatic() {
   }
 }
 
+function* handleFetchMetadata() {
+  const metadata = yield select(selectMetadata);
+
+  if (!equals(metadata, metadataInitialState)) {
+    return;
+  }
+
+  try {
+    const metadataDropdowns = yield call(getMetadata);
+    yield put(onReceiveMetadata(metadataDropdowns));
+  } catch (err) {
+    yield put(setError(err));
+  }
+}
+
 function* handleFetchConfig() {
   const config = yield select(selectConfig);
 
@@ -184,7 +205,7 @@ function* handleCurrentDonor({
 
 export function* donorsSaga() {
   yield takeLatest(initDonorsList.type, handleFetchDonors);
-  yield all([call(handleFetchStatic), call(handleFetchConfig)])
+  yield all([call(handleFetchStatic), call(handleFetchMetadata), call(handleFetchConfig)])
 }
 
 export function* currentDonorSaga() {

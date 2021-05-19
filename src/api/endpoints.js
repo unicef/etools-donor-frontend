@@ -9,6 +9,7 @@ export const REACT_APP_EXTERNAL_GRANTS_ENDPOINT = '/metadata/external_grant/<don
 export const REACT_APP_THEMES_ENDPOINT = '/metadata/themes/';
 export const REACT_APP_USER_GROUPS_ENDPOINT = '/roles/groups/';
 export const REACT_APP_USER_STATIC_ENDPOINT = '/metadata/static/';
+export const REACT_APP_METADATA_ENDPOINT = '/metadata/drp-static/';
 export const REACT_APP_BUSINESS_AREA_ENDPOINT = '/roles/business-area/';
 export const REACT_APP_REPORTS_ENDPOINT = '/sharepoint/<envvar>/GLB-DRP/<folder>/caml/';
 export const REACT_APP_SEARCH_API = '/sharepoint/search/';

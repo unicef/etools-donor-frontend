@@ -43,7 +43,7 @@ import GrantsFilter from '../components/grants-filter';
 import ExternalGrantsFilter from '../components/external-grants-filter';
 import TitleSearchFilter from '../components/title-search-filter';
 import FrameworkAgreementFilter from '../components/framework-agreement-filter';
-import donorDocumentFilter from '../components/donor-document-filter';
+import DonorDocumentFilter from '../components/donor-document-filter';
 import {
   UNICEF_USER_ROLE,
   THEMATIC_GRANTS,
@@ -95,7 +95,7 @@ export const FILTERS_MAP = {
 
   [DONOR_DOCUMENT_FIELD]: {
     label: 'Document Type',
-    Component: donorDocumentFilter
+    Component: DonorDocumentFilter
   },
 
   [RECIPIENT_OFFICE_FIELD]: {

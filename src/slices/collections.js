@@ -2,6 +2,9 @@ import {
   staticAssets
 } from './static';
 import {
+  metadata
+} from './metadata';
+import {
   externalGrants
 } from './external-grants';
 import {
@@ -28,6 +31,7 @@ export const collectionsReducers = {
   grants,
   externalGrants,
   staticAssets,
+  metadata,
   config,
   offices,
   reports,

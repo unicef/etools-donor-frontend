@@ -3,12 +3,7 @@ import {
 } from 'redux-starter-kit';
 
 export const staticAssetsInitialState = {
-  years: [],
-  report_type: [],
-  regenerated: [],
-  rp_status: [],
-  donor_document: [],
-  donor_reporting_category: []
+  grant_issue_years: []
 };
 
 const staticAssetsSlice = createSlice({
@@ -19,6 +14,7 @@ const staticAssetsSlice = createSlice({
     }
   }
 });
+
 
 export const {
   reducer: staticAssets
