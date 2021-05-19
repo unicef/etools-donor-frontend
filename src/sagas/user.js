@@ -131,6 +131,7 @@ function* handleCreateUserRole({
 
     const role = yield call(createRole, {
       ...payload.rolePayload,
+      ...payload.periodPayload,
       donor: selectedDonorId || donorId,
       user: user.id
     });

@@ -47,6 +47,9 @@ export const FORM_CONFIG = {
   },
   offices: {
     label: 'Recipient Office'
+  },
+  periods: {
+    label: 'Notification Period'
   }
 };
 
@@ -72,6 +75,34 @@ export const BACKEND_PROPERTIES_USER_LAST_NAME = 'user_last_name';
 export const DONOR_ADMIN_ROLE = 'Donor Admin';
 export const DONOR_USER_ROLE = 'Donor User';
 export const UNICEF_USER_ROLE = 'UNICEF User';
+
+// Notification Periods
+const DISABLED = 'none';
+const EVERY_DAY = 'every_day';
+const EVERY_MONDAY = 'every_monday';
+const EVERY_MONTH = 'every_month';
+
+export const NOTIFICATION_PERIODS_MAP = [{
+    id: 0,
+    name: DISABLED,
+    label: 'Disabled'
+  },
+  {
+    id: 1,
+    name: EVERY_DAY,
+    label: 'Every Day'
+  },
+  {
+    id: 2,
+    name: EVERY_MONDAY,
+    label: 'Every Monday'
+  },
+  {
+    id: 3,
+    name: EVERY_MONTH,
+    label: 'Every Month'
+  }
+]
 
 export const PAGE_TITLE_MAP = {
   [REPORTS]: 'Reports',
