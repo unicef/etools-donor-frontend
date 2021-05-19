@@ -26,6 +26,7 @@ const headCells = [
   { id: 'user_first_name', numeric: false, disablePadding: false, label: 'Name', sortable: true },
   { id: 'user_email', numeric: false, disablePadding: false, label: 'Email', sortable: true },
   { id: 'group_name', numeric: false, disablePadding: false, label: 'Role', sortable: true },
+  { id: 'notification_period', numeric: false, disablePadding: false, label: 'Notification Period', sortable: true },
   {
     id: BACKEND_PROPERTIES_USER_LAST_LOGIN,
     numeric: false,
