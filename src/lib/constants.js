@@ -47,6 +47,9 @@ export const FORM_CONFIG = {
   },
   offices: {
     label: 'Recipient Office'
+  },
+  awardCategory: {
+    label: 'Award Category'
   }
 };
 

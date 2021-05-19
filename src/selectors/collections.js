@@ -40,3 +40,7 @@ export const selectIsRecertified = createSelector(
   selectMetadata,
   assets => assets.recertified
 );
+export const selectAwardType = createSelector(
+  selectMetadata,
+  assets => assets.award_type
+);
