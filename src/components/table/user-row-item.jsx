@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function UserRowItem({ user, onClickEdit, onClickDelete }) {
+export default function UserRowItem({ user, showActions, onClickEdit, onClickDelete }) {
   const labelId = `user-${user.id}`;
   const classes = useStyles();
   const groups = useSelector(selectUserGroups);
@@ -70,35 +70,38 @@ export default function UserRowItem({ user, onClickEdit, onClickDelete }) {
         {prop('label', periods.find(period => period.name === user.notification_period))}
       </TableCell>
       <TableCell align="left">{getUserStatusStr(user)}</TableCell>
-      <TableCell align="left">
-        <IconButton
-          color="primary"
-          className={clsx(classes.icon, classes.iconMargin)}
-          size="small"
-          onClick={() => onClickEdit(user)}
-        >
-          <Tooltip title="Edit" placement="top">
-            <EditIcon className={classes.actionIcon} />
-          </Tooltip>
-        </IconButton>
-        <IconButton
-          color="primary"
-          className={clsx(classes.icon, classes.iconMargin)}
-          size="small"
-          onClick={() => onClickDelete(user)}
-        >
-          <Tooltip title="Delete" placement="top">
-            <DeleteIcon className={classes.actionIcon} />
-          </Tooltip>
-        </IconButton>
+      {showActions && (
+        <TableCell align="left">
+          <IconButton
+            color="primary"
+            className={clsx(classes.icon, classes.iconMargin)}
+            size="small"
+            onClick={() => onClickEdit(user)}
+          >
+            <Tooltip title="Edit" placement="top">
+              <EditIcon className={classes.actionIcon} />
+            </Tooltip>
+          </IconButton>
+          <IconButton
+            color="primary"
+            className={clsx(classes.icon, classes.iconMargin)}
+            size="small"
+            onClick={() => onClickDelete(user)}
+          >
+            <Tooltip title="Delete" placement="top">
+              <DeleteIcon className={classes.actionIcon} />
+            </Tooltip>
+          </IconButton>
 
-      </TableCell>
+        </TableCell>
+      )}
     </TableRow>
   );
 }
 
 UserRowItem.propTypes = {
   user: PropTypes.object,
+  showActions: PropTypes.bool,
   onClickEdit: PropTypes.func,
   onClickDelete: PropTypes.func
 };
