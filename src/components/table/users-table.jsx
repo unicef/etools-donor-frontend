@@ -21,8 +21,9 @@ import DeleteUserDialog from 'components/DeleteUserDialog';
 import { deleteUserRole } from 'actions';
 import { useDispatch } from 'react-redux';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
+import { usePermissions } from '../../components/PermissionRedirect';
 
-const headCells = [
+let headCells = [
   { id: 'user_first_name', numeric: false, disablePadding: false, label: 'Name', sortable: true },
   { id: 'user_email', numeric: false, disablePadding: false, label: 'Email', sortable: true },
   { id: 'group_name', numeric: false, disablePadding: false, label: 'Role', sortable: true },
@@ -50,6 +51,8 @@ export default function UsersTable() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const users = useSelector(selectUserRoles);
+  const { isDonorAdmin, isSuperUser } = usePermissions();
+  const hasEditRights = isDonorAdmin || isSuperUser;
 
   const onCloseAddUserModal = () => {
     setEditingUser({});
@@ -99,22 +102,27 @@ export default function UsersTable() {
   const emptyRows =
     users.length === 0 ? 1 : rowsPerPage - Math.min(rowsPerPage, users.length - page * rowsPerPage);
   const loading = useSelector(selectLoading);
+  if (!hasEditRights) {
+    headCells = headCells.filter(x => x.id !== 'actions');
+  }
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar>
-          <Box display="flex">
-            <Button
-              onClick={openAddUserModal}
-              className={classes.addBtn}
-              color="secondary"
-              variant="contained"
-            >
-              Add User
-            </Button>
-          </Box>
-        </EnhancedTableToolbar>
+        {hasEditRights && (
+          <EnhancedTableToolbar>
+            <Box display="flex">
+              <Button
+                onClick={openAddUserModal}
+                className={classes.addBtn}
+                color="secondary"
+                variant="contained"
+              >
+                Add User
+              </Button>
+            </Box>
+          </EnhancedTableToolbar>
+        )}
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle" size="medium">
             <EnhancedTableHead
@@ -129,7 +137,7 @@ export default function UsersTable() {
               {stableSort(users, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((user, index) => (
-                  <UserRowItem user={user} key={index} onClickEdit={(user) => handleClickEdit(user)} onClickDelete={(user) => handleClickDelete(user)} />
+                  <UserRowItem user={user} key={index} showActions={hasEditRights} onClickEdit={(user) => handleClickEdit(user)} onClickDelete={(user) => handleClickDelete(user)} />
                 ))}
 
               <TableRow>
