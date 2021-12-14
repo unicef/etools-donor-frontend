@@ -27,9 +27,8 @@ export function UnassignedDonor({ children, ...rest }) {
 }
 
 export function ProtectedRouteDonorsList({ children, ...rest }) {
-  const { canViewDonors } = usePermissions();
   return (
-    <Route {...rest} render={() => (canViewDonors ? children : <Redirect to="/not-found" />)} />
+    <Route {...rest} render={() => children } />
   );
 }
 
@@ -54,16 +53,16 @@ export function ProtectedRouteReportPage({ children, ...rest }) {
 }
 
 export function ProtectedRouteUserManagement({ ...rest }) {
-  const { isDonorAdmin, isSuperUser } = usePermissions();
+  const { isDonorAdmin, isSuperUser, isUnicefUser, isDonorUser } = usePermissions();
 
   return (
     <Route
       {...rest}
       render={({ match }) => {
         const { donorId } = match.params;
-        return !donorId && isSuperUser ? (
+        return !donorId && (isUnicefUser || isSuperUser) ? (
           <DonorsList />
-        ) : isDonorAdmin || (donorId && isSuperUser) ? (
+        ) : isDonorAdmin || isDonorUser || (donorId && (isSuperUser || isUnicefUser)) ? (
           <UsersManagement />
         ) : (
               <Redirect to="/not-found" />

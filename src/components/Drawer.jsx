@@ -46,8 +46,6 @@ export default function ConnectedDrawer() {
   const classes = useMainStyles();
   const dispatch = useDispatch();
 
-  const { isDonorAdmin, isSuperUser } = usePermissions();
-  const hasAccessUserManagement = isDonorAdmin || isSuperUser;
   const isAssignedRole = useSelector(selectAssignedRole);
   const { isUnicefUser } = usePermissions();
   const pageName = useSelector(selectPageName);
@@ -109,14 +107,12 @@ export default function ConnectedDrawer() {
           <ListItemText primary="Thematic Grants" />
         </ListItem>
 
-        {hasAccessUserManagement && (
-          <ListItem selected={navSelected(USERS_PORTAL)} onClick={handleNav(USERS_PORTAL)} button>
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary="User Management" />
-          </ListItem>
-        )}
+        <ListItem selected={navSelected(USERS_PORTAL)} onClick={handleNav(USERS_PORTAL)} button>
+          <ListItemIcon>
+            <SettingsIcon />
+          </ListItemIcon>
+          <ListItemText primary="User Management" />
+        </ListItem>
 
         {isUnicefUser && (
           <ListItem onClick={handleNav(TRAINING_LINK)} button>

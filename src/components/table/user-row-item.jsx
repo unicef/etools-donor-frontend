@@ -11,7 +11,8 @@ import {
 import {
   BACKEND_PROPERTIES_USER_LAST_NAME,
   BACKEND_PROPERTIES_USER_FIRST_NAME,
-  BACKEND_PROPERTIES_USER_LAST_LOGIN
+  BACKEND_PROPERTIES_USER_LAST_LOGIN,
+  NOTIFICATION_PERIODS_MAP
 } from 'lib/constants';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -50,10 +51,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function UserRowItem({ user, onClickEdit, onClickDelete }) {
+export default function UserRowItem({ user, showActions, onClickEdit, onClickDelete }) {
   const labelId = `user-${user.id}`;
   const classes = useStyles();
   const groups = useSelector(selectUserGroups);
+  const periods = NOTIFICATION_PERIODS_MAP;
 
   return (
     <TableRow hover tabIndex={-1}>
@@ -64,36 +66,42 @@ export default function UserRowItem({ user, onClickEdit, onClickDelete }) {
       <TableCell align="left">
         {prop('name', groups.find(group => group.id === user.group))}
       </TableCell>
-      <TableCell align="left">{getUserStatusStr(user)}</TableCell>
       <TableCell align="left">
-        <IconButton
-          color="primary"
-          className={clsx(classes.icon, classes.iconMargin)}
-          size="small"
-          onClick={() => onClickEdit(user)}
-        >
-          <Tooltip title="Edit" placement="top">
-            <EditIcon className={classes.actionIcon} />
-          </Tooltip>
-        </IconButton>
-        <IconButton
-          color="primary"
-          className={clsx(classes.icon, classes.iconMargin)}
-          size="small"
-          onClick={() => onClickDelete(user)}
-        >
-          <Tooltip title="Delete" placement="top">
-            <DeleteIcon className={classes.actionIcon} />
-          </Tooltip>
-        </IconButton>
-
+        {prop('label', periods.find(period => period.name === user.notification_period))}
       </TableCell>
+      <TableCell align="left">{getUserStatusStr(user)}</TableCell>
+      {showActions && (
+        <TableCell align="left">
+          <IconButton
+            color="primary"
+            className={clsx(classes.icon, classes.iconMargin)}
+            size="small"
+            onClick={() => onClickEdit(user)}
+          >
+            <Tooltip title="Edit" placement="top">
+              <EditIcon className={classes.actionIcon} />
+            </Tooltip>
+          </IconButton>
+          <IconButton
+            color="primary"
+            className={clsx(classes.icon, classes.iconMargin)}
+            size="small"
+            onClick={() => onClickDelete(user)}
+          >
+            <Tooltip title="Delete" placement="top">
+              <DeleteIcon className={classes.actionIcon} />
+            </Tooltip>
+          </IconButton>
+
+        </TableCell>
+      )}
     </TableRow>
   );
 }
 
 UserRowItem.propTypes = {
   user: PropTypes.object,
+  showActions: PropTypes.bool,
   onClickEdit: PropTypes.func,
   onClickDelete: PropTypes.func
 };
