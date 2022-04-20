@@ -107,7 +107,7 @@ export default function ReportsTable() {
     page,
     handleRequestSort,
     handleChangePage
-  } = useTable(BACKEND_REPORTS_FIELDS['recipientOffice']);
+  } = useTable();
   const shouldShowExternalGrants = certifiedReports && !isUnicefUser;
 
   useEffect(() => {

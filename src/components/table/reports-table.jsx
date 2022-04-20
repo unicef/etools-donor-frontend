@@ -84,7 +84,7 @@ export default function ReportsTable() {
     handleRequestSort,
     handleChangeRowsPerPage,
     handleChangePage
-  } = useTable(BACKEND_REPORTS_FIELDS['recipientOffice']);
+  } = useTable();
   const shouldShowExternalGrants = certifiedReports && !isUnicefUser;
   const emptyRows = getEmptyRows(rows);
   return (
