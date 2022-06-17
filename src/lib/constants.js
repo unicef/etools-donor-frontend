@@ -68,7 +68,7 @@ export const SEARCH_REPORTS_PATH = `/${SEARCH_REPORTS}`;
 export const TRAINING_LINK = 'https://unicef.sharepoint.com/sites/DFAM-DRP/DocumentLibrary1/Forms/AllItems.aspx?viewid=b5d1ef12%2D2815%2D458e%2Da2d3%2D8fcc9f75e7e0&id=%2Fsites%2FDFAM%2DDRP%2FDocumentLibrary1%2FGo%20Live%20Planning%2FTraining';
 
 // export const TABLE_PAGES = [REPORTS, THEMATIC_GRANTS, USERS_PORTAL];
-export const TABLE_PAGES = [SEARCH_REPORTS, POOLED_GRANTS, THEMATIC_GRANTS, USERS_PORTAL];
+export const TABLE_PAGES = [SEARCH_REPORTS, POOLED_GRANTS, THEMATIC_GRANTS, USERS_PORTAL, GAVI_REPORTS];
 export const THEMATIC_GRANTS_PATH = `/${THEMATIC_GRANTS}`;
 export const GAVI_REPORTS_PATH = `/${GAVI_REPORTS}`;
 export const POOLED_GRANTS_PATH = `/${POOLED_GRANTS}`;

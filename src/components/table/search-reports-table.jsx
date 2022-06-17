@@ -8,7 +8,11 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import { Link, Tooltip, TableContainer } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import { Link, Tooltip, TableContainer, Box } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import FiberNewIcon from '@material-ui/icons/FiberNew';
 
 import { useTableStyles } from 'styles/table-styles';
@@ -56,6 +60,7 @@ const thematicReportsTableHeadings = [
 ];
 
 const gaviReportsTableHeadings = [
+  { id: '', label: '', sortable: false },
   { id: BACKEND_GAVI_FIELDS['name'], label: 'Name', sortable: true },
   { id: BACKEND_GAVI_FIELDS['ctnNumber'], label: 'CTN Number', sortable: true },
   { id: BACKEND_GAVI_FIELDS['country'], label: 'Country Name', sortable: true },
@@ -139,10 +144,64 @@ export default function ReportsTable() {
    return isGaviPage ? getGaviContent(index, row) : getLegacyContent(index, row);
   }
 
+  const ExpandableTableRow = ({ children, rowData, ...otherProps }) => {
+     ExpandableTableRow.propTypes = {
+      children: PropTypes.any,
+      rowData: PropTypes.any,
+    }
+    const [isExpanded, setIsExpanded] = React.useState(false);
+
+    return (
+      <>
+        <TableRow {...otherProps}>
+          <TableCell padding="checkbox">
+            <IconButton onClick={() => setIsExpanded(!isExpanded)}>
+              {isExpanded ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          </TableCell>
+          {children}
+        </TableRow>
+        {isExpanded && (
+          <TableRow bgcolor='#eeeeee'>
+            <TableCell padding="checkbox" />
+            <TableCell colSpan={7}>
+              {getGaviRowDetails(rowData)}
+            </TableCell>
+          </TableRow>
+          ) }
+      </>
+    );
+  };
+
+  const getGaviRowDetails = (row) => {
+    return (
+        <Box className={classes.detailsPanel}>
+          <Tooltip title={row.author ? row.author : ''}>
+            <div><p className={classes.detailsHeader}>Author</p>{row.author}</div>
+          </Tooltip>
+          <Tooltip title={row.funds_due_date ? getDisplayDate(row.funds_due_date) : ''}>
+            <div><p className={classes.detailsHeader}>Funds Due Date</p>{getDisplayDate(row.funds_due_date)}</div>
+          </Tooltip>
+          <Tooltip title={row.material_code ? row.material_code : ''}>
+            <div><p className={classes.detailsHeader}>Material Code</p>{row.material_code}</div>
+          </Tooltip>
+          <Tooltip title={row.prepaid_status ? row.prepaid_status : ''}>
+            <div><p className={classes.detailsHeader}>Prepaid Status</p>{row.prepaid_status}</div>
+          </Tooltip>
+          <Tooltip title={row.purchase_order ? row.purchase_order : ''}>
+            <div><p className={classes.detailsHeader}>Purchase Order</p>{row.purchase_order}</div>
+          </Tooltip>
+          <Tooltip title={row.vaccine_type ? row.vaccine_type : ''}>
+            <div><p className={classes.detailsHeader}>Vaccine Type</p>{row.vaccine_type}</div>
+          </Tooltip>
+        </Box>
+    )
+  }
+
   const getGaviContent = (index, row) => {
      const labelId = `enhanced-table-checkbox-${index}`;
      return (
-          <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+          <ExpandableTableRow hover role="checkbox" tabIndex={-1} key={index} rowData={row}>
               <TableCell
                 className={clsx(classes.cell, classes.titleCell)}
                 component="th"
@@ -191,7 +250,7 @@ export default function ReportsTable() {
                 </TableCell>
               </Tooltip>
 
-          </TableRow>
+          </ExpandableTableRow>
     )
   }
 
@@ -326,3 +385,4 @@ export default function ReportsTable() {
     </div >
   );
 }
+
