@@ -14,7 +14,8 @@ import {
   getStaticAssets,
   getMetadata,
   getOffices,
-  getConfig
+  getConfig,
+  getGaviReports
 } from 'api';
 
 import {
@@ -32,6 +33,7 @@ import {
   initDonorsList,
   initCertifiedReportsPage,
   initThematicGrantsPage,
+  initGaviReportsPage,
   initPooledGrantsPage,
   initSearchReportsPage
 } from 'actions';
@@ -48,6 +50,9 @@ import {
 import {
   onReceivethemes
 } from 'slices/themes';
+import {
+  onReceiveGavi
+} from 'slices/gavi';
 import {
   onReceiveStaticAssets,
   staticAssetsInitialState
@@ -73,7 +78,8 @@ import {
   selectMetadata,
   selectThemeCollection,
   selectOffices,
-  selectConfig
+  selectConfig,
+  selectGavi
 } from 'selectors/collections';
 import {
   currentDonorSelected
@@ -133,6 +139,15 @@ function* handleFetchThemes() {
   try {
     const themes = yield call(getThemes);
     yield put(onReceivethemes(themes));
+  } catch (err) {
+    yield put(setError(err));
+  }
+}
+
+function* handleFetchGaviReports() {
+  try {
+    const reports = yield call(getGaviReports);
+    yield put(onReceiveGavi(reports));
   } catch (err) {
     yield put(setError(err));
   }
@@ -227,6 +242,13 @@ function* fetchThematicFilterCollections() {
   ]);
 }
 
+function* fetchGaviReportsFilterCollections() {
+  yield all([
+    call(maybeFetch, handleFetchGaviReports, selectGavi)
+    //call(maybeFetch, handleFetchOffices, selectOffices)
+  ]);
+}
+
 function* fetchSearchReportFilterCollections(action) {
   yield all([
     call(handleFetchGrants, action),
@@ -246,10 +268,11 @@ function* fetchPooledFilterCollections(action) {
 export function* filtersSaga() {
   yield takeLatest(initCertifiedReportsPage.type, fetchReportFilterCollections);
   yield takeLatest(initThematicGrantsPage.type, fetchThematicFilterCollections);
+  yield takeLatest(initGaviReportsPage.type, fetchGaviReportsFilterCollections);
   yield takeLatest(initPooledGrantsPage.type, fetchPooledFilterCollections);
   yield takeLatest(initSearchReportsPage.type, fetchSearchReportFilterCollections);
 }
 
-export default function* () {
+export default function*() {
   yield all([filtersSaga(), donorsSaga(), currentDonorSaga()]);
 }

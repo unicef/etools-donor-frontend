@@ -17,6 +17,16 @@ export const BACKEND_THEMATIC_FIELDS = {
   modified: 'modified'
 };
 
+export const BACKEND_GAVI_FIELDS = {
+  name: 'name',
+  ctnNumber: 'number',
+  country: 'country_name',
+  mouNumber: 'mou_number',
+  approvalYear: 'approval_year',
+  sentDate: 'sent_to_g_a_v_i_date',
+  gaviWBS: 'g_a_v_i_w_b_s'
+};
+
 // QUERY PARAM FIELD NAMES FOR BACKEND
 export const TITLE_FIELD = 'title__contains';
 export const FRAMEWORK_FIELD = 'framework_agreement__contains';

@@ -22,11 +22,12 @@ import {
   BACKEND_REPORTS_FIELDS,
   BACKEND_THEMATIC_FIELDS,
   EXTERNAL_REF_GRANT_FIELD,
+  BACKEND_GAVI_FIELDS,
   REPORT_GROUP_FIELD
 } from '../../pages/reports/constants';
 import TablePaginationActions from './table-pagination-actions';
 import { selectMenuBarPage } from 'selectors/ui-flags';
-import { POOLED_GRANTS, THEMATIC_GRANTS } from 'lib/constants';
+import { POOLED_GRANTS, THEMATIC_GRANTS, GAVI_REPORTS } from 'lib/constants';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 
 export function getRecipientOfficeStr(report) {
@@ -54,6 +55,16 @@ const thematicReportsTableHeadings = [
   { id: BACKEND_THEMATIC_FIELDS['reportEndDate'], label: 'Report End Date', sortable: true },
 ];
 
+const gaviReportsTableHeadings = [
+  { id: BACKEND_GAVI_FIELDS['name'], label: 'Name', sortable: true },
+  { id: BACKEND_GAVI_FIELDS['ctnNumber'], label: 'CTN Number', sortable: true },
+  { id: BACKEND_GAVI_FIELDS['country'], label: 'Country Name', sortable: true },
+  { id: BACKEND_GAVI_FIELDS['mouNumber'], label: 'MOU Number', sortable: true },
+  { id: BACKEND_GAVI_FIELDS['approvalYear'], label: 'Approval Year', sortable: true },
+  { id: BACKEND_GAVI_FIELDS['sentDate'], label: 'Sent To GAVI Date', sortable: true },
+  { id: BACKEND_GAVI_FIELDS['gaviWBS'], label: 'GAVI WBS', sortable: true },
+]
+
 const externalRefCell = {
   id: EXTERNAL_REF_GRANT_FIELD,
   label: 'Partner Ref No',
@@ -73,8 +84,10 @@ const donorCell = {
 }
 
 // inserts extra column for non-unicef users as per requirements
-const getHeadCells = (isUnicefUser, cells, pooledGrants, thematicGrants) => {
-
+const getHeadCells = (isUnicefUser, cells, pooledGrants, thematicGrants, isGaviPage) => {
+  if (isGaviPage) {
+    return [...cells];
+  }
   if (pooledGrants) {
     cells = [...cells.slice(0, 2), donorCell, ...cells.slice(2)]
   }
@@ -84,6 +97,15 @@ const getHeadCells = (isUnicefUser, cells, pooledGrants, thematicGrants) => {
     return [...cells, internalExternalCell]
   }
   return cells;
+};
+
+const getTableHeadings = (pageName) => {
+  switch(pageName)
+  {
+    case THEMATIC_GRANTS: return thematicReportsTableHeadings;
+    case GAVI_REPORTS: return gaviReportsTableHeadings;
+    default: return certifiedReportsTableHeadings;
+  }
 };
 
 export default function ReportsTable() {
@@ -97,9 +119,8 @@ export default function ReportsTable() {
   const certifiedReports = pageName !== THEMATIC_GRANTS;
   const pooledGrants = pageName === POOLED_GRANTS;
   const thematicGrants = pageName === THEMATIC_GRANTS;
-  const headCells = pageName === THEMATIC_GRANTS
-    ? getHeadCells(isUnicefUser, thematicReportsTableHeadings, pooledGrants, thematicGrants)
-    : getHeadCells(isUnicefUser, certifiedReportsTableHeadings, pooledGrants, thematicGrants);
+  const isGaviPage = pageName === GAVI_REPORTS;
+  const headCells = getHeadCells(isUnicefUser, getTableHeadings(pageName), pooledGrants, thematicGrants, isGaviPage);
 
   const {
     orderBy,
@@ -113,6 +134,154 @@ export default function ReportsTable() {
   useEffect(() => {
     trackPageView()
   }, [pageName]);
+
+  const getTableContent = (index, row) => {
+   return isGaviPage ? getGaviContent(index, row) : getLegacyContent(index, row);
+  }
+
+  const getGaviContent = (index, row) => {
+     const labelId = `enhanced-table-checkbox-${index}`;
+     return (
+          <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+              <TableCell
+                className={clsx(classes.cell, classes.titleCell)}
+                component="th"
+                id={labelId}
+                scope="row"
+              >
+                <Tooltip title={row.title ? row.title : ''}>
+                  <Typography className={classes.overflow}>
+                    <Link color="secondary" href={row.download_url} target="_blank">
+                      {row.is_new && <FiberNewIcon fontSize="small" color="error" />}
+                      {row.title}
+                    </Link>
+                  </Typography>
+                </Tooltip>
+              </TableCell>
+
+              <Tooltip title={row.number ? row.number : ''}>
+                <TableCell className={classes.cell} align="left">
+                  {row.number}
+                </TableCell>
+              </Tooltip>
+
+              <Tooltip title={row.country_name ? row.country_name : ''}>
+                <TableCell className={classes.cell} align="left">
+                  {row.country_name}
+                </TableCell>
+              </Tooltip>
+
+              <Tooltip title={row.m_o_u_number ? row.m_o_u_number : ''}>
+                <TableCell className={classes.cell} align="left">{row.m_o_u_number}</TableCell>
+              </Tooltip>
+
+              <Tooltip title={row.approval_year ? row.approval_year : ''}>
+                <TableCell className={classes.cell} align="left">{row.approval_year}</TableCell>
+              </Tooltip>
+
+              <Tooltip title={row.sent_to_g_a_v_i_date ? getDisplayDate(row.sent_to_g_a_v_i_date) : ''}>
+                <TableCell className={classes.cell} align="left">
+                  {getDisplayDate(row.sent_to_g_a_v_i_date)}
+                </TableCell>
+              </Tooltip>
+
+              <Tooltip title={row.g_a_v_i_w_b_s ? row.g_a_v_i_w_b_s : ''}>
+                <TableCell className={classes.cell} align="left">
+                  {row.g_a_v_i_w_b_s}
+                </TableCell>
+              </Tooltip>
+
+          </TableRow>
+    )
+  }
+
+  const getLegacyContent = (index, row) => {
+    const labelId = `enhanced-table-checkbox-${index}`;
+    return (
+      <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+              <TableCell
+                className={clsx(classes.cell, classes.titleCell)}
+                component="th"
+                id={labelId}
+                scope="row"
+              >
+                <Tooltip title={row.title ? row.title : ''}>
+                  <Typography className={classes.overflow}>
+                    <Link color="secondary" href={row.download_url} target="_blank">
+                      {row.is_new && <FiberNewIcon fontSize="small" color="error" />}
+                      {row.title}
+                    </Link>
+                  </Typography>
+                </Tooltip>
+              </TableCell>
+              {thematicGrants && (
+                <Tooltip title={row.theme ? row.theme : ''}>
+                  <TableCell className={classes.cell} align="left">
+                    {row.theme}
+                  </TableCell>
+                </Tooltip>
+              )}
+              <Tooltip title={row.grant_number ? row.grant_number : ''}>
+                <TableCell className={classes.cell} align="left">
+                  {row.grant_number}
+                </TableCell>
+              </Tooltip>
+              {pooledGrants && (
+                <Tooltip title={row.donor ? row.donor : ''}>
+                  <TableCell className={classes.cell} align="left">{row.donor}</TableCell>
+                </Tooltip>
+              )}
+              {shouldShowExternalGrants && (
+                <Tooltip title={row.external_reference ? row.external_reference : ''}>
+                  <TableCell className={classes.cell} align="left">{row.external_reference}</TableCell>
+                </Tooltip>
+              )}
+              {certifiedReports && (
+                <Tooltip title={row.donor_report_category ? row.donor_report_category : ''}>
+                  <TableCell className={classes.cell} align="left">
+                    {row.donor_report_category}
+                  </TableCell>
+                </Tooltip>
+              )}
+              <Tooltip title={row.donor_document ? row.donor_document : ''}>
+                <TableCell className={classes.cell} align="left">
+                  {row.donor_document}
+                </TableCell>
+              </Tooltip>
+              <Tooltip title={row.report_type ? row.report_type : ''}>
+                <TableCell className={classes.cell} align="left">
+                  {row.report_type}
+                </TableCell>
+              </Tooltip>
+              <Tooltip title={row.modified ? row.modified : ''}>
+                <TableCell className={classes.cell} align="left">
+                  {getDisplayDate(row.modified)}
+                </TableCell>
+              </Tooltip>
+              {thematicGrants && (
+                <Tooltip title={row.report_end_date ? getDisplayDate(row.report_end_date) : ''}>
+                  <TableCell className={classes.cell} align="left">
+                    {getDisplayDate(row.report_end_date)}
+                  </TableCell>
+                </Tooltip>
+              )}
+              {certifiedReports && (
+                <Tooltip title={row.recipientOffice ? row.recipientOffice : ''}>
+                  <TableCell className={classes.cell} align="left">
+                    {row.recipient_office ? row.recipient_office.join(', ') : row.recipientOffice}
+                  </TableCell>
+                </Tooltip>
+              )}
+              {isUnicefUser && (
+                <Tooltip title={row.report_group === 'Grant Internal' ? "Internal" : ''}>
+                  <TableCell className={classes.cell} align="left">
+                    {row.report_group === 'Grant Internal' ? "Internal" : ''}
+                  </TableCell>
+                </Tooltip>
+              )}
+            </TableRow>
+    )
+  }
 
   return (
     <div className={classes.root}>
@@ -131,92 +300,7 @@ export default function ReportsTable() {
             <TableBody>
               {stableSort(rows, getSorting(order, orderBy))
                 .map((row, index) => {
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
-                  return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                      <TableCell
-                        className={clsx(classes.cell, classes.titleCell)}
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                      >
-                        <Tooltip title={row.title ? row.title : ''}>
-                          <Typography className={classes.overflow}>
-                            <Link color="secondary" href={row.download_url} target="_blank">
-                              {row.is_new && <FiberNewIcon fontSize="small" color="error" />}
-                              {row.title}
-                            </Link>
-                          </Typography>
-                        </Tooltip>
-                      </TableCell>
-                      {thematicGrants && (
-                        <Tooltip title={row.theme ? row.theme : ''}>
-                          <TableCell className={classes.cell} align="left">
-                            {row.theme}
-                          </TableCell>
-                        </Tooltip>
-                      )}
-                      <Tooltip title={row.grant_number ? row.grant_number : ''}>
-                        <TableCell className={classes.cell} align="left">
-                          {row.grant_number}
-                        </TableCell>
-                      </Tooltip>
-                      {pooledGrants && (
-                        <Tooltip title={row.donor ? row.donor : ''}>
-                          <TableCell className={classes.cell} align="left">{row.donor}</TableCell>
-                        </Tooltip>
-                      )}
-                      {shouldShowExternalGrants && (
-                        <Tooltip title={row.external_reference ? row.external_reference : ''}>
-                          <TableCell className={classes.cell} align="left">{row.external_reference}</TableCell>
-                        </Tooltip>
-                      )}
-                      {certifiedReports && (
-                        <Tooltip title={row.donor_report_category ? row.donor_report_category : ''}>
-                          <TableCell className={classes.cell} align="left">
-                            {row.donor_report_category}
-                          </TableCell>
-                        </Tooltip>
-                      )}
-                      <Tooltip title={row.donor_document ? row.donor_document : ''}>
-                        <TableCell className={classes.cell} align="left">
-                          {row.donor_document}
-                        </TableCell>
-                      </Tooltip>
-                      <Tooltip title={row.report_type ? row.report_type : ''}>
-                        <TableCell className={classes.cell} align="left">
-                          {row.report_type}
-                        </TableCell>
-                      </Tooltip>
-                      <Tooltip title={row.modified}>
-                        <TableCell className={classes.cell} align="left">
-                          {getDisplayDate(row.modified)}
-                        </TableCell>
-                      </Tooltip>
-                      {thematicGrants && (
-                        <Tooltip title={row.report_end_date ? getDisplayDate(row.report_end_date) : ''}>
-                          <TableCell className={classes.cell} align="left">
-                            {getDisplayDate(row.report_end_date)}
-                          </TableCell>
-                        </Tooltip>
-                      )}
-                      {certifiedReports && (
-                        <Tooltip title={row.recipientOffice ? row.recipientOffice : ''}>
-                          <TableCell className={classes.cell} align="left">
-                            {row.recipient_office ? row.recipient_office.join(', ') : row.recipientOffice}
-                          </TableCell>
-                        </Tooltip>
-                      )}
-                      {isUnicefUser && (
-                        <Tooltip title={row.report_group === 'Grant Internal' ? "Internal" : ''}>
-                          <TableCell className={classes.cell} align="left">
-                            {row.report_group === 'Grant Internal' ? "Internal" : ''}
-                          </TableCell>
-                        </Tooltip>
-                      )}
-                    </TableRow>
-                  );
+                  return getTableContent(index, row);
                 })}
             </TableBody>
           </Table>

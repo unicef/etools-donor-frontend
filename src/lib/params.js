@@ -6,13 +6,15 @@ import {
   // REPORTS_PATH,
   THEMATIC_GRANTS_PATH,
   SEARCH_REPORTS_PATH,
-  POOLED_GRANTS_PATH
+  POOLED_GRANTS_PATH,
+  GAVI_REPORTS_PATH
 } from './constants';
 
 export const PAGE_TITLES_MAP = {
   [USERS_PORTAL_PATH]: 'User Management',
   // [REPORTS_PATH]: 'Reports',
   [THEMATIC_GRANTS_PATH]: 'Thematic Grants',
+  [GAVI_REPORTS_PATH]: 'Gavi Reports',
   [POOLED_GRANTS_PATH]: 'Pooled Grants',
   [SEARCH_REPORTS_PATH]: 'Reports'
 };

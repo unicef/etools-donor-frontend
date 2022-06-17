@@ -4,6 +4,7 @@ import {
 } from './helpers';
 import Qs from 'qs';
 import {
+  REACT_APP_GAVI_ENDPOINT,
   REACT_APP_SEARCH_API
 } from './endpoints';
 
@@ -15,7 +16,7 @@ const getBaseOptions = () => ({
   },
 
   withCredentials: true,
-  paramsSerializer: function (params) {
+  paramsSerializer: function(params) {
     return Qs.stringify(params, {
       arrayFormat: 'comma'
     });
@@ -36,5 +37,10 @@ export async function get(uri, params = {}, options = getBaseOptions()) {
 
 export async function fetchSearchReports(params) {
   const computedUrl = REACT_APP_SEARCH_API;
+  return get(computedUrl, params);
+}
+
+export async function fetchSearchGavi(params) {
+  const computedUrl = REACT_APP_GAVI_ENDPOINT;
   return get(computedUrl, params);
 }
