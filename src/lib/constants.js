@@ -60,6 +60,7 @@ export const USERS_PORTAL = 'users-portal';
 export const REPORTS = 'reports';
 export const SEARCH_REPORTS = 'reports';
 export const THEMATIC_GRANTS = 'thematic-grants';
+export const GAVI_REPORTS = 'gavi-reports';
 export const POOLED_GRANTS = 'pooled-grants';
 export const USERS_PORTAL_PATH = `/${USERS_PORTAL}`;
 export const REPORTS_PATH = `/${REPORTS}`;
@@ -69,6 +70,7 @@ export const TRAINING_LINK = 'https://unicef.sharepoint.com/sites/DFAM-DRP/Docum
 // export const TABLE_PAGES = [REPORTS, THEMATIC_GRANTS, USERS_PORTAL];
 export const TABLE_PAGES = [SEARCH_REPORTS, POOLED_GRANTS, THEMATIC_GRANTS, USERS_PORTAL];
 export const THEMATIC_GRANTS_PATH = `/${THEMATIC_GRANTS}`;
+export const GAVI_REPORTS_PATH = `/${GAVI_REPORTS}`;
 export const POOLED_GRANTS_PATH = `/${POOLED_GRANTS}`;
 export const BACKEND_PROPERTIES_USER_LAST_LOGIN = 'user_last_login';
 export const BACKEND_PROPERTIES_USER_FIRST_NAME = 'user_first_name';
@@ -86,31 +88,32 @@ const EVERY_MONDAY = 'every_monday';
 const EVERY_MONTH = 'every_month';
 
 export const NOTIFICATION_PERIODS_MAP = [{
-    id: 0,
-    name: DISABLED,
-    label: 'Disabled'
-  },
-  {
-    id: 1,
-    name: EVERY_DAY,
-    label: 'Every Day'
-  },
-  {
-    id: 2,
-    name: EVERY_MONDAY,
-    label: 'Every Monday'
-  },
-  {
-    id: 3,
-    name: EVERY_MONTH,
-    label: 'Every Month'
-  }
+  id: 0,
+  name: DISABLED,
+  label: 'Disabled'
+},
+{
+  id: 1,
+  name: EVERY_DAY,
+  label: 'Every Day'
+},
+{
+  id: 2,
+  name: EVERY_MONDAY,
+  label: 'Every Monday'
+},
+{
+  id: 3,
+  name: EVERY_MONTH,
+  label: 'Every Month'
+}
 ]
 
 export const PAGE_TITLE_MAP = {
   [REPORTS]: 'Reports',
   [SEARCH_REPORTS]: 'Reports',
   [THEMATIC_GRANTS]: 'Thematic Grants',
+  [GAVI_REPORTS]: 'Gavi Reports',
   [POOLED_GRANTS]: 'Pooled Grants'
 };
 

@@ -41,6 +41,17 @@ export const RECERTIFIED_FIELD = 'recertified';
 export const RECIPIENT_OFFICE_FIELD = 'recipient_office';
 export const MODIFIED_BEFORE_FIELD = 'modified__lte';
 export const MODIFIED_AFTER_FIELD = 'modified__gte';
+// GAVI
+export const COUNTRY_NAME = 'country_name__contains';
+export const CTN_NUMBER = 'number__contains';
+export const GAVI_WBS = 'g_a_v_i_w_b_s__contains';
+export const MOU_NUMBER = 'm_o_u_number__contains';
+export const SENT_GAVI_DATE_BEFORE_FIELD = 'sent_to_g_a_v_i_date__lte';
+export const SENT_GAVI_DATE_AFTER_FIELD = 'sent_to_g_a_v_i_date__gte';
+export const PREPAID_STATUS = 'prepaid_status';
+export const PURCHASE_ORDER = 'purchase_order__contains';
+export const ALOOCATION_ROUND = 'allocation_round__contains';
+export const VENDOR = 'vendor__contains';
 
 // PROPERTIES TO BE USED FOR QUERY
 export const QUERY_PROPERTY_GRANT = 'code';

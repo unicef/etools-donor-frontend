@@ -7,6 +7,7 @@ export const REACT_APP_ADMIN_DONORS_ENDPOINT = '/metadata/donors/my_admin_donors
 export const REACT_APP_GRANTS_ENDPOINT = '/metadata/grants/<donor_id>/';
 export const REACT_APP_EXTERNAL_GRANTS_ENDPOINT = '/metadata/external_grant/<donor_id>/';
 export const REACT_APP_THEMES_ENDPOINT = '/metadata/themes/';
+export const REACT_APP_GAVI_ENDPOINT = '/sharepoint/search/?serializer=gavi'
 export const REACT_APP_USER_GROUPS_ENDPOINT = '/roles/groups/';
 export const REACT_APP_USER_STATIC_ENDPOINT = '/metadata/static/';
 export const REACT_APP_METADATA_ENDPOINT = '/metadata/drp-static/';

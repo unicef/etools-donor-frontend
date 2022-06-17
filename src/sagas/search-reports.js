@@ -18,6 +18,7 @@ import {
   removeEmpties
 } from 'lib/helpers';
 import {
+  fetchSearchGavi,
   fetchSearchReports,
   // fetchThematicGrants,
   // fetchPooledGrants
@@ -48,7 +49,8 @@ import {
   SEARCH_REPORTS,
   THEMATIC_GRANTS,
   POOLED_GRANTS,
-  UNICEF_USER_ROLE
+  UNICEF_USER_ROLE,
+  GAVI_REPORTS
 } from '../lib/constants'
 
 function* getInitialSearchReports(params) {
@@ -69,7 +71,7 @@ function* getSearchReports(params) {
 
   let searchReports = {};
 
-  if (reportPageName == 'reports') {
+  if (reportPageName === 'reports') {
     // this is default / initial load only
     if (!currentlyLoadedDonor || currentlyLoadedDonor != params.donor_code) {
       yield put(setCurrentlyLoadedDonor(params.donor_code))
@@ -78,7 +80,10 @@ function* getSearchReports(params) {
     }
     const reportYear = yield select(selectReportYear);
     searchReports = yield call(fetchSearchReports, params, reportYear);
-  } else {
+  } else if (reportPageName === 'gavi-reports') {
+    searchReports = yield call(fetchSearchGavi, params);
+  }
+  else {
     searchReports = yield call(fetchSearchReports, params);
   }
   return searchReports;
@@ -110,6 +115,10 @@ function* getSearchCallerFunc(payload) {
       if (process.env.NODE_ENV === 'development') {
         result.params.source_id = isUnicefUser ? process.env.REACT_APP_DRP_SOURCE_ID_THEMATIC_EXTERNAL : process.env.REACT_APP_DRP_SOURCE_ID_THEMATIC_INTERNAL;
       }
+      break;
+    }
+    case GAVI_REPORTS: {
+      result.params.source_id = sourceIds.gavi;
       break;
     }
     case POOLED_GRANTS: {
@@ -160,6 +169,6 @@ function* handleFetchSearchReports({
   }
 }
 
-export default function* () {
+export default function*() {
   yield all([yield takeLatest(onFetchSearchReports.type, handleFetchSearchReports)]);
 }

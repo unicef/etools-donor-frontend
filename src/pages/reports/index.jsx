@@ -5,13 +5,19 @@ import { useParams } from 'react-router';
 import ReportsFilter from 'pages/reports/components/reports-filters-root';
 import ReportsTable from 'components/table/reports-table';
 import { selectPageName } from 'selectors/ui-flags';
-import { initCertifiedReportsPage, initThematicGrantsPage } from 'actions';
-import { THEMATIC_GRANTS, REPORTS } from 'lib/constants';
+import { initCertifiedReportsPage, initThematicGrantsPage, initGaviReportsPage } from 'actions';
+import { THEMATIC_GRANTS, REPORTS, GAVI_REPORTS } from 'lib/constants';
 import { onReceiveReports } from 'slices/reports';
 
 function useInitThematicGrants(dispatch) {
   return () => {
     dispatch(initThematicGrantsPage());
+  };
+}
+
+function useInitGaviReports(dispatch) {
+  return () => {
+    dispatch(initGaviReportsPage());
   };
 }
 
@@ -34,6 +40,8 @@ const useInitPage = pageName => {
   switch (pageName) {
     case THEMATIC_GRANTS:
       return useInitThematicGrants(dispatch);
+    case GAVI_REPORTS:
+      return useInitGaviReports(dispatch);
     case REPORTS:
       return useInitCertifiedReports(dispatch, donorId);
     default:

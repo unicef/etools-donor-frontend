@@ -16,7 +16,17 @@ import {
   REPORT_GENERATED_FIELD,
   THEME_FIELD,
   MODIFIED_BEFORE_FIELD,
-  MODIFIED_AFTER_FIELD
+  MODIFIED_AFTER_FIELD,
+  COUNTRY_NAME,
+  CTN_NUMBER,
+  GAVI_WBS,
+  MOU_NUMBER,
+  SENT_GAVI_DATE_BEFORE_FIELD,
+  SENT_GAVI_DATE_AFTER_FIELD,
+  PREPAID_STATUS,
+  PURCHASE_ORDER,
+  ALOOCATION_ROUND,
+  VENDOR
 } from '../search-constants';
 
 import {
@@ -46,11 +56,16 @@ import TitleSearchFilter from '../components/title-search-filter';
 import FrameworkAgreementFilter from '../components/framework-agreement-filter';
 import DonorDocumentFilter from '../components/donor-document-filter';
 import AwardTypeFilter from '../components/award-type-filter';
+import MOUNumberFilter from '../components/mou-number-filter';
+import CountryFilter from '../components/country-filter';
+import CTNNumberFilter from '../components/ctn-number-filter';
+import GaviWBSFilter from '../components/gavi-wbs-filter';
 import {
   UNICEF_USER_ROLE,
   THEMATIC_GRANTS,
   SEARCH_REPORTS,
-  POOLED_GRANTS
+  POOLED_GRANTS,
+  GAVI_REPORTS
 } from 'lib/constants';
 import ReportGeneratedFilter from '../components/report-generated-filter';
 import ThemeFilter from '../components/theme-filter';
@@ -60,6 +75,11 @@ import {
 import {
   selectIsSuperUser
 } from 'selectors/ui-flags';
+import PrepaidStatusFilter from '../components/prepaid-status-filter';
+import PurchaseOrderFilter from '../components/purchase-order-filter';
+import AllocationRoundFilter from '../components/allocation-round-filter';
+import {GaviDateAfterFilter, GaviDateBeforeFilter} from '../components/gavi-date-filter';
+import VendorFilter from '../components/vendor-filter';
 
 export const FILTERS_MAP = {
   [THEME_FIELD]: {
@@ -168,7 +188,68 @@ export const FILTERS_MAP = {
   [MODIFIED_AFTER_FIELD]: {
     label: 'Modified After Date',
     Component: ModifiedDateAfterFilter
-  }
+  },
+
+  [CTN_NUMBER]: {
+    label: 'CTN Number',
+    Component: CTNNumberFilter,
+    pageName: [GAVI_REPORTS],
+  },
+
+  [MOU_NUMBER]: {
+    label: 'MOU Number',
+    Component: MOUNumberFilter,
+    pageName: [GAVI_REPORTS],
+  },
+
+  [SENT_GAVI_DATE_BEFORE_FIELD]: {
+    label: 'Sent To GAVI Date Before',
+    Component: GaviDateBeforeFilter,
+    pageName: [GAVI_REPORTS]
+  },
+
+  [SENT_GAVI_DATE_AFTER_FIELD]: {
+    label: 'Sent To GAVI Date After',
+    Component: GaviDateAfterFilter,
+    pageName: [GAVI_REPORTS],
+  },
+
+  [GAVI_WBS]: {
+    label: 'GAVI WBS',
+    Component: GaviWBSFilter,
+    pageName: [GAVI_REPORTS],
+  },
+
+  [COUNTRY_NAME]: {
+    label: 'Country',
+    Component: CountryFilter,
+    pageName: [GAVI_REPORTS],
+  },
+
+  [PURCHASE_ORDER]: {
+    label: 'Purchase Order',
+    Component: PurchaseOrderFilter,
+    pageName: [GAVI_REPORTS],
+  },
+
+  [PREPAID_STATUS]: {
+    label: 'Prepaid Status',
+    Component: PrepaidStatusFilter,
+    pageName: [GAVI_REPORTS],
+  },
+
+  [ALOOCATION_ROUND]: {
+    label: 'Allocation Round',
+    Component: AllocationRoundFilter,
+    pageName: [GAVI_REPORTS],
+  },
+
+  [VENDOR]: {
+    label: 'Vendor',
+    Component: VendorFilter,
+    pageName: [GAVI_REPORTS],
+  },
+
 };
 
 export const getPageFilters = (userGroup, currentPageName) => {
@@ -176,14 +257,25 @@ export const getPageFilters = (userGroup, currentPageName) => {
   if (!userGroup || !currentPageName) {
     return [];
   }
-  return keys(
-    filter(({
-      permissionGroup,
-      pageName
-    }) => {
-      const hasPermission = isSuperUser ? true : permissionGroup ? permissionGroup === userGroup : true;
-      const belongsOnPage = pageName ? pageName.some(page => page === currentPageName) : true;
-      return hasPermission && belongsOnPage;
-    }, FILTERS_MAP)
-  );
+  if (currentPageName === 'gavi-reports') {
+    return keys(
+      filter(({
+        pageName
+      }) => {
+        return pageName ? pageName.some(page => page === currentPageName) : false;
+      }, FILTERS_MAP)
+    );
+  }
+  else {
+    return keys(
+      filter(({
+        permissionGroup,
+        pageName
+      }) => {
+        const hasPermission = isSuperUser ? true : permissionGroup ? permissionGroup === userGroup : true;
+        const belongsOnPage = pageName ? pageName.some(page => page === currentPageName) : true;
+        return hasPermission && belongsOnPage;
+      }, FILTERS_MAP)
+    );
+  }
 };

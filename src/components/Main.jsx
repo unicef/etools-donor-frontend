@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 import { makeStyles, createStyles, Box } from '@material-ui/core';
 import ConnectedDrawer from './Drawer';
 import AppToolbar from './App-Bar';
-import { DRAWER_WIDTH, USERS_PORTAL_PATH, THEMATIC_GRANTS, POOLED_GRANTS, SEARCH_REPORTS } from '../lib/constants';
+import { DRAWER_WIDTH, USERS_PORTAL_PATH, THEMATIC_GRANTS, POOLED_GRANTS, SEARCH_REPORTS, GAVI_REPORTS } from '../lib/constants';
 import DonorsList from 'pages/donors-list';
 import ContentHeader from './Content-Header';
 import SearchPage from 'pages/reports/search';
@@ -121,6 +121,10 @@ export default function MainAppBar() {
                     </ProtectedRouteReportPage>
 
                     <ProtectedRouteReportPage exact path={`/${THEMATIC_GRANTS}`}>
+                      <SearchPage />
+                    </ProtectedRouteReportPage>
+
+                    <ProtectedRouteReportPage exact path={`/${GAVI_REPORTS}`}>
                       <SearchPage />
                     </ProtectedRouteReportPage>
 
