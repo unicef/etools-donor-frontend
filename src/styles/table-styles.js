@@ -79,5 +79,17 @@ export const useTableStyles = makeStyles(theme => ({
   tableContainer: {
     maxHeight: 'calc(100vh - 526px)',
     minHeight: 500
+  },
+  detailsPanel: {
+    paddingRight: '20px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  detailsHeader: {
+    marginBlockStart: '5px',
+    marginBlockEnd: '5px',
+    fontWeight: '500'
   }
+
 }));
