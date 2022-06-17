@@ -6,9 +6,9 @@ import SearchReportsFilter from 'pages/reports/components/search-reports-filters
 import SearchReportsTable from 'components/table/search-reports-table';
 import Footer from 'components/Footer';
 import { selectPageName } from 'selectors/ui-flags';
-import { initSearchReportsPage, initPooledGrantsPage, initThematicGrantsPage } from 'actions';
+import { initSearchReportsPage, initPooledGrantsPage, initThematicGrantsPage, initGaviReportsPage } from 'actions';
 import { onReceiveSearchReports } from 'slices/search-reports';
-import { POOLED_GRANTS, SEARCH_REPORTS, THEMATIC_GRANTS } from 'lib/constants';
+import { GAVI_REPORTS, POOLED_GRANTS, SEARCH_REPORTS, THEMATIC_GRANTS } from 'lib/constants';
 
 function useInitSearchReports(dispatch, donorId) {
   return () => {
@@ -28,6 +28,12 @@ function useInitThematicGrants(dispatch) {
   };
 }
 
+function useInitGaviReports(dispatch) {
+  return () => {
+    dispatch(initGaviReportsPage());
+  };
+}
+
 function useDefaultHook() {
   return () => { };
 }
@@ -43,6 +49,8 @@ const useInitPage = pageName => {
       return useInitPooledGrants(dispatch, donorId);
     case THEMATIC_GRANTS:
       return useInitThematicGrants(dispatch);
+    case GAVI_REPORTS:
+      return useInitGaviReports(dispatch);
     default:
       return useDefaultHook;
   }

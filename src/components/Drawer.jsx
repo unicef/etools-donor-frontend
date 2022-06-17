@@ -13,7 +13,7 @@ import {
 
 import DescriptionIcon from '@material-ui/icons/Description';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { SEARCH_REPORTS, POOLED_GRANTS, THEMATIC_GRANTS, USERS_PORTAL, TRAINING_LINK } from '../lib/constants';
+import { SEARCH_REPORTS, POOLED_GRANTS, THEMATIC_GRANTS, USERS_PORTAL, TRAINING_LINK, GAVI_REPORTS } from '../lib/constants';
 import { selectMenuBarPage, selectAssignedRole, selectPageName } from 'selectors/ui-flags';
 import { menuItemSelected } from 'slices/ui';
 import { usePermissions } from './PermissionRedirect';
@@ -94,6 +94,17 @@ export default function ConnectedDrawer() {
             <DescriptionIcon />
           </ListItemIcon>
           <ListItemText primary="Pooled Grants" />
+        </ListItem>
+
+        <ListItem
+          selected={navSelected(GAVI_REPORTS)}
+          onClick={handleNav(GAVI_REPORTS)}
+          button
+        >
+          <ListItemIcon>
+            <DescriptionIcon />
+          </ListItemIcon>
+          <ListItemText primary="Gavi Reports" />
         </ListItem>
 
         <ListItem

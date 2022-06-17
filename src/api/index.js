@@ -16,7 +16,8 @@ import {
   REACT_APP_PROFILE_ENDPOINT,
   REACT_APP_BUSINESS_AREA_ENDPOINT,
   REACT_APP_REPORTS_ENDPOINT,
-  REACT_APP_CONFIG_ENDPOINT
+  REACT_APP_CONFIG_ENDPOINT,
+  REACT_APP_GAVI_ENDPOINT
 } from './endpoints';
 
 const currentDate = () => {
@@ -32,7 +33,7 @@ const getBaseOptions = () => ({
   },
 
   withCredentials: true,
-  paramsSerializer: function (params) {
+  paramsSerializer: function(params) {
     return Qs.stringify(params, {
       arrayFormat: 'comma'
     });
@@ -136,6 +137,10 @@ export function getExternalGrants(id) {
 
 export function getThemes() {
   return get(REACT_APP_THEMES_ENDPOINT);
+}
+
+export function getGaviReports() {
+  return get(REACT_APP_GAVI_ENDPOINT);
 }
 
 export function getStaticAssets() {

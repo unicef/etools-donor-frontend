@@ -5,6 +5,7 @@ export const selectGrants = state => state.grants;
 export const selectExternalGrants = state => state.externalGrants;
 export const selectThemeCollection = state => state.themes;
 export const selectDonors = state => state.donors;
+export const selectGavi = state => state.gavi;
 export const selectStaticAssets = state => state.staticAssets;
 export const selectMetadata = state => state.metadata;
 export const selectReports = state => state.reports;
