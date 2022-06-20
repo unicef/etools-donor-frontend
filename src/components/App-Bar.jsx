@@ -56,7 +56,7 @@ export default function AppToolbar() {
   const userName = useSelector(selectUserName);
 
   function logout() {
-    window.location.href = `/social/unicef-logout/`;
+    window.location.href = `/security/unicef-logout/`;
   }
 
   return (
