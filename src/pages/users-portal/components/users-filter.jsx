@@ -11,21 +11,16 @@ import {
   TextField
 } from '@material-ui/core';
 import useFilterStyles from 'styles/filter-styles';
-import { selectUserGroups } from 'selectors/user';
+import { selectDonorUserGroups } from 'selectors/user';
 import { FORM_CONFIG } from '../../../lib/constants';
-import { onFetchUserRoles, onFetchUserGroups } from 'actions';
+import { onFetchUserRoles } from 'actions';
 import { setValueFromEvent } from 'lib/helpers';
 import { setUserRoles } from 'slices/user-roles';
 
 export default function UsersFilter() {
   const classes = useFilterStyles();
   const dispatch = useDispatch();
-  const groups = useSelector(selectUserGroups);
-  useEffect(() => {
-    if (!groups.length) {
-      dispatch(onFetchUserGroups());
-    }
-  }, []);
+  const groups = useSelector(selectDonorUserGroups);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRoles, setSelectedRoles] = useState([]);

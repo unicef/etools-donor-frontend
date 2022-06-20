@@ -84,6 +84,10 @@ export function getUserGroups() {
   });
 }
 
+export function getUserGaviGroups() {
+  return get(REACT_APP_USER_GROUPS_ENDPOINT);
+}
+
 export function getDonors() {
   return get(REACT_APP_REPORTS_DONORS_ENDPOINT);
 }

@@ -10,3 +10,27 @@ const groupsSlice = createSlice({
 export const { reducer: groupsReducer } = groupsSlice;
 
 export const { setGroups } = groupsSlice.actions;
+
+
+const groupsGaviSlice = createSlice({
+  initialState: null,
+  reducers: {
+    setGaviGroups: (state, action) => action.payload
+  }
+});
+
+export const { reducer: groupsGaviReducer } = groupsGaviSlice;
+
+export const { setGaviGroups } = groupsGaviSlice.actions;
+
+
+const donorUserGroupsSlice = createSlice({
+  initialState: [],
+  reducers: {
+    setDonorUserGroups: (state, action) => action.payload
+  }
+});
+
+export const {reducer: donorUserGroupsReducer} = donorUserGroupsSlice;
+
+export const {setDonorUserGroups} = donorUserGroupsSlice.actions;
