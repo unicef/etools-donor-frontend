@@ -4,7 +4,7 @@ import { errorReducer } from './error';
 import { formErrorReducer } from './form-error';
 import { collectionsReducers } from './collections';
 import { donorsReducer } from './donors';
-import { groupsReducer } from './user-groups';
+import { groupsReducer, groupsGaviReducer, donorUserGroupsReducer } from './user-groups';
 import { createdUserReducer } from './created-user';
 import { createdRoleReducer } from './created-role';
 import { uiReducer } from './ui';
@@ -16,6 +16,8 @@ import { successReducer } from './success';
 export default combineReducers({
   userRoles: userRolesReducer,
   userGroups: groupsReducer,
+  userGaviGroups: groupsGaviReducer,
+  donorUserGroups: donorUserGroupsReducer,
   donors: donorsReducer,
   donor: donorReducer,
   error: errorReducer,

@@ -70,7 +70,8 @@ import {
 } from 'selectors/ui-flags';
 import {
   waitForLength,
-  maybeFetch
+  maybeFetch,
+  waitFor
 } from './helpers';
 import {
   selectDonors,
@@ -91,6 +92,8 @@ import {
   configInitialState,
   onReceiveConfig
 } from 'slices/config';
+import {selectUserGaviGroups, selectUserGroups} from 'selectors/user';
+import {setDonorUserGroups} from 'slices/user-groups';
 
 function* handleFetchDonors() {
   try {
@@ -213,6 +216,17 @@ function* handleCurrentDonor({
     donor = donors.find(propEq('id', Number(payload.donorId)));
   } else {
     donor = profile.donor;
+  }
+
+  if (typeof donor !== 'undefined') {
+    // set UserGroups of selected Donor, will need them in the filter and Add User popup
+    yield call(waitForLength, selectUserGroups);
+    const userGroups = yield select(selectUserGroups);
+    yield call(waitFor, selectUserGaviGroups);
+    const userGaviGroups = yield select(selectUserGaviGroups);
+    const config = yield select(selectConfig);
+    const donorUserGroups = donor.code === config.gavi_donor_code ? userGaviGroups : userGroups;
+    yield put(setDonorUserGroups(donorUserGroups));
   }
 
   yield put(currentDonorSelected(donor));

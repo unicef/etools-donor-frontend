@@ -7,6 +7,7 @@ import {
 import {
   getUserRoles,
   getUserGroups,
+  getUserGaviGroups,
   createUser,
   createRole,
   getUserProfile,
@@ -30,7 +31,7 @@ import {
   deleteUserRole
 } from 'actions';
 import {
-  setGroups
+  setGroups, setGaviGroups
 } from 'slices/user-groups';
 import {
   createRoleSuccess
@@ -88,6 +89,10 @@ function* handleFetchUserGroups() {
   try {
     const groups = yield call(getUserGroups);
     yield put(setGroups(groups));
+
+    const gaviGroups = yield call(getUserGaviGroups);
+    yield put(setGaviGroups(gaviGroups));
+
   } catch (err) {
     yield put(setError(err));
   } finally {
