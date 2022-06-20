@@ -26,7 +26,7 @@ import { setValueFromEvent, oneIsEmpty } from 'lib/helpers';
 import { makeStyles } from '@material-ui/styles';
 import { FORM_CONFIG } from '../../../lib/constants';
 import { NOTIFICATION_PERIODS_MAP } from '../../../lib/constants';
-import { selectUserGroups } from 'selectors/user';
+import { selectDonorUserGroups } from 'selectors/user';
 import { selectCreatedRole, selectFormError } from 'selectors/ui-flags';
 import { onCreateUserRole } from 'actions';
 import { getErrorState } from 'lib/error-parsers';
@@ -79,7 +79,7 @@ export default function AddUserModal({ open, onClose, userProp = {} }) {
   const [period, setPeriod] = useState('every_day');
 
   const createdRole = useSelector(selectCreatedRole);
-  const groups = useSelector(selectUserGroups);
+  const groups = useSelector(selectDonorUserGroups);
   const formError = useSelector(selectFormError);
 
   function resetForm() {

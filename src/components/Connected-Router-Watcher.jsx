@@ -6,14 +6,16 @@ import { onRouteChange } from 'slices/ui';
 import { useEffect } from 'react';
 import { selectPageName, selectParamDonorId } from 'selectors/ui-flags';
 import { usePermissions } from './PermissionRedirect';
-import { initDonorsList } from 'actions';
+import { initDonorsList, onFetchUserGroups } from 'actions';
 import { selectDonors } from 'selectors/collections';
+import {selectUserGroups} from 'selectors/user';
 
 export default function ConnectedRouterWatcher({ children }) {
   const location = useLocation();
   const currentPageName = useSelector(selectPageName);
   const currentDonorId = useSelector(selectParamDonorId);
   const donors = useSelector(selectDonors);
+  const groups = useSelector(selectUserGroups);
   const { canViewDonors } = usePermissions();
   const dispatch = useDispatch();
 
@@ -22,6 +24,12 @@ export default function ConnectedRouterWatcher({ children }) {
       dispatch(initDonorsList());
     }
   }, [canViewDonors]);
+
+  useEffect(() => {
+     if (!groups.length) {
+        dispatch(onFetchUserGroups());
+     }
+  }, []);
 
   useEffect(() => {
     // only dispatch if actual route changed, children change will trigger re-render of this component
