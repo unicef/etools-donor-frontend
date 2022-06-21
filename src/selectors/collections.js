@@ -21,6 +21,10 @@ export const selectYears = createSelector(
   selectStaticAssets,
   assets => assets.report_years
 );
+export const selectApprovalYear = createSelector(
+  selectStaticAssets,
+  assets => assets.approval_year
+);
 export const selectReportType = createSelector(
   selectMetadata,
   assets => assets.report_type
@@ -28,6 +32,10 @@ export const selectReportType = createSelector(
 export const selectDonorDocuments = createSelector(
   selectMetadata,
   assets => assets.donor_document
+);
+export const selectVaccineTypes = createSelector(
+  selectMetadata,
+  assets => assets.vaccine_type
 );
 export const selectDonorCategory = createSelector(
   selectMetadata,
