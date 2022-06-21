@@ -53,6 +53,12 @@ export const FORM_CONFIG = {
   },
   periods: {
     label: 'Notification Period'
+  },
+  vaccineType: {
+    label: 'Vaccine Type'
+  },
+  approvalYear: {
+    label: 'Approval Year'
   }
 };
 

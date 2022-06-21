@@ -8,7 +8,8 @@ export const metadataInitialState = {
   recertified: [],
   donor_document: [],
   donor_reporting_category: [],
-  award_type: []
+  award_type: [],
+  vaccine_type: []
 };
 
 const metadataSlice = createSlice({
@@ -21,7 +22,8 @@ const metadataSlice = createSlice({
         recertified: [],
         donor_document: [],
         donor_reporting_category: [],
-        award_type: []
+        award_type: [],
+        vaccine_type: []
       }
       action.payload.forEach(element => {
         let assetDupe = {
