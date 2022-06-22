@@ -3,7 +3,8 @@ import {
 } from 'redux-starter-kit';
 
 export const staticAssetsInitialState = {
-  grant_issue_years: []
+  grant_issue_years: [],
+  approval_year: []
 };
 
 const staticAssetsSlice = createSlice({

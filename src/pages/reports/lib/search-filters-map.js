@@ -24,9 +24,11 @@ import {
   SENT_GAVI_DATE_BEFORE_FIELD,
   SENT_GAVI_DATE_AFTER_FIELD,
   PREPAID_STATUS,
+  VACCINE_TYPE,
   PURCHASE_ORDER,
   ALOOCATION_ROUND,
-  VENDOR
+  VENDOR,
+  APPROVAL_YEAR
 } from '../search-constants';
 
 import {
@@ -55,6 +57,8 @@ import ExternalGrantsFilter from '../components/external-grants-filter';
 import TitleSearchFilter from '../components/title-search-filter';
 import FrameworkAgreementFilter from '../components/framework-agreement-filter';
 import DonorDocumentFilter from '../components/donor-document-filter';
+import ApprovalYearFilter from '../components/approval-year-filter';
+import VaccineTypeFilter from '../components/vaccine-type-filter';
 import AwardTypeFilter from '../components/award-type-filter';
 import MOUNumberFilter from '../components/mou-number-filter';
 import CountryFilter from '../components/country-filter';
@@ -249,6 +253,18 @@ export const FILTERS_MAP = {
     Component: VendorFilter,
     pageName: [GAVI_REPORTS],
   },
+
+  [VACCINE_TYPE]: {
+    label: 'Vaccine Type',
+    Component: VaccineTypeFilter,
+    pageName: [GAVI_REPORTS],
+  },
+
+  [APPROVAL_YEAR]: {
+    label: 'Approval Year',
+    Component: ApprovalYearFilter,
+    pageName: [GAVI_REPORTS],
+  }
 
 };
 
