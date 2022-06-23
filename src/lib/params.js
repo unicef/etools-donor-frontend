@@ -19,11 +19,14 @@ export const PAGE_TITLES_MAP = {
   [SEARCH_REPORTS_PATH]: 'Reports'
 };
 
-export function getSubheadingFromParams(pathname, donorName = '') {
+export function getSubheadingFromParams(pathname, donorName = '', donorCode = '') {
   const pathMatch = keys(PAGE_TITLES_MAP).find(path => pathname.includes(path));
   const pageName = PAGE_TITLES_MAP[pathMatch];
   if (!pageName) {
     return '';
   }
-  return `${pageName} ${donorName && 'for'} ${donorName}`;
+  if (donorCode !== '') {
+    donorCode = `[${donorCode}]`;
+  }
+  return `${pageName} ${donorName && 'for'} ${donorName} ${donorCode}`;
 }

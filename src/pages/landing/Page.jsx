@@ -69,7 +69,7 @@ export default function LandingPage() {
 
   function signIn() {
     const url = window.location.origin;
-    window.location.href = `${url}/sociallogin/unicef-azuread-b2c-oauth2/`;
+    window.location.href = `${url}/social/login/unicef-azuread-b2c-oauth2/`;
   }
 
   return (
@@ -96,7 +96,7 @@ export default function LandingPage() {
                   variant="container"
                   onClick={signIn}
                 >
-                  <Link href="/sociallogin/unicef-azuread-b2c-oauth2/">Sign In</Link>
+                  <Link href="/social/login/unicef-azuread-b2c-oauth2/">Sign In</Link>
                 </Button>
               </Box>
             </Grid>

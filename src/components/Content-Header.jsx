@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
 import { makeStyles, createStyles, Grid, Typography } from '@material-ui/core';
 import { getSubheadingFromParams } from 'lib/params';
-import { selectDonorName } from 'selectors/ui-flags';
+import { selectDonorName, selectDonorCode } from 'selectors/ui-flags';
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -31,7 +31,8 @@ const useStyles = makeStyles(theme =>
 function ContentHeader({ children, location }) {
   const classes = useStyles();
   const donorName = useSelector(selectDonorName);
-  const title = getSubheadingFromParams(location.pathname, donorName);
+  const donorCode = useSelector(selectDonorCode);
+  const title = getSubheadingFromParams(location.pathname, donorName, donorCode);
   return (
     <Grid
       alignItems="center"
