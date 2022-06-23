@@ -76,7 +76,8 @@ export default function DonorsList() {
     resetPagination();
     const { value } = e.target;
     setQuery(value);
-    setFilteredList(donors.filter(({ name }) => name.toLowerCase().includes(value.toLowerCase())));
+    setFilteredList(donors.filter(({ name, code }) => name.toLowerCase().includes(value.toLowerCase()) ||
+     code.toLowerCase().includes(value.toLowerCase())));
   }
 
   return (

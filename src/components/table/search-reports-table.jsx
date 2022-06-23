@@ -194,6 +194,15 @@ export default function ReportsTable() {
           <Tooltip title={row.vaccine_type ? row.vaccine_type : ''}>
             <div><p className={classes.detailsHeader}>Vaccine Type</p>{row.vaccine_type}</div>
           </Tooltip>
+          <Tooltip title={row.m_o_u_r_eference ? row.m_o_u_r_eference : ''}>
+            <div><p className={classes.detailsHeader}>MOU reference</p>{row.m_o_u_r_eference}</div>
+          </Tooltip>
+          <Tooltip title={row.allocation_round ? row.allocation_round : ''}>
+            <div><p className={classes.detailsHeader}>Allocation Round</p>{row.allocation_round}</div>
+          </Tooltip>
+          <Tooltip title={row.vendor ? row.vendor : ''}>
+            <div><p className={classes.detailsHeader}>Vendor</p>{row.vendor}</div>
+          </Tooltip>
         </Box>
     )
   }
