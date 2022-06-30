@@ -1,36 +1,23 @@
 import React from 'react';
 import { useGetFilterClasses } from 'styles/filter-styles';
-import { FormControl, MenuItem } from '@material-ui/core';
-import { FORM_CONFIG } from 'lib/constants';
-import { StyledInputLabel, StyledSelect } from './styled-dropdown';
+import { FormControl, TextField } from '@material-ui/core';
 import { FilterProps } from '../lib/dropdown-filter-factory';
-import { useSelector } from 'react-redux';
-import { selectVaccineTypes } from 'selectors/collections';
 
-export default function VaccineTypeFilter({ value, onChange }) {
+export default function VaccineTypeFilter({ value = '', onChange, ...props }) {
   const { classes } = useGetFilterClasses();
-  const options = useSelector(selectVaccineTypes) || [];
 
   return (
-    <FormControl className={classes.formControl}>
-      <StyledInputLabel htmlFor="option-select">{FORM_CONFIG.vaccineType.label}</StyledInputLabel>
-      <StyledSelect
-        value={value}
-        onChange={onChange}
+    <FormControl className={classes.formControl} {...props}>
+      <TextField
+        placeholder="Vaccine Type"
+        className={classes.input}
         inputProps={{
-          name: 'option',
-          id: 'option-select'
+          'aria-label': 'description'
         }}
-      >
-        <MenuItem value="">
-          <em>None</em>
-        </MenuItem>
-        {options.map(option => (
-          <MenuItem key={option.code} value={option.code}>
-            {option.description}
-          </MenuItem>
-        ))}
-      </StyledSelect>
+        label="Vaccine Type"
+        onChange={onChange}
+        value={value}
+      />
     </FormControl>
   );
 }
