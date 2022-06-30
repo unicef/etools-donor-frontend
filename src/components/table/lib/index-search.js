@@ -80,7 +80,7 @@ export const useTable = (defaultOrderBy = '') => {
 
   const getParamsObj = (params) => {
     const paramsString = params.split('?')[1];
-    return JSON.parse('{"' + paramsString.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function (key, value) {
+    return JSON.parse('{"' + paramsString.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function(key, value) {
       return key === "" ? value : decodeURIComponent(value)
     })
   }
@@ -118,4 +118,8 @@ export const useTable = (defaultOrderBy = '') => {
 
 export function getDisplayDate(dateStr) {
   return dateStr ? format(new Date(dateStr), DISPLAY_FORMAT) : '';
+}
+
+export function getDisplayValue(value, defaultValue = '—') {
+  return value ? value : defaultValue;
 }

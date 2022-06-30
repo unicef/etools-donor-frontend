@@ -52,7 +52,7 @@ export const PREPAID_STATUS = 'prepaid_status';
 export const PURCHASE_ORDER = 'purchase_order__contains';
 export const ALOOCATION_ROUND = 'allocation_round__contains';
 export const VENDOR = 'vendor__contains';
-export const VACCINE_TYPE = 'vaccine_type';
+export const VACCINE_TYPE = 'vaccine_type__contains';
 export const APPROVAL_YEAR = 'approval_year';
 
 // PROPERTIES TO BE USED FOR QUERY
