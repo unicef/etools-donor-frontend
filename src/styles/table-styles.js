@@ -90,6 +90,9 @@ export const useTableStyles = makeStyles(theme => ({
     marginBlockStart: '5px',
     marginBlockEnd: '5px',
     fontWeight: '500'
+  },
+  icon: {
+    marginRight: '10px',
+    verticalAlign: 'middle'
   }
-
 }));

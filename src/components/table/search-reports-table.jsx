@@ -20,7 +20,7 @@ import EnhancedTableToolbar from './table-toolbar';
 import EnhancedTableHead from './table-head';
 import { selectSearchReports } from 'selectors/collections';
 import { usePermissions } from 'components/PermissionRedirect';
-import { useTable, stableSort, getSorting, getDisplayDate } from './lib/index-search';
+import { useTable, stableSort, getSorting, getDisplayDate, getDisplayValue } from './lib/index-search';
 import clsx from 'clsx';
 import {
   BACKEND_REPORTS_FIELDS,
@@ -176,32 +176,29 @@ export default function ReportsTable() {
   const getGaviRowDetails = (row) => {
     return (
         <Box className={classes.detailsPanel}>
-          <Tooltip title={row.author ? row.author : ''}>
-            <div><p className={classes.detailsHeader}>Author</p>{row.author}</div>
-          </Tooltip>
           <Tooltip title={row.funds_due_date ? getDisplayDate(row.funds_due_date) : ''}>
-            <div><p className={classes.detailsHeader}>Funds Due Date</p>{getDisplayDate(row.funds_due_date)}</div>
+            <div><p className={classes.detailsHeader}>Funds Due Date</p>{getDisplayValue(getDisplayDate(row.funds_due_date))}</div>
           </Tooltip>
           <Tooltip title={row.material_code ? row.material_code : ''}>
-            <div><p className={classes.detailsHeader}>Material Code</p>{row.material_code}</div>
+            <div><p className={classes.detailsHeader}>Material Code</p>{getDisplayValue(row.material_code)}</div>
           </Tooltip>
           <Tooltip title={row.prepaid_status ? row.prepaid_status : ''}>
-            <div><p className={classes.detailsHeader}>Prepaid Status</p>{row.prepaid_status}</div>
+            <div><p className={classes.detailsHeader}>Prepaid Status</p>{getDisplayValue(row.prepaid_status)}</div>
           </Tooltip>
           <Tooltip title={row.purchase_order ? row.purchase_order : ''}>
-            <div><p className={classes.detailsHeader}>Purchase Order</p>{row.purchase_order}</div>
+            <div><p className={classes.detailsHeader}>Purchase Order</p>{getDisplayValue(row.purchase_order)}</div>
           </Tooltip>
           <Tooltip title={row.vaccine_type ? row.vaccine_type : ''}>
-            <div><p className={classes.detailsHeader}>Vaccine Type</p>{row.vaccine_type}</div>
+            <div><p className={classes.detailsHeader}>Vaccine Type</p>{getDisplayValue(row.vaccine_type)}</div>
           </Tooltip>
           <Tooltip title={row.m_o_u_r_eference ? row.m_o_u_r_eference : ''}>
-            <div><p className={classes.detailsHeader}>MOU reference</p>{row.m_o_u_r_eference}</div>
+            <div><p className={classes.detailsHeader}>MOU reference</p>{getDisplayValue(row.m_o_u_r_eference)}</div>
           </Tooltip>
           <Tooltip title={row.allocation_round ? row.allocation_round : ''}>
-            <div><p className={classes.detailsHeader}>Allocation Round</p>{row.allocation_round}</div>
+            <div><p className={classes.detailsHeader}>Allocation Round</p>{getDisplayValue(row.allocation_round)}</div>
           </Tooltip>
           <Tooltip title={row.vendor ? row.vendor : ''}>
-            <div><p className={classes.detailsHeader}>Vendor</p>{row.vendor}</div>
+            <div><p className={classes.detailsHeader}>Vendor</p>{getDisplayValue(row.vendor)}</div>
           </Tooltip>
         </Box>
     )
@@ -220,7 +217,7 @@ export default function ReportsTable() {
                 <Tooltip title={row.title ? row.title : ''}>
                   <Typography className={classes.overflow}>
                     <Link color="secondary" href={row.download_url} target="_blank">
-                      {row.is_new && <FiberNewIcon fontSize="small" color="error" />}
+                      {row.is_new && <FiberNewIcon fontSize="small" className={classes.icon} color="error" />}
                       {row.title}
                     </Link>
                   </Typography>
@@ -276,7 +273,7 @@ export default function ReportsTable() {
                 <Tooltip title={row.title ? row.title : ''}>
                   <Typography className={classes.overflow}>
                     <Link color="secondary" href={row.download_url} target="_blank">
-                      {row.is_new && <FiberNewIcon fontSize="small" color="error" />}
+                      {row.is_new && <FiberNewIcon fontSize="small" className={classes.icon} color="error" />}
                       {row.title}
                     </Link>
                   </Typography>
