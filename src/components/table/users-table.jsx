@@ -15,13 +15,14 @@ import { Button, Box } from '@material-ui/core';
 import { selectUserRoles } from 'selectors/user';
 import { BACKEND_PROPERTIES_USER_LAST_LOGIN } from '../../lib/constants';
 import { stableSort, getSorting } from './lib';
-import { selectLoading } from 'selectors/ui-flags';
+import { selectLoading, selectUserDonor } from 'selectors/ui-flags';
 import UserRowItem from './user-row-item';
 import DeleteUserDialog from 'components/DeleteUserDialog';
 import { deleteUserRole } from 'actions';
 import { useDispatch } from 'react-redux';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import { usePermissions } from '../../components/PermissionRedirect';
+import {selectConfig} from 'selectors/collections';
 
 let headCells = [
   { id: 'user_first_name', numeric: false, disablePadding: false, label: 'Name', sortable: true },
@@ -51,6 +52,9 @@ export default function UsersTable() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const users = useSelector(selectUserRoles);
+  const donor = useSelector(selectUserDonor);
+  const config = useSelector(selectConfig);
+  const isGaviDonor = donor.code === config.gavi_donor_code;
   const { isDonorAdmin, isSuperUser } = usePermissions();
   const hasEditRights = isDonorAdmin || isSuperUser;
 
@@ -137,7 +141,7 @@ export default function UsersTable() {
               {stableSort(users, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((user, index) => (
-                  <UserRowItem user={user} key={index} showActions={hasEditRights} onClickEdit={(user) => handleClickEdit(user)} onClickDelete={(user) => handleClickDelete(user)} />
+                  <UserRowItem user={user} isGaviDonor={isGaviDonor} key={index} showActions={hasEditRights} onClickEdit={(user) => handleClickEdit(user)} onClickDelete={(user) => handleClickDelete(user)} />
                 ))}
 
               <TableRow>
