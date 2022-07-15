@@ -53,7 +53,8 @@ export const useTableStyles = makeStyles(theme => ({
     textOverflow: 'ellipsis'
   },
   titleCell: {
-    width: '20%'
+    width: '20%',
+    whiteSpace: 'nowrap'
   },
   dateCell: {
     whiteSpace: 'nowrap'
