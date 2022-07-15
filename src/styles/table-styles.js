@@ -94,5 +94,8 @@ export const useTableStyles = makeStyles(theme => ({
   icon: {
     marginRight: '10px',
     verticalAlign: 'middle'
+  },
+  dBlock: {
+    display: 'block'
   }
 }));
