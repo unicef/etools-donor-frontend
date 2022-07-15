@@ -123,3 +123,10 @@ export function getDisplayDate(dateStr) {
 export function getDisplayValue(value, defaultValue = '—') {
   return value ? value : defaultValue;
 }
+
+export function arrayToTooltip(arr) {
+  if (arr && arr.length) {
+    return arr.join(', ');
+  }
+  return '';
+}

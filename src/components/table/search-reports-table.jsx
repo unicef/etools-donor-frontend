@@ -20,7 +20,7 @@ import EnhancedTableToolbar from './table-toolbar';
 import EnhancedTableHead from './table-head';
 import { selectSearchReports } from 'selectors/collections';
 import { usePermissions } from 'components/PermissionRedirect';
-import { useTable, stableSort, getSorting, getDisplayDate, getDisplayValue } from './lib/index-search';
+import { useTable, stableSort, getSorting, getDisplayDate, getDisplayValue, arrayToTooltip } from './lib/index-search';
 import clsx from 'clsx';
 import {
   BACKEND_REPORTS_FIELDS,
@@ -185,17 +185,17 @@ export default function ReportsTable() {
           <Tooltip title={row.funds_due_date ? getDisplayDate(row.funds_due_date) : ''}>
             <div><p className={classes.detailsHeader}>Funds Due Date</p>{getDisplayValue(getDisplayDate(row.funds_due_date))}</div>
           </Tooltip>
-          <Tooltip title={row.material_code ? row.material_code : ''}>
-            <div><p className={classes.detailsHeader}>Material Code</p>{getDisplayValue(row.material_code)}</div>
+          <Tooltip title={arrayToTooltip(row.material_code)}>
+            <div><p className={classes.detailsHeader}>Material Code</p>{arrayToCellValue(row.material_code)}</div>
           </Tooltip>
           <Tooltip title={row.prepaid_status ? row.prepaid_status : ''}>
             <div><p className={classes.detailsHeader}>Prepaid Status</p>{getDisplayValue(row.prepaid_status)}</div>
           </Tooltip>
-          <Tooltip title={row.purchase_order ? row.purchase_order : ''}>
-            <div><p className={classes.detailsHeader}>Purchase Order</p>{getDisplayValue(row.purchase_order)}</div>
+          <Tooltip title={arrayToTooltip(row.purchase_order)}>
+            <div><p className={classes.detailsHeader}>Purchase Order</p>{arrayToCellValue(row.purchase_order)}</div>
           </Tooltip>
-          <Tooltip title={row.vaccine_type ? row.vaccine_type : ''}>
-            <div><p className={classes.detailsHeader}>Vaccine Type</p>{getDisplayValue(row.vaccine_type)}</div>
+          <Tooltip title={arrayToTooltip(row.vaccine_type)}>
+            <div><p className={classes.detailsHeader}>Vaccine Type</p>{arrayToCellValue(row.vaccine_type)}</div>
           </Tooltip>
           <Tooltip title={row.m_o_u_r_eference ? row.m_o_u_r_eference : ''}>
             <div><p className={classes.detailsHeader}>MOU reference</p>{getDisplayValue(row.m_o_u_r_eference)}</div>
@@ -238,6 +238,13 @@ export default function ReportsTable() {
     )
   }
 
+  const arrayToCellValue = (arr, defaultValue = '—') => {
+    if(arr && arr.length) {
+      return arr.map(x => (<span className={classes.dBlock} key={x}>{x}</span>));
+    }
+    return defaultValue;
+  }
+
   const getGaviContent = (index, row) => {
      const labelId = `enhanced-table-checkbox-${index}`;
      return (
@@ -264,9 +271,9 @@ export default function ReportsTable() {
                 </TableCell>
               </Tooltip>
 
-              <Tooltip title={row.country_name ? row.country_name : ''}>
+              <Tooltip title={arrayToTooltip(row.country_name)}>
                 <TableCell className={classes.cell} align="left">
-                  {row.country_name}
+                  {arrayToCellValue(row.country_name)}
                 </TableCell>
               </Tooltip>
 
@@ -284,9 +291,9 @@ export default function ReportsTable() {
                 </TableCell>
               </Tooltip>
 
-              <Tooltip title={row.g_a_v_i_w_b_s ? row.g_a_v_i_w_b_s : ''}>
+              <Tooltip title={arrayToTooltip(row.g_a_v_i_w_b_s)}>
                 <TableCell className={classes.cell} align="left">
-                  {row.g_a_v_i_w_b_s}
+                  {arrayToCellValue(row.g_a_v_i_w_b_s)}
                 </TableCell>
               </Tooltip>
 
