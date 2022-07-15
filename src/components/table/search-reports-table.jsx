@@ -143,7 +143,7 @@ export default function ReportsTable() {
   }, [pageName]);
 
   const getTableContent = (index, row) => {
-   return isGaviPage ? getGaviContent(index, row) : getLegacyContent(index, row);
+   return isGaviPage ? getGaviContent(index, row) : getStandardContent(index, row);
   }
 
   const getTableNumOfCells = () => {
@@ -171,7 +171,7 @@ export default function ReportsTable() {
           <TableRow bgcolor='#eeeeee'>
             <TableCell padding="checkbox" />
             <TableCell colSpan={getTableNumOfCells()}>
-              {isGaviPage ? getGaviRowDetails(rowData) : getLegacyRowDetails(rowData)}
+              {isGaviPage ? getGaviRowDetails(rowData) : getStandardRowDetails(rowData)}
             </TableCell>
           </TableRow>
           ) }
@@ -210,7 +210,7 @@ export default function ReportsTable() {
     )
   }
 
-   const getLegacyRowDetails = (row) => {
+   const getStandardRowDetails = (row) => {
     return (
         <Box className={classes.detailsPanel}>
           <Tooltip title={row.report_generated_by ? row.report_generated_by : ''}>
@@ -294,7 +294,7 @@ export default function ReportsTable() {
     )
   }
 
-  const getLegacyContent = (index, row) => {
+  const getStandardContent = (index, row) => {
     const labelId = `enhanced-table-checkbox-${index}`;
     return (
         <ExpandableTableRow hover role="checkbox" tabIndex={-1} key={index} rowData={row}>

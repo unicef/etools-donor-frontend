@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function UserRowItem({ user, showActions, onClickEdit, onClickDelete }) {
+export default function UserRowItem({user, showActions, isGaviDonor, onClickEdit, onClickDelete }) {
   const labelId = `user-${user.id}`;
   const classes = useStyles();
   const groups = useSelector(selectUserGroups);
@@ -64,7 +64,7 @@ export default function UserRowItem({ user, showActions, onClickEdit, onClickDel
       </TableCell>
       <TableCell align="left">{user.user_email || '-'}</TableCell>
       <TableCell align="left">
-        {prop('name', groups.find(group => group.id === user.group))}
+        {isGaviDonor ? user.group_name : prop('name', groups.find(group => group.id === user.group))}
       </TableCell>
       <TableCell align="left">
         {prop('label', periods.find(period => period.name === user.notification_period))}
@@ -101,6 +101,7 @@ export default function UserRowItem({ user, showActions, onClickEdit, onClickDel
 
 UserRowItem.propTypes = {
   user: PropTypes.object,
+  isGaviDonor: PropTypes.bool,
   showActions: PropTypes.bool,
   onClickEdit: PropTypes.func,
   onClickDelete: PropTypes.func
