@@ -17,6 +17,7 @@ export const BACKEND_THEMATIC_FIELDS = {
 };
 
 // QUERY PARAM FIELD NAMES FOR BACKEND
+export const SEARCH_FIELD = 'search';
 export const TITLE_FIELD = 'title__contains';
 export const FRAMEWORK_FIELD = 'framework_agreement';
 export const COUNTRY_FIELD = 'recipient_office';
@@ -54,6 +55,7 @@ export const ALOOCATION_ROUND = 'allocation_round__contains';
 export const VENDOR = 'vendor__contains';
 export const VACCINE_TYPE = 'vaccine_type__contains';
 export const APPROVAL_YEAR = 'approval_year';
+
 
 // PROPERTIES TO BE USED FOR QUERY
 export const QUERY_PROPERTY_GRANT = 'code';
