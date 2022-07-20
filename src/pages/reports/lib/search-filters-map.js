@@ -28,7 +28,8 @@ import {
   PURCHASE_ORDER,
   ALOOCATION_ROUND,
   VENDOR,
-  APPROVAL_YEAR
+  APPROVAL_YEAR,
+  SEARCH_FIELD
 } from '../search-constants';
 
 import {
@@ -84,8 +85,15 @@ import PurchaseOrderFilter from '../components/purchase-order-filter';
 import AllocationRoundFilter from '../components/allocation-round-filter';
 import {GaviDateAfterFilter, GaviDateBeforeFilter} from '../components/gavi-date-filter';
 import VendorFilter from '../components/vendor-filter';
+import SearchFilter from '../components/search-filter';
 
 export const FILTERS_MAP = {
+  [SEARCH_FIELD]: {
+    label: 'Search',
+    Component: SearchFilter,
+    pageName: [SEARCH_REPORTS, POOLED_GRANTS, THEMATIC_GRANTS, GAVI_REPORTS]
+  },
+
   [THEME_FIELD]: {
     label: 'Theme',
     Component: ThemeFilter,

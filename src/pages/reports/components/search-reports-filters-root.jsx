@@ -63,7 +63,7 @@ export default function SearchReportsFilter() {
 
   useEffect(() => {
     if (prop('length', prevPageName)) {
-      clearFilters();
+      clearFilters({search: true});
       dispatch(onFetchSearchReports({}));
     }
   }, [pageName]);
