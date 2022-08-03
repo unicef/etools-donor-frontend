@@ -206,6 +206,9 @@ export default function ReportsTable() {
           <Tooltip title={row.vendor ? row.vendor : ''}>
             <div><p className={classes.detailsHeader}>Vendor</p>{getDisplayValue(row.vendor)}</div>
           </Tooltip>
+           <Tooltip title={row.urgent ? row.urgent : ''}>
+            <div><p className={classes.detailsHeader}>Urgent</p>{getDisplayValue(row.urgent)}</div>
+          </Tooltip>
         </Box>
     )
   }
