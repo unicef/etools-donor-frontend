@@ -65,8 +65,7 @@ import {
   onReceiveOffices
 } from 'slices/offices';
 import {
-  selectUserProfile,
-  selectUserGroup
+  selectUserProfile
 } from 'selectors/ui-flags';
 import {
   waitForLength,
@@ -85,9 +84,6 @@ import {
 import {
   currentDonorSelected
 } from 'slices/donor';
-import {
-  UNICEF_USER_ROLE
-} from 'lib/constants';
 import {
   configInitialState,
   onReceiveConfig
@@ -207,10 +203,9 @@ function* handleCurrentDonor({
   payload
 }) {
   const profile = yield select(selectUserProfile);
-  const group = yield select(selectUserGroup);
   let donor;
 
-  if (group === UNICEF_USER_ROLE || profile.is_superuser) {
+  if (profile.is_unicef_user || profile.is_superuser) {
     yield call(waitForLength, selectDonors);
     const donors = yield select(selectDonors);
     donor = donors.find(propEq('id', Number(payload.donorId)));
