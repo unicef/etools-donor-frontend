@@ -9,7 +9,8 @@ import {
   selectDonorCode,
   selectError,
   selectCurrentlyLoadedDonor,
-  selectMenuBarPage
+  selectMenuBarPage,
+  selectIsUnicefUser
 } from 'selectors/ui-flags';
 import {
   selectReportYear
@@ -31,9 +32,6 @@ import {
   setCurrentlyLoadedDonor
 } from 'slices/ui';
 import {
-  selectUserGroup
-} from '../selectors/ui-flags'
-import {
   onReceiveSearchReports
 } from 'slices/search-reports';
 import {
@@ -49,7 +47,6 @@ import {
   SEARCH_REPORTS,
   THEMATIC_GRANTS,
   POOLED_GRANTS,
-  UNICEF_USER_ROLE,
   GAVI_REPORTS
 } from '../lib/constants'
 
@@ -97,8 +94,7 @@ function* getSourceId() {
 
 function* getSearchCallerFunc(payload) {
   const reportPageName = yield select(selectMenuBarPage);
-  const userGroup = yield select(selectUserGroup);
-  const isUnicefUser = userGroup === UNICEF_USER_ROLE;
+  const isUnicefUser = yield select(selectIsUnicefUser);
   let result = {
     params: {
       ...removeEmpties(payload)
