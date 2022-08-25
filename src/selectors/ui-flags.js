@@ -5,9 +5,6 @@ import {
 import {
   createSelector
 } from 'reselect';
-import {
-  UNICEF_USER_ROLE
-} from 'lib/constants';
 
 export const selectCreatedRole = state => state.createdRole;
 export const selectFormError = state => state.formError;
@@ -46,6 +43,12 @@ export const selectIsSuperUser = createSelector(
   prop('is_superuser')
 );
 
+export const selectIsUnicefUser = createSelector(
+  selectUserProfile,
+  prop('is_unicef_user')
+);
+
+
 export const selectUserProfileDonor = createSelector(
   selectUserProfile,
   propOr({}, 'donor')
@@ -82,11 +85,6 @@ export const selectDonorCode = createSelector(
 export const selectIsUsGov = createSelector(
   selectUserDonor,
   prop('us_gov')
-);
-
-export const selectIsAuthorized = createSelector(
-  [selectDonorName, selectUserGroup],
-  (donorName, group) => Boolean(donorName.length) || group === UNICEF_USER_ROLE
 );
 
 export const selectMenuBarPage = createSelector(
