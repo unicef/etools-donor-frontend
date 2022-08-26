@@ -13,7 +13,7 @@ import {
 
 import DescriptionIcon from '@material-ui/icons/Description';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { SEARCH_REPORTS, POOLED_GRANTS, THEMATIC_GRANTS, USERS_PORTAL, TRAINING_LINK, GAVI_REPORTS } from '../lib/constants';
+import { SEARCH_REPORTS, POOLED_GRANTS, THEMATIC_GRANTS, USERS_PORTAL, TRAINING_LINK, ADMIN, GAVI_REPORTS } from '../lib/constants';
 import { selectMenuBarPage, selectAssignedRole, selectPageName } from 'selectors/ui-flags';
 import { menuItemSelected } from 'slices/ui';
 import { usePermissions } from './PermissionRedirect';
@@ -25,6 +25,10 @@ export const useNav = () => {
   const handleNav = page => () => {
     if (page === TRAINING_LINK) {
       window.open(TRAINING_LINK, '_blank')
+      return;
+    }
+    if (page === ADMIN) {
+      window.location.href = `${window.location.origin}/admin/`;
       return;
     }
     dispatch(menuItemSelected(page));
@@ -47,7 +51,7 @@ export default function ConnectedDrawer() {
   const dispatch = useDispatch();
 
   const isAssignedRole = useSelector(selectAssignedRole);
-  const { isUnicefUser } = usePermissions();
+  const { isUnicefUser, isSuperUser } = usePermissions();
   const pageName = useSelector(selectPageName);
   const showDrawer = isAssignedRole && pageName !== 'privacy-policy';
 
@@ -124,6 +128,15 @@ export default function ConnectedDrawer() {
           </ListItemIcon>
           <ListItemText primary="User Management" />
         </ListItem>
+
+        {isSuperUser && (
+          <ListItem onClick={handleNav(ADMIN)} button>
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Admin" />
+          </ListItem>
+        )}
 
         {isUnicefUser && (
           <ListItem onClick={handleNav(TRAINING_LINK)} button>
