@@ -64,6 +64,7 @@ export const FORM_CONFIG = {
 
 export const USERS_PORTAL = 'users-portal';
 export const REPORTS = 'reports';
+export const ADMIN = 'admin';
 export const SEARCH_REPORTS = 'reports';
 export const THEMATIC_GRANTS = 'thematic-grants';
 export const GAVI_REPORTS = 'gavi-reports';
