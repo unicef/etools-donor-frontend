@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router';
 import { Route } from 'react-router-dom';
 
-import { selectUserProfileDonorId } from 'selectors/ui-flags';
+import { selectUserProfileDonorId, selectUserDonor } from 'selectors/ui-flags';
+import {selectConfig} from 'selectors/collections';
 import { usePermissions } from 'components/PermissionRedirect';
-import { THEMATIC_GRANTS_PATH } from 'lib/constants';
+import { GAVI_REPORTS_PATH, THEMATIC_GRANTS_PATH } from 'lib/constants';
 import DonorsList from './donors-list';
 import UsersManagement from './users-portal';
 import { setAssignedRole } from '../slices/ui'
@@ -33,8 +34,14 @@ export function ProtectedRouteDonorsList({ children, ...rest }) {
 }
 
 export function ProtectedRouteReportPage({ children, ...rest }) {
-  const { canViewDonors } = usePermissions();
+  let { canViewDonors } = usePermissions();
   const usersDonor = useSelector(selectUserProfileDonorId);
+  const config = useSelector(selectConfig);
+  const donor = useSelector(selectUserDonor);
+  let isGaviDonor = false;
+  if (donor && config) {
+    isGaviDonor = donor.code === config.gavi_donor_code;
+  }
 
   return (
     <Route
@@ -43,6 +50,9 @@ export function ProtectedRouteReportPage({ children, ...rest }) {
         const { donorId } = match.params;
         const { path } = match;
         const thematicPath = path === THEMATIC_GRANTS_PATH;
+        if (path === GAVI_REPORTS_PATH && isGaviDonor) {
+          canViewDonors = true;
+        }
         const unassignedDonorAttempt = usersDonor ? Boolean(
           usersDonor !== Number(donorId) && !canViewDonors && !thematicPath
         ) : Boolean(!canViewDonors);
