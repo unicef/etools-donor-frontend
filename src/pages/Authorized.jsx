@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router';
 import { Route } from 'react-router-dom';
 
-import { selectUserProfileDonorId, selectUserDonor } from 'selectors/ui-flags';
-import {selectConfig} from 'selectors/collections';
+import { selectUserProfileDonorId } from 'selectors/ui-flags';
 import { usePermissions } from 'components/PermissionRedirect';
 import { GAVI_REPORTS_PATH, THEMATIC_GRANTS_PATH } from 'lib/constants';
 import DonorsList from './donors-list';
@@ -34,14 +33,8 @@ export function ProtectedRouteDonorsList({ children, ...rest }) {
 }
 
 export function ProtectedRouteReportPage({ children, ...rest }) {
-  let { canViewDonors } = usePermissions();
+  let { canViewDonors, isGaviDonor } = usePermissions();
   const usersDonor = useSelector(selectUserProfileDonorId);
-  const config = useSelector(selectConfig);
-  const donor = useSelector(selectUserDonor);
-  let isGaviDonor = false;
-  if (donor && config) {
-    isGaviDonor = donor.code === config.gavi_donor_code;
-  }
 
   return (
     <Route

@@ -33,6 +33,9 @@ export const FORM_CONFIG = {
   reportCategory: {
     label: 'Report Category'
   },
+  MOUGroup: {
+    label: 'MOU Reference'
+  },
   reportYear: {
     label: 'Library'
   },

@@ -7,7 +7,7 @@ import { FormControl, MenuItem } from '@material-ui/core';
 import { StyledInputLabel, StyledSelect } from '../components/styled-dropdown';
 import { useGetFilterClasses } from 'styles/filter-styles';
 
-export default function DropdownMultiFilterFactory(selector, description, filterProp = 'description') {
+export default function DropdownMultiFilterFactory(selector, description, filterProp = 'description', filterKey = 'code', optionLabel = 'description') {
   const Component = ({ value, onChange }) => {
     const { classes } = useGetFilterClasses();
     const [multiVal, setMultiVal] = useState([]);
@@ -68,11 +68,11 @@ export default function DropdownMultiFilterFactory(selector, description, filter
           </MenuItem>
           {options.map(option => (
             <MenuItem
-              key={option.code}
+              key={option[filterKey]}
               value={option[filterProp]}
-              selected={isSelected(option.code)}
+              selected={isSelected(option[filterKey])}
             >
-              {option.description}
+              {option[optionLabel]}
             </MenuItem>
           ))}
         </StyledSelect>

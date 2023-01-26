@@ -7,6 +7,7 @@ import {
 import {
   getUserRoles,
   getUserGroups,
+  getUserMOUGroups,
   getUserGaviGroups,
   createUser,
   createRole,
@@ -31,7 +32,7 @@ import {
   deleteUserRole
 } from 'actions';
 import {
-  setGroups, setGaviGroups
+  setGroups, setGaviGroups, setMOUGroups
 } from 'slices/user-groups';
 import {
   createRoleSuccess
@@ -92,6 +93,9 @@ function* handleFetchUserGroups() {
 
     const gaviGroups = yield call(getUserGaviGroups);
     yield put(setGaviGroups(gaviGroups));
+
+    const MOUGroups = yield call(getUserMOUGroups);
+    yield put(setMOUGroups(MOUGroups));
 
   } catch (err) {
     yield put(setError(err));
@@ -206,7 +210,7 @@ function* handleDeleteUserRole({
   }
 }
 
-export default function* () {
+export default function*() {
   yield takeLatest(onFetchUserRoles.type, handleFetchUserRoles);
   yield takeLatest(onFetchUserGroups.type, handleFetchUserGroups);
   yield takeLatest(onCreateUserRole.type, handleCreateUserRole);

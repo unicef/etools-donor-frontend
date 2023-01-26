@@ -209,7 +209,7 @@ export const FILTERS_MAP = {
   },
 
   [MOU_NUMBER]: {
-    label: 'MOU Number',
+    label: 'MOU Reference',
     Component: MOUNumberFilter,
     pageName: [GAVI_REPORTS],
   },
