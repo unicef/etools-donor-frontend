@@ -114,6 +114,9 @@ function* getSearchCallerFunc(payload) {
       break;
     }
     case GAVI_REPORTS: {
+      yield call(waitFor, selectDonorCode);
+      const donorCode = yield select(selectDonorCode);
+      result.params.donor_code = donorCode;
       result.params.source_id = sourceIds.gavi;
       break;
     }

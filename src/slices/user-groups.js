@@ -1,4 +1,4 @@
-import { createSlice } from 'redux-starter-kit';
+import {createSlice} from 'redux-starter-kit';
 
 const groupsSlice = createSlice({
   initialState: [],
@@ -7,10 +7,21 @@ const groupsSlice = createSlice({
   }
 });
 
-export const { reducer: groupsReducer } = groupsSlice;
+export const {reducer: groupsReducer} = groupsSlice;
 
-export const { setGroups } = groupsSlice.actions;
+export const {setGroups} = groupsSlice.actions;
 
+
+const groupsMOUSlice = createSlice({
+  initialState: [],
+  reducers: {
+    setMOUGroups: (state, action) => action.payload
+  }
+});
+
+export const {reducer: groupsMOUReducer} = groupsMOUSlice;
+
+export const {setMOUGroups} = groupsMOUSlice.actions;
 
 const groupsGaviSlice = createSlice({
   initialState: null,
@@ -19,9 +30,9 @@ const groupsGaviSlice = createSlice({
   }
 });
 
-export const { reducer: groupsGaviReducer } = groupsGaviSlice;
+export const {reducer: groupsGaviReducer} = groupsGaviSlice;
 
-export const { setGaviGroups } = groupsGaviSlice.actions;
+export const {setGaviGroups} = groupsGaviSlice.actions;
 
 
 const donorUserGroupsSlice = createSlice({

@@ -84,6 +84,12 @@ export function getUserGroups() {
   });
 }
 
+export function getUserMOUGroups() {
+  return get(REACT_APP_USER_GROUPS_ENDPOINT, {
+    search: 'MOU'
+  });
+}
+
 export function getUserGaviGroups() {
   return get(REACT_APP_USER_GROUPS_ENDPOINT);
 }
