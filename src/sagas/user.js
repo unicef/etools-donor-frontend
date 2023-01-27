@@ -96,7 +96,6 @@ function* handleFetchUserGroups() {
 
     const MOUGroups = yield call(getUserMOUGroups);
     yield put(setMOUGroups(MOUGroups));
-
   } catch (err) {
     yield put(setError(err));
   } finally {
