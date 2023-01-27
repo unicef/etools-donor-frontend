@@ -20,7 +20,7 @@ import {
   COUNTRY_NAME,
   CTN_NUMBER,
   GAVI_WBS,
-  MOU_NUMBER,
+  MOU_REFERENCE,
   SENT_GAVI_DATE_BEFORE_FIELD,
   SENT_GAVI_DATE_AFTER_FIELD,
   PREPAID_STATUS,
@@ -61,7 +61,7 @@ import DonorDocumentFilter from '../components/donor-document-filter';
 import ApprovalYearFilter from '../components/approval-year-filter';
 import VaccineTypeFilter from '../components/vaccine-type-filter';
 import AwardTypeFilter from '../components/award-type-filter';
-import MOUNumberFilter from '../components/mou-number-filter';
+import MOUReferenceFilter from '../components/mou-reference-filter';
 import CountryFilter from '../components/country-filter';
 import CTNNumberFilter from '../components/ctn-number-filter';
 import GaviWBSFilter from '../components/gavi-wbs-filter';
@@ -208,9 +208,9 @@ export const FILTERS_MAP = {
     pageName: [GAVI_REPORTS],
   },
 
-  [MOU_NUMBER]: {
+  [MOU_REFERENCE]: {
     label: 'MOU Reference',
-    Component: MOUNumberFilter,
+    Component: MOUReferenceFilter,
     pageName: [GAVI_REPORTS],
   },
 
