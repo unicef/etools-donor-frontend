@@ -51,12 +51,12 @@ export default function ConnectedDrawer() {
   const dispatch = useDispatch();
 
   const isAssignedRole = useSelector(selectAssignedRole);
-  const { isUnicefUser, isSuperUser } = usePermissions();
+  const { isUnicefUser, isSuperUser, isGaviDonor } = usePermissions();
   const pageName = useSelector(selectPageName);
   const showDrawer = isAssignedRole && pageName !== 'privacy-policy';
 
   useEffect(() => {
-    dispatch(menuItemSelected(SEARCH_REPORTS));
+    dispatch(menuItemSelected(isGaviDonor? GAVI_REPORTS : SEARCH_REPORTS));
   }, []);
 
   const { handleNav, navSelected } = useNav();
