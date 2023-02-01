@@ -2,7 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router';
 import { REPORTS_PATH, DONOR_ADMIN_ROLE, DONOR_USER_ROLE, POOLED_GRANTS_PATH, POOLED_GRANTS } from '../lib/constants';
-import { selectUserGroup, selectUserProfileDonorId, selectIsSuperUser, selectIsUnicefUser, selectMenuBarPage } from 'selectors/ui-flags';
+import { selectUserGroup, selectUserProfileDonorId, selectIsSuperUser, selectUserProfileDonor, selectIsUnicefUser, selectMenuBarPage } from 'selectors/ui-flags';
+import {selectConfig} from 'selectors/collections';
 
 export const usePermissions = () => {
   const userGroup = useSelector(selectUserGroup);
@@ -10,13 +11,18 @@ export const usePermissions = () => {
   const isDonorAdmin = userGroup === DONOR_ADMIN_ROLE;
   const isDonorUser = userGroup === DONOR_USER_ROLE;
   const isSuperUser = useSelector(selectIsSuperUser);
+  const donor = useSelector(selectUserProfileDonor);
+  const config = useSelector(selectConfig);
+  const isGaviDonor = donor && config && donor.code === config.gavi_donor_code;
+
   const canViewDonors = isUnicefUser || isSuperUser;
   return {
     isUnicefUser,
     isDonorAdmin,
     isSuperUser,
     isDonorUser,
-    canViewDonors
+    canViewDonors,
+    isGaviDonor
   };
 };
 
