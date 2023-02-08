@@ -78,7 +78,7 @@ import {
   useSelector
 } from 'react-redux';
 import {
-  selectIsSuperUser
+  selectIsSuperUser, selectIsUnicefUser
 } from 'selectors/ui-flags';
 import PrepaidStatusFilter from '../components/prepaid-status-filter';
 import PurchaseOrderFilter from '../components/purchase-order-filter';
@@ -277,8 +277,9 @@ export const FILTERS_MAP = {
 };
 
 export const getPageFilters = (userGroup, currentPageName) => {
-  const isSuperUser = useSelector(selectIsSuperUser);
-  if (!userGroup || !currentPageName) {
+  const isSuperUserOrUnicefUser = useSelector(selectIsSuperUser) || useSelector(selectIsUnicefUser);
+
+  if (!userGroup || !currentPageName || !isSuperUserOrUnicefUser) {
     return [];
   }
   if (currentPageName === 'gavi-reports') {
@@ -296,7 +297,7 @@ export const getPageFilters = (userGroup, currentPageName) => {
         permissionGroup,
         pageName
       }) => {
-        const hasPermission = isSuperUser ? true : permissionGroup ? permissionGroup === userGroup : true;
+        const hasPermission = isSuperUserOrUnicefUser ? true : permissionGroup ? permissionGroup === userGroup : true;
         const belongsOnPage = pageName ? pageName.some(page => page === currentPageName) : true;
         return hasPermission && belongsOnPage;
       }, FILTERS_MAP)
