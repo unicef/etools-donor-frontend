@@ -279,7 +279,7 @@ export const FILTERS_MAP = {
 export const getPageFilters = (userGroup, currentPageName) => {
   const isSuperUserOrUnicefUser = useSelector(selectIsSuperUser) || useSelector(selectIsUnicefUser);
 
-  if (!userGroup || !currentPageName || !isSuperUserOrUnicefUser) {
+  if (!(userGroup || isSuperUserOrUnicefUser) || !currentPageName) {
     return [];
   }
   if (currentPageName === 'gavi-reports') {
