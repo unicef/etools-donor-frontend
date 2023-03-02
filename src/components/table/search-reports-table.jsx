@@ -303,7 +303,6 @@ export default function ReportsTable() {
                   {getDisplayValue(row.allocation_round)}
                 </TableCell>
               </Tooltip>
-
           </ExpandableTableRow>
     )
   }
