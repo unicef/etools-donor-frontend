@@ -70,6 +70,7 @@ const gaviReportsTableHeadings = [
   { id: BACKEND_GAVI_FIELDS['approvalYear'], label: 'Approval Year', sortable: true },
   { id: BACKEND_GAVI_FIELDS['sentDate'], label: 'Sent To GAVI Date', sortable: true },
   { id: BACKEND_GAVI_FIELDS['gaviWBS'], label: 'GAVI WBS', sortable: true },
+  { id: BACKEND_GAVI_FIELDS['allocationRound'], label: 'Allocation Round', sortable: true }
 ]
 
 const externalRefCell = {
@@ -200,9 +201,6 @@ export default function ReportsTable() {
           <Tooltip title={row.m_o_u_r_eference ? row.m_o_u_r_eference : ''}>
             <div><p className={classes.detailsHeader}>MOU reference</p>{getDisplayValue(row.m_o_u_r_eference)}</div>
           </Tooltip>
-          <Tooltip title={row.allocation_round ? row.allocation_round : ''}>
-            <div><p className={classes.detailsHeader}>Allocation Round</p>{getDisplayValue(row.allocation_round)}</div>
-          </Tooltip>
           <Tooltip title={row.vendor ? row.vendor : ''}>
             <div><p className={classes.detailsHeader}>Vendor</p>{getDisplayValue(row.vendor)}</div>
           </Tooltip>
@@ -297,6 +295,12 @@ export default function ReportsTable() {
               <Tooltip title={arrayToTooltip(row.g_a_v_i_w_b_s)}>
                 <TableCell className={classes.cell} align="left">
                   {arrayToCellValue(row.g_a_v_i_w_b_s)}
+                </TableCell>
+              </Tooltip>
+
+              <Tooltip title={row.allocation_round ? getDisplayDate(row.allocation_round) : ''}>
+                <TableCell className={classes.cell} align="left">
+                  {getDisplayValue(row.allocation_round)}
                 </TableCell>
               </Tooltip>
 
