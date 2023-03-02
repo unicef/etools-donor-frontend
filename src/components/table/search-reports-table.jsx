@@ -298,7 +298,7 @@ export default function ReportsTable() {
                 </TableCell>
               </Tooltip>
 
-              <Tooltip title={row.allocation_round ? getDisplayDate(row.allocation_round) : ''}>
+              <Tooltip title={row.allocation_round ? getDisplayValue(row.allocation_round) : ''}>
                 <TableCell className={classes.cell} align="left">
                   {getDisplayValue(row.allocation_round)}
                 </TableCell>
