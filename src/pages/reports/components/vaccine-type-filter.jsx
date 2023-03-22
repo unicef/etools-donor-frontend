@@ -1,25 +1,5 @@
-import React from 'react';
-import { useGetFilterClasses } from 'styles/filter-styles';
-import { FormControl, TextField } from '@material-ui/core';
-import { FilterProps } from '../lib/dropdown-filter-factory';
+import { FORM_CONFIG } from 'lib/constants';
+import DropdownMultiFilterFactory from '../lib/dropdown-multi-filter.factory';;
+import {selectVaccineTypes} from 'selectors/collections';
 
-export default function VaccineTypeFilter({ value = '', onChange, ...props }) {
-  const { classes } = useGetFilterClasses();
-
-  return (
-    <FormControl className={classes.formControl} {...props}>
-      <TextField
-        placeholder="Vaccine Type"
-        className={classes.input}
-        inputProps={{
-          'aria-label': 'description'
-        }}
-        label="Vaccine Type"
-        onChange={onChange}
-        value={value}
-      />
-    </FormControl>
-  );
-}
-
-VaccineTypeFilter.propTypes = FilterProps;
+export default DropdownMultiFilterFactory(selectVaccineTypes, FORM_CONFIG.vaccineType.label, 'code');
