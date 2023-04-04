@@ -5,6 +5,9 @@ import { withRouter } from 'react-router';
 import { makeStyles, createStyles, Grid, Typography } from '@material-ui/core';
 import { getSubheadingFromParams } from 'lib/params';
 import { selectDonorName, selectDonorCode } from 'selectors/ui-flags';
+import IconTextButton from './IconTextButton';
+import { CloudDownload } from '@material-ui/icons';
+import { selectConfig } from 'selectors/collections';
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -24,6 +27,14 @@ const useStyles = makeStyles(theme =>
     content: {
       minHeight: 64,
       paddingBottom: theme.spacing(1)
+    },
+    header: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      flexDirection: 'row',
+      width: '100%',
+      paddingRight: '24px'
     }
   })
 );
@@ -32,7 +43,18 @@ function ContentHeader({ children, location }) {
   const classes = useStyles();
   const donorName = useSelector(selectDonorName);
   const donorCode = useSelector(selectDonorCode);
+  const showExport = window.location.pathname.includes('gavi-reports');
   const title = getSubheadingFromParams(location.pathname, donorName, donorCode);
+  const config = useSelector(selectConfig);
+
+
+   function onExportClick() {
+   const searchParams  = window.location.search.replace('?', '&');
+   const downloadUrl = `${window.location.origin}/api/sharepoint/search/export/?serializer=gavi&donor_code=${config.gavi_donor_code}&source_id=${config.source_id.gavi}${searchParams}`;
+   window.open(downloadUrl, '_blank');
+  }
+
+
   return (
     <Grid
       alignItems="center"
@@ -40,10 +62,19 @@ function ContentHeader({ children, location }) {
       className={`${classes.root} ${classes.content}`}
       container
     >
-      <Grid>
+      <Grid className={classes.header}>
         <Typography className={classes.title} variant="h5">
           {title}
         </Typography>
+        {showExport && <IconTextButton
+              icon={<CloudDownload />}
+              text="EXPORT"
+              onClick={onExportClick}
+              textProps={{
+                type: 'body2'
+              }}
+          />
+        }
       </Grid>
       {children}
     </Grid>
