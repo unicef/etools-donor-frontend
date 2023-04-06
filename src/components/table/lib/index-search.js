@@ -117,7 +117,11 @@ export const useTable = (defaultOrderBy = '') => {
 };
 
 export function getDisplayDate(dateStr) {
-  return dateStr ? format(new Date(dateStr), DISPLAY_FORMAT) : '';
+  try {
+    return dateStr ? format(new Date(dateStr), DISPLAY_FORMAT) : '';
+  } catch (_err) {
+    return dateStr;
+  }
 }
 
 export function getDisplayValue(value, defaultValue = '—') {
