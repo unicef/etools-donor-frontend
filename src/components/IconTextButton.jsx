@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ButtonBase, makeStyles, createStyles, Typography } from '@material-ui/core';
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles(
   createStyles({
     basse: {
       padding: 8,
