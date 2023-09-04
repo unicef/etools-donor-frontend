@@ -47,7 +47,8 @@ import {
   SEARCH_REPORTS,
   THEMATIC_GRANTS,
   POOLED_GRANTS,
-  GAVI_REPORTS
+  GAVI_REPORTS,
+  UNICEF_GAVI_KEY
 } from '../lib/constants'
 
 function* getInitialSearchReports(params) {
@@ -117,7 +118,7 @@ function* getSearchCallerFunc(payload) {
       yield call(waitFor, selectConfig)
       const config = yield select(selectConfig)
       result.params.donor_code = config.gavi_donor_code;
-      result.params.source_id = sourceIds.gavi;
+      result.params.source_id = isUnicefUser ? UNICEF_GAVI_KEY : sourceIds.gavi;
       break;
     }
     case POOLED_GRANTS: {

@@ -90,6 +90,7 @@ export const BACKEND_PROPERTIES_USER_LAST_NAME = 'user_last_name';
 export const DONOR_ADMIN_ROLE = 'Donor Admin';
 export const DONOR_USER_ROLE = 'Donor User';
 export const UNICEF_USER_ROLE = 'UNICEF User';
+export const UNICEF_GAVI_KEY = '41c9f77a-c755-40ec-a3b5-de061e40dd89';
 
 // Notification Periods
 const DISABLED = 'none';
