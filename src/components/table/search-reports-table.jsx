@@ -63,7 +63,6 @@ const thematicReportsTableHeadings = [
 
 const gaviReportsTableHeadings = [
   { id: '', label: '', sortable: false },
-  { id: BACKEND_GAVI_FIELDS['name'], label: 'Name', sortable: true },
   { id: BACKEND_GAVI_FIELDS['ctnNumber'], label: 'CTN Number', sortable: true },
   { id: BACKEND_GAVI_FIELDS['country'], label: 'Country Name', sortable: true },
   { id: BACKEND_GAVI_FIELDS['mouNumber'], label: 'MOU Number', sortable: true },
@@ -256,21 +255,15 @@ export default function ReportsTable() {
                 id={labelId}
                 scope="row"
               >
-                <Tooltip title={row.title ? row.title : ''}>
+                <Tooltip title={row.number ? row.number : ''}>
                   <Typography className={classes.overflow}>
                     <Link color="secondary" href={row.download_url} target="_blank">
                       {row.is_new && <FiberNewIcon fontSize="small" className={classes.icon} color="error" />}
-                      {row.title}
+                      {row.number}
                     </Link>
                   </Typography>
                 </Tooltip>
               </TableCell>
-
-              <Tooltip title={row.number ? row.number : ''}>
-                <TableCell className={classes.cell} align="left">
-                  {row.number}
-                </TableCell>
-              </Tooltip>
 
               <Tooltip title={arrayToTooltip(row.country_name)}>
                 <TableCell className={classes.cell} align="left">
