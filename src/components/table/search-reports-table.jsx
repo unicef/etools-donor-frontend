@@ -137,7 +137,6 @@ export default function ReportsTable() {
   const pooledGrants = pageName === POOLED_GRANTS;
   const thematicGrants = pageName === THEMATIC_GRANTS;
   const isGaviPage = pageName === GAVI_REPORTS || pageName == GAVI_REPORTS_CTN;
-  const isGaviCtnPage = pageName == GAVI_REPORTS_CTN;
   const headCells = getHeadCells(
     isUnicefUser,
     getTableHeadings(pageName),
