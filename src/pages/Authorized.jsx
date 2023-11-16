@@ -6,10 +6,10 @@ import { Route } from 'react-router-dom';
 
 import { selectUserProfileDonorId } from 'selectors/ui-flags';
 import { usePermissions } from 'components/PermissionRedirect';
-import { GAVI_REPORTS_PATH, THEMATIC_GRANTS_PATH } from 'lib/constants';
+import { GAVI_REPORTS_PATH, GAVI_REPORTS_CTN_PATH, THEMATIC_GRANTS_PATH } from 'lib/constants';
 import DonorsList from './donors-list';
 import UsersManagement from './users-portal';
-import { setAssignedRole } from '../slices/ui'
+import { setAssignedRole } from '../slices/ui';
 
 import { selectUserProfile } from 'selectors/ui-flags';
 
@@ -22,14 +22,12 @@ export function UnassignedDonor({ children, ...rest }) {
   dispatch(setAssignedRole({ assignedRole: !hasNoAssignedRole }));
 
   return (
-    <Route {...rest} render={() => hasNoAssignedRole ? <Redirect to="/no-role" /> : children} />
-  )
+    <Route {...rest} render={() => (hasNoAssignedRole ? <Redirect to="/no-role" /> : children)} />
+  );
 }
 
 export function ProtectedRouteDonorsList({ children, ...rest }) {
-  return (
-    <Route {...rest} render={() => children } />
-  );
+  return <Route {...rest} render={() => children} />;
 }
 
 export function ProtectedRouteReportPage({ children, ...rest }) {
@@ -43,12 +41,12 @@ export function ProtectedRouteReportPage({ children, ...rest }) {
         const { donorId } = match.params;
         const { path } = match;
         const thematicPath = path === THEMATIC_GRANTS_PATH;
-        if (path === GAVI_REPORTS_PATH && isGaviDonor) {
+        if ((path === GAVI_REPORTS_PATH || path === GAVI_REPORTS_CTN_PATH) && isGaviDonor) {
           canViewDonors = true;
         }
-        const unassignedDonorAttempt = usersDonor ? Boolean(
-          usersDonor !== Number(donorId) && !canViewDonors && !thematicPath
-        ) : Boolean(!canViewDonors);
+        const unassignedDonorAttempt = usersDonor
+          ? Boolean(usersDonor !== Number(donorId) && !canViewDonors && !thematicPath)
+          : Boolean(!canViewDonors);
         return unassignedDonorAttempt ? <Redirect to="/not-found" /> : children;
       }}
     />
@@ -68,8 +66,8 @@ export function ProtectedRouteUserManagement({ ...rest }) {
         ) : isDonorAdmin || isDonorUser || (donorId && (isSuperUser || isUnicefUser)) ? (
           <UsersManagement />
         ) : (
-              <Redirect to="/not-found" />
-            );
+          <Redirect to="/not-found" />
+        );
       }}
     />
   );
@@ -83,5 +81,5 @@ UnassignedDonor.propTypes = ProtectedRouteProps;
 ProtectedRouteDonorsList.propTypes = ProtectedRouteProps;
 ProtectedRouteReportPage.propTypes = ProtectedRouteProps;
 ProtectedRouteUserManagement.propTypes = {
-  rest: function () { }
+  rest: function() {}
 };

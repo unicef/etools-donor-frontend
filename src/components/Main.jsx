@@ -4,7 +4,15 @@ import { Route } from 'react-router-dom';
 import { makeStyles, createStyles, Box } from '@material-ui/core';
 import ConnectedDrawer from './Drawer';
 import AppToolbar from './App-Bar';
-import { DRAWER_WIDTH, USERS_PORTAL_PATH, THEMATIC_GRANTS, POOLED_GRANTS, SEARCH_REPORTS, GAVI_REPORTS } from '../lib/constants';
+import {
+  DRAWER_WIDTH,
+  USERS_PORTAL_PATH,
+  THEMATIC_GRANTS,
+  POOLED_GRANTS,
+  SEARCH_REPORTS,
+  GAVI_REPORTS,
+  GAVI_REPORTS_CTN
+} from '../lib/constants';
 import DonorsList from 'pages/donors-list';
 import ContentHeader from './Content-Header';
 import SearchPage from 'pages/reports/search';
@@ -19,7 +27,7 @@ import {
 import PermissionRedirect from './PermissionRedirect';
 import NotFound from './404';
 import NoRole from './No-Role';
-import { MatomoProvider, createInstance } from '@datapunt/matomo-tracker-react'
+import { MatomoProvider, createInstance } from '@datapunt/matomo-tracker-react';
 import { selectConfig } from 'selectors/collections';
 import { useSelector } from 'react-redux';
 import { selectUserProfile } from 'selectors/ui-flags';
@@ -78,12 +86,13 @@ export default function MainAppBar() {
     siteId: config.tracker.site_id || 6,
     userId: profile.email,
     disabled: false, // optional, false by default. Makes all tracking calls no-ops if set to true.
-    heartBeat: { // optional, enabled by default
+    heartBeat: {
+      // optional, enabled by default
       active: true, // optional, default value: true
       seconds: 10 // optional, default value: `15
     },
     linkTracking: true
-  })
+  });
 
   return (
     <MatomoProvider value={instance}>
@@ -125,6 +134,10 @@ export default function MainAppBar() {
                     </ProtectedRouteReportPage>
 
                     <ProtectedRouteReportPage exact path={`/${GAVI_REPORTS}`}>
+                      <SearchPage />
+                    </ProtectedRouteReportPage>
+
+                    <ProtectedRouteReportPage exact path={`/${GAVI_REPORTS_CTN}`}>
                       <SearchPage />
                     </ProtectedRouteReportPage>
 

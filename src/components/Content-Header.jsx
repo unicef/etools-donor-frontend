@@ -8,7 +8,7 @@ import { selectDonorName, selectDonorCode, selectIsUnicefUser } from 'selectors/
 import IconTextButton from './IconTextButton';
 import { CloudDownload } from '@material-ui/icons';
 import { selectConfig } from 'selectors/collections';
-import {UNICEF_GAVI_KEY} from 'lib/constants';
+import { UNICEF_GAVI_KEY } from 'lib/constants';
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -50,12 +50,17 @@ function ContentHeader({ children, location }) {
   const isUnicefUser = useSelector(selectIsUnicefUser);
 
   function onExportClick() {
-   const gaviKey = isUnicefUser ? UNICEF_GAVI_KEY : config.source_id.gavi;
-   const searchParams  = window.location.search.replace('?', '&');
-   const downloadUrl = `${window.location.origin}/api/sharepoint/search/export/?serializer=gavi&donor_code=${config.gavi_donor_code}&source_id=${gaviKey}${searchParams}`;
-   window.open(downloadUrl, '_blank');
+    let extraParam = '';
+    if (window.location.pathname.includes('gavi-reports-ctn')) {
+      extraParam = '&m_o_u_r_eference=ADJUSTINGCTNS';
+    } else if (window.location.pathname.includes('gavi-reports')) {
+      extraParam = '&m_o_u_r_eference__not=ADJUSTINGCTNS';
+    }
+    const gaviKey = isUnicefUser ? UNICEF_GAVI_KEY : config.source_id.gavi;
+    const searchParams = window.location.search.replace('?', '&');
+    const downloadUrl = `${window.location.origin}/api/sharepoint/search/export/?serializer=gavi&donor_code=${config.gavi_donor_code}&source_id=${gaviKey}${searchParams}${extraParam}`;
+    window.open(downloadUrl, '_blank');
   }
-
 
   return (
     <Grid
@@ -68,15 +73,16 @@ function ContentHeader({ children, location }) {
         <Typography className={classes.title} variant="h5">
           {title}
         </Typography>
-        {showExport && <IconTextButton
-              icon={<CloudDownload />}
-              text="EXPORT"
-              onClick={onExportClick}
-              textProps={{
-                type: 'body2'
-              }}
+        {showExport && (
+          <IconTextButton
+            icon={<CloudDownload />}
+            text="EXPORT"
+            onClick={onExportClick}
+            textProps={{
+              type: 'body2'
+            }}
           />
-        }
+        )}
       </Grid>
       {children}
     </Grid>
