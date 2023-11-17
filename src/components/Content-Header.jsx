@@ -52,9 +52,9 @@ function ContentHeader({ children, location }) {
   function onExportClick() {
     let extraParam = '';
     if (window.location.pathname.includes('gavi-reports-ctn')) {
-      extraParam = '&m_o_u_r_eference=ADJUSTINGCTNS';
+      extraParam = '&m_o_u_r_eference=ADJUSTING CTNS';
     } else if (window.location.pathname.includes('gavi-reports')) {
-      extraParam = '&m_o_u_r_eference__not=ADJUSTINGCTNS';
+      extraParam = '&m_o_u_r_eference__not=ADJUSTING CTNS';
     }
     const gaviKey = isUnicefUser ? UNICEF_GAVI_KEY : config.source_id.gavi;
     const searchParams = window.location.search.replace('?', '&');
