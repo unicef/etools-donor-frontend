@@ -55,10 +55,10 @@ function* getSearchReports(params) {
     const reportYear = yield select(selectReportYear);
     searchReports = yield call(fetchSearchReports, params, reportYear);
   } else if (reportPageName === 'gavi-reports') {
-    params.m_o_u_r_eference__not = 'ADJUSTINGCTNS';
+    params.m_o_u_r_eference__not = 'ADJUSTING CTNS';
     searchReports = yield call(fetchSearchGavi, params);
   } else if (reportPageName === 'gavi-reports-ctn') {
-    params.m_o_u_r_eference = 'ADJUSTINGCTNS';
+    params.m_o_u_r_eference = 'ADJUSTING CTNS';
     searchReports = yield call(fetchSearchGavi, params);
   } else {
     searchReports = yield call(fetchSearchReports, params);
