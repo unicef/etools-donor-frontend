@@ -2,18 +2,20 @@ import React, { useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { useMainStyles } from './Main';
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Drawer
-} from '@material-ui/core';
+import { Box, List, ListItem, ListItemIcon, ListItemText, Drawer } from '@material-ui/core';
 
 import DescriptionIcon from '@material-ui/icons/Description';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { SEARCH_REPORTS, POOLED_GRANTS, THEMATIC_GRANTS, USERS_PORTAL, TRAINING_LINK, ADMIN, GAVI_REPORTS } from '../lib/constants';
+import {
+  SEARCH_REPORTS,
+  POOLED_GRANTS,
+  THEMATIC_GRANTS,
+  USERS_PORTAL,
+  TRAINING_LINK,
+  ADMIN,
+  GAVI_REPORTS,
+  GAVI_REPORTS_CTN
+} from '../lib/constants';
 import { selectMenuBarPage, selectAssignedRole, selectPageName } from 'selectors/ui-flags';
 import { menuItemSelected } from 'slices/ui';
 import { usePermissions } from './PermissionRedirect';
@@ -24,7 +26,7 @@ export const useNav = () => {
 
   const handleNav = page => () => {
     if (page === TRAINING_LINK) {
-      window.open(TRAINING_LINK, '_blank')
+      window.open(TRAINING_LINK, '_blank');
       return;
     }
     if (page === ADMIN) {
@@ -56,14 +58,14 @@ export default function ConnectedDrawer() {
   const showDrawer = isAssignedRole && pageName !== 'privacy-policy';
 
   useEffect(() => {
-    dispatch(menuItemSelected(isGaviDonor? GAVI_REPORTS : SEARCH_REPORTS));
+    dispatch(menuItemSelected(isGaviDonor ? GAVI_REPORTS : SEARCH_REPORTS));
   }, []);
 
   const { handleNav, navSelected } = useNav();
   return (
     <Drawer
       className={classes.drawer}
-      variant={showDrawer ? "permanent" : "temporary"}
+      variant={showDrawer ? 'permanent' : 'temporary'}
       classes={{
         paper: classes.drawerPaper
       }}
@@ -78,37 +80,36 @@ export default function ConnectedDrawer() {
           <ListItemText primary="Reports" />
         </ListItem> */}
 
-        <ListItem
-          selected={navSelected(SEARCH_REPORTS)}
-          onClick={handleNav(SEARCH_REPORTS)}
-          button
-        >
+        <ListItem selected={navSelected(SEARCH_REPORTS)} onClick={handleNav(SEARCH_REPORTS)} button>
           <ListItemIcon>
             <DescriptionIcon />
           </ListItemIcon>
           <ListItemText primary="Reports" />
         </ListItem>
 
-        <ListItem
-          selected={navSelected(POOLED_GRANTS)}
-          onClick={handleNav(POOLED_GRANTS)}
-          button
-        >
+        <ListItem selected={navSelected(POOLED_GRANTS)} onClick={handleNav(POOLED_GRANTS)} button>
           <ListItemIcon>
             <DescriptionIcon />
           </ListItemIcon>
           <ListItemText primary="Pooled Grants" />
         </ListItem>
 
+        <ListItem selected={navSelected(GAVI_REPORTS)} onClick={handleNav(GAVI_REPORTS)} button>
+          <ListItemIcon>
+            <DescriptionIcon />
+          </ListItemIcon>
+          <ListItemText primary="Gavi Reports" />
+        </ListItem>
+
         <ListItem
-          selected={navSelected(GAVI_REPORTS)}
-          onClick={handleNav(GAVI_REPORTS)}
+          selected={navSelected(GAVI_REPORTS_CTN)}
+          onClick={handleNav(GAVI_REPORTS_CTN)}
           button
         >
           <ListItemIcon>
             <DescriptionIcon />
           </ListItemIcon>
-          <ListItemText primary="Gavi Reports" />
+          <ListItemText primary="Gavi adjusting CTNs" />
         </ListItem>
 
         <ListItem

@@ -1,12 +1,7 @@
 import axios from 'axios';
-import {
-  getCookie
-} from './helpers';
+import { getCookie } from './helpers';
 import Qs from 'qs';
-import {
-  REACT_APP_GAVI_ENDPOINT,
-  REACT_APP_SEARCH_API
-} from './endpoints';
+import { REACT_APP_GAVI_ENDPOINT, REACT_APP_SEARCH_API } from './endpoints';
 
 const backendPath = '/api';
 

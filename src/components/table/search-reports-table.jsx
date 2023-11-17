@@ -20,7 +20,14 @@ import EnhancedTableToolbar from './table-toolbar';
 import EnhancedTableHead from './table-head';
 import { selectSearchReports } from 'selectors/collections';
 import { usePermissions } from 'components/PermissionRedirect';
-import { useTable, stableSort, getSorting, getDisplayDate, getDisplayValue, arrayToTooltip } from './lib/index-search';
+import {
+  useTable,
+  stableSort,
+  getSorting,
+  getDisplayDate,
+  getDisplayValue,
+  arrayToTooltip
+} from './lib/index-search';
 import clsx from 'clsx';
 import {
   BACKEND_REPORTS_FIELDS,
@@ -31,7 +38,7 @@ import {
 } from '../../pages/reports/constants';
 import TablePaginationActions from './table-pagination-actions';
 import { selectMenuBarPage } from 'selectors/ui-flags';
-import { POOLED_GRANTS, THEMATIC_GRANTS, GAVI_REPORTS } from 'lib/constants';
+import { POOLED_GRANTS, THEMATIC_GRANTS, GAVI_REPORTS, GAVI_REPORTS_CTN } from 'lib/constants';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 
 export function getRecipientOfficeStr(report) {
@@ -47,7 +54,7 @@ const certifiedReportsTableHeadings = [
   { id: BACKEND_REPORTS_FIELDS['donorDocument'], label: 'Document Type', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['reportType'], label: 'Report Type', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['modified'], label: 'Modified', sortable: true },
-  { id: BACKEND_REPORTS_FIELDS['recipientOffice'], label: 'Recipient Office', sortable: true },
+  { id: BACKEND_REPORTS_FIELDS['recipientOffice'], label: 'Recipient Office', sortable: true }
 ];
 
 const thematicReportsTableHeadings = [
@@ -58,7 +65,7 @@ const thematicReportsTableHeadings = [
   { id: BACKEND_REPORTS_FIELDS['donorDocument'], label: 'Document Type', sortable: true },
   { id: BACKEND_THEMATIC_FIELDS['reportType'], label: 'Report Type', sortable: true },
   { id: BACKEND_REPORTS_FIELDS['modified'], label: 'Modified', sortable: true },
-  { id: BACKEND_THEMATIC_FIELDS['reportEndDate'], label: 'Report End Date', sortable: true },
+  { id: BACKEND_THEMATIC_FIELDS['reportEndDate'], label: 'Report End Date', sortable: true }
 ];
 
 const gaviReportsTableHeadings = [
@@ -70,7 +77,7 @@ const gaviReportsTableHeadings = [
   { id: BACKEND_GAVI_FIELDS['sentDate'], label: 'Sent To GAVI Date', sortable: true },
   { id: BACKEND_GAVI_FIELDS['gaviWBS'], label: 'GAVI WBS', sortable: true },
   { id: BACKEND_GAVI_FIELDS['allocationRound'], label: 'Allocation Round', sortable: true }
-]
+];
 
 const externalRefCell = {
   id: EXTERNAL_REF_GRANT_FIELD,
@@ -82,13 +89,13 @@ const internalExternalCell = {
   id: REPORT_GROUP_FIELD,
   label: 'Internal',
   sortable: true
-}
+};
 
 const donorCell = {
   id: 'donor_code',
   label: 'Donor',
   sortable: true
-}
+};
 
 // inserts extra column for non-unicef users as per requirements
 const getHeadCells = (isUnicefUser, cells, pooledGrants, thematicGrants, isGaviPage) => {
@@ -96,22 +103,25 @@ const getHeadCells = (isUnicefUser, cells, pooledGrants, thematicGrants, isGaviP
     return [...cells];
   }
   if (pooledGrants) {
-    cells = [...cells.slice(0, 2), donorCell, ...cells.slice(2)]
+    cells = [...cells.slice(0, 2), donorCell, ...cells.slice(2)];
   }
   if (!isUnicefUser && !thematicGrants) {
     return [...cells.slice(0, 2), externalRefCell, ...cells.slice(2)];
   } else if (isUnicefUser) {
-    return [...cells, internalExternalCell]
+    return [...cells, internalExternalCell];
   }
   return cells;
 };
 
-const getTableHeadings = (pageName) => {
-  switch(pageName)
-  {
-    case THEMATIC_GRANTS: return thematicReportsTableHeadings;
-    case GAVI_REPORTS: return gaviReportsTableHeadings;
-    default: return certifiedReportsTableHeadings;
+const getTableHeadings = pageName => {
+  switch (pageName) {
+    case THEMATIC_GRANTS:
+      return thematicReportsTableHeadings;
+    case GAVI_REPORTS_CTN:
+    case GAVI_REPORTS:
+      return gaviReportsTableHeadings;
+    default:
+      return certifiedReportsTableHeadings;
   }
 };
 
@@ -126,35 +136,35 @@ export default function ReportsTable() {
   const certifiedReports = pageName !== THEMATIC_GRANTS;
   const pooledGrants = pageName === POOLED_GRANTS;
   const thematicGrants = pageName === THEMATIC_GRANTS;
-  const isGaviPage = pageName === GAVI_REPORTS;
-  const headCells = getHeadCells(isUnicefUser, getTableHeadings(pageName), pooledGrants, thematicGrants, isGaviPage);
+  const isGaviPage = pageName === GAVI_REPORTS || pageName == GAVI_REPORTS_CTN;
+  const headCells = getHeadCells(
+    isUnicefUser,
+    getTableHeadings(pageName),
+    pooledGrants,
+    thematicGrants,
+    isGaviPage
+  );
 
-  const {
-    orderBy,
-    order,
-    page,
-    handleRequestSort,
-    handleChangePage
-  } = useTable();
+  const { orderBy, order, page, handleRequestSort, handleChangePage } = useTable();
   const shouldShowExternalGrants = certifiedReports && !isUnicefUser;
 
   useEffect(() => {
-    trackPageView()
+    trackPageView();
   }, [pageName]);
 
   const getTableContent = (index, row) => {
-   return isGaviPage ? getGaviContent(index, row) : getStandardContent(index, row);
-  }
+    return isGaviPage ? getGaviContent(index, row) : getStandardContent(index, row);
+  };
 
   const getTableNumOfCells = () => {
     return headCells.length;
-  }
+  };
 
   const ExpandableTableRow = ({ children, rowData, ...otherProps }) => {
-     ExpandableTableRow.propTypes = {
+    ExpandableTableRow.propTypes = {
       children: PropTypes.any,
-      rowData: PropTypes.any,
-    }
+      rowData: PropTypes.any
+    };
     const [isExpanded, setIsExpanded] = React.useState(false);
 
     return (
@@ -168,225 +178,286 @@ export default function ReportsTable() {
           {children}
         </TableRow>
         {isExpanded && (
-          <TableRow bgcolor='#eeeeee'>
+          <TableRow bgcolor="#eeeeee">
             <TableCell padding="checkbox" />
             <TableCell colSpan={getTableNumOfCells()}>
               {isGaviPage ? getGaviRowDetails(rowData) : getStandardRowDetails(rowData)}
             </TableCell>
           </TableRow>
-          ) }
+        )}
       </>
     );
   };
 
-  const getGaviRowDetails = (row) => {
+  const getGaviRowDetails = row => {
     return (
-        <Box className={classes.detailsPanel}>
-          <Tooltip title={row.funds_due_date ? getDisplayDate(row.funds_due_date) : ''}>
-            <div><p className={classes.detailsHeader}>Funds Due Date</p>{getDisplayValue(getDisplayDate(row.funds_due_date))}</div>
-          </Tooltip>
-          <Tooltip title={arrayToTooltip(row.material_code)}>
-            <div><p className={classes.detailsHeader}>Material Code</p>{arrayToCellValue(row.material_code)}</div>
-          </Tooltip>
-          <Tooltip title={row.prepaid_status ? row.prepaid_status : ''}>
-            <div><p className={classes.detailsHeader}>Prepaid Status</p>{getDisplayValue(row.prepaid_status)}</div>
-          </Tooltip>
-          <Tooltip title={arrayToTooltip(row.purchase_order)}>
-            <div><p className={classes.detailsHeader}>Purchase Order</p>{arrayToCellValue(row.purchase_order)}</div>
-          </Tooltip>
-          <Tooltip title={arrayToTooltip(row.vaccine_type)}>
-            <div><p className={classes.detailsHeader}>Vaccine Type</p>{arrayToCellValue(row.vaccine_type)}</div>
-          </Tooltip>
-          <Tooltip title={row.m_o_u_r_eference ? row.m_o_u_r_eference : ''}>
-            <div><p className={classes.detailsHeader}>MOU reference</p>{getDisplayValue(row.m_o_u_r_eference)}</div>
-          </Tooltip>
-          <Tooltip title={row.vendor ? row.vendor : ''}>
-            <div><p className={classes.detailsHeader}>Vendor</p>{getDisplayValue(row.vendor)}</div>
-          </Tooltip>
-           <Tooltip title={row.urgent ? row.urgent : ''}>
-            <div><p className={classes.detailsHeader}>Urgent</p>{getDisplayValue(row.urgent)}</div>
-          </Tooltip>
-        </Box>
-    )
-  }
+      <Box className={classes.detailsPanel}>
+        <Tooltip title={row.funds_due_date ? getDisplayDate(row.funds_due_date) : ''}>
+          <div>
+            <p className={classes.detailsHeader}>Funds Due Date</p>
+            {getDisplayValue(getDisplayDate(row.funds_due_date))}
+          </div>
+        </Tooltip>
+        <Tooltip title={arrayToTooltip(row.material_code)}>
+          <div>
+            <p className={classes.detailsHeader}>Material Code</p>
+            {arrayToCellValue(row.material_code)}
+          </div>
+        </Tooltip>
+        <Tooltip title={row.prepaid_status ? row.prepaid_status : ''}>
+          <div>
+            <p className={classes.detailsHeader}>Prepaid Status</p>
+            {getDisplayValue(row.prepaid_status)}
+          </div>
+        </Tooltip>
+        <Tooltip title={arrayToTooltip(row.purchase_order)}>
+          <div>
+            <p className={classes.detailsHeader}>Purchase Order</p>
+            {arrayToCellValue(row.purchase_order)}
+          </div>
+        </Tooltip>
+        <Tooltip title={arrayToTooltip(row.vaccine_type)}>
+          <div>
+            <p className={classes.detailsHeader}>Vaccine Type</p>
+            {arrayToCellValue(row.vaccine_type)}
+          </div>
+        </Tooltip>
+        <Tooltip title={row.m_o_u_r_eference ? row.m_o_u_r_eference : ''}>
+          <div>
+            <p className={classes.detailsHeader}>MOU reference</p>
+            {getDisplayValue(row.m_o_u_r_eference)}
+          </div>
+        </Tooltip>
+        <Tooltip title={row.vendor ? row.vendor : ''}>
+          <div>
+            <p className={classes.detailsHeader}>Vendor</p>
+            {getDisplayValue(row.vendor)}
+          </div>
+        </Tooltip>
+        <Tooltip title={row.urgent ? row.urgent : ''}>
+          <div>
+            <p className={classes.detailsHeader}>Urgent</p>
+            {getDisplayValue(row.urgent)}
+          </div>
+        </Tooltip>
+      </Box>
+    );
+  };
 
-   const getStandardRowDetails = (row) => {
+  const getStandardRowDetails = row => {
     return (
-        <Box className={classes.detailsPanel}>
-          <Tooltip title={row.report_generated_by ? row.report_generated_by : ''}>
-            <div><p className={classes.detailsHeader}>Report Generated by</p>{getDisplayValue(row.report_generated_by)}</div>
-          </Tooltip>
-          <Tooltip title={row.grant_issued_year ? row.grant_issued_year : ''}>
-            <div><p className={classes.detailsHeader}>Grant Issued Year</p>{getDisplayValue(row.grant_issued_year)}</div>
-          </Tooltip>
-          <Tooltip title={row.grant_expiry_date ? getDisplayDate(row.grant_expiry_date) : ''}>
-            <div><p className={classes.detailsHeader}>Grant Expiry Date</p>{getDisplayValue(getDisplayDate(row.grant_expiry_date))}</div>
-          </Tooltip>
-          <Tooltip title={row.report_end_date ? getDisplayDate(row.report_end_date) : ''}>
-            <div><p className={classes.detailsHeader}>Report End date</p>{getDisplayValue(getDisplayDate(row.report_end_date))}</div>
-          </Tooltip>
-          <Tooltip title={row.report_group ? row.report_group : ''}>
-            <div><p className={classes.detailsHeader}>Report Group</p>{getDisplayValue(row.report_group)}</div>
-          </Tooltip>
-          <Tooltip title={row.report_status ? row.report_status : ''}>
-            <div><p className={classes.detailsHeader}>Report Status</p>{getDisplayValue(row.report_status)}</div>
-          </Tooltip>
-          <Tooltip title={row.award_type ? row.award_type : ''}>
-            <div><p className={classes.detailsHeader}>Award Type</p>{getDisplayValue(row.award_type)}</div>
-          </Tooltip>
-        </Box>
-    )
-  }
+      <Box className={classes.detailsPanel}>
+        <Tooltip title={row.report_generated_by ? row.report_generated_by : ''}>
+          <div>
+            <p className={classes.detailsHeader}>Report Generated by</p>
+            {getDisplayValue(row.report_generated_by)}
+          </div>
+        </Tooltip>
+        <Tooltip title={row.grant_issued_year ? row.grant_issued_year : ''}>
+          <div>
+            <p className={classes.detailsHeader}>Grant Issued Year</p>
+            {getDisplayValue(row.grant_issued_year)}
+          </div>
+        </Tooltip>
+        <Tooltip title={row.grant_expiry_date ? getDisplayDate(row.grant_expiry_date) : ''}>
+          <div>
+            <p className={classes.detailsHeader}>Grant Expiry Date</p>
+            {getDisplayValue(getDisplayDate(row.grant_expiry_date))}
+          </div>
+        </Tooltip>
+        <Tooltip title={row.report_end_date ? getDisplayDate(row.report_end_date) : ''}>
+          <div>
+            <p className={classes.detailsHeader}>Report End date</p>
+            {getDisplayValue(getDisplayDate(row.report_end_date))}
+          </div>
+        </Tooltip>
+        <Tooltip title={row.report_group ? row.report_group : ''}>
+          <div>
+            <p className={classes.detailsHeader}>Report Group</p>
+            {getDisplayValue(row.report_group)}
+          </div>
+        </Tooltip>
+        <Tooltip title={row.report_status ? row.report_status : ''}>
+          <div>
+            <p className={classes.detailsHeader}>Report Status</p>
+            {getDisplayValue(row.report_status)}
+          </div>
+        </Tooltip>
+        <Tooltip title={row.award_type ? row.award_type : ''}>
+          <div>
+            <p className={classes.detailsHeader}>Award Type</p>
+            {getDisplayValue(row.award_type)}
+          </div>
+        </Tooltip>
+      </Box>
+    );
+  };
 
   const arrayToCellValue = (arr, defaultValue = '—') => {
-    if(arr && arr.length) {
-      return arr.map(x => (<span className={classes.dBlock} key={x}>{x}</span>));
+    if (arr && arr.length) {
+      return arr.map(x => (
+        <span className={classes.dBlock} key={x}>
+          {x}
+        </span>
+      ));
     }
     return defaultValue;
-  }
+  };
 
   const getGaviContent = (index, row) => {
-     const labelId = `enhanced-table-checkbox-${index}`;
-     return (
-          <ExpandableTableRow hover role="checkbox" tabIndex={-1} key={index} rowData={row}>
-              <TableCell
-                className={clsx(classes.cell, classes.titleCell)}
-                component="th"
-                id={labelId}
-                scope="row"
-              >
-                <Tooltip title={row.number ? row.number : ''}>
-                  <Typography className={classes.overflow}>
-                    <Link color="secondary" href={row.download_url} target="_blank">
-                      {row.is_new && <FiberNewIcon fontSize="small" className={classes.icon} color="error" />}
-                      {row.number}
-                    </Link>
-                  </Typography>
-                </Tooltip>
-              </TableCell>
+    const labelId = `enhanced-table-checkbox-${index}`;
+    return (
+      <ExpandableTableRow hover role="checkbox" tabIndex={-1} key={index} rowData={row}>
+        <TableCell
+          className={clsx(classes.cell, classes.titleCell)}
+          component="th"
+          id={labelId}
+          scope="row"
+        >
+          <Tooltip title={row.number ? row.number : ''}>
+            <Typography className={classes.overflow}>
+              <Link color="secondary" href={row.download_url} target="_blank">
+                {row.is_new && (
+                  <FiberNewIcon fontSize="small" className={classes.icon} color="error" />
+                )}
+                {row.number}
+              </Link>
+            </Typography>
+          </Tooltip>
+        </TableCell>
 
-              <Tooltip title={arrayToTooltip(row.country_name)}>
-                <TableCell className={classes.cell} align="left">
-                  {arrayToCellValue(row.country_name)}
-                </TableCell>
-              </Tooltip>
+        <Tooltip title={arrayToTooltip(row.country_name)}>
+          <TableCell className={classes.cell} align="left">
+            {arrayToCellValue(row.country_name)}
+          </TableCell>
+        </Tooltip>
 
-              <Tooltip title={row.m_o_u_number ? row.m_o_u_number : ''}>
-                <TableCell className={classes.cell} align="left">{row.m_o_u_number}</TableCell>
-              </Tooltip>
+        <Tooltip title={row.m_o_u_number ? row.m_o_u_number : ''}>
+          <TableCell className={classes.cell} align="left">
+            {row.m_o_u_number}
+          </TableCell>
+        </Tooltip>
 
-              <Tooltip title={row.approval_year ? row.approval_year : ''}>
-                <TableCell className={classes.cell} align="left">{row.approval_year}</TableCell>
-              </Tooltip>
+        <Tooltip title={row.approval_year ? row.approval_year : ''}>
+          <TableCell className={classes.cell} align="left">
+            {row.approval_year}
+          </TableCell>
+        </Tooltip>
 
-              <Tooltip title={row.sent_to_g_a_v_i_date ? getDisplayDate(row.sent_to_g_a_v_i_date) : ''}>
-                <TableCell className={classes.cell} align="left">
-                  {getDisplayDate(row.sent_to_g_a_v_i_date)}
-                </TableCell>
-              </Tooltip>
+        <Tooltip title={row.sent_to_g_a_v_i_date ? getDisplayDate(row.sent_to_g_a_v_i_date) : ''}>
+          <TableCell className={classes.cell} align="left">
+            {getDisplayDate(row.sent_to_g_a_v_i_date)}
+          </TableCell>
+        </Tooltip>
 
-              <Tooltip title={arrayToTooltip(row.g_a_v_i_w_b_s)}>
-                <TableCell className={classes.cell} align="left">
-                  {arrayToCellValue(row.g_a_v_i_w_b_s)}
-                </TableCell>
-              </Tooltip>
+        <Tooltip title={arrayToTooltip(row.g_a_v_i_w_b_s)}>
+          <TableCell className={classes.cell} align="left">
+            {arrayToCellValue(row.g_a_v_i_w_b_s)}
+          </TableCell>
+        </Tooltip>
 
-              <Tooltip title={row.allocation_round ? getDisplayValue(row.allocation_round) : ''}>
-                <TableCell className={classes.cell} align="left">
-                  {getDisplayValue(row.allocation_round)}
-                </TableCell>
-              </Tooltip>
-          </ExpandableTableRow>
-    )
-  }
+        <Tooltip title={row.allocation_round ? getDisplayValue(row.allocation_round) : ''}>
+          <TableCell className={classes.cell} align="left">
+            {getDisplayValue(row.allocation_round)}
+          </TableCell>
+        </Tooltip>
+      </ExpandableTableRow>
+    );
+  };
 
   const getStandardContent = (index, row) => {
     const labelId = `enhanced-table-checkbox-${index}`;
     return (
-        <ExpandableTableRow hover role="checkbox" tabIndex={-1} key={index} rowData={row}>
-              <TableCell
-                className={clsx(classes.cell, classes.titleCell)}
-                component="th"
-                id={labelId}
-                scope="row"
-              >
-                <Tooltip title={row.title ? row.title : ''}>
-                  <Typography className={classes.overflow}>
-                    <Link color="secondary" href={row.download_url} target="_blank">
-                      {row.is_new && <FiberNewIcon fontSize="small" className={classes.icon} color="error" />}
-                      {row.title}
-                    </Link>
-                  </Typography>
-                </Tooltip>
-              </TableCell>
-              {thematicGrants && (
-                <Tooltip title={row.theme ? row.theme : ''}>
-                  <TableCell className={classes.cell} align="left">
-                    {row.theme}
-                  </TableCell>
-                </Tooltip>
-              )}
-              <Tooltip title={row.grant_number ? row.grant_number : ''}>
-                <TableCell className={classes.cell} align="left">
-                  {row.grant_number}
-                </TableCell>
-              </Tooltip>
-              {pooledGrants && (
-                <Tooltip title={row.donor ? row.donor : ''}>
-                  <TableCell className={classes.cell} align="left">{row.donor}</TableCell>
-                </Tooltip>
-              )}
-              {shouldShowExternalGrants && (
-                <Tooltip title={row.external_reference ? row.external_reference : ''}>
-                  <TableCell className={classes.cell} align="left">{row.external_reference}</TableCell>
-                </Tooltip>
-              )}
-              {certifiedReports && (
-                <Tooltip title={row.donor_report_category ? row.donor_report_category : ''}>
-                  <TableCell className={classes.cell} align="left">
-                    {row.donor_report_category}
-                  </TableCell>
-                </Tooltip>
-              )}
-              <Tooltip title={row.donor_document ? row.donor_document : ''}>
-                <TableCell className={classes.cell} align="left">
-                  {row.donor_document}
-                </TableCell>
-              </Tooltip>
-              <Tooltip title={row.report_type ? row.report_type : ''}>
-                <TableCell className={classes.cell} align="left">
-                  {row.report_type}
-                </TableCell>
-              </Tooltip>
-              <Tooltip title={row.modified ? row.modified : ''}>
-                <TableCell className={classes.cell} align="left">
-                  {getDisplayDate(row.modified)}
-                </TableCell>
-              </Tooltip>
-              {thematicGrants && (
-                <Tooltip title={row.report_end_date ? getDisplayDate(row.report_end_date) : ''}>
-                  <TableCell className={classes.cell} align="left">
-                    {getDisplayDate(row.report_end_date)}
-                  </TableCell>
-                </Tooltip>
-              )}
-              {certifiedReports && (
-                <Tooltip title={row.recipientOffice ? row.recipientOffice : ''}>
-                  <TableCell className={classes.cell} align="left">
-                    {row.recipient_office ? row.recipient_office.join(', ') : row.recipientOffice}
-                  </TableCell>
-                </Tooltip>
-              )}
-              {isUnicefUser && (
-                <Tooltip title={row.report_group === 'Grant Internal' ? "Internal" : ''}>
-                  <TableCell className={classes.cell} align="left">
-                    {row.report_group === 'Grant Internal' ? "Internal" : ''}
-                  </TableCell>
-                </Tooltip>
-              )}
-         </ExpandableTableRow>
-    )
-  }
+      <ExpandableTableRow hover role="checkbox" tabIndex={-1} key={index} rowData={row}>
+        <TableCell
+          className={clsx(classes.cell, classes.titleCell)}
+          component="th"
+          id={labelId}
+          scope="row"
+        >
+          <Tooltip title={row.title ? row.title : ''}>
+            <Typography className={classes.overflow}>
+              <Link color="secondary" href={row.download_url} target="_blank">
+                {row.is_new && (
+                  <FiberNewIcon fontSize="small" className={classes.icon} color="error" />
+                )}
+                {row.title}
+              </Link>
+            </Typography>
+          </Tooltip>
+        </TableCell>
+        {thematicGrants && (
+          <Tooltip title={row.theme ? row.theme : ''}>
+            <TableCell className={classes.cell} align="left">
+              {row.theme}
+            </TableCell>
+          </Tooltip>
+        )}
+        <Tooltip title={row.grant_number ? row.grant_number : ''}>
+          <TableCell className={classes.cell} align="left">
+            {row.grant_number}
+          </TableCell>
+        </Tooltip>
+        {pooledGrants && (
+          <Tooltip title={row.donor ? row.donor : ''}>
+            <TableCell className={classes.cell} align="left">
+              {row.donor}
+            </TableCell>
+          </Tooltip>
+        )}
+        {shouldShowExternalGrants && (
+          <Tooltip title={row.external_reference ? row.external_reference : ''}>
+            <TableCell className={classes.cell} align="left">
+              {row.external_reference}
+            </TableCell>
+          </Tooltip>
+        )}
+        {certifiedReports && (
+          <Tooltip title={row.donor_report_category ? row.donor_report_category : ''}>
+            <TableCell className={classes.cell} align="left">
+              {row.donor_report_category}
+            </TableCell>
+          </Tooltip>
+        )}
+        <Tooltip title={row.donor_document ? row.donor_document : ''}>
+          <TableCell className={classes.cell} align="left">
+            {row.donor_document}
+          </TableCell>
+        </Tooltip>
+        <Tooltip title={row.report_type ? row.report_type : ''}>
+          <TableCell className={classes.cell} align="left">
+            {row.report_type}
+          </TableCell>
+        </Tooltip>
+        <Tooltip title={row.modified ? row.modified : ''}>
+          <TableCell className={classes.cell} align="left">
+            {getDisplayDate(row.modified)}
+          </TableCell>
+        </Tooltip>
+        {thematicGrants && (
+          <Tooltip title={row.report_end_date ? getDisplayDate(row.report_end_date) : ''}>
+            <TableCell className={classes.cell} align="left">
+              {getDisplayDate(row.report_end_date)}
+            </TableCell>
+          </Tooltip>
+        )}
+        {certifiedReports && (
+          <Tooltip title={row.recipientOffice ? row.recipientOffice : ''}>
+            <TableCell className={classes.cell} align="left">
+              {row.recipient_office ? row.recipient_office.join(', ') : row.recipientOffice}
+            </TableCell>
+          </Tooltip>
+        )}
+        {isUnicefUser && (
+          <Tooltip title={row.report_group === 'Grant Internal' ? 'Internal' : ''}>
+            <TableCell className={classes.cell} align="left">
+              {row.report_group === 'Grant Internal' ? 'Internal' : ''}
+            </TableCell>
+          </Tooltip>
+        )}
+      </ExpandableTableRow>
+    );
+  };
 
   return (
     <div className={classes.root}>
@@ -403,10 +474,9 @@ export default function ReportsTable() {
               rowCount={rows.length}
             />
             <TableBody>
-              {stableSort(rows, getSorting(order, orderBy))
-                .map((row, index) => {
-                  return getTableContent(index, row);
-                })}
+              {stableSort(rows, getSorting(order, orderBy)).map((row, index) => {
+                return getTableContent(index, row);
+              })}
             </TableBody>
           </Table>
         </TableContainer>
@@ -422,13 +492,11 @@ export default function ReportsTable() {
           nextIconButtonProps={{
             'aria-label': 'next page'
           }}
-
           onChangePage={handleChangePage}
           ActionsComponent={TablePaginationActions}
         />
         {/* <DocViewer fileType={docFileType} filePath={doc} /> */}
-      </Paper >
-    </div >
+      </Paper>
+    </div>
   );
 }
-
