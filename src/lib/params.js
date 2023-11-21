@@ -1,13 +1,12 @@
-import {
-  keys
-} from 'ramda';
+import { keys } from 'ramda';
 import {
   USERS_PORTAL_PATH,
   // REPORTS_PATH,
   THEMATIC_GRANTS_PATH,
   SEARCH_REPORTS_PATH,
   POOLED_GRANTS_PATH,
-  GAVI_REPORTS_PATH
+  GAVI_REPORTS_PATH,
+  GAVI_REPORTS_CTN_PATH
 } from './constants';
 
 export const PAGE_TITLES_MAP = {
@@ -15,12 +14,13 @@ export const PAGE_TITLES_MAP = {
   // [REPORTS_PATH]: 'Reports',
   [THEMATIC_GRANTS_PATH]: 'Thematic Grants',
   [GAVI_REPORTS_PATH]: 'Gavi Reports',
+  [GAVI_REPORTS_CTN_PATH]: 'Gavi adjusting CTNs',
   [POOLED_GRANTS_PATH]: 'Pooled Grants',
   [SEARCH_REPORTS_PATH]: 'Reports'
 };
 
 export function getSubheadingFromParams(pathname, donorName = '', donorCode = '') {
-  const pathMatch = keys(PAGE_TITLES_MAP).find(path => pathname.includes(path));
+  const pathMatch = keys(PAGE_TITLES_MAP).find(path => pathname === path);
   const pageName = PAGE_TITLES_MAP[pathMatch];
   if (!pageName) {
     return '';

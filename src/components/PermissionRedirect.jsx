@@ -1,9 +1,23 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router';
-import { REPORTS_PATH, DONOR_ADMIN_ROLE, DONOR_USER_ROLE, GAVI_REPORTS_PATH, POOLED_GRANTS_PATH, POOLED_GRANTS } from '../lib/constants';
-import { selectUserGroup, selectUserProfileDonorId, selectIsSuperUser, selectUserProfileDonor, selectIsUnicefUser, selectMenuBarPage } from 'selectors/ui-flags';
-import {selectConfig} from 'selectors/collections';
+import {
+  REPORTS_PATH,
+  DONOR_ADMIN_ROLE,
+  DONOR_USER_ROLE,
+  GAVI_REPORTS_PATH,
+  POOLED_GRANTS_PATH,
+  POOLED_GRANTS
+} from '../lib/constants';
+import {
+  selectUserGroup,
+  selectUserProfileDonorId,
+  selectIsSuperUser,
+  selectUserProfileDonor,
+  selectIsUnicefUser,
+  selectMenuBarPage
+} from 'selectors/ui-flags';
+import { selectConfig } from 'selectors/collections';
 
 export const usePermissions = () => {
   const userGroup = useSelector(selectUserGroup);
@@ -30,11 +44,9 @@ export default function PermissionRedirect() {
   const usersDonorId = useSelector(selectUserProfileDonorId);
   const { canViewDonors, isGaviDonor } = usePermissions();
   const tab = useSelector(selectMenuBarPage);
-
   if (isGaviDonor) {
     return <Redirect to={`${GAVI_REPORTS_PATH}`} />;
-  }
-  else if (canViewDonors) {
+  } else if (canViewDonors) {
     return <Redirect to="/donors" />;
   } else if (tab === POOLED_GRANTS) {
     return <Redirect to={`${POOLED_GRANTS_PATH}/${usersDonorId}`} />;

@@ -1,10 +1,4 @@
-import {
-  takeLatest,
-  call,
-  put,
-  all,
-  select
-} from 'redux-saga/effects';
+import { takeLatest, call, put, all, select } from 'redux-saga/effects';
 import {
   selectDonorCode,
   selectError,
@@ -12,51 +6,33 @@ import {
   selectMenuBarPage,
   selectIsUnicefUser
 } from 'selectors/ui-flags';
-import {
-  selectReportYear
-} from 'selectors/filter';
-import {
-  removeEmpties
-} from 'lib/helpers';
+import { selectReportYear } from 'selectors/filter';
+import { removeEmpties } from 'lib/helpers';
 import {
   fetchSearchGavi,
-  fetchSearchReports,
+  fetchSearchReports
   // fetchThematicGrants,
   // fetchPooledGrants
 } from 'api/search-index';
-import {
-  waitFor
-} from './helpers';
-import {
-  setLoading,
-  setCurrentlyLoadedDonor
-} from 'slices/ui';
-import {
-  onReceiveSearchReports
-} from 'slices/search-reports';
-import {
-  setError
-} from 'slices/error';
-import {
-  onFetchSearchReports
-} from 'actions';
-import {
-  selectConfig
-} from 'selectors/collections';
+import { waitFor } from './helpers';
+import { setLoading, setCurrentlyLoadedDonor } from 'slices/ui';
+import { onReceiveSearchReports } from 'slices/search-reports';
+import { setError } from 'slices/error';
+import { onFetchSearchReports } from 'actions';
+import { selectConfig } from 'selectors/collections';
 import {
   SEARCH_REPORTS,
   THEMATIC_GRANTS,
   POOLED_GRANTS,
   GAVI_REPORTS,
+  GAVI_REPORTS_CTN,
   UNICEF_GAVI_KEY
-} from '../lib/constants'
+} from '../lib/constants';
 
 function* getInitialSearchReports(params) {
   let result = {};
   try {
-    result = yield call(
-      fetchSearchReports, params
-    )
+    result = yield call(fetchSearchReports, params);
   } catch (err) {
     yield put(setError(err));
   }
@@ -72,24 +48,27 @@ function* getSearchReports(params) {
   if (reportPageName === 'reports') {
     // this is default / initial load only
     if (!currentlyLoadedDonor || currentlyLoadedDonor != params.donor_code) {
-      yield put(setCurrentlyLoadedDonor(params.donor_code))
+      yield put(setCurrentlyLoadedDonor(params.donor_code));
       searchReports = yield call(getInitialSearchReports, params);
       return searchReports;
     }
     const reportYear = yield select(selectReportYear);
     searchReports = yield call(fetchSearchReports, params, reportYear);
   } else if (reportPageName === 'gavi-reports') {
+    params.m_o_u_r_eference__not = 'ADJUSTING CTNS';
     searchReports = yield call(fetchSearchGavi, params);
-  }
-  else {
+  } else if (reportPageName === 'gavi-reports-ctn') {
+    params.m_o_u_r_eference = 'ADJUSTING CTNS';
+    searchReports = yield call(fetchSearchGavi, params);
+  } else {
     searchReports = yield call(fetchSearchReports, params);
   }
   return searchReports;
 }
 
 function* getSourceId() {
-  yield call(waitFor, selectConfig)
-  const config = yield select(selectConfig)
+  yield call(waitFor, selectConfig);
+  const config = yield select(selectConfig);
   return config.source_id;
 }
 
@@ -102,21 +81,26 @@ function* getSearchCallerFunc(payload) {
     }
   };
 
-  yield call(waitFor, getSourceId)
+  yield call(waitFor, getSourceId);
   const sourceIds = yield getSourceId(reportPageName);
   result.caller = getSearchReports;
 
   switch (reportPageName) {
     case THEMATIC_GRANTS: {
-      result.params.source_id = isUnicefUser ? sourceIds.thematic_internal : sourceIds.thematic_external;
+      result.params.source_id = isUnicefUser
+        ? sourceIds.thematic_internal
+        : sourceIds.thematic_external;
       if (process.env.NODE_ENV === 'development') {
-        result.params.source_id = isUnicefUser ? process.env.REACT_APP_DRP_SOURCE_ID_THEMATIC_EXTERNAL : process.env.REACT_APP_DRP_SOURCE_ID_THEMATIC_INTERNAL;
+        result.params.source_id = isUnicefUser
+          ? process.env.REACT_APP_DRP_SOURCE_ID_THEMATIC_EXTERNAL
+          : process.env.REACT_APP_DRP_SOURCE_ID_THEMATIC_INTERNAL;
       }
       break;
     }
+    case GAVI_REPORTS_CTN:
     case GAVI_REPORTS: {
-      yield call(waitFor, selectConfig)
-      const config = yield select(selectConfig)
+      yield call(waitFor, selectConfig);
+      const config = yield select(selectConfig);
       result.params.donor_code = config.gavi_donor_code;
       result.params.source_id = isUnicefUser ? UNICEF_GAVI_KEY : sourceIds.gavi;
       break;
@@ -127,7 +111,9 @@ function* getSearchCallerFunc(payload) {
       result.params.donor_code = donorCode;
       result.params.source_id = isUnicefUser ? sourceIds.pool_internal : sourceIds.pool_external;
       if (process.env.NODE_ENV === 'development') {
-        result.params.source_id = isUnicefUser ? process.env.REACT_APP_DRP_SOURCE_ID_POOL_EXTERNAL : process.env.REACT_APP_DRP_SOURCE_ID_POOL_INTERNAL;
+        result.params.source_id = isUnicefUser
+          ? process.env.REACT_APP_DRP_SOURCE_ID_POOL_EXTERNAL
+          : process.env.REACT_APP_DRP_SOURCE_ID_POOL_INTERNAL;
       }
       break;
     }
@@ -137,25 +123,21 @@ function* getSearchCallerFunc(payload) {
       result.params.donor_code = donorCode;
       result.params.source_id = isUnicefUser ? sourceIds.internal : sourceIds.external;
       if (process.env.NODE_ENV === 'development') {
-        result.params.source_id = isUnicefUser ? process.env.REACT_APP_DRP_SOURCE_ID_EXTERNAL : process.env.REACT_APP_DRP_SOURCE_ID_INTERNAL;
+        result.params.source_id = isUnicefUser
+          ? process.env.REACT_APP_DRP_SOURCE_ID_EXTERNAL
+          : process.env.REACT_APP_DRP_SOURCE_ID_INTERNAL;
       }
-      break
+      break;
     }
   }
   return result;
 }
 
-function* handleFetchSearchReports({
-  payload
-}) {
+function* handleFetchSearchReports({ payload }) {
   try {
     yield put(setLoading(true));
 
-    const {
-      caller,
-      params,
-      arg
-    } = yield call(getSearchCallerFunc, payload);
+    const { caller, params, arg } = yield call(getSearchCallerFunc, payload);
 
     const searchReports = yield call(caller, params, arg);
     yield put(onReceiveSearchReports(searchReports));
