@@ -95,6 +95,17 @@ export default function ConnectedDrawer() {
           <ListItemText primary="Pooled Grants" />
         </ListItem>
 
+        <ListItem
+          selected={navSelected(THEMATIC_GRANTS)}
+          onClick={handleNav(THEMATIC_GRANTS)}
+          button
+        >
+          <ListItemIcon>
+            <DescriptionIcon />
+          </ListItemIcon>
+          <ListItemText primary="Thematic Grants" />
+        </ListItem>
+
         <ListItem selected={navSelected(GAVI_REPORTS)} onClick={handleNav(GAVI_REPORTS)} button>
           <ListItemIcon>
             <DescriptionIcon />
@@ -110,7 +121,7 @@ export default function ConnectedDrawer() {
         <ListItemIcon>
             <DescriptionIcon />
           </ListItemIcon>
-          <ListItemText primary="Gavi adjusting CTNs" />
+          <ListItemText primary="Gavi Adjusting CTNs" />
         </ListItem>
 
         <ListItem
@@ -122,17 +133,6 @@ export default function ConnectedDrawer() {
             <DescriptionIcon />
           </ListItemIcon>
           <ListItemText primary="Gavi Statements of Account" />
-        </ListItem>
-
-        <ListItem
-          selected={navSelected(THEMATIC_GRANTS)}
-          onClick={handleNav(THEMATIC_GRANTS)}
-          button
-        >
-          <ListItemIcon>
-            <DescriptionIcon />
-          </ListItemIcon>
-          <ListItemText primary="Thematic Grants" />
         </ListItem>
 
         <ListItem selected={navSelected(USERS_PORTAL)} onClick={handleNav(USERS_PORTAL)} button>
