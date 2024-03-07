@@ -14,7 +14,8 @@ import {
   TRAINING_LINK,
   ADMIN,
   GAVI_REPORTS,
-  GAVI_REPORTS_CTN
+  GAVI_REPORTS_CTN,
+  GAVI_STATEMENTS_ACC
 } from '../lib/constants';
 import { selectMenuBarPage, selectAssignedRole, selectPageName } from 'selectors/ui-flags';
 import { menuItemSelected } from 'slices/ui';
@@ -106,10 +107,21 @@ export default function ConnectedDrawer() {
           onClick={handleNav(GAVI_REPORTS_CTN)}
           button
         >
-          <ListItemIcon>
+        <ListItemIcon>
             <DescriptionIcon />
           </ListItemIcon>
           <ListItemText primary="Gavi adjusting CTNs" />
+        </ListItem>
+
+        <ListItem
+          selected={navSelected(GAVI_STATEMENTS_ACC)}
+          onClick={handleNav(GAVI_STATEMENTS_ACC)}
+          button
+        >
+        <ListItemIcon>
+            <DescriptionIcon />
+          </ListItemIcon>
+          <ListItemText primary="Gavi Statements of Account" />
         </ListItem>
 
         <ListItem

@@ -17,7 +17,8 @@ import {
   REACT_APP_BUSINESS_AREA_ENDPOINT,
   REACT_APP_REPORTS_ENDPOINT,
   REACT_APP_CONFIG_ENDPOINT,
-  REACT_APP_GAVI_ENDPOINT
+  REACT_APP_GAVI_ENDPOINT,
+  REACT_APP_GAVI_STATEMENTS_ENDPOINT
 } from './endpoints';
 
 const currentDate = () => {
@@ -151,6 +152,10 @@ export function getThemes() {
 
 export function getGaviReports() {
   return get(REACT_APP_GAVI_ENDPOINT);
+}
+
+export function getGaviStatements() {
+  return get(REACT_APP_GAVI_STATEMENTS_ENDPOINT);
 }
 
 export function getStaticAssets() {

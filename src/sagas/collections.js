@@ -15,7 +15,8 @@ import {
   getMetadata,
   getOffices,
   getConfig,
-  getGaviReports
+  getGaviReports,
+  getGaviStatements
 } from 'api';
 
 import {
@@ -34,6 +35,7 @@ import {
   initCertifiedReportsPage,
   initThematicGrantsPage,
   initGaviReportsPage,
+  initGaviStatementsPage,
   initPooledGrantsPage,
   initSearchReportsPage
 } from 'actions';
@@ -152,6 +154,16 @@ function* handleFetchGaviReports() {
   }
 }
 
+function* handleFetchGaviStatementsReports() {
+  try {
+    const reports = yield call(getGaviStatements);
+    yield put(onReceiveGavi(reports));
+  } catch (err) {
+    yield put(setError(err));
+  }
+}
+
+
 function* handleFetchStatic() {
   const staticAssets = yield select(selectStaticAssets);
 
@@ -258,6 +270,12 @@ function* fetchGaviReportsFilterCollections() {
   ]);
 }
 
+function* fetchGaviStatementsFilterCollections() {
+  yield all([
+    call(maybeFetch, handleFetchGaviStatementsReports, selectGavi)
+  ]);
+}
+
 function* fetchSearchReportFilterCollections(action) {
   yield all([
     call(handleFetchGrants, action),
@@ -278,6 +296,7 @@ export function* filtersSaga() {
   yield takeLatest(initCertifiedReportsPage.type, fetchReportFilterCollections);
   yield takeLatest(initThematicGrantsPage.type, fetchThematicFilterCollections);
   yield takeLatest(initGaviReportsPage.type, fetchGaviReportsFilterCollections);
+  yield takeLatest(initGaviStatementsPage.type, fetchGaviStatementsFilterCollections);  
   yield takeLatest(initPooledGrantsPage.type, fetchPooledFilterCollections);
   yield takeLatest(initSearchReportsPage.type, fetchSearchReportFilterCollections);
 }

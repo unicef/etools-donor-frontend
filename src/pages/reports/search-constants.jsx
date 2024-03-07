@@ -55,7 +55,10 @@ export const ALOOCATION_ROUND = 'allocation_round__contains';
 export const VENDOR = 'vendor__contains';
 export const VACCINE_TYPE = 'vaccine_type__in';
 export const APPROVAL_YEAR = 'approval_year';
-
+export const SOA_DATE = 's_o_a_issue_date';
+export const UNICEF_WBS = 'u_n_i_c_e_f_w_b_s';
+export const MOU_NUMBER = 'm_o_u_number';
+export const MATERIAL_CODE = 'material_code';
 
 // PROPERTIES TO BE USED FOR QUERY
 export const QUERY_PROPERTY_GRANT = 'code';
