@@ -140,6 +140,7 @@ export const PAGE_TITLE_MAP = {
   [THEMATIC_GRANTS]: 'Thematic Grants',
   [GAVI_REPORTS]: 'Gavi Reports',
   [GAVI_REPORTS_CTN]: 'Gavi adjusting CTNs',
+  [GAVI_STATEMENTS_ACC]: 'Gavi Statements of Account',
   [POOLED_GRANTS]: 'Pooled Grants'
 };
 

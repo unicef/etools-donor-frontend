@@ -6,7 +6,8 @@ import {
   SEARCH_REPORTS_PATH,
   POOLED_GRANTS_PATH,
   GAVI_REPORTS_PATH,
-  GAVI_REPORTS_CTN_PATH
+  GAVI_REPORTS_CTN_PATH,
+  GAVI_STATEMENTS_ACC_PATH
 } from './constants';
 
 export const PAGE_TITLES_MAP = {
@@ -15,6 +16,7 @@ export const PAGE_TITLES_MAP = {
   [THEMATIC_GRANTS_PATH]: 'Thematic Grants',
   [GAVI_REPORTS_PATH]: 'Gavi Reports',
   [GAVI_REPORTS_CTN_PATH]: 'Gavi adjusting CTNs',
+  [GAVI_STATEMENTS_ACC_PATH]: 'Gavi Statements of Account',
   [POOLED_GRANTS_PATH]: 'Pooled Grants',
   [SEARCH_REPORTS_PATH]: 'Reports'
 };
