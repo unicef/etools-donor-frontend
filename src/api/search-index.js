@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getCookie } from './helpers';
 import Qs from 'qs';
-import { REACT_APP_GAVI_ENDPOINT, REACT_APP_SEARCH_API } from './endpoints';
+import { REACT_APP_GAVI_ENDPOINT, REACT_APP_GAVI_STATEMENTS_ENDPOINT, REACT_APP_SEARCH_API } from './endpoints';
 
 const backendPath = '/api';
 
@@ -37,5 +37,10 @@ export async function fetchSearchReports(params) {
 
 export async function fetchSearchGavi(params) {
   const computedUrl = REACT_APP_GAVI_ENDPOINT;
+  return get(computedUrl, params);
+}
+
+export async function fetchSearchGaviStatements(params) {
+  const computedUrl = REACT_APP_GAVI_STATEMENTS_ENDPOINT;
   return get(computedUrl, params);
 }

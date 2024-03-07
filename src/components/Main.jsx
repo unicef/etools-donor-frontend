@@ -11,7 +11,8 @@ import {
   POOLED_GRANTS,
   SEARCH_REPORTS,
   GAVI_REPORTS,
-  GAVI_REPORTS_CTN
+  GAVI_REPORTS_CTN,
+  GAVI_STATEMENTS_ACC
 } from '../lib/constants';
 import DonorsList from 'pages/donors-list';
 import ContentHeader from './Content-Header';
@@ -140,6 +141,10 @@ export default function MainAppBar() {
                     <ProtectedRouteReportPage exact path={`/${GAVI_REPORTS_CTN}`}>
                       <SearchPage />
                     </ProtectedRouteReportPage>
+
+                    <ProtectedRouteReportPage exact path={`/${GAVI_STATEMENTS_ACC}`}>
+                      <SearchPage />
+                    </ProtectedRouteReportPage>                    
 
                     {/* Optional donorId param here since donor list is not aware of what page
                   to link to per donor and only super users can choose donor for user management */}

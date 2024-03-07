@@ -10,12 +10,14 @@ import {
   initSearchReportsPage,
   initPooledGrantsPage,
   initThematicGrantsPage,
-  initGaviReportsPage
+  initGaviReportsPage,
+  initGaviStatementsPage
 } from 'actions';
 import { onReceiveSearchReports } from 'slices/search-reports';
 import {
   GAVI_REPORTS,
   GAVI_REPORTS_CTN,
+  GAVI_STATEMENTS_ACC,
   POOLED_GRANTS,
   SEARCH_REPORTS,
   THEMATIC_GRANTS
@@ -45,6 +47,12 @@ function useInitGaviReports(dispatch) {
   };
 }
 
+function useInitGaviStatements(dispatch) {
+  return () => {
+    dispatch(initGaviStatementsPage());
+  };
+}
+
 function useDefaultHook() {
   return () => {};
 }
@@ -62,6 +70,8 @@ const useInitPage = pageName => {
     case GAVI_REPORTS_CTN:
     case GAVI_REPORTS:
       return useInitGaviReports(dispatch);
+    case GAVI_STATEMENTS_ACC:
+      return useInitGaviStatements(dispatch);
     default:
       return useDefaultHook;
   }

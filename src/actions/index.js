@@ -19,6 +19,7 @@ export const initCertifiedReportsPage = createAction('initCertifiedReportsPage')
 export const initPooledGrantsPage = createAction('initPooledGrantsPage');
 export const initThematicGrantsPage = createAction('initThematicGrantsPage');
 export const initGaviReportsPage = createAction('initGaviReportsPage');
+export const initGaviStatementsPage = createAction('initGaviStatementsPage');
 export const initSearchReportsPage = createAction('initSearchReportsPage');
 export const deleteUserRole = createAction('deleteUserRole');
 export const onFetchSearchReports = createAction('onFetchSearchReports');
