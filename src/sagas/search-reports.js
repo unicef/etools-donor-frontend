@@ -106,14 +106,14 @@ function* getSearchCallerFunc(payload) {
       yield call(waitFor, selectConfig);
       const config = yield select(selectConfig);
       result.params.donor_code = config.gavi_donor_code;
-      result.params.source_id = isUnicefUser ? UNICEF_GAVI_KEY : sourceIds.gavi;
+      result.params.source_id = sourceIds.gavi; // isUnicefUser ? UNICEF_GAVI_KEY :
       break;
     }
     case GAVI_STATEMENTS_ACC: {
       yield call(waitFor, selectConfig);
       const config = yield select(selectConfig);
       result.params.donor_code = config.gavi_donor_code;
-      result.params.source_id = isUnicefUser ? UNICEF_GAVI_KEY : sourceIds.gavi_soa;
+      result.params.source_id = sourceIds.gavi_soa;
       break;
     }
     case POOLED_GRANTS: {
