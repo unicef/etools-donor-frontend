@@ -356,11 +356,15 @@ export default function ReportsTable() {
 
   const arrayToCellValue = (arr, defaultValue = '—') => {
     if (arr && arr.length) {
-      return arr.map(x => (
+      return Array.isArray(arr) ?
+        arr.map(x => (
         <span className={classes.dBlock} key={x}>
           {x}
         </span>
-      ));
+      )) : 
+      <span className={classes.dBlock} key={arr}>
+        {arr}
+      </span>;
     }
     return defaultValue;
   };
@@ -456,7 +460,7 @@ export default function ReportsTable() {
 
           <Tooltip title={arrayToTooltip(row.u_n_i_c_e_f_w_b_s)}>
               <TableCell className={classes.cell} align="left">
-                {arrayToCellValue(row.u_n_i_c_e_f_w_b_s)}
+                {row.u_n_i_c_e_f_w_b_s}
               </TableCell>
           </Tooltip>
 

@@ -27,8 +27,7 @@ import {
   POOLED_GRANTS,
   GAVI_REPORTS,
   GAVI_REPORTS_CTN,
-  GAVI_STATEMENTS_ACC,
-  UNICEF_GAVI_KEY
+  GAVI_STATEMENTS_ACC
 } from '../lib/constants';
 
 function* getInitialSearchReports(params) {
