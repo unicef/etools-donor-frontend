@@ -27,6 +27,7 @@ export const BACKEND_GAVI_FIELDS = {
   gaviWBS: 'g_a_v_i_w_b_s',
   allocationRound: 'allocation_round',
   purchaseOrder: 'purchase_order',
+  grantNumber: 'grant_number',
   unicefWBS: 'u_n_i_c_e_f_w_b_s',
   soaDate: 's_o_a_issue_date'
 };

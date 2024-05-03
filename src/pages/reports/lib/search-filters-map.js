@@ -30,10 +30,9 @@ import {
   VENDOR,
   APPROVAL_YEAR,
   SEARCH_FIELD,
-  SOA_DATE,
+  GRANT_NUMBER,
   UNICEF_WBS,
   MOU_NUMBER,
-  MATERIAL_CODE
 
 } from '../search-constants';
 
@@ -64,10 +63,8 @@ import MOUReferenceFilter from '../components/mou-reference-filter';
 import CountryFilter from '../components/country-filter';
 import CTNNumberFilter from '../components/ctn-number-filter';
 import GaviWBSFilter from '../components/gavi-wbs-filter';
-import {SOADateFilter} from '../components/soa-date-filter';
 import UNICEFWBSFilter from '../components/unicef-wbs-filter';
 import MOUNumberFilter from '../components/mou-number-filter';
-import MaterialCodeFilter from '../components/material-code-filter';
 import {
   UNICEF_USER_ROLE,
   THEMATIC_GRANTS,
@@ -83,6 +80,7 @@ import { useSelector } from 'react-redux';
 import { selectIsSuperUser, selectIsUnicefUser } from 'selectors/ui-flags';
 import PrepaidStatusFilter from '../components/prepaid-status-filter';
 import PurchaseOrderFilter from '../components/purchase-order-filter';
+import GrantNumberFilter from '../components/grant-number-filter';
 import AllocationRoundFilter from '../components/allocation-round-filter';
 import { GaviDateAfterFilter, GaviDateBeforeFilter } from '../components/gavi-date-filter';
 import VendorFilter from '../components/vendor-filter';
@@ -233,12 +231,6 @@ export const FILTERS_MAP = {
     pageName: [GAVI_REPORTS, GAVI_REPORTS_CTN, GAVI_STATEMENTS_ACC]
   },
 
-  [SOA_DATE]: {
-    label: 'SOA Date',
-    Component: SOADateFilter,
-    pageName: [GAVI_STATEMENTS_ACC]
-  },
-
   [UNICEF_WBS]: {
     label: 'UNICEF WBS',
     Component: UNICEFWBSFilter,
@@ -251,12 +243,6 @@ export const FILTERS_MAP = {
     pageName: [GAVI_STATEMENTS_ACC]
   },
 
-  [MATERIAL_CODE]: {
-    label: 'Material Code',
-    Component: MaterialCodeFilter,
-    pageName: [GAVI_STATEMENTS_ACC]
-  },
-
   [COUNTRY_NAME]: {
     label: 'Country',
     Component: CountryFilter,
@@ -266,9 +252,15 @@ export const FILTERS_MAP = {
   [PURCHASE_ORDER]: {
     label: 'Purchase Order',
     Component: PurchaseOrderFilter,
-    pageName: [GAVI_REPORTS, GAVI_REPORTS_CTN, GAVI_STATEMENTS_ACC]
+    pageName: [GAVI_REPORTS, GAVI_REPORTS_CTN]
   },
 
+  [GRANT_NUMBER]: {
+    label: 'Grant Number',
+    Component: GrantNumberFilter,
+    pageName: [GAVI_STATEMENTS_ACC]
+  },
+  
   [PREPAID_STATUS]: {
     label: 'Prepaid Status',
     Component: PrepaidStatusFilter,
