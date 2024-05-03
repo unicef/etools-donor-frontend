@@ -81,10 +81,9 @@ const gaviReportsTableHeadings = [
 
 const gaviStatementsAccTableHeadings = [
   { id: '', label: '', sortable: false },  
-  { id: BACKEND_GAVI_FIELDS['purchaseOrder'], label: 'Purchase Order', sortable: true },
+  { id: BACKEND_GAVI_FIELDS['grantNumber'], label: 'Grant Number', sortable: true },
   { id: BACKEND_GAVI_FIELDS['gaviWBS'], label: 'GAVI WBS', sortable: true },
-  { id: BACKEND_GAVI_FIELDS['unicefWBS'], label: 'UNICEF WBS', sortable: true },
-  { id: BACKEND_GAVI_FIELDS['soaDate'], label: 'SOA Date', sortable: true },
+  { id: BACKEND_GAVI_FIELDS['unicefWBS'], label: 'UNICEF WBS', sortable: true },  
   { id: BACKEND_GAVI_FIELDS['country'], label: 'Country Name', sortable: true }  
 ];
 
@@ -288,13 +287,6 @@ export default function ReportsTable() {
           </div>
         </Tooltip>        
 
-        <Tooltip title={arrayToTooltip(row.material_code)}>
-          <div>
-            <p className={classes.detailsHeader}>Material Code</p>
-            {arrayToCellValue(row.material_code)}
-          </div>
-        </Tooltip>
-
         <Tooltip title={arrayToTooltip(row.vaccine_type)}>
           <div>
             <p className={classes.detailsHeader}>Vaccine Type</p>
@@ -440,13 +432,13 @@ export default function ReportsTable() {
           id={labelId}
           scope="row"
         >
-          <Tooltip title={row.purchase_order ? row.purchase_order : ''}>
+          <Tooltip title={row.grant_number || 'N/A'}>
             <Typography className={classes.overflow}>
               <Link color="secondary" href={row.download_url} target="_blank">
                 {row.is_new && (
                   <FiberNewIcon fontSize="small" className={classes.icon} color="error" />
                 )}
-                {row.purchase_order}
+                {row.grant_number || 'N/A'}
               </Link>
             </Typography>
            </Tooltip>
@@ -462,13 +454,7 @@ export default function ReportsTable() {
               <TableCell className={classes.cell} align="left">
                 {row.u_n_i_c_e_f_w_b_s}
               </TableCell>
-          </Tooltip>
-
-          <Tooltip title={row.s_o_a_issue_date ? getDisplayDate(row.s_o_a_issue_date) : ''}>
-            <TableCell className={classes.cell} align="left">
-              {getDisplayDate(row.s_o_a_issue_date)}
-            </TableCell>
-          </Tooltip>
+          </Tooltip>          
 
           <Tooltip title={arrayToTooltip(row.country_name)}>
             <TableCell className={classes.cell} align="left">
