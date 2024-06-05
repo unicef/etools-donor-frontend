@@ -38,7 +38,7 @@ import {
 } from '../../pages/reports/constants';
 import TablePaginationActions from './table-pagination-actions';
 import { selectMenuBarPage } from 'selectors/ui-flags';
-import { POOLED_GRANTS, THEMATIC_GRANTS, GAVI_REPORTS, GAVI_REPORTS_CTN } from 'lib/constants';
+import { POOLED_GRANTS, THEMATIC_GRANTS, GAVI_REPORTS, GAVI_REPORTS_CTN, GAVI_STATEMENTS_ACC } from 'lib/constants';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 
 export function getRecipientOfficeStr(report) {
@@ -79,6 +79,14 @@ const gaviReportsTableHeadings = [
   { id: BACKEND_GAVI_FIELDS['allocationRound'], label: 'Allocation Round', sortable: true }
 ];
 
+const gaviStatementsAccTableHeadings = [
+  { id: '', label: '', sortable: false },  
+  { id: BACKEND_GAVI_FIELDS['grantNumber'], label: 'Grant Number', sortable: true },
+  { id: BACKEND_GAVI_FIELDS['gaviWBS'], label: 'GAVI WBS', sortable: true },
+  { id: BACKEND_GAVI_FIELDS['unicefWBS'], label: 'UNICEF WBS', sortable: true },  
+  { id: BACKEND_GAVI_FIELDS['country'], label: 'Country Name', sortable: true }  
+];
+
 const externalRefCell = {
   id: EXTERNAL_REF_GRANT_FIELD,
   label: 'Partner Ref No',
@@ -98,8 +106,8 @@ const donorCell = {
 };
 
 // inserts extra column for non-unicef users as per requirements
-const getHeadCells = (isUnicefUser, cells, pooledGrants, thematicGrants, isGaviPage) => {
-  if (isGaviPage) {
+const getHeadCells = (isUnicefUser, cells, pooledGrants, thematicGrants, isGaviPage, isGaveStatementsPage) => {
+  if (isGaviPage || isGaveStatementsPage) {
     return [...cells];
   }
   if (pooledGrants) {
@@ -117,9 +125,11 @@ const getTableHeadings = pageName => {
   switch (pageName) {
     case THEMATIC_GRANTS:
       return thematicReportsTableHeadings;
-    case GAVI_REPORTS_CTN:
+    case GAVI_REPORTS_CTN:    
     case GAVI_REPORTS:
       return gaviReportsTableHeadings;
+    case GAVI_STATEMENTS_ACC:
+      return gaviStatementsAccTableHeadings;
     default:
       return certifiedReportsTableHeadings;
   }
@@ -137,12 +147,14 @@ export default function ReportsTable() {
   const pooledGrants = pageName === POOLED_GRANTS;
   const thematicGrants = pageName === THEMATIC_GRANTS;
   const isGaviPage = pageName === GAVI_REPORTS || pageName == GAVI_REPORTS_CTN;
+  const isGaveStatementsPage = pageName == GAVI_STATEMENTS_ACC;
   const headCells = getHeadCells(
     isUnicefUser,
     getTableHeadings(pageName),
     pooledGrants,
     thematicGrants,
-    isGaviPage
+    isGaviPage,
+    isGaveStatementsPage
   );
 
   const { orderBy, order, page, handleRequestSort, handleChangePage } = useTable();
@@ -153,7 +165,12 @@ export default function ReportsTable() {
   }, [pageName]);
 
   const getTableContent = (index, row) => {
-    return isGaviPage ? getGaviContent(index, row) : getStandardContent(index, row);
+    if (isGaviPage) {
+      return getGaviContent(index, row);
+    } else if (isGaveStatementsPage) {
+      return getGaviStatementsAccContent(index, row);
+    }
+    return getStandardContent(index, row);
   };
 
   const getTableNumOfCells = () => {
@@ -181,13 +198,22 @@ export default function ReportsTable() {
           <TableRow bgcolor="#eeeeee">
             <TableCell padding="checkbox" />
             <TableCell colSpan={getTableNumOfCells()}>
-              {isGaviPage ? getGaviRowDetails(rowData) : getStandardRowDetails(rowData)}
+              {getRowDetails(rowData)}
             </TableCell>
           </TableRow>
         )}
       </>
     );
   };
+
+  const getRowDetails = row => {
+    if(isGaviPage) {
+      return getGaviRowDetails(row);
+    } else if (isGaveStatementsPage) {
+      return getGaviStatementsAccRowDetails(row);
+    }
+    return getStandardRowDetails(row);
+  }
 
   const getGaviRowDetails = row => {
     return (
@@ -244,6 +270,33 @@ export default function ReportsTable() {
     );
   };
 
+  const getGaviStatementsAccRowDetails = row => {
+    return (
+      <Box className={classes.detailsPanel}>
+        <Tooltip title={row.m_o_u_number ? row.m_o_u_number : ''}>
+          <div>
+            <p className={classes.detailsHeader}>MOU number</p>
+            {getDisplayValue(row.m_o_u_number)}
+          </div>
+        </Tooltip>
+
+        <Tooltip title={row.approval_year ? row.approval_year : ''}>
+          <div>
+            <p className={classes.detailsHeader}>Approval Year</p>
+            {getDisplayValue(row.approval_year)}
+          </div>
+        </Tooltip>        
+
+        <Tooltip title={arrayToTooltip(row.vaccine_type)}>
+          <div>
+            <p className={classes.detailsHeader}>Vaccine Type</p>
+            {arrayToCellValue(row.vaccine_type)}
+          </div>
+        </Tooltip>      
+      </Box>
+    );
+  };
+
   const getStandardRowDetails = row => {
     return (
       <Box className={classes.detailsPanel}>
@@ -295,11 +348,15 @@ export default function ReportsTable() {
 
   const arrayToCellValue = (arr, defaultValue = '—') => {
     if (arr && arr.length) {
-      return arr.map(x => (
+      return Array.isArray(arr) ?
+        arr.map(x => (
         <span className={classes.dBlock} key={x}>
           {x}
         </span>
-      ));
+      )) : 
+      <span className={classes.dBlock} key={arr}>
+        {arr}
+      </span>;
     }
     return defaultValue;
   };
@@ -361,6 +418,50 @@ export default function ReportsTable() {
             {getDisplayValue(row.allocation_round)}
           </TableCell>
         </Tooltip>
+      </ExpandableTableRow>
+    );
+  };
+
+  const getGaviStatementsAccContent = (index, row) => {
+    const labelId = `enhanced-table-checkbox-${index}`;
+    return (
+      <ExpandableTableRow hover role="checkbox" tabIndex={-1} key={index} rowData={row}>
+        <TableCell
+          className={clsx(classes.cell, classes.titleCell)}
+          component="th"
+          id={labelId}
+          scope="row"
+        >
+          <Tooltip title={row.grant_number || 'N/A'}>
+            <Typography className={classes.overflow}>
+              <Link color="secondary" href={row.download_url} target="_blank">
+                {row.is_new && (
+                  <FiberNewIcon fontSize="small" className={classes.icon} color="error" />
+                )}
+                {row.grant_number || 'N/A'}
+              </Link>
+            </Typography>
+           </Tooltip>
+          </TableCell>
+
+          <Tooltip title={arrayToTooltip(row.g_a_v_i_w_b_s)}>
+            <TableCell className={classes.cell} align="left">
+              {arrayToCellValue(row.g_a_v_i_w_b_s)}
+            </TableCell>
+          </Tooltip>
+
+          <Tooltip title={arrayToTooltip(row.u_n_i_c_e_f_w_b_s)}>
+              <TableCell className={classes.cell} align="left">
+                {row.u_n_i_c_e_f_w_b_s}
+              </TableCell>
+          </Tooltip>          
+
+          <Tooltip title={arrayToTooltip(row.country_name)}>
+            <TableCell className={classes.cell} align="left">
+              {arrayToCellValue(row.country_name)}
+            </TableCell>
+          </Tooltip>
+  
       </ExpandableTableRow>
     );
   };

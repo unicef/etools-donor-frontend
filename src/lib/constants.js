@@ -72,6 +72,7 @@ export const SEARCH_REPORTS = 'reports';
 export const THEMATIC_GRANTS = 'thematic-grants';
 export const GAVI_REPORTS = 'gavi-reports';
 export const GAVI_REPORTS_CTN = 'gavi-reports-ctn';
+export const GAVI_STATEMENTS_ACC = 'gavi-statements-acc';
 export const POOLED_GRANTS = 'pooled-grants';
 export const USERS_PORTAL_PATH = `/${USERS_PORTAL}`;
 export const REPORTS_PATH = `/${REPORTS}`;
@@ -86,11 +87,13 @@ export const TABLE_PAGES = [
   THEMATIC_GRANTS,
   USERS_PORTAL,
   GAVI_REPORTS,
-  GAVI_REPORTS_CTN
+  GAVI_REPORTS_CTN,
+  GAVI_STATEMENTS_ACC
 ];
 export const THEMATIC_GRANTS_PATH = `/${THEMATIC_GRANTS}`;
 export const GAVI_REPORTS_PATH = `/${GAVI_REPORTS}`;
 export const GAVI_REPORTS_CTN_PATH = `/${GAVI_REPORTS_CTN}`;
+export const GAVI_STATEMENTS_ACC_PATH = `/${GAVI_STATEMENTS_ACC}`;
 export const POOLED_GRANTS_PATH = `/${POOLED_GRANTS}`;
 export const BACKEND_PROPERTIES_USER_LAST_LOGIN = 'user_last_login';
 export const BACKEND_PROPERTIES_USER_FIRST_NAME = 'user_first_name';
@@ -136,7 +139,8 @@ export const PAGE_TITLE_MAP = {
   [SEARCH_REPORTS]: 'Reports',
   [THEMATIC_GRANTS]: 'Thematic Grants',
   [GAVI_REPORTS]: 'Gavi Reports',
-  [GAVI_REPORTS_CTN]: 'Gavi adjusting CTNs',
+  [GAVI_REPORTS_CTN]: 'Gavi Adjusting CTNs',
+  [GAVI_STATEMENTS_ACC]: 'Gavi Statements of Account',
   [POOLED_GRANTS]: 'Pooled Grants'
 };
 

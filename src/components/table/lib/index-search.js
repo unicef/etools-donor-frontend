@@ -130,7 +130,7 @@ export function getDisplayValue(value, defaultValue = '—') {
 
 export function arrayToTooltip(arr) {
   if (arr && arr.length) {
-    return arr.join(', ');
+    return arr.join ? arr.join(', ') : arr;
   }
   return '';
 }

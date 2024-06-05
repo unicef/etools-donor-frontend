@@ -51,11 +51,15 @@ export const SENT_GAVI_DATE_BEFORE_FIELD = 'sent_to_g_a_v_i_date__lte';
 export const SENT_GAVI_DATE_AFTER_FIELD = 'sent_to_g_a_v_i_date__gte';
 export const PREPAID_STATUS = 'prepaid_status';
 export const PURCHASE_ORDER = 'purchase_order__contains';
+export const GRANT_NUMBER = 'grant_number__contains';
 export const ALOOCATION_ROUND = 'allocation_round__contains';
 export const VENDOR = 'vendor__contains';
 export const VACCINE_TYPE = 'vaccine_type__in';
 export const APPROVAL_YEAR = 'approval_year';
-
+export const SOA_DATE = 's_o_a_issue_date';
+export const UNICEF_WBS = 'u_n_i_c_e_f_w_b_s';
+export const MOU_NUMBER = 'm_o_u_number';
+export const MATERIAL_CODE = 'material_code';
 
 // PROPERTIES TO BE USED FOR QUERY
 export const QUERY_PROPERTY_GRANT = 'code';

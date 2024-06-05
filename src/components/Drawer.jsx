@@ -14,7 +14,8 @@ import {
   TRAINING_LINK,
   ADMIN,
   GAVI_REPORTS,
-  GAVI_REPORTS_CTN
+  GAVI_REPORTS_CTN,
+  GAVI_STATEMENTS_ACC
 } from '../lib/constants';
 import { selectMenuBarPage, selectAssignedRole, selectPageName } from 'selectors/ui-flags';
 import { menuItemSelected } from 'slices/ui';
@@ -94,6 +95,17 @@ export default function ConnectedDrawer() {
           <ListItemText primary="Pooled Grants" />
         </ListItem>
 
+        <ListItem
+          selected={navSelected(THEMATIC_GRANTS)}
+          onClick={handleNav(THEMATIC_GRANTS)}
+          button
+        >
+          <ListItemIcon>
+            <DescriptionIcon />
+          </ListItemIcon>
+          <ListItemText primary="Thematic Grants" />
+        </ListItem>
+
         <ListItem selected={navSelected(GAVI_REPORTS)} onClick={handleNav(GAVI_REPORTS)} button>
           <ListItemIcon>
             <DescriptionIcon />
@@ -106,21 +118,21 @@ export default function ConnectedDrawer() {
           onClick={handleNav(GAVI_REPORTS_CTN)}
           button
         >
-          <ListItemIcon>
+        <ListItemIcon>
             <DescriptionIcon />
           </ListItemIcon>
-          <ListItemText primary="Gavi adjusting CTNs" />
+          <ListItemText primary="Gavi Adjusting CTNs" />
         </ListItem>
 
         <ListItem
-          selected={navSelected(THEMATIC_GRANTS)}
-          onClick={handleNav(THEMATIC_GRANTS)}
+          selected={navSelected(GAVI_STATEMENTS_ACC)}
+          onClick={handleNav(GAVI_STATEMENTS_ACC)}
           button
         >
-          <ListItemIcon>
+        <ListItemIcon>
             <DescriptionIcon />
           </ListItemIcon>
-          <ListItemText primary="Thematic Grants" />
+          <ListItemText primary="Gavi Statements of Account" />
         </ListItem>
 
         <ListItem selected={navSelected(USERS_PORTAL)} onClick={handleNav(USERS_PORTAL)} button>

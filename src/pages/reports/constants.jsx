@@ -25,7 +25,11 @@ export const BACKEND_GAVI_FIELDS = {
   approvalYear: 'approval_year',
   sentDate: 'sent_to_g_a_v_i_date',
   gaviWBS: 'g_a_v_i_w_b_s',
-  allocationRound: 'allocation_round'
+  allocationRound: 'allocation_round',
+  purchaseOrder: 'purchase_order',
+  grantNumber: 'grant_number',
+  unicefWBS: 'u_n_i_c_e_f_w_b_s',
+  soaDate: 's_o_a_issue_date'
 };
 
 // QUERY PARAM FIELD NAMES FOR BACKEND

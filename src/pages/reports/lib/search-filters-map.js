@@ -29,7 +29,11 @@ import {
   ALOOCATION_ROUND,
   VENDOR,
   APPROVAL_YEAR,
-  SEARCH_FIELD
+  SEARCH_FIELD,
+  GRANT_NUMBER,
+  UNICEF_WBS,
+  MOU_NUMBER,
+
 } from '../search-constants';
 
 import { filter, keys } from 'ramda';
@@ -59,13 +63,16 @@ import MOUReferenceFilter from '../components/mou-reference-filter';
 import CountryFilter from '../components/country-filter';
 import CTNNumberFilter from '../components/ctn-number-filter';
 import GaviWBSFilter from '../components/gavi-wbs-filter';
+import UNICEFWBSFilter from '../components/unicef-wbs-filter';
+import MOUNumberFilter from '../components/mou-number-filter';
 import {
   UNICEF_USER_ROLE,
   THEMATIC_GRANTS,
   SEARCH_REPORTS,
   POOLED_GRANTS,
   GAVI_REPORTS,
-  GAVI_REPORTS_CTN
+  GAVI_REPORTS_CTN,
+  GAVI_STATEMENTS_ACC
 } from 'lib/constants';
 import ReportGeneratedFilter from '../components/report-generated-filter';
 import ThemeFilter from '../components/theme-filter';
@@ -73,6 +80,7 @@ import { useSelector } from 'react-redux';
 import { selectIsSuperUser, selectIsUnicefUser } from 'selectors/ui-flags';
 import PrepaidStatusFilter from '../components/prepaid-status-filter';
 import PurchaseOrderFilter from '../components/purchase-order-filter';
+import GrantNumberFilter from '../components/grant-number-filter';
 import AllocationRoundFilter from '../components/allocation-round-filter';
 import { GaviDateAfterFilter, GaviDateBeforeFilter } from '../components/gavi-date-filter';
 import VendorFilter from '../components/vendor-filter';
@@ -220,13 +228,25 @@ export const FILTERS_MAP = {
   [GAVI_WBS]: {
     label: 'GAVI WBS',
     Component: GaviWBSFilter,
-    pageName: [GAVI_REPORTS, GAVI_REPORTS_CTN]
+    pageName: [GAVI_REPORTS, GAVI_REPORTS_CTN, GAVI_STATEMENTS_ACC]
+  },
+
+  [UNICEF_WBS]: {
+    label: 'UNICEF WBS',
+    Component: UNICEFWBSFilter,
+    pageName: [GAVI_STATEMENTS_ACC]
+  },
+
+  [MOU_NUMBER]: {
+    label: 'MOU Number',
+    Component: MOUNumberFilter,
+    pageName: [GAVI_STATEMENTS_ACC]
   },
 
   [COUNTRY_NAME]: {
     label: 'Country',
     Component: CountryFilter,
-    pageName: [GAVI_REPORTS, GAVI_REPORTS_CTN]
+    pageName: [GAVI_REPORTS, GAVI_REPORTS_CTN, GAVI_STATEMENTS_ACC]
   },
 
   [PURCHASE_ORDER]: {
@@ -235,6 +255,12 @@ export const FILTERS_MAP = {
     pageName: [GAVI_REPORTS, GAVI_REPORTS_CTN]
   },
 
+  [GRANT_NUMBER]: {
+    label: 'Grant Number',
+    Component: GrantNumberFilter,
+    pageName: [GAVI_STATEMENTS_ACC]
+  },
+  
   [PREPAID_STATUS]: {
     label: 'Prepaid Status',
     Component: PrepaidStatusFilter,
@@ -256,13 +282,13 @@ export const FILTERS_MAP = {
   [VACCINE_TYPE]: {
     label: 'Vaccine Type',
     Component: VaccineTypeFilter,
-    pageName: [GAVI_REPORTS, GAVI_REPORTS_CTN]
+    pageName: [GAVI_REPORTS, GAVI_REPORTS_CTN, GAVI_STATEMENTS_ACC]
   },
 
   [APPROVAL_YEAR]: {
     label: 'Approval Year',
     Component: ApprovalYearFilter,
-    pageName: [GAVI_REPORTS, GAVI_REPORTS_CTN]
+    pageName: [GAVI_REPORTS, GAVI_REPORTS_CTN, GAVI_STATEMENTS_ACC]
   }
 };
 
@@ -272,7 +298,8 @@ export const getPageFilters = (userGroup, currentPageName) => {
   if (!(userGroup || isSuperUserOrUnicefUser) || !currentPageName) {
     return [];
   }
-  if (currentPageName === 'gavi-reports' || currentPageName === 'gavi-reports-ctn') {
+  const isGaviPage = String(currentPageName).startsWith('gavi-');
+  if (isGaviPage) {
     return keys(
       filter(({ pageName }) => {
         return pageName ? pageName.some(page => page === currentPageName) : false;

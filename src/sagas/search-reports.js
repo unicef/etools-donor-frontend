@@ -10,7 +10,8 @@ import { selectReportYear } from 'selectors/filter';
 import { removeEmpties } from 'lib/helpers';
 import {
   fetchSearchGavi,
-  fetchSearchReports
+  fetchSearchReports,
+  fetchSearchGaviStatements
   // fetchThematicGrants,
   // fetchPooledGrants
 } from 'api/search-index';
@@ -26,7 +27,7 @@ import {
   POOLED_GRANTS,
   GAVI_REPORTS,
   GAVI_REPORTS_CTN,
-  UNICEF_GAVI_KEY
+  GAVI_STATEMENTS_ACC
 } from '../lib/constants';
 
 function* getInitialSearchReports(params) {
@@ -60,6 +61,8 @@ function* getSearchReports(params) {
   } else if (reportPageName === 'gavi-reports-ctn') {
     params.m_o_u_r_eference = 'ADJUSTING CTNS';
     searchReports = yield call(fetchSearchGavi, params);
+  } else if (reportPageName === 'gavi-statements-acc') {
+    searchReports = yield call(fetchSearchGaviStatements, params);
   } else {
     searchReports = yield call(fetchSearchReports, params);
   }
@@ -102,7 +105,14 @@ function* getSearchCallerFunc(payload) {
       yield call(waitFor, selectConfig);
       const config = yield select(selectConfig);
       result.params.donor_code = config.gavi_donor_code;
-      result.params.source_id = isUnicefUser ? UNICEF_GAVI_KEY : sourceIds.gavi;
+      result.params.source_id = sourceIds.gavi; // isUnicefUser ? UNICEF_GAVI_KEY :
+      break;
+    }
+    case GAVI_STATEMENTS_ACC: {
+      yield call(waitFor, selectConfig);
+      const config = yield select(selectConfig);
+      result.params.donor_code = config.gavi_donor_code;
+      result.params.source_id = sourceIds.gavi_soa;
       break;
     }
     case POOLED_GRANTS: {
