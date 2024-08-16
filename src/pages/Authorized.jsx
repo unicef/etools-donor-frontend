@@ -6,7 +6,7 @@ import { Route } from 'react-router-dom';
 
 import { selectUserProfileDonorId } from 'selectors/ui-flags';
 import { usePermissions } from 'components/PermissionRedirect';
-import { GAVI_REPORTS_PATH, GAVI_REPORTS_CTN_PATH, THEMATIC_GRANTS_PATH } from 'lib/constants';
+import { GAVI_REPORTS_PATH, GAVI_REPORTS_CTN_PATH, GAVI_STATEMENTS_ACC_PATH, THEMATIC_GRANTS_PATH } from 'lib/constants';
 import DonorsList from './donors-list';
 import UsersManagement from './users-portal';
 import { setAssignedRole } from '../slices/ui';
@@ -41,7 +41,7 @@ export function ProtectedRouteReportPage({ children, ...rest }) {
         const { donorId } = match.params;
         const { path } = match;
         const thematicPath = path === THEMATIC_GRANTS_PATH;
-        if ((path === GAVI_REPORTS_PATH || path === GAVI_REPORTS_CTN_PATH) && isGaviDonor) {
+        if ((path === GAVI_REPORTS_PATH || path === GAVI_REPORTS_CTN_PATH || path === GAVI_STATEMENTS_ACC_PATH) && isGaviDonor) {
           canViewDonors = true;
         }
         const unassignedDonorAttempt = usersDonor
