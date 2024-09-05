@@ -84,7 +84,8 @@ const gaviStatementsAccTableHeadings = [
   { id: BACKEND_GAVI_FIELDS['grantNumber'], label: 'Grant Number', sortable: true },
   { id: BACKEND_GAVI_FIELDS['gaviWBS'], label: 'GAVI WBS', sortable: true },
   { id: BACKEND_GAVI_FIELDS['unicefWBS'], label: 'UNICEF WBS', sortable: true },  
-  { id: BACKEND_GAVI_FIELDS['country'], label: 'Country Name', sortable: true }  
+  { id: BACKEND_GAVI_FIELDS['country'], label: 'Country Name', sortable: true },
+  { id: BACKEND_GAVI_FIELDS['sentDate'], label: 'Sent To GAVI Date', sortable: true },
 ];
 
 const externalRefCell = {
@@ -459,6 +460,12 @@ export default function ReportsTable() {
           <Tooltip title={arrayToTooltip(row.country_name)}>
             <TableCell className={classes.cell} align="left">
               {arrayToCellValue(row.country_name)}
+            </TableCell>
+          </Tooltip>
+
+          <Tooltip title={row.sent_to_g_a_v_i_date ? getDisplayDate(row.sent_to_g_a_v_i_date) : ''}>
+            <TableCell className={classes.cell} align="left">
+              {getDisplayDate(row.sent_to_g_a_v_i_date)}
             </TableCell>
           </Tooltip>
   
