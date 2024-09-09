@@ -15,7 +15,8 @@ import {
   ADMIN,
   GAVI_REPORTS,
   GAVI_REPORTS_CTN,
-  GAVI_STATEMENTS_ACC
+  GAVI_STATEMENTS_ACC,
+  COVAX
 } from '../lib/constants';
 import { selectMenuBarPage, selectAssignedRole, selectPageName } from 'selectors/ui-flags';
 import { menuItemSelected } from 'slices/ui';
@@ -104,6 +105,13 @@ export default function ConnectedDrawer() {
             <DescriptionIcon />
           </ListItemIcon>
           <ListItemText primary="Thematic Grants" />
+        </ListItem>
+
+        <ListItem selected={navSelected(COVAX)} onClick={handleNav(COVAX)} button>
+          <ListItemIcon>
+            <DescriptionIcon />
+          </ListItemIcon>
+          <ListItemText primary="Covax" />
         </ListItem>
 
         <ListItem selected={navSelected(GAVI_REPORTS)} onClick={handleNav(GAVI_REPORTS)} button>
