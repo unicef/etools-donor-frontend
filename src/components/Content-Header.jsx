@@ -59,8 +59,7 @@ function ContentHeader({ children, location }) {
       extraParam = '&m_o_u_r_eference__not=ADJUSTING CTNS';
     } else if (window.location.pathname.includes('covax')) {
       extraParam = '&m_o_u_r_eference=MOU 11 CTN - DEVICES,MOU 11 CTN - VACCINES';
-      gaviKey = 'xxxx';
-    }    
+    }
     const searchParams = window.location.search.replace('?', '&');
     const downloadUrl = `${window.location.origin}/api/sharepoint/search/export/?serializer=gavi&donor_code=${config.gavi_donor_code}&source_id=${gaviKey}${searchParams}${extraParam}`;
     window.open(downloadUrl, '_blank');

@@ -107,18 +107,18 @@ export default function ConnectedDrawer() {
           <ListItemText primary="Thematic Grants" />
         </ListItem>
 
-        <ListItem selected={navSelected(COVAX)} onClick={handleNav(COVAX)} button>
-          <ListItemIcon>
-            <DescriptionIcon />
-          </ListItemIcon>
-          <ListItemText primary="Covax" />
-        </ListItem>
-
         <ListItem selected={navSelected(GAVI_REPORTS)} onClick={handleNav(GAVI_REPORTS)} button>
           <ListItemIcon>
             <DescriptionIcon />
           </ListItemIcon>
           <ListItemText primary="Gavi Reports" />
+        </ListItem>
+
+        <ListItem selected={navSelected(COVAX)} onClick={handleNav(COVAX)} button>
+          <ListItemIcon>
+            <DescriptionIcon />
+          </ListItemIcon>
+          <ListItemText primary="Covax" />
         </ListItem>
 
         <ListItem
