@@ -61,7 +61,6 @@ function* getSearchReports(params) {
     searchReports = yield call(fetchSearchGavi, params);
   }  else if (reportPageName === 'covax') {
     params.m_o_u_r_eference = 'MOU 11 CTN - DEVICES,MOU 11 CTN - VACCINES';
-    params.source_id = 'xxxx';
     searchReports = yield call(fetchSearchGavi, params);
   }  
   else if (reportPageName === 'gavi-reports-ctn') {
