@@ -56,7 +56,7 @@ function ContentHeader({ children, location }) {
     if (window.location.pathname.includes('gavi-reports-ctn')) {
       extraParam = '&m_o_u_r_eference=ADJUSTING CTNS';
     } else if (window.location.pathname.includes('gavi-reports')) {
-      extraParam = '&m_o_u_r_eference__not=ADJUSTING CTNS';
+      extraParam = '&m_o_u_r_eference__not_in=ADJUSTING CTNS,MOU 11 CTN - DEVICES,MOU 11 CTN - VACCINES';
     } else if (window.location.pathname.includes('covax')) {
       extraParam = '&m_o_u_r_eference=MOU 11 CTN - DEVICES,MOU 11 CTN - VACCINES';
     }
