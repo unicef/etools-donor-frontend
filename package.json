@@ -1,7 +1,7 @@
 {
   "name": "donor-frontend",
   "title": "Donor Reporting Portal",
-  "version": "1.1.0",
+  "version": "2.5.0",
   "private": true,
   "dependencies": {
     "@babel/core": "7.2.2",
